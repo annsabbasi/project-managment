@@ -1,0 +1,191 @@
+$dark-grey: #424242;
+$medium-grey: #616161;
+$light-grey: #757575;
+$hover-grey: #e9e9e9;
+
+.sidebar {
+  background-color: #f8f8f8 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0 10px;
+
+  .upperRow {
+    .logo {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 0;
+      img {
+        width: 30px;
+        color: $hover-grey;
+      }
+    }
+
+    .balance {
+      display: flex;
+      width: 100%;
+      justify-content: space-around;
+      height: 40px;
+      align-items: center;
+      margin: 10px 0 4px 0;
+    }
+
+    .list {
+      .title {
+        font-size: 15px;
+        color: $dark-grey;
+        margin-top: 20px;
+        padding-left: 5px;
+        font-weight: 600;
+      }
+
+      .listItem {
+        box-sizing: border-box;
+        position: relative;
+        .listItemBtn {
+          padding: 0.4rem 10px;
+        }
+        .listItemIcon {
+          min-width: fit-content !important;
+          margin-right: 13px;
+
+          .icon {
+            width: 16px !important;
+            height: 16px !important;
+          }
+        }
+
+        .listItemText {
+          color: #606060;
+          span {
+            font-size: 1.1rem !important;
+          }
+          font-weight: bold !important;
+        }
+
+        &:hover {
+          background-color: #eaeaea !important;
+          border-radius: 6px;
+          .listItemText {
+            color: #060606 !important;
+            span {
+              font-size: 1.1rem !important;
+            }
+            font-weight: bold !important;
+          }
+        }
+
+        &.activeItem {
+          background-color: #060606 !important;
+          border-radius: 6px;
+          .listItemText {
+            color: white !important;
+            span {
+              font-size: 1.6rem !important;
+            }
+            font-weight: bold !important;
+          }
+        }
+      }
+    }
+  }
+
+  .lowerRow {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+
+    .title {
+      padding: 16px 0;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      background-color: #e0e0e0;
+      width: 100%;
+    }
+
+    .list {
+      .listItem {
+        box-sizing: border-box;
+        position: relative;
+
+        .listItemIcon {
+          min-width: fit-content !important;
+          margin-right: 13px;
+
+          .icon {
+            width: 16px !important;
+            height: 16px !important;
+          }
+        }
+
+        .listItemText {
+          color: #606060;
+          span {
+            font-size: 1.6rem !important;
+          }
+          font-weight: bold !important;
+        }
+
+        &:hover {
+          background-color: #eaeaea !important;
+          border-radius: 8px;
+          .listItemText {
+            color: #060606 !important;
+            span {
+              font-size: 1.6rem !important;
+            }
+            font-weight: bold !important;
+          }
+        }
+
+        &.activeItem {
+          background-color: #060606 !important;
+          .listItemText {
+            color: white !important;
+            span {
+              font-size: 1.6rem !important;
+            }
+            font-weight: bold !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.container {
+  width: 100%;
+  background-color: #f8f8f8 !important;
+  padding: 15px 30px;
+  color: white;
+}
+
+.balance {
+  font-size: 14px;
+  font-weight: 400;
+  color: #a9b0bd;
+}
+
+// SCROLL BAR
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: $hover-grey transparent;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #4a4a4a;
+    border-radius: 20px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
