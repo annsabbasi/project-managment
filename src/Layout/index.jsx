@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import TopBar from "./Topbar";
 import styles from './page.module.scss';
 
-export default function Layout({ title, children }) {
+export default function Layout(title, children) {
     console.log("This is a layout Page")
     return (
         <Box sx={{ display: 'flex' }}>
