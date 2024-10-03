@@ -44,9 +44,9 @@ const Sidebar = () => {
 
     const pages = [
         { name: 'Dashboard', path: `/${RouteNames.DASHBOARD}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
-        { name: 'Projects', path: `/${RouteNames.PROJECTS}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
-        { name: 'Messages', path: `/${RouteNames.MESSAGES}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
-        { name: 'Clients', path: `/${RouteNames.CLIENTS}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
+        { name: 'Projects', path: `/${RouteNames.PROJECT}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
+        { name: 'Messages', path: `/${RouteNames.MESSAGE}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
+        { name: 'Clients', path: `/${RouteNames.CLIENT}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
         { name: 'Teams', path: `/${RouteNames.TEAMS}`, Icon: TeamsIcon, ActiveIcon: TeamsIconWhite },
         { name: 'Meetings', path: `/${RouteNames.MEETINGS}`, Icon: MeetingsIcon, ActiveIcon: MeetingsIconWhite },
         { name: 'Referrals', path: `/${RouteNames.REFERRALS}`, Icon: ReferralsIcon, ActiveIcon: ReferralsIconWhite },
@@ -61,8 +61,8 @@ const Sidebar = () => {
 
     const handleClick = (path) => {
         navigate(path);
+        console.log("This is the path:", path)
     };
-
     return (
         <Drawer
             variant="permanent"
@@ -108,7 +108,7 @@ const Sidebar = () => {
                     <List className={styles.list}>
                         {lowerRowItems.map(({ name, path, Icon, ActiveIcon }) => (
                             <ListItem key={name} disablePadding className={`${styles.listItem} ${currentPath === path ? styles.activeItem : ''}`}>
-                                <ListItemButton onClick={() => handleClick(path)}>
+                                <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                     <ListItemIcon className={styles.listItemIcon}>
                                         <img
                                             src={currentPath === path ? ActiveIcon : Icon}

@@ -1,13 +1,13 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import './App.css'
-import Theme from './Theme/Theme'
 import { AppRoutes } from './Routes/AppRoute'
+import theme from './Theme/Theme'
 
 function App() {
 
   return (
     <>
-      <ThemeProvider theme={Theme()}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <AppRoutes />
       </ThemeProvider>

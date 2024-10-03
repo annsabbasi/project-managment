@@ -5,7 +5,6 @@ import styles from './page.module.scss';
 import PropTypes from 'prop-types';
 
 export default function Layout({ title, children }) {
-    console.log("This is a layout Page")
     return (
         <Box sx={{ display: 'flex' }}>
             <Sidebar />
@@ -18,7 +17,9 @@ export default function Layout({ title, children }) {
                 className={styles.container}
             >
                 <TopBar title={title} />
-                <Box>{children}</Box>
+                <Box sx={{
+                    padding: '1.2rem 1rem'
+                }}>{children}</Box>
             </Box>
         </Box>
     );
