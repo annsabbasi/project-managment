@@ -3,6 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
 import theme from "../../Theme/Theme";
 import PropTypes from 'prop-types';
+import Active from "../../Components/Dashboard/Active/Active";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -145,7 +146,9 @@ export default function Project() {
                 </CustomTabPanel>
 
 
-                <CustomTabPanel value={activeTab} index={1}>The Two this is!</CustomTabPanel>
+                <CustomTabPanel value={activeTab} index={1}>
+                    <Active />
+                </CustomTabPanel>
                 <CustomTabPanel value={activeTab} index={2}>Hello Three this is!</CustomTabPanel>
             </Box>
         </Box >

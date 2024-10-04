@@ -1,14 +1,29 @@
-import { Skeleton, Stack } from '@mui/material'
+import GearGif from '../assets/Gears.gif'
+// import GearGif from '../../assets/Gears.gif'
+import { Stack } from '@mui/material'
 
 export default function Spinner() {
     return (
-        <Stack spacing={1} width='250px' alignItems='center' mx='auto'>
-            <Skeleton variant='text' />
-            <Skeleton variant='circular' width={40} height={40} />
-            <Skeleton variant='rectangular' width={250} height={125} animation='wave' />
+        <Stack sx={{ height: '100vh', opacity: 0.1 }} alignItems="center" justifyContent="center" mx="auto">
+            <img src={GearGif} alt="Loading" />
         </Stack>
     )
 }
+
+
+
+
+// import { Skeleton, Stack } from '@mui/material'
+
+// export default function Spinner() {
+//     return (
+//         <Stack spacing={1} width='250px' alignItems='center' mx='auto'>
+//             <Skeleton variant='text' />
+//             <Skeleton variant='circular' width={40} height={40} />
+//             <Skeleton variant='rectangular' width={250} height={125} animation='wave' />
+//         </Stack>
+//     )
+// }
 
 
 

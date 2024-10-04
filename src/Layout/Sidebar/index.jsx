@@ -1,41 +1,38 @@
 import React from 'react';
-import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
-// import Logo from '../../assets/react.svg';
+import styles from './page.module.scss';
 import logoimage from '../../assets/Hide-sidebar.svg';
 import { RouteNames } from '../../Constants/route';
 import { drawerWidth } from '../../Constants/app';
-import styles from './page.module.scss';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
+import DashboardIcon from '../../assets/dashboard.svg';
+import ProjectsIcon from '../../assets/Project.svg';
+import MessagesIcon from '../../assets/Message.png';
+import ClientsIcon from '../../assets/Client.svg';
+import TeamsIcon from '../../assets/Team.svg';
+import MeetingsIcon from '../../assets/Meetings.svg';
+import ReferralsIcon from '../../assets/Referrals.svg';
+import ServicesIcon from '../../assets/Services.svg';
+import ContractsIcon from '../../assets/Contracts.svg';
+import InvoicesIcon from '../../assets/Invoices.svg';
+import FormsIcon from '../../assets/Forms.svg';
+import FinancesIcon from '../../assets/finances.svg';
+import SettingsIcon from '../../assets/Settings.svg';
 
-
-import DashboardIcon from '../../assets/DashboardSvg/Team.svg';
-import ProjectsIcon from '../../assets/DashboardSvg/Team.svg';
-import MessagesIcon from '../../assets/DashboardSvg/Team.svg';
-import ClientsIcon from '../../assets/DashboardSvg/Team.svg';
-import TeamsIcon from '../../assets/DashboardSvg/Team.svg';
-import MeetingsIcon from '../../assets/DashboardSvg/Team.svg';
-import ReferralsIcon from '../../assets/DashboardSvg/Team.svg';
-import ServicesIcon from '../../assets/DashboardSvg/Team.svg';
-import ContractsIcon from '../../assets/DashboardSvg/Team.svg';
-import InvoicesIcon from '../../assets/DashboardSvg/Team.svg';
-import FormsIcon from '../../assets/DashboardSvg/Team.svg';
-import FinancesIcon from '../../assets/DashboardSvg/Team.svg';
-import SettingsIcon from '../../assets/DashboardSvg/Team.svg';
-
-import DashboardIconWhite from '../../assets/DashboardSvg/Team.svg';
-import ProjectsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import MessagesIconWhite from '../../assets/DashboardSvg/Team.svg';
-import ClientsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import TeamsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import MeetingsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import ReferralsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import ServicesIconWhite from '../../assets/DashboardSvg/Team.svg';
-import ContractsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import InvoicesIconWhite from '../../assets/DashboardSvg/Team.svg';
-import FormsIconWhite from '../../assets/DashboardSvg/Team.svg';
-import FinancesIconWhite from '../../assets/DashboardSvg/Team.svg';
-import SettingsIconWhite from '../../assets/DashboardSvg/Team.svg';
+import DashboardIconWhite from '../../assets/Dashboard active.svg';
+import ProjectsIconWhite from '../../assets/Project active.svg';
+import MessagesIconWhite from '../../assets/Message active.svg';
+import ClientsIconWhite from '../../assets/Client active.svg';
+import TeamsIconWhite from '../../assets/Team active.svg';
+import MeetingsIconWhite from '../../assets/Meetings active.svg';
+import ReferralsIconWhite from '../../assets/Referrals active.svg';
+import ServicesIconWhite from '../../assets/Services active.svg';
+import ContractsIconWhite from '../../assets/Contracts active.svg';
+import InvoicesIconWhite from '../../assets/Invoices acitve.svg';
+import FormsIconWhite from '../../assets/Forms active.svg';
+import FinancesIconWhite from '../../assets/Finances active.svg';
+import SettingsIconWhite from '../../assets/Settings active.svg';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -80,7 +77,6 @@ const Sidebar = () => {
             <Box className={styles.sidebar}>
                 <Box className={styles.upperRow}>
                     <Box className={styles.logo}>
-                        {/* <img src={Logo} alt="Logo" /> */}
                         <img className={styles.image} src={logoimage} alt="image" />
                     </Box>
                     <List className={styles.list}>
@@ -94,8 +90,7 @@ const Sidebar = () => {
                                             <img
                                                 src={currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}
-                                                className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`}
-                                            />
+                                                className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                         </ListItemIcon>
                                         <ListItemText primary={name} className={styles.listItemText} />
                                     </ListItemButton>
@@ -113,8 +108,7 @@ const Sidebar = () => {
                                         <img
                                             src={currentPath === path ? ActiveIcon : Icon}
                                             alt={name}
-                                            className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`}
-                                        />
+                                            className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                     </ListItemIcon>
                                     <ListItemText primary={name} className={styles.listItemText} />
                                 </ListItemButton>
