@@ -18,7 +18,7 @@ import ContractsIcon from '../../assets/Contracts.svg';
 import InvoicesIcon from '../../assets/Invoices.svg';
 import FormsIcon from '../../assets/Forms.svg';
 import FinancesIcon from '../../assets/finances.svg';
-import SettingsIcon from '../../assets/Settings.svg';
+// import SettingsIcon from '../../assets/Settings.svg';
 
 import DashboardIconWhite from '../../assets/Dashboard active.svg';
 import ProjectsIconWhite from '../../assets/Project active.svg';
@@ -32,7 +32,7 @@ import ContractsIconWhite from '../../assets/Contracts active.svg';
 import InvoicesIconWhite from '../../assets/Invoices acitve.svg';
 import FormsIconWhite from '../../assets/Forms active.svg';
 import FinancesIconWhite from '../../assets/Finances active.svg';
-import SettingsIconWhite from '../../assets/Settings active.svg';
+// import SettingsIconWhite from '../../assets/Settings active.svg';
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -54,11 +54,10 @@ const Sidebar = () => {
         { name: 'Finances', path: `/${RouteNames.FINANCES}`, Icon: FinancesIcon, ActiveIcon: FinancesIconWhite },
     ];
 
-    const lowerRowItems = [{ name: 'Settings', path: `/${RouteNames.SETTING}`, Icon: SettingsIcon, ActiveIcon: SettingsIconWhite }];
+    // const lowerRowItems = [{ name: 'Settings', path: `/${RouteNames.SETTING}`, Icon: SettingsIcon, ActiveIcon: SettingsIconWhite }];
 
     const handleClick = (path) => {
         navigate(path);
-        console.log("This is the path:", path)
     };
     return (
         <Drawer
@@ -99,7 +98,7 @@ const Sidebar = () => {
                         ))}
                     </List>
                 </Box>
-                <Box className={styles.lowerRow}>
+                {/* <Box className={styles.lowerRow}>
                     <List className={styles.list}>
                         {lowerRowItems.map(({ name, path, Icon, ActiveIcon }) => (
                             <ListItem key={name} disablePadding className={`${styles.listItem} ${currentPath === path ? styles.activeItem : ''}`}>
@@ -115,7 +114,7 @@ const Sidebar = () => {
                             </ListItem>
                         ))}
                     </List>
-                </Box>
+                </Box> */}
             </Box>
         </Drawer>
     );

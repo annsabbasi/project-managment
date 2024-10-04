@@ -31,7 +31,7 @@ export const PrivateRoute = [
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
     { path: RouteNames.CLIENT, element: Client, layout: true, title: 'Client' },
     { path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams' },
-    { path: RouteNames.MEETINGS, element: Meetings, layout: true, title: 'Mettings' },
+    { path: RouteNames.MEETINGS, element: Meetings, layout: true, title: 'Meetings' },
     { path: RouteNames.REFERRALS, element: Referrals, layout: true, title: 'Referrals' },
     { path: RouteNames.SERVICES, element: Services, layout: true, title: 'Services' },
     { path: RouteNames.CONTRACTS, element: Contracts, layout: true, title: 'Contracts' },

@@ -1,6 +1,14 @@
 export const RouteNames = {
     DASHBOARD: 'dashboard',
+    PROJECT: 'project',
     MESSAGE: 'message',
     CLIENT: 'client',
-    PROJECT: 'project',
+    TEAMS: 'teams',
+    MEETINGS: 'meetings',
+    REFERRALS: 'referrals',
+    SERVICES: 'services',
+    CONTRACTS: 'contracts',
+    INVOICES: 'invoices',
+    FORMS: 'forms',
+    FINANCES: 'finances',
 };
