@@ -1,9 +1,12 @@
-import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField, ThemeProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField, ThemeProvider } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from "react";
 import theme from "../../Theme/Theme";
 import PropTypes from 'prop-types';
 import Active from "../../Components/Dashboard/Active/Active";
+import TableActive from "../ProjectTabs/TableActive";
+import Complete from "../ProjectTabs/Complete";
+import Template from "../ProjectTabs/Template";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -28,17 +31,6 @@ const allyProps = (index) => {
     }
 }
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 export default function Project() {
     const [activeTab, setActiveTab] = useState(0)
@@ -55,7 +47,6 @@ export default function Project() {
                 </IconButton>
 
                 <ThemeProvider theme={theme}>
-                    {/* <Box> */}
                     <Tabs
                         onChange={handleChangeTab}
                         aria-label="user details tabs"
@@ -92,8 +83,16 @@ export default function Project() {
                                 borderRadius: '0.4rem',
                             }}
                         />
+                        <Tab
+                            label="Template"
+                            {...allyProps(3)}
+                            sx={{
+                                backgroundColor: activeTab === 3 ? '#F2F2F2' : 'transparent',
+                                color: activeTab === 3 ? 'black' : 'black',
+                                borderRadius: '0.4rem',
+                            }}
+                        />
                     </Tabs>
-                    {/* </Box> */}
                 </ThemeProvider>
 
 
@@ -114,42 +113,20 @@ export default function Project() {
             </Stack>
             <Box>
                 <CustomTabPanel value={activeTab} index={0}>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Dessert (100g serving)</TableCell>
-                                    <TableCell align="right">Calories</TableCell>
-                                    <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                    <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {row.name}
-                                        </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.fat}</TableCell>
-                                        <TableCell align="right">{row.carbs}</TableCell>
-                                        <TableCell align="right">{row.protein}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <TableActive />
                 </CustomTabPanel>
-
 
                 <CustomTabPanel value={activeTab} index={1}>
                     <Active />
                 </CustomTabPanel>
-                <CustomTabPanel value={activeTab} index={2}>Hello Three this is!</CustomTabPanel>
+
+                <CustomTabPanel value={activeTab} index={2}>
+                    <Complete />
+                </CustomTabPanel>
+
+                <CustomTabPanel value={activeTab} index={3}>
+                    <Template />
+                </CustomTabPanel>
             </Box>
         </Box >
     )
