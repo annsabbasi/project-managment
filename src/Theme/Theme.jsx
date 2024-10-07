@@ -9,6 +9,7 @@ const theme = createTheme({
             mediumGrey: '#616161',
             lightGrey: '#757575',
             hoverGrey: '#f5f5f5',
+            purple: 'purple'
         },
     },
 });

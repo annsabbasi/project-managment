@@ -8,12 +8,10 @@ import {
     Stack,
     Typography,
     Button,
-    Avatar,
 } from '@mui/material';
 import theme from '../../../Theme/Theme';
 import AddIcon from '@mui/icons-material/Add';
 import style from './style.module.scss'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Active() {
     return (
