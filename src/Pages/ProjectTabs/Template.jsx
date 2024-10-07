@@ -12,7 +12,7 @@ export default function Template() {
     return (
         <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
-                <Card sx={{ boxShadow: 3, width: '48%' }}>
+                <Card sx={{ boxShadow: 3, flexGrow: '1' }}>
                     <CardContent>
                         <Grid container justifyContent="space-between" alignItems="center" mb={2}>
                             <Typography variant="h6" fontWeight="bold">Time Tracked</Typography>
@@ -22,82 +22,82 @@ export default function Template() {
 
                         <Box mt={2}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Member</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
+                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }}>Member</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
                             </Box>
 
                             {members.map((member, index) => (
                                 <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
                                     <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar>{member.avatar}</Avatar>
-                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600] }}>{member.name}</Typography>
+                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem' }}>{member.avatar}</Avatar>
+                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.billable}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.billable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.nonBillable}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.nonBillable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.total}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.total}</Typography>
                                     </Box>
                                 </Stack>
                             ))}
                         </Box>
 
                         <Divider />
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.9rem' }}>
                             <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Totals</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
                         </Box>
                     </CardContent>
                 </Card>
 
-                <Card sx={{ boxShadow: 3, width: '48%' }}>
+                <Card sx={{ boxShadow: 3, flexGrow: '1' }}>
                     <CardContent>
                         <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-                            <Typography variant="h6" fontWeight="bold">Amount Earned</Typography>
+                            <Typography variant="h6" fontWeight="bold">Time Tracked</Typography>
                             <Typography variant="body2" color="textSecondary">This Week</Typography>
                         </Grid>
                         <Divider />
 
                         <Box mt={2}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Member</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>Billable</Typography>
+                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }}>Member</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
                             </Box>
 
                             {members.map((member, index) => (
                                 <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
                                     <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar>{member.avatar}</Avatar>
-                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600] }}>{member.name}</Typography>
+                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem' }}>{member.avatar}</Avatar>
+                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.billable}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.billable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.nonBillable}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.nonBillable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography>{member.total}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.total}</Typography>
                                     </Box>
                                 </Stack>
                             ))}
                         </Box>
 
                         <Divider />
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.9rem' }}>
                             <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Totals</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
                         </Box>
                     </CardContent>
                 </Card>
@@ -111,7 +111,7 @@ export default function Template() {
                 sx={{ margin: "0 auto", marginTop: '1.5rem' }}
             >
                 {/* Members Dropdown */}
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                     <InputLabel>All Members</InputLabel>
                     <Select
                         label="All Members"
@@ -125,7 +125,7 @@ export default function Template() {
                 {/* Date Pickers */}
 
                 {/* Projects Dropdown */}
-                <FormControl fullWidth>
+                <FormControl fullWidth size="small">
                     <InputLabel>All Projects</InputLabel>
                     <Select
                         label="All Projects"

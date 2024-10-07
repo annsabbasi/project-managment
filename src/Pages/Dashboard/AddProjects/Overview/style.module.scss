@@ -1,0 +1,48 @@
+.boxMain1 {
+  border: 1px solid silver;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+//   flex-grow: 2;
+}
+.BoxContent {
+  border: 1px solid silver;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+}
+.textGrey {
+  color: gray;
+}
+.texth6 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(56, 56, 56);
+}
+
+.textGreyInfo {
+  font-size: 0.9rem;
+  color: rgb(43, 43, 43);
+}
+
+.textGreyDesc {
+  color: gray;
+  font-size: 0.9rem;
+}
+
+.statusBtn {
+  min-height: 0;
+  //   border: 1px solid blue;
+  padding: 0.1rem 0.3rem;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+    background-color: rgba(216, 216, 255, 0.2);
+//   background-color: rgba(57, 245, 57, 0.2);
+  text-transform: capitalize;
+  cursor: default;
+}
+
+.boxMain2 {
+  flex-grow: 3;
+  border: 1px solid silver;
+//   padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+}

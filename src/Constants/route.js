@@ -11,4 +11,5 @@ export const RouteNames = {
     INVOICES: 'invoices',
     FORMS: 'forms',
     FINANCES: 'finances',
+    ADDPRODUCTS: 'addproduct',
 };

@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { RouteNames } from "../Constants/route";
 
-// const Dashboard = import {'../Pages/Dashboard/Dashboard'}
 import Dashboard from '../Pages/Dashboard/Dashboard'
 const Project = lazy(() => import('../Pages/Dashboard/Project'));
 const Message = lazy(() => import('../Pages/Dashboard/Message'));
@@ -16,6 +15,7 @@ const Forms = lazy(() => import('../Pages/Dashboard/Forms'));
 const Finances = lazy(() => import('../Pages/Dashboard/Finances'));
 const Home = lazy(() => import('../Pages/Home'));
 const Layout = lazy(() => import('../Layout'));
+const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
 
 
 export const PublicRoute = [
@@ -27,7 +27,6 @@ export const PublicRoute = [
 ]
 export const PrivateRoute = [
     { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Dashboard' },
-    { path: RouteNames.PROJECT, element: Project, layout: true, title: 'Project' },
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
     { path: RouteNames.CLIENT, element: Client, layout: true, title: 'Client' },
     { path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams' },
@@ -38,4 +37,15 @@ export const PrivateRoute = [
     { path: RouteNames.INVOICES, element: Invoices, layout: true, title: 'Invoices' },
     { path: RouteNames.FORMS, element: Forms, layout: true, title: 'Forms' },
     { path: RouteNames.FINANCES, element: Finances, layout: true, title: 'Finances' },
+    // The AddProjects is the children and present inside this Route
+    {
+        path: RouteNames.PROJECT,
+        element: Project,
+        layout: true,
+        title: 'Project',
+        children: [
+            { path: RouteNames.ADDPRODUCTS, element: AddProjects, layout: true, title: 'AddProjects' }
+        ]
+    },
 ]
+// { path: RouteNames.ADDPROJECTS, element: AddProjects, layout: true, title: 'AddProducts' },

@@ -83,11 +83,11 @@ const Sidebar = () => {
                             <React.Fragment key={name}>
                                 {name === 'Clients' && <Typography className={styles.title}>Collaborate</Typography>}
                                 {name === 'Services' && <Typography className={styles.title}>Tools</Typography>}
-                                <ListItem disablePadding className={`${styles.listItem} ${currentPath === path ? styles.activeItem : ''}`}>
+                                <ListItem disablePadding className={`${styles.listItem} ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}`}>
                                     <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
-                                                src={currentPath === path ? ActiveIcon : Icon}
+                                                src={ (name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) ||currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}
                                                 className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                         </ListItemIcon>
@@ -98,23 +98,6 @@ const Sidebar = () => {
                         ))}
                     </List>
                 </Box>
-                {/* <Box className={styles.lowerRow}>
-                    <List className={styles.list}>
-                        {lowerRowItems.map(({ name, path, Icon, ActiveIcon }) => (
-                            <ListItem key={name} disablePadding className={`${styles.listItem} ${currentPath === path ? styles.activeItem : ''}`}>
-                                <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
-                                    <ListItemIcon className={styles.listItemIcon}>
-                                        <img
-                                            src={currentPath === path ? ActiveIcon : Icon}
-                                            alt={name}
-                                            className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={name} className={styles.listItemText} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box> */}
             </Box>
         </Drawer>
     );
