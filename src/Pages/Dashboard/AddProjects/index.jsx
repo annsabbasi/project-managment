@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import theme from "../../../Theme/Theme";
 import OverView from "./Overview"
+import Files from "./Files"
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -117,11 +118,13 @@ export default function AddProjects() {
                 </Tabs>
 
                 <Button
-                    variant="outlined"
+                    variant="text"
                     sx={{
                         borderColor: (theme) => theme.palette.primary.main,
                         textTransform: 'capitalize',
-                        borderRadius: '1rem',
+                        borderRadius: '0.4rem',
+                        padding: '0.1rem 0.6rem',
+                        cursor: 'default'
                     }}
                 >In Progress</Button>
             </Stack>
@@ -132,7 +135,8 @@ export default function AddProjects() {
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={1}>
-                    <Typography>Hey</Typography>
+                    {/* <Typography>Hey</Typography> */}
+                    <Files />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={2}>

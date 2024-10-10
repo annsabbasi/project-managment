@@ -7,15 +7,12 @@ import {
     Box,
     TableBody,
     Button,
-    // Stack,
-    // Typography,
 } from '@mui/material';
 import style from './style.module.scss'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 // import theme from '../../Theme/Theme';
-// import AddIcon from '@mui/icons-material/Add';
 
-export default function TableActive() {
+export default function Request() {
     return (
         <TableContainer>
             <Table className={style.table}>
@@ -24,10 +21,10 @@ export default function TableActive() {
                         <TableCell>Project Title</TableCell>
                         <TableCell align="left">Client Name</TableCell>
                         <TableCell align="left">Project Status</TableCell>
-                        <TableCell align="left">Members</TableCell>
-                        <TableCell align="left">Start Date</TableCell>
+                        <TableCell align="left">Request Date</TableCell>
                         <TableCell align="left">Due Date</TableCell>
-                        <TableCell align="right">Budget</TableCell>
+                        <TableCell align="left">&nbsp;</TableCell>
+                        <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
                 <Box sx={{ height: '16px' }} />
@@ -40,21 +37,14 @@ export default function TableActive() {
                         </TableCell>
                         <TableCell align="left">carbs</TableCell>
                         <TableCell align="left">3/18/23</TableCell>
-                        <TableCell align="left">8/15/24</TableCell>
-                        <TableCell align="right">$5,000</TableCell>
+                        <TableCell align="right">&nbsp;</TableCell>
+                        <TableCell align="left" className={style.btnCell}>
+                            <Button variant='outlined' className={style.decline}>Decline</Button>
+                            <Button variant='contained' className={style.accept}>Accept</Button>
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
-
-            {/* <Stack alignItems='center' justifyContent='end' height='50vh' gap={4} variant="div">
-                    <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No active project yet</Typography>
-
-                    <Stack gap={2} width={350} textAlign='center'>
-                        <Typography component='p' className={style.btnText}>You haven&apos;t started any projects. Begin a new project to see it appear in your active list.</Typography>
-                        <Button variant='contained' size='large' startIcon={<AddIcon />}
-                            className={style.projectBtn}>Add Project</Button>
-                    </Stack>
-                </Stack> */}
 
         </TableContainer >
     );

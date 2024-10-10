@@ -5,10 +5,10 @@ import Complete from "../ProjectTabs/Complete";
 import Template from "../ProjectTabs/Template";
 import TableActive from "../ProjectTabs/TableActive";
 import project from "./DashboardScss/project.module.scss"
-import Active from "../../Components/Dashboard/Active/Active";
 import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField } from "@mui/material";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { RouteNames } from "../../Constants/route";
+import Request from "../../Components/Dashboard/Request/Request";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -127,7 +127,7 @@ export default function Project() {
                         </CustomTabPanel>
 
                         <CustomTabPanel value={activeTab} index={1}>
-                            <Active />
+                            <Request />
                         </CustomTabPanel>
 
                         <CustomTabPanel value={activeTab} index={2}>

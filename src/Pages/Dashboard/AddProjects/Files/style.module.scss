@@ -1,0 +1,32 @@
+.itemContainer {
+  color: rgb(75, 74, 74);
+  max-width: 200px;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.headText {
+  font-weight: 600;
+}
+.itemContent {
+  border: 1px solid silver;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 0.4rem;
+  padding: 1.3rem 0.4rem;
+  padding-inline-end: 0.8rem;
+  gap: 0.4rem;
+  transition: 0.1s ease all;
+  min-width: 230px;
+  &:hover {
+    background-color: rgb(241, 241, 241, 0.2);
+    border: 1px solid rgb(231, 231, 231);
+  }
+}
+.itemTextHead {
+  font-size: 1rem;
+}
+.itemTextBody {
+  font-size: 0.8rem;
+  color: gray;
+}
