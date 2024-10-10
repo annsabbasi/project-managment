@@ -7,6 +7,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import theme from "../../../Theme/Theme";
 import OverView from "./Overview"
 import Files from "./Files"
+import Teams from "./Teams"
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -135,12 +136,11 @@ export default function AddProjects() {
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={1}>
-                    {/* <Typography>Hey</Typography> */}
                     <Files />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={2}>
-                    <Typography>4</Typography>
+                    <Teams />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={3}>

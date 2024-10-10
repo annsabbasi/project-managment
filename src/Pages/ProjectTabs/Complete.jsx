@@ -1,60 +1,65 @@
-import { Box, Stack, Typography, Avatar, Grid } from "@mui/material";
-import theme from "../../Theme/Theme";
+import {
+    Table,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Box,
+    TableBody,
+    Button,
+} from '@mui/material';
+import style from './style.module.scss'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Complete() {
-    const persons = [
-        { name: 'John Doe', img: '/path/to/avatar1.jpg' },
-        { name: 'Jane Smith', img: '/path/to/avatar2.jpg' },
-        { name: 'Bob Brown', img: '/path/to/avatar3.jpg' },
-        { name: 'Alice White', img: '/path/to/avatar4.jpg' },
-    ];
     return (
-        <Stack variant="div" gap={6} my={4}>
-            <Box>
-                <Typography variant="h5" mb={2}>Current Members</Typography>
-                <Grid container spacing={3}>
-                    {persons.map((person, index) => (
-                        <Grid item key={index}>
-                            <Avatar
-                                alt={person.name}
-                                src={person.img}
-                                sx={{ width: 60, height: 60, margin: 'auto', backgroundColor: theme.palette.grey[400] }}
-                            />
-                            <Typography variant="p" align="center" sx={{ marginTop: 1, color: theme.palette.grey[700] }}>
-                                {person.name}
-                            </Typography>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+        <TableContainer>
+            <Table className={style.table}>
+                <TableHead className={style.tableHead}>
+                    <TableRow className={style.tableRowHead}>
+                        <TableCell>Project Title</TableCell>
+                        <TableCell align="left">Client Name</TableCell>
+                        <TableCell align="left">Project Status</TableCell>
+                        <TableCell align="left">Start Date</TableCell>
+                        <TableCell align="left">Due Date</TableCell>
+                        <TableCell align="left">Complete Date</TableCell>
+                        <TableCell align="left">&nbsp;</TableCell>
+                    </TableRow>
+                </TableHead>
+                <Box sx={{ height: '16px' }} />
+                <TableBody>
+                    <TableRow className={style.tableRowBody}>
+                        <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
+                        <TableCell align="left">Charley Robertson</TableCell>
+                        <TableCell align="left">
+                            <Button
+                                variant="outlined"
+                                color="success"
+                                className={style.tableBodyBtn}
+                                endIcon={<KeyboardArrowDownIcon sx={{}} />}
+                                size="small"
+                                sx={{
+                                    backgroundColor: 'rgb(208, 240, 192,0.2)',
+                                    color: '#1CAC78',
+                                    border: '1px solid #32de84',
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                        boxShadow: 'none'
+                                    },
+                                    '& .MuiButton-endIcon': {
+                                        marginLeft: '1px',
+                                    },
+                                }}
+                            >Completed</Button>
+                        </TableCell>
+                        <TableCell align="left">3/18/23</TableCell>
+                        <TableCell align="left">Flexible</TableCell>
+                        <TableCell align="left">3/18/23</TableCell>
+                        <TableCell align="right">&nbsp;</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
 
-            <Box>
-                <Typography variant="h5" mb={2}>Add More Members</Typography>
-                <Grid container spacing={3}>
-                    {persons.map((person, index) => (
-                        <Grid item key={index}>
-                            <Avatar
-                                alt={person.name}
-                                src={person.img}
-                                sx={{ width: 60, height: 60, margin: 'auto', backgroundColor: theme.palette.grey[400] }}
-                            />
-                            <Typography variant="p" align="center" sx={{ marginTop: 1, color: theme.palette.grey[700] }}>
-                                {person.name}
-                            </Typography>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-
-        </Stack>
-        // <Box>
-        //     <Box>
-        //         <Typography>Current Members</Typography>
-        //         <Stack>
-
-        //         </Stack>
-        //     </Box>
-        //     <Box>Second</Box>
-        // </Box>
-    )
+        </TableContainer >
+    );
 }

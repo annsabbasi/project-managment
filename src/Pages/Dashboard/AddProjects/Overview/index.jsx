@@ -89,7 +89,7 @@ export default function index() {
             </Stack>
 
 
-            <Box variant="div" className={style.boxMain2}>
+            <Stack variant="div" className={style.boxMain2}>
                 <Stack justifyContent="space-between" flexDirection="row" padding="1.2rem 0" paddingInlineStart={4} paddingInlineEnd={2}>
                     <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Task List</Typography>
                     <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Assignee</Typography>
@@ -151,9 +151,35 @@ export default function index() {
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
 
                 </Box>
-            </Box>
+            </Stack>
         </Stack>
     )
 }

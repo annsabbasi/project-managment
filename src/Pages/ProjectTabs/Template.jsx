@@ -31,7 +31,7 @@ export default function Template() {
                             {members.map((member, index) => (
                                 <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
                                     <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem' }}>{member.avatar}</Avatar>
+                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem', fontSize: '0.8rem' }}>{member.avatar}</Avatar>
                                         <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
                                     </Box>
                                     <Box>
@@ -76,7 +76,7 @@ export default function Template() {
                             {members.map((member, index) => (
                                 <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
                                     <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem' }}>{member.avatar}</Avatar>
+                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem', fontSize: '0.8rem' }}>{member.avatar}</Avatar>
                                         <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
                                     </Box>
                                     <Box>
