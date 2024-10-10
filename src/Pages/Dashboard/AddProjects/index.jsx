@@ -8,6 +8,7 @@ import theme from "../../../Theme/Theme";
 import OverView from "./Overview"
 import Files from "./Files"
 import Teams from "./Teams"
+import Time from "./Time"
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -144,7 +145,7 @@ export default function AddProjects() {
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={3}>
-                    <Typography>5</Typography>
+                    <Time />
                 </CustomTabPanel>
             </Box>
         </Box >
