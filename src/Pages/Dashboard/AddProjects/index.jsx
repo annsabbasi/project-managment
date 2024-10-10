@@ -128,7 +128,7 @@ export default function AddProjects() {
 
             <Box>
                 <CustomTabPanel value={activeTab} index={0}>
-                    <OverView/>
+                    <OverView />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={1}>

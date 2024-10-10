@@ -87,7 +87,7 @@ const Sidebar = () => {
                                     <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
-                                                src={ (name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) ||currentPath === path ? ActiveIcon : Icon}
+                                                src={(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}
                                                 className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                         </ListItemIcon>

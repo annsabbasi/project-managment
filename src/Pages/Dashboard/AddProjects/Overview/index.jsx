@@ -5,7 +5,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 export default function index() {
     return (
         <Stack variant="main" flexDirection="row" gap={2}>
-            <Stack gap={2} sx={{flexGrow: '1'}}>
+            <Stack gap={2} sx={{ flexGrow: '1' }}>
                 <Box variant="div" className={style.boxMain1}>
                     <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
                         <Typography variant="h6">Project Info</Typography>
@@ -97,6 +97,51 @@ export default function index() {
                 </Stack>
                 <Divider />
                 <Box sx={{ padding: '0.2rem 0.8rem' }}>
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+                        <Typography className={style.textGrey}>Assignee</Typography>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
                     <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
                         <Stack flexDirection="row" gap={1} alignItems="center">
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
