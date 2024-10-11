@@ -18,7 +18,6 @@ import ContractsIcon from '../../assets/Contracts.svg';
 import InvoicesIcon from '../../assets/Invoices.svg';
 import FormsIcon from '../../assets/Forms.svg';
 import FinancesIcon from '../../assets/finances.svg';
-// import SettingsIcon from '../../assets/Settings.svg';
 
 import DashboardIconWhite from '../../assets/Dashboard active.svg';
 import ProjectsIconWhite from '../../assets/Project active.svg';

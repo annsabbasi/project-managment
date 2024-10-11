@@ -2,7 +2,6 @@ import { AppBar, Avatar, Stack, Toolbar, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useTheme } from "@mui/material/styles";
-// import styles from './page.scss'
 import styles from './page.module.scss'
 import PropTypes from 'prop-types';
 

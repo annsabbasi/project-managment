@@ -1,14 +1,15 @@
-import { useState } from "react";
 import PropTypes from 'prop-types';
-import project from "./style.module.scss"
-import { Box, Button, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import theme from "../../../Theme/Theme";
 import OverView from "./Overview"
 import Files from "./Files"
 import Teams from "./Teams"
 import Time from "./Time"
+import project from "./style.module.scss"
+import theme from "../../../Theme/Theme";
+
+import { useState } from "react";
+import { Box, Button, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -60,8 +61,7 @@ export default function AddProjects() {
                     value={activeTab}
                     TabIndicatorProps={{ sx: { display: 'none' } }}
                     sx={{ backgroundColor: 'white' }}
-                    className={project.Tabs}
-                >
+                    className={project.Tabs}>
                     <Tab
                         {...allyProps(0)}
                         label="Overview"
@@ -73,8 +73,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab}
-                    />
+                        className={project.Tab} />
 
                     <Tab
                         label="Files"
@@ -87,8 +86,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab}
-                    />
+                        className={project.Tab} />
 
                     <Tab
                         label="Team"
@@ -101,8 +99,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab}
-                    />
+                        className={project.Tab} />
 
                     <Tab
                         label="Time"
@@ -115,8 +112,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab}
-                    />
+                        className={project.Tab} />
                 </Tabs>
 
                 <Button
@@ -127,8 +123,7 @@ export default function AddProjects() {
                         borderRadius: '0.4rem',
                         padding: '0.1rem 0.6rem',
                         cursor: 'default'
-                    }}
-                >In Progress</Button>
+                    }}>In Progress</Button>
             </Stack>
 
             <Box>

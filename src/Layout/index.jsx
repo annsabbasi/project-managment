@@ -26,6 +26,6 @@ export default function Layout({ title, children }) {
 }
 
 Layout.propTypes = {
-    title: PropTypes.string.isRequired, // Specify that title is required and must be a string
-    children: PropTypes.node.isRequired, // Specify that children is required and must be a valid React node
+    title: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
 }

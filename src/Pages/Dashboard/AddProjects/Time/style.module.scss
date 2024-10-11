@@ -1,0 +1,39 @@
+.mainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.TrackedHeadText {
+  font-size: 1rem;
+  font-weight: 500;
+  color: grey;
+}
+.trackedAvatar {
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 0.8rem;
+}
+.trackedFooterText {
+  font-size: 0.8rem;
+  color: gray;
+}
+.trackedFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.9rem;
+}
+.trackedFooterTxt {
+  font-size: 1rem;
+  font-weight: 600;
+  color: gray;
+}
+.tracked2Content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}

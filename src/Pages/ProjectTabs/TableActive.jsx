@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import style from './style.module.scss'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Link } from 'react-router-dom';
+import { RouteNames } from '../../Constants/route';
 // import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
 
@@ -36,7 +38,9 @@ export default function TableActive() {
                         <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
                         <TableCell align="left">Charley Robertson</TableCell>
                         <TableCell align="left">
-                            <Button variant="text" className={style.tableBodyBtn} endIcon={<KeyboardArrowDownIcon />} size="small">In Progress</Button>
+                            <Link to={`${RouteNames.ADDPRODUCTS}`}>
+                                <Button variant="text" className={style.tableBodyBtn} endIcon={<KeyboardArrowDownIcon />} size="small">In Progress</Button>
+                            </Link>
                         </TableCell>
                         <TableCell align="left">carbs</TableCell>
                         <TableCell align="left">3/18/23</TableCell>

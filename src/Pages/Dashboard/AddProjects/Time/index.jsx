@@ -1,5 +1,6 @@
 import { Card, CardContent, Typography, Avatar, Grid, Divider, Box, Stack, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import theme from '../../../../Theme/Theme';
+import style from './style.module.scss'
 
 export default function Time() {
     const members = [
@@ -11,7 +12,7 @@ export default function Time() {
 
     return (
         <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
+            <Box className={style.mainContainer}>
                 <Card sx={{ boxShadow: 3, flexGrow: '1' }}>
                     <CardContent>
                         <Grid container justifyContent="space-between" alignItems="center" mb={2}>
@@ -22,37 +23,37 @@ export default function Time() {
 
                         <Box mt={2}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }}>Member</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
+                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }} className={style.TrackedHeadText}>Member</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
+                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
                             </Box>
 
                             {members.map((member, index) => (
                                 <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
                                     <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem', fontSize: '0.8rem' }}>{member.avatar}</Avatar>
+                                        <Avatar className={style.trackedAvatar}>{member.avatar}</Avatar>
                                         <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.billable}</Typography>
+                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }} className={style.trackedFooterText}>{member.billable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.nonBillable}</Typography>
+                                        <Typography className={style.trackedFooterText}>{member.nonBillable}</Typography>
                                     </Box>
                                     <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.total}</Typography>
+                                        <Typography className={style.trackedFooterText}>{member.total}</Typography>
                                     </Box>
                                 </Stack>
                             ))}
                         </Box>
 
                         <Divider />
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.9rem' }}>
-                            <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Totals</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
+                        <Box className={style.trackedFooter}>
+                            <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }} className={style.trackedFooterTxt}>Totals</Typography>
+                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
+                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
+                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
                         </Box>
                     </CardContent>
                 </Card>
@@ -66,7 +67,7 @@ export default function Time() {
                         <Divider />
 
                         <Box mt={2}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                            <Box className={style.tracked2Content}>
                                 <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }}>Member</Typography>
                                 <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
                                 <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>

@@ -1,14 +1,15 @@
-import { useState } from "react";
 import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
-import Complete from "../ProjectTabs/Complete";
 import Template from "../ProjectTabs/Template";
+import Complete from "../ProjectTabs/Complete";
 import TableActive from "../ProjectTabs/TableActive";
 import project from "./DashboardScss/project.module.scss"
-import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField } from "@mui/material";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { RouteNames } from "../../Constants/route";
 import Request from "../../Components/Dashboard/Request/Request";
+
+import { useState } from "react";
+import { RouteNames } from "../../Constants/route";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField } from "@mui/material";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -41,12 +42,28 @@ export default function Project() {
 
     const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPRODUCTS}`)
 
+    // This is for the Dialog
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setDialogOpen(true);
+    };
+
+    const handleClose = () => {
+        setDialogOpen(false);
+    };
+
     return (
         <Box>
             {!isAddProductPage && (
                 <>
                     <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between">
-                        <Link to={`${RouteNames.ADDPRODUCTS}`}>
+                        {/* <Link to={`${RouteNames.ADDPRODUCTS}`}>
+                            <IconButton>
+                                <AddIcon />
+                            </IconButton>
+                        </Link> */}
+                        <Link onClick={handleClickOpen}>
                             <IconButton>
                                 <AddIcon />
                             </IconButton>
@@ -135,7 +152,7 @@ export default function Project() {
                         </CustomTabPanel>
 
                         <CustomTabPanel value={activeTab} index={3}>
-                            <Template />
+                            <Template open={dialogOpen} handleClose={handleClose} />
                         </CustomTabPanel>
                     </Box>
                 </>
