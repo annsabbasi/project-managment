@@ -24,6 +24,7 @@ export const PublicRoute = [
     // { path: RouteNames.MESSAGE, element: Message },
     { path: RouteNames.HOME, element: Home },
     { path: RouteNames.LAYOUT, element: Layout },
+    // { path: '*', element: NotFound }
 ]
 export const PrivateRoute = [
     { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Dashboard' },

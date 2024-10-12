@@ -28,8 +28,7 @@ const renderRoute = (routes) => {
                                 </>
                             )}
                         </Suspense>
-                    }
-                >
+                    }>
                     {children && children.map(({ path: childPath, element: ChildElement }) => (
                         <Route key={childPath} path={childPath} element={<ChildElement />} />
                     ))}
@@ -49,6 +48,7 @@ export const AppRoutes = () => {
         </Routes>
     )
 }
+
 {/* {routes.map(({ path, element: Element, params, title, layout }) => {
         return (
             <Route

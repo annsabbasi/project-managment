@@ -7,9 +7,9 @@ import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
 
 import { useState } from "react";
-import { Box, Button, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Box, Button, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -38,7 +38,6 @@ export default function AddProjects() {
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
     }
-    console.log("This AboutPage is Loaded")
     return (
         <Box>
             <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between">

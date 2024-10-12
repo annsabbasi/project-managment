@@ -88,7 +88,6 @@ export default function index() {
                 </Box>
             </Stack>
 
-
             <Stack variant="div" className={style.boxMain2}>
                 <Stack justifyContent="space-between" flexDirection="row" padding="1.2rem 0" paddingInlineStart={4} paddingInlineEnd={2}>
                     <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Task List</Typography>
