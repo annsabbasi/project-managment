@@ -7,6 +7,7 @@ import {
     Box,
     TableBody,
     Button,
+    IconButton,
     // Stack,
     // Typography,
 } from '@mui/material';
@@ -14,6 +15,7 @@ import style from './style.module.scss'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 // import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
 
@@ -30,6 +32,7 @@ export default function TableActive() {
                         <TableCell align="left">Start Date</TableCell>
                         <TableCell align="left">Due Date</TableCell>
                         <TableCell align="right">Budget</TableCell>
+                        <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
                 <Box sx={{ height: '16px' }} />
@@ -46,6 +49,14 @@ export default function TableActive() {
                         <TableCell align="left">3/18/23</TableCell>
                         <TableCell align="left">8/15/24</TableCell>
                         <TableCell align="right">$5,000</TableCell>
+                        <TableCell align="right">
+                            <IconButton
+                                disableRipple
+                                sx={{ padding: '1px', color: 'gray' }}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
