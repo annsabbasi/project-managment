@@ -8,6 +8,9 @@ import {
     TableBody,
     Button,
     IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon,
     // Stack,
     // Typography,
 } from '@mui/material';
@@ -16,10 +19,24 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useState } from 'react';
 // import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+
 
 export default function TableActive() {
+    const [anchor, setAnchor] = useState(null);
+    const open = Boolean(anchor);
+
+    const handleClick = (event) => {
+        setAnchor(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchor(null)
+    }
+
     return (
         <TableContainer>
             <Table className={style.table}>
@@ -50,12 +67,49 @@ export default function TableActive() {
                         <TableCell align="left">8/15/24</TableCell>
                         <TableCell align="right">$5,000</TableCell>
                         <TableCell align="right">
-                            <IconButton
-                                disableRipple
-                                sx={{ padding: '1px', color: 'gray' }}
-                            >
-                                <MoreVertIcon />
-                            </IconButton>
+                            <div>
+                                <IconButton
+                                    disableRipple
+                                    sx={{ padding: '1px', color: 'gray' }}
+                                    onClick={handleClick}
+                                >
+                                    <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchor}
+                                    open={open}
+                                    onClose={handleClose}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'right'
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    sx={{
+                                        '& .MuiList-root': {
+                                            padding: 0,
+                                            margin: 0,
+                                            border: '1px solid silver',
+                                            borderRadius: '0.2rem',
+                                            backgroundColor: 'white'
+                                        },
+                                        '& .MuiPaper-root': {
+                                            boxShadow: '0'
+                                        },
+                                    }}
+                                    className={style.anchorElParent}
+                                >
+                                    <MenuItem onClick={handleClose} className={style.anchorMenuItem} >
+                                        <ListItemIcon
+                                            sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                            <UploadFileIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                        </ListItemIcon>
+                                        Upload a file
+                                    </MenuItem>
+                                </Menu>
+                            </div>
                         </TableCell>
                     </TableRow>
                 </TableBody>
