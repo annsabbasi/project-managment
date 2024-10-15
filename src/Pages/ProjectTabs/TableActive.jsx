@@ -1,28 +1,28 @@
 import {
-    Table,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     Box,
-    TableBody,
-    Button,
-    IconButton,
     Menu,
+    Table,
+    Button,
+    TableRow,
     MenuItem,
+    TableCell,
+    TableBody,
+    TableHead,
+    IconButton,
     ListItemIcon,
+    TableContainer,
     // Stack,
     // Typography,
 } from '@mui/material';
+import { useState } from 'react';
 import style from './style.module.scss'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useState } from 'react';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 // import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 
 export default function TableActive() {
@@ -99,8 +99,7 @@ export default function TableActive() {
                                             boxShadow: '0'
                                         },
                                     }}
-                                    className={style.anchorElParent}
-                                >
+                                    className={style.anchorElParent}>
                                     <MenuItem onClick={handleClose} className={style.anchorMenuItem} >
                                         <ListItemIcon
                                             sx={{ minWidth: '0 !important', marginRight: '8px' }}>
