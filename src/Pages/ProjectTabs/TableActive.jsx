@@ -15,7 +15,7 @@ import {
     // Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import style from './style.module.scss'
+import style from './style.module.scss';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
