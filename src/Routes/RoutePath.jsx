@@ -16,14 +16,16 @@ const Finances = lazy(() => import('../Pages/Dashboard/Finances'));
 const Home = lazy(() => import('../Pages/Home'));
 const Layout = lazy(() => import('../Layout'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
+const LoginPage = lazy(() => import('../Pages/Login'))
+const SignUpPage = lazy(() => import('../Pages/Signup'))
 
 
 export const PublicRoute = [
-    // { path: RouteNames.PROJECT, element: Project },
-    // { path: RouteNames.CLIENT, element: Client },
-    // { path: RouteNames.MESSAGE, element: Message },
     { path: RouteNames.HOME, element: Home },
+    // { path: '/', element: Home },
     { path: RouteNames.LAYOUT, element: Layout },
+    { path: RouteNames.LOGIN, element: LoginPage },
+    { path: RouteNames.SIGNUP, element: SignUpPage },
     // { path: '*', element: NotFound }
 ]
 export const PrivateRoute = [

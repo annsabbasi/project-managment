@@ -1,12 +1,12 @@
+import { RouteNames } from '../Constants/route';
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { RouteNames } from '../Constants/route';
 
 export default function RedirectRoute() {
     const navigate = useNavigate();
     useEffect(() => {
-        // navigate(`/${RouteNames.MESSAGE}`)
-        navigate(`/`)
+        // navigate(`/${RouteNames.PROJECT}`)
+        navigate(`/${RouteNames.HOME}`)
     }, [navigate])
     return null;
 }
