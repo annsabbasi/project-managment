@@ -12,4 +12,7 @@ export const RouteNames = {
     FORMS: 'forms',
     FINANCES: 'finances',
     ADDPRODUCTS: 'addproduct',
+    LOGIN: 'login',
+    SIGNUP: 'signup',
+    HOME: 'home'
 };
