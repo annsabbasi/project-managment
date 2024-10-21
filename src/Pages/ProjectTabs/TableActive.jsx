@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 // import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
 
@@ -59,7 +59,7 @@ export default function TableActive() {
                         <TableCell align="left">Charley Robertson</TableCell>
                         <TableCell align="left">
                             <Link to={`${RouteNames.ADDPRODUCTS}`}>
-                                <Button variant="text" className={style.tableBodyBtn} endIcon={<KeyboardArrowDownIcon />} size="small">In Progress</Button>
+                                <Button variant="text" className={style.tableBodyBtn} size="small">In Progress</Button>
                             </Link>
                         </TableCell>
                         <TableCell align="left">carbs</TableCell>

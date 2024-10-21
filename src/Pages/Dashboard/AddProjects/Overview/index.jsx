@@ -1,6 +1,7 @@
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
 import style from "./style.module.scss"
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import theme from "../../../../Theme/Theme";
 
 export default function index() {
     return (
@@ -13,7 +14,7 @@ export default function index() {
                     <Stack sx={{ width: '100%' }} gap={2}>
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Client</Typography>
+                                <Typography className={style.textGrey}>Team Lead</Typography>
                                 <Typography className={style.textGreyInfo}>Steven Li</Typography>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
@@ -97,12 +98,20 @@ export default function index() {
                 <Divider />
 
                 <Box sx={{ padding: '0.2rem 0.8rem' }}>
+                    
                     <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
                         <Stack flexDirection="row" gap={1} alignItems="center">
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -112,7 +121,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -122,7 +138,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -132,16 +155,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
-                        <Typography className={style.textGrey}>Due Date</Typography>
-                    </Stack>
-                    <Divider />
-                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
-                        <Stack flexDirection="row" gap={1} alignItems="center">
-                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
-                            <Typography className={style.textGrey}>Task List</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -151,7 +172,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -161,7 +189,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -171,7 +206,14 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
                     <Divider />
@@ -181,7 +223,31 @@ export default function index() {
                             <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
                             <Typography className={style.textGrey}>Task List</Typography>
                         </Stack>
-                        <Typography className={style.textGrey}>Assignee</Typography>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
+                        <Typography className={style.textGrey}>Due Date</Typography>
+                    </Stack>
+                    <Divider />
+
+                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
+                        <Stack flexDirection="row" gap={1} alignItems="center">
+                            <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} />
+                            <Typography className={style.textGrey}>Task List</Typography>
+                        </Stack>
+
+                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer' }}>
+                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                            </Avatar>
+                        </Stack>
                         <Typography className={style.textGrey}>Due Date</Typography>
                     </Stack>
 

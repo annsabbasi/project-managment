@@ -4,7 +4,7 @@ import { RouteNames } from "../Constants/route";
 
 export default function ProtectedRoute() {
     const navigate = useNavigate();
-    const [isAuthenticated] = useState(true);
+    const [isAuthenticated] = useState(false);
     // console.log("THis is Authenticated State:", isAuthenticated)
 
     useEffect(() => {

@@ -12,7 +12,7 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
         return { accessToken, refreshToken };
-    // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
     } catch (error) {
         throw new apiError(400, "Something went wrong from the")
     }
@@ -55,7 +55,6 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
-
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     const options = {
