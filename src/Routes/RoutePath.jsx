@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { RouteNames } from "../Constants/route";
 
+
 import Dashboard from '../Pages/Dashboard/Dashboard'
 const Project = lazy(() => import('../Pages/Dashboard/Project'));
 const Message = lazy(() => import('../Pages/Dashboard/Message'));
@@ -28,6 +29,8 @@ export const PublicRoute = [
     { path: RouteNames.SIGNUP, element: SignUpPage },
     // { path: '*', element: NotFound }
 ]
+
+
 export const PrivateRoute = [
     { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Dashboard' },
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
@@ -51,4 +54,3 @@ export const PrivateRoute = [
         ]
     },
 ]
-// { path: RouteNames.ADDPROJECTS, element: AddProjects, layout: true, title: 'AddProducts' },

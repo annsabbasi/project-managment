@@ -8,16 +8,17 @@ import cookieParser from 'cookie-parser';
 const app = express();
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
-    credientials: true
-}))
+    // methods: ['GET', 'POST'],
+    credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// Routes are imported here
+// The Routes are imported & used here...
 import userRoute from './routes/userRoute.js'
 
-app.use('/api/user', userRoute)
+app.use('/user', userRoute)
 
 export { app }

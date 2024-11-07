@@ -2,6 +2,7 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { ROLES } from '../config/roles.js';
 
 const UserSchema = new Schema({
     name: {
@@ -38,8 +39,12 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["user", "admin", "superAdmin"],
-        default: "user"
+        enum: Object.values(ROLES),
+        default: ROLES.USER
+    },
+    userPlan: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userplan"
     },
     refreshToken: {
         type: String
@@ -49,7 +54,7 @@ const UserSchema = new Schema({
 
 
 UserSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) next();
+    if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10)
     next()
 })
@@ -77,8 +82,6 @@ UserSchema.methods.refreshAccessToken = function () {
         _id: this._id,
     }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY })
 }
-
-
 
 const User = mongoose.model("UserInfo", UserSchema)
 export { User }

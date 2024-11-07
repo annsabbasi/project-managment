@@ -1,0 +1,72 @@
+.containerMain {
+  // height: 100vh;
+  padding: 3rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar {
+  margin: 1rem;
+  background-color: black;
+}
+.itemContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid silver;
+  padding: 1.4rem 1.8rem;
+  border-radius: 0.8rem;
+  background-color: white;
+}
+.signupText {
+  font-size: 16px;
+  color: black;
+}
+.contentMain {
+  width: 100%;
+  margin-top: 1rem;
+}
+.contentMainChild {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.contentMainStack {
+  width: 100%;
+  min-width: 200px;
+}
+.textInput {
+  background-color: #ffffff;
+  flex-grow: 1;
+  .muiinputbase-input {
+    font-size: "14px";
+  }
+}
+.textInputPassword {
+  background-color: #ffffff;
+  .muiinputbase-input {
+    font-size: "14px";
+  }
+}
+.errMessageTxt {
+  font-size: 0.8rem;
+  color: red;
+  text-align: center;
+  margin-top: 1rem;
+}
+.btnSignup {
+  margin-top: 0.8rem;
+  margin-bottom: 1.4rem;
+  background-color: black;
+  color: white;
+}
+.textFooter {
+  font-size: 0.9rem;
+  color: gray;
+}
+.textLogin {
+  color: #1877f2;
+  text-decoration: none;
+}

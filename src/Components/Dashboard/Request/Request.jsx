@@ -1,14 +1,5 @@
-import {
-    Table,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Box,
-    TableBody,
-    Button,
-} from '@mui/material';
 import style from './style.module.scss'
+import { Table, TableCell, TableContainer, TableHead, TableRow, Box, TableBody, Button, } from '@mui/material';
 
 export default function Request() {
     return (
@@ -25,6 +16,7 @@ export default function Request() {
                         <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
+
                 <Box sx={{ height: '16px' }} />
                 <TableBody>
                     <TableRow className={style.tableRowBody}>
@@ -33,6 +25,7 @@ export default function Request() {
                         <TableCell align="left">
                             <Button variant="text" className={style.tableBodyBtn} size="small">In Progress</Button>
                         </TableCell>
+
                         <TableCell align="left">carbs</TableCell>
                         <TableCell align="left">3/18/23</TableCell>
                         <TableCell align="right">&nbsp;</TableCell>
@@ -40,10 +33,11 @@ export default function Request() {
                             <Button variant='outlined' className={style.decline}>Decline</Button>
                             <Button variant='contained' className={style.accept}>Accept</Button>
                         </TableCell>
+
                     </TableRow>
                 </TableBody>
-            </Table>
 
+            </Table>
         </TableContainer >
     );
 }

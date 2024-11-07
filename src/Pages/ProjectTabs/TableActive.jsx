@@ -1,32 +1,23 @@
 import {
-    Box,
-    Menu,
-    Table,
-    Button,
-    TableRow,
-    MenuItem,
-    TableCell,
-    TableBody,
-    TableHead,
-    IconButton,
-    ListItemIcon,
-    TableContainer,
-    // Stack,
-    // Typography,
+    Menu, Table, Button, TableRow, MenuItem, TableCell, TableBody, TableHead, IconButton, ListItemIcon, TableContainer,
+    // Stack Typography,
 } from '@mui/material';
-import { useState } from 'react';
 import style from './style.module.scss';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
+// import theme from '../../Theme/Theme';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-// import theme from '../../Theme/Theme';
 // import AddIcon from '@mui/icons-material/Add';
-
 
 export default function TableActive() {
     const [anchor, setAnchor] = useState(null);
+
     const open = Boolean(anchor);
 
     const handleClick = (event) => {
@@ -52,16 +43,18 @@ export default function TableActive() {
                         <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
-                <Box sx={{ height: '16px' }} />
-                <TableBody>
+
+                <TableBody sx={{ borderTop: '12px solid white' }}>
                     <TableRow className={style.tableRowBody}>
                         <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
                         <TableCell align="left">Charley Robertson</TableCell>
+
                         <TableCell align="left">
                             <Link to={`${RouteNames.ADDPRODUCTS}`}>
                                 <Button variant="text" className={style.tableBodyBtn} size="small">In Progress</Button>
                             </Link>
                         </TableCell>
+
                         <TableCell align="left">carbs</TableCell>
                         <TableCell align="left">3/18/23</TableCell>
                         <TableCell align="left">8/15/24</TableCell>
@@ -71,10 +64,10 @@ export default function TableActive() {
                                 <IconButton
                                     disableRipple
                                     sx={{ padding: '1px', color: 'gray' }}
-                                    onClick={handleClick}
-                                >
+                                    onClick={handleClick}>
                                     <MoreVertIcon />
                                 </IconButton>
+
                                 <Menu
                                     anchorEl={anchor}
                                     open={open}
@@ -98,8 +91,15 @@ export default function TableActive() {
                                         '& .MuiPaper-root': {
                                             boxShadow: '0'
                                         },
-                                    }}
-                                    className={style.anchorElParent}>
+                                    }} className={style.anchorElParent}>
+                                    <MenuItem onClick={handleClose} className={style.anchorMenuItem} >
+                                        <ListItemIcon
+                                            sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                        </ListItemIcon>
+                                        Edit
+                                    </MenuItem>
+
                                     <MenuItem onClick={handleClose} className={style.anchorMenuItem} >
                                         <ListItemIcon
                                             sx={{ minWidth: '0 !important', marginRight: '8px' }}>
@@ -107,8 +107,21 @@ export default function TableActive() {
                                         </ListItemIcon>
                                         Upload a file
                                     </MenuItem>
+
+                                    <MenuItem onClick={handleClose} className={style.anchorMenuItem} sx={{
+                                        bgcolor: '#E97451', color: 'white !important', '&:hover': {
+                                            bgcolor: '#EE4B2B !important'
+                                        }
+                                    }}>
+                                        <ListItemIcon
+                                            sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                        </ListItemIcon>
+                                        Delete
+                                    </MenuItem>
                                 </Menu>
                             </div>
+
                         </TableCell>
                     </TableRow>
                 </TableBody>

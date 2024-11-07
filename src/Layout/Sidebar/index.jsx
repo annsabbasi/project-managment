@@ -53,8 +53,6 @@ const Sidebar = () => {
         { name: 'Finances', path: `/${RouteNames.FINANCES}`, Icon: FinancesIcon, ActiveIcon: FinancesIconWhite },
     ];
 
-    // const lowerRowItems = [{ name: 'Settings', path: `/${RouteNames.SETTING}`, Icon: SettingsIcon, ActiveIcon: SettingsIconWhite }];
-
     const handleClick = (path) => {
         navigate(path);
     };
@@ -77,12 +75,14 @@ const Sidebar = () => {
                     <Box className={styles.logo}>
                         <img className={styles.image} src={logoimage} alt="image" />
                     </Box>
+
                     <List className={styles.list}>
                         {pages.map(({ name, Icon, ActiveIcon, path }) => (
                             <React.Fragment key={name}>
                                 {name === 'Clients' && <Typography className={styles.title}>Collaborate</Typography>}
                                 {name === 'Services' && <Typography className={styles.title}>Tools</Typography>}
                                 <ListItem disablePadding className={`${styles.listItem} ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}`}>
+
                                     <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
@@ -92,6 +92,7 @@ const Sidebar = () => {
                                         </ListItemIcon>
                                         <ListItemText primary={name} className={styles.listItemText} />
                                     </ListItemButton>
+
                                 </ListItem>
                             </React.Fragment>
                         ))}
