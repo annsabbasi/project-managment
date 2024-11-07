@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+=======
+import { useState } from 'react';
+import {
+    Box,
+    Button,
+    TextField,
+    Typography,
+    Container,
+    CssBaseline,
+    Avatar,
+    Grid,
+
+    Stack,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+>>>>>>> ba3d944966c755d77ef3a98e609f1f4df6a1c8a4
 import theme from '../../Theme/Theme';
 import styles from './style.module.scss'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -7,6 +24,7 @@ import { useLogin } from '../../hooks/useAuth';
 import { Link, Navigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Grid, Stack, } from '@mui/material';
+
 
 const LoginPage = () => {
     const { mutate } = useLogin();
@@ -18,6 +36,7 @@ const LoginPage = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         mutate(formData, {
             onSuccess: () => {
                 setRedirect(true);
@@ -28,6 +47,13 @@ const LoginPage = () => {
         return <Navigate to={'/project'} />
     }
 
+=======
+
+
+        console.log('Email:', email);
+        console.log('Password:', password);
+    };
+>>>>>>> ba3d944966c755d77ef3a98e609f1f4df6a1c8a4
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
@@ -38,10 +64,19 @@ const LoginPage = () => {
                     <Avatar sx={{ m: 1, bgcolor: 'black' }}>
                         <LockOutlinedIcon />
                     </Avatar>
+<<<<<<< HEAD
                     <Typography component="h1" variant="h6" className={styles.loginText}>Login</Typography>
 
                     <Box sx={{ mt: 1, width: '100%' }} >
                         <Box className={styles.boxText}>
+=======
+                    <Typography component="h1" variant="h6" sx={{ fontSize: '16px', color: 'black' }}>
+                        Login
+                    </Typography>
+
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1.4rem', }}>
+>>>>>>> ba3d944966c755d77ef3a98e609f1f4df6a1c8a4
                             <TextField
                                 margin="normal"
                                 size="small"
@@ -75,6 +110,17 @@ const LoginPage = () => {
                                     },
                                 }} />
                         </Box>
+<<<<<<< HEAD
+=======
+
+                    
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+
+                            sx={{ mt: 6, mb: 2, backgroundColor: 'black', color: 'white' }}>LogIn</Button>
+>>>>>>> ba3d944966c755d77ef3a98e609f1f4df6a1c8a4
 
 
                         {/* <Typography>{error && <p>{error.message}</p>}</Typography> */}
@@ -99,6 +145,7 @@ const LoginPage = () => {
                             <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>
                             <Typography sx={{ fontSize: '0.9rem' }}>Don't have an account? Sign Up</Typography>
                         </Stack> */}
+
 
                     </Box>
                 </Box>
