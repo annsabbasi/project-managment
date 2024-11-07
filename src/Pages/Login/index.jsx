@@ -8,6 +8,7 @@ import {
     CssBaseline,
     Avatar,
     Grid,
+
     Stack,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,12 +16,15 @@ import theme from '../../Theme/Theme';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+
         console.log('Email:', email);
         console.log('Password:', password);
     };
@@ -47,6 +51,7 @@ const LoginPage = () => {
                     <Typography component="h1" variant="h6" sx={{ fontSize: '16px', color: 'black' }}>
                         Login
                     </Typography>
+
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1.4rem', }}>
                             <TextField
@@ -97,10 +102,13 @@ const LoginPage = () => {
                                 }}
                             />
                         </Box>
+
+                    
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
+
                             sx={{ mt: 6, mb: 2, backgroundColor: 'black', color: 'white' }}>LogIn</Button>
 
                         <Stack justifyContent="space-between" gap={0.5}>
@@ -123,6 +131,7 @@ const LoginPage = () => {
                             <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>
                             <Typography sx={{ fontSize: '0.9rem' }}>Don't have an account? Sign Up</Typography>
                         </Stack> */}
+
 
                     </Box>
                 </Box>

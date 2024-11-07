@@ -8,6 +8,7 @@ import {
     CssBaseline,
     Avatar,
     Grid,
+
     Stack,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,21 +16,26 @@ import theme from '../../Theme/Theme';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const [name, setName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         console.log('Email:', email);
         console.log('Password:', password);
     };
 
     return (
         <Box sx={{ backgroundColor: theme.palette.grey[50], height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
             <Container component="main" sx={{ maxWidth: '600px !important' }}>
+
                 <CssBaseline />
                 <Box
                     sx={{
@@ -47,6 +53,7 @@ const LoginPage = () => {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h6" sx={{ fontSize: '16px', color: 'black' }}>
+
                         SignUp
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
@@ -134,10 +141,12 @@ const LoginPage = () => {
                                 }}
                             />
                         </Box>
+
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
+
                             sx={{ mt: 6, mb: 2, backgroundColor: 'black', color: 'white' }}>Sign Up</Button>
 
                         <Stack justifyContent="space-between" gap={0.5}>
@@ -150,6 +159,7 @@ const LoginPage = () => {
                                 </Typography>
                             </Grid>
                         </Stack>
+
 
                     </Box>
                 </Box>
