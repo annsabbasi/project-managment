@@ -12,7 +12,9 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
         return { accessToken, refreshToken };
-    // eslint-disable-next-line no-unused-vars
+
+        // eslint-disable-next-line no-unused-vars
+
     } catch (error) {
         throw new apiError(400, "Something went wrong from the")
     }

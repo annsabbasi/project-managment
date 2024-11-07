@@ -34,58 +34,17 @@ export default function index() {
               disableRipple
             >
 
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1.8rem', height: '1.8rem' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
               </svg>
 
             </IconButton>
             <Stack>
-              <Typography className={style.itemTextHead}>Documents</Typography>
+              <Typography className={style.itemTextHead}>Files</Typography>
               <Typography className={style.itemTextBody}>add docs</Typography>
             </Stack>
           </Box>
 
-          <Box className={style.itemContent}>
-            <IconButton
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-              disableRipple
-            >
-
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-              </svg>
-
-            </IconButton>
-            <Stack>
-              <Typography className={style.itemTextHead}>Meeting with Bruce</Typography>
-              <Typography className={style.itemTextBody}>material...</Typography>
-            </Stack>
-          </Box>
-
-          <Box className={style.itemContent}>
-            <IconButton
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-              disableRipple
-            >
-
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
-              </svg>
-
-            </IconButton>
-            <Stack>
-              <Typography className={style.itemTextHead}>Project Details</Typography>
-              <Typography className={style.itemTextBody}>......</Typography>
-            </Stack>
-          </Box>
         </Stack>
       </Stack>
 
@@ -112,14 +71,14 @@ export default function index() {
               }
             }} disableRipple>
 
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1.8rem', height: '1.8rem' }}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
             </svg>
 
           </IconButton>
           <Stack>
-            <Typography className={style.itemTextHead}>Bizz Plan</Typography>
-            <Typography className={style.itemTextBody}>...</Typography>
+            <Typography className={style.itemTextHead}>Documents</Typography>
+            <Typography className={style.itemTextBody}>add docs</Typography>
           </Stack>
         </Box>
 

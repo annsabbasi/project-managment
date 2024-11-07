@@ -71,7 +71,7 @@ $hoverGrey: "#f5f5f5";
   text-transform: capitalize;
   text-wrap: nowrap;
   &:hover {
-    background-color: none;
+    background-color: transparent !important;
   }
 }
 

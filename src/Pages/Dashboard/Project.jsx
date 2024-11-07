@@ -10,6 +10,7 @@ import { useState } from "react";
 import { RouteNames } from "../../Constants/route";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Box, IconButton, MenuItem, Stack, Tab, Tabs, TextField } from "@mui/material";
+import TextDialog from '../ProjectTabs/TextDialog';
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -152,9 +153,10 @@ export default function Project() {
                         </CustomTabPanel>
 
                         <CustomTabPanel value={activeTab} index={3}>
-                            <Template open={dialogOpen} handleClose={handleClose} />
+                            <Template />
                         </CustomTabPanel>
                     </Box>
+                    <TextDialog open={dialogOpen} handleClose={handleClose} />
                 </>
             )}
             <Outlet />

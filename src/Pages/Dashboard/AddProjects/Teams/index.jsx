@@ -11,7 +11,7 @@ export default function Teams() {
   return (
     <Stack variant="div" gap={6} my={4}>
       <Box>
-        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>Current Members</Typography>
+        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>Head Team</Typography>
         <Grid container spacing={3}>
           {persons.map((person, index) => (
             <Grid item key={index}>
@@ -29,7 +29,7 @@ export default function Teams() {
       </Box>
 
       <Box>
-        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>Current Members</Typography>
+        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>All Members</Typography>
         <Grid container spacing={3}>
           {persons.map((person, index) => (
             <Grid item key={index}>

@@ -8,11 +8,14 @@ import {
     CssBaseline,
     Avatar,
     Grid,
+
+    Stack,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import theme from '../../Theme/Theme';
-// import { Link } from 'react-router-dom';
-// import { RouteNames } from '../../Constants/route';
+import { Link } from 'react-router-dom';
+import { RouteNames } from '../../Constants/route';
+
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -20,7 +23,8 @@ const LoginPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle the login logic here
+
+
         console.log('Email:', email);
         console.log('Password:', password);
     };
@@ -47,65 +51,88 @@ const LoginPage = () => {
                     <Typography component="h1" variant="h6" sx={{ fontSize: '16px', color: 'black' }}>
                         Login
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            size="small"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            sx={{
-                                backgroundColor: '#ffffff',
-                                '& .MuiInputBase-input': {
-                                    fontSize: '14px',
-                                },
-                            }}
-                        />
-                        <TextField
-                            margin="normal"
-                            size="small"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            sx={{
-                                backgroundColor: '#ffffff',
-                                '& .MuiInputBase-input': {
-                                    fontSize: '14px',
-                                },
-                            }}
-                        />
+
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1.4rem', }}>
+                            <TextField
+                                margin="normal"
+                                size="small"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                value={email}
+                                variant="standard"
+                                onChange={(e) => setEmail(e.target.value)}
+                                sx={{
+                                    backgroundColor: '#ffffff',
+                                    '& .MuiInputBase-input': {
+                                        fontSize: '14px',
+                                        // '&::placeholder': {
+                                        //     color: 'red', // Change the placeholder color here
+                                        // },
+                                    },
+                                    // '& .MuiInputLabel-root': {
+                                    //     // color: 'red', // Change the label color here
+                                    //     // fontSize: '10px'
+                                    // },
+                                }}
+                            />
+                            <TextField
+                                margin="dense"
+                                size="small"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                value={password}
+                                variant="standard"
+                                onChange={(e) => setPassword(e.target.value)}
+                                sx={{
+                                    backgroundColor: '#ffffff',
+                                    '& .MuiInputBase-input': {
+                                        fontSize: '14px',
+                                    },
+                                }}
+                            />
+                        </Box>
+
+                    
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, backgroundColor: 'black', color: 'white' }}
-                        >
-                            LogIn
-                        </Button>
-                        <Grid container justifyContent="space-between">
-                            <Grid item>
-                                <Button href="#" variant="text" size="small" sx={{ fontSize: '12px', color: 'black' }}>
+
+                            sx={{ mt: 6, mb: 2, backgroundColor: 'black', color: 'white' }}>LogIn</Button>
+
+                        <Stack justifyContent="space-between" gap={0.5}>
+                            <Box item>
+                                <Link href="#" variant="text" size="small" style={{ fontSize: '14px', color: '#1877F2', textDecoration: 'none' }}>
                                     Forgot password?
-                                </Button>
-                            </Grid>
+                                </Link>
+                            </Box>
                             <Grid item>
-                                <Button href="#" variant="text" size="small" sx={{ fontSize: '12px', color: 'black' }}>
-                                    {"Don't have an account? Sign Up"}
-                                </Button>
+                                <Typography variant="text" size="small" style={{ fontSize: '14px', color: 'gray' }}>
+                                    {"Don't have an account?"}&nbsp;
+                                    <Link to={`/${RouteNames.SIGNUP}`} style={{ color: '#1877F2', textDecoration: 'none' }}>
+                                        &nbsp;Sign Up
+                                    </Link>
+                                </Typography>
                             </Grid>
-                        </Grid>
+                        </Stack>
+
+                        {/* <Stack>
+                            <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>
+                            <Typography sx={{ fontSize: '0.9rem' }}>Don't have an account? Sign Up</Typography>
+                        </Stack> */}
+
+
                     </Box>
                 </Box>
             </Container>

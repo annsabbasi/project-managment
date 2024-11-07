@@ -9,7 +9,6 @@ import {
     Button,
 } from '@mui/material';
 import style from './style.module.scss'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Complete() {
     return (
@@ -36,12 +35,12 @@ export default function Complete() {
                                 variant="outlined"
                                 color="success"
                                 className={style.tableBodyBtn}
-                                endIcon={<KeyboardArrowDownIcon sx={{}} />}
                                 size="small"
                                 sx={{
-                                    backgroundColor: 'rgb(208, 240, 192,0.2)',
+                                    backgroundColor: 'transparent',
                                     color: '#1CAC78',
-                                    border: '1px solid #32de84',
+                                    border: 'none',
+                                    cursor: 'default',
                                     '&:hover': {
                                         backgroundColor: 'transparent',
                                         boxShadow: 'none'

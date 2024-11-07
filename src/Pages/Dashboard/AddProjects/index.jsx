@@ -112,6 +112,18 @@ export default function AddProjects() {
                             },
                         })}
                         className={project.Tab} />
+                    <Tab
+                        label="Details"
+                        {...allyProps(3)}
+                        sx={(theme) => ({
+                            backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
+                            color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
+                            fontWeight: activeTab === 4 ? '600' : '500',
+                            '&.Mui-selected': {
+                                color: theme.palette.grey.darkGrey,
+                            },
+                        })}
+                        className={project.Tab} />
                 </Tabs>
 
                 <Button
@@ -140,6 +152,9 @@ export default function AddProjects() {
 
                 <CustomTabPanel value={activeTab} index={3}>
                     <Time />
+                </CustomTabPanel>
+                <CustomTabPanel value={activeTab} index={4}>
+                    <Typography>Another!</Typography>
                 </CustomTabPanel>
             </Box>
         </Box >
