@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Sidebar from './Sidebar';
 import TopBar from "./Topbar";
 import styles from './page.module.scss';
@@ -6,22 +6,15 @@ import PropTypes from 'prop-types';
 
 export default function Layout({ title, children }) {
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Stack flexDirection="row">
             <Sidebar />
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100vh'
-                }}
-                className={styles.container}
-            >
+
+            <Box className={styles.container}>
                 <TopBar title={title} />
-                <Box sx={{
-                    padding: '1.2rem 1rem'
-                }}>{children}</Box>
+                <Box className={styles.content}>{children}</Box>
             </Box>
-        </Box>
+
+        </Stack>
     );
 }
 

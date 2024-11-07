@@ -3,6 +3,8 @@ import OverView from "./Overview"
 import Files from "./Files"
 import Teams from "./Teams"
 import Time from "./Time"
+import Assign from "./Assign"
+import Controls from "./Controls"
 import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
 
@@ -76,7 +78,7 @@ export default function AddProjects() {
 
                     <Tab
                         label="Files"
-                        {...allyProps(0)}
+                        {...allyProps(1)}
                         sx={(theme) => ({
                             backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
                             color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
@@ -113,12 +115,24 @@ export default function AddProjects() {
                         })}
                         className={project.Tab} />
                     <Tab
-                        label="Details"
-                        {...allyProps(3)}
+                        label="Assign"
+                        {...allyProps(4)}
                         sx={(theme) => ({
                             backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
                             color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
                             fontWeight: activeTab === 4 ? '600' : '500',
+                            '&.Mui-selected': {
+                                color: theme.palette.grey.darkGrey,
+                            },
+                        })}
+                        className={project.Tab} />
+                    <Tab
+                        label="Controls"
+                        {...allyProps(5)}
+                        sx={(theme) => ({
+                            backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
+                            color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
+                            fontWeight: activeTab === 5 ? '600' : '500',
                             '&.Mui-selected': {
                                 color: theme.palette.grey.darkGrey,
                             },
@@ -154,7 +168,10 @@ export default function AddProjects() {
                     <Time />
                 </CustomTabPanel>
                 <CustomTabPanel value={activeTab} index={4}>
-                    <Typography>Another!</Typography>
+                    <Assign />
+                </CustomTabPanel>
+                <CustomTabPanel value={activeTab} index={5}>
+                    <Controls />
                 </CustomTabPanel>
             </Box>
         </Box >

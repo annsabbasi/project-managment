@@ -1,124 +1,100 @@
-import { useState } from 'react';
-import {
-    Box,
-    Button,
-    TextField,
-    Typography,
-    Container,
-    CssBaseline,
-    Avatar,
-    Grid,
-    Stack,
-} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import theme from '../../Theme/Theme';
-import { Link } from 'react-router-dom';
+import styles from './style.module.scss'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import { useState } from 'react';
+import { useLogin } from '../../hooks/useAuth';
+import { Link, Navigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
+import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Grid, Stack, } from '@mui/material';
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { mutate } = useLogin();
+    const [redirect, setRedirect] = useState(false)
+    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Email:', email);
-        console.log('Password:', password);
-    };
+        mutate(formData, {
+            onSuccess: () => {
+                setRedirect(true);
+            }
+        })
+    }
+    if (redirect) {
+        return <Navigate to={'/project'} />
+    }
+
 
     return (
-        <Box sx={{ backgroundColor: theme.palette.grey[50], height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
             <Container component="main" maxWidth="xs">
+
                 <CssBaseline />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        boxShadow: '0px 4px 5px rgba(0, 0, 0, 0.3)',
-                        border: '1px solid silver',
-                        padding: 4,
-                        borderRadius: 2,
-                        backgroundColor: 'white'
-                    }}
-                >
+                <Box className={styles.boxItem}>
                     <Avatar sx={{ m: 1, bgcolor: 'black' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h6" sx={{ fontSize: '16px', color: 'black' }}>
-                        Login
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1.4rem', }}>
+                    <Typography component="h1" variant="h6" className={styles.loginText}>Login</Typography>
+
+                    <Box sx={{ mt: 1, width: '100%' }} >
+                        <Box className={styles.boxText}>
                             <TextField
                                 margin="normal"
                                 size="small"
-                                required
-                                fullWidth
-                                id="email"
                                 label="Email Address"
                                 name="email"
-                                autoComplete="email"
                                 autoFocus
-                                value={email}
                                 variant="standard"
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={handleChange}
+                                fullWidth
+                                value={formData.email}
                                 sx={{
                                     backgroundColor: '#ffffff',
                                     '& .MuiInputBase-input': {
                                         fontSize: '14px',
-                                        // '&::placeholder': {
-                                        //     color: 'red', // Change the placeholder color here
-                                        // },
                                     },
-                                    // '& .MuiInputLabel-root': {
-                                    //     // color: 'red', // Change the label color here
-                                    //     // fontSize: '10px'
-                                    // },
-                                }}
-                            />
+                                }} />
                             <TextField
                                 margin="dense"
                                 size="small"
-                                required
-                                fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                value={password}
                                 variant="standard"
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handleChange}
+                                fullWidth
+                                value={formData.password}
                                 sx={{
                                     backgroundColor: '#ffffff',
                                     '& .MuiInputBase-input': {
                                         fontSize: '14px',
                                     },
-                                }}
-                            />
+                                }} />
                         </Box>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 6, mb: 2, backgroundColor: 'black', color: 'white' }}>LogIn</Button>
 
+
+                        {/* <Typography>{error && <p>{error.message}</p>}</Typography> */}
+                        <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>LogIn</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
                             <Box item>
-                                <Link href="#" variant="text" size="small" style={{ fontSize: '14px', color: '#1877F2', textDecoration: 'none' }}>
+                                <Link href="#" variant="text" size="small" className={styles.forgetPassword}>
                                     Forgot password?
                                 </Link>
                             </Box>
+
                             <Grid item>
-                                <Typography variant="text" size="small" style={{ fontSize: '14px', color: 'gray' }}>
+                                <Typography variant="text" size="small" className={styles.dontHaveAccount}>
                                     {"Don't have an account?"}&nbsp;
-                                    <Link to={`/${RouteNames.SIGNUP}`} style={{ color: '#1877F2', textDecoration: 'none' }}>
-                                        &nbsp;Sign Up
+                                    <Link to={`/${RouteNames.SIGNUP}`} className={styles.login}>
+                                        &nbsp;Login
                                     </Link>
                                 </Typography>
                             </Grid>
                         </Stack>
-
                         {/* <Stack>
                             <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>
                             <Typography sx={{ fontSize: '0.9rem' }}>Don't have an account? Sign Up</Typography>

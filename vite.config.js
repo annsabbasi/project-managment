@@ -9,4 +9,13 @@ export default defineConfig({
       external: ['./server/**'],
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:6007',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''), // Musr add this api before any route EXP:('/api/your-route)
+      }
+    }
+  }
 });

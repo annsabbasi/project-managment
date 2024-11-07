@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 export default function RedirectRoute() {
     const navigate = useNavigate();
     useEffect(() => {
-        // navigate(`/${RouteNames.PROJECT}`)
         navigate(`/${RouteNames.HOME}`)
     }, [navigate])
     return null;

@@ -1,10 +1,10 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import './App.css'
+import './Style.scss'
 import { AppRoutes } from './Routes/AppRoute'
 import theme from './Theme/Theme'
 
-function App() {
 
+function App() {
   return (
     <>
       <ThemeProvider theme={theme}>

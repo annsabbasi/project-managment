@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.boxItem {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid silver;
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  background-color: white;
+}
+.loginText {
+  font-size: 16px;
+  color: black;
+}
+.boxText {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.loginBtn {
+  margin-top: 0.6rem;
+  margin-bottom: 0.3rem;
+  background-color: black;
+  color: white;
+}
+.forgetPassword {
+  font-size: 14px;
+  color: #1877f2;
+  text-decoration: none;
+}
+.dontHaveAccount {
+  font-size: 14px;
+  color: gray;
+}
+.login {
+  color: #1877f2;
+  text-decoration: none;
+}

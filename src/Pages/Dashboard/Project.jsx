@@ -50,7 +50,7 @@ export default function Project() {
         setDialogOpen(true);
     };
 
-    const handleClose = () => {
+    const handleCloseTab = () => {
         setDialogOpen(false);
     };
 
@@ -126,7 +126,7 @@ export default function Project() {
                                 })} className={project.Tab} />
                         </Tabs>
 
-                        <Box width="200px" alignItems="center" mx-auto >
+                        <Box width="200px" alignItems="center" mx-auto='true' >
                             <TextField
                                 label='Select here'
                                 fullWidth
@@ -156,13 +156,14 @@ export default function Project() {
                             <Template />
                         </CustomTabPanel>
                     </Box>
-                    <TextDialog open={dialogOpen} handleClose={handleClose} />
+                    <TextDialog open={dialogOpen} handleClose={handleCloseTab} />
                 </>
             )}
             <Outlet />
         </Box >
     )
 }
+
 
 CustomTabPanel.propTypes = {
     children: PropTypes.node.isRequired,
