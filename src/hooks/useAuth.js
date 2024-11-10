@@ -23,9 +23,10 @@ export const useLogin = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("role", data?.data?.user?.role)
       // queryClient.setQueriesData(["user"], data?.data?.user)
       queryClient.setQueryData(["user"], data?.data?.user)
-      console.log("This is the data of Login deom (useAuth)", data)
+      // console.log("User Role of Login deom (useAuth)", data?.data)
     },
     onError: (error) => {
       console.error("(useAuth) Login failed:", error.response?.data || error.message)

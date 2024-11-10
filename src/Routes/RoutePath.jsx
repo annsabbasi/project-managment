@@ -19,6 +19,18 @@ const Layout = lazy(() => import('../Layout'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
 const LoginPage = lazy(() => import('../Pages/Login'))
 const SignUpPage = lazy(() => import('../Pages/Signup'))
+const AdminLayout = lazy(() => import('../AdminWork'));
+const AdminPage1 = lazy(() => import('../AdminWork/pages/Page1'));
+const AdminPage2 = lazy(() => import('../AdminWork/pages/Page2'));
+const AdminPage3 = lazy(() => import('../AdminWork/pages/Page3'));
+
+export const AdminRoute = [
+    { path: RouteNames.ADMINLAYOUT, element: AdminLayout, adminLayout: true, title: 'Admin Layout' },
+    { path: RouteNames.ADMINPAGE1, element: AdminPage1, adminLayout: true, title: 'AdminPage1' },
+    { path: RouteNames.ADMINPAGE2, element: AdminPage2, adminLayout: true, title: 'AdminPage2' },
+    { path: RouteNames.ADMINPAGE3, element: AdminPage3, adminLayout: true, title: 'AdminPage3' },
+    // other admin routes
+];
 
 
 export const PublicRoute = [

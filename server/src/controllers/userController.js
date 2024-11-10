@@ -16,7 +16,6 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         return { accessToken, refreshToken };
 
         // eslint-disable-next-line no-unused-vars
-
     } catch (error) {
         throw new apiError(400, "Something went wrong from the")
     }
