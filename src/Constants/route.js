@@ -14,5 +14,11 @@ export const RouteNames = {
     ADDPRODUCTS: 'addproduct',
     LOGIN: 'login',
     SIGNUP: 'signup',
-    HOME: 'home'
+    HOME: 'home',
+
+    // ADMIN CONSTANTS
+    ADMINLAYOUT: 'adminlayout',
+    ADMINPAGE1: 'adminpage1',
+    ADMINPAGE2: 'adminpage2',
+    ADMINPAGE3: 'adminpage3'
 };

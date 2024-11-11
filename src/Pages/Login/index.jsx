@@ -4,15 +4,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { useState } from 'react';
 import { useLogin } from '../../hooks/useAuth';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Grid, Stack, } from '@mui/material';
 
 
 const LoginPage = () => {
     const { mutate } = useLogin();
-    const [redirect, setRedirect] = useState(false)
+    // const [redirect, setRedirect] = useState(false)
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -21,13 +22,30 @@ const LoginPage = () => {
         e.preventDefault();
         mutate(formData, {
             onSuccess: () => {
-                setRedirect(true);
+                // setRedirect(true);
+                // const userToken = localStorage.getItem("accessToken")
+                const userRole = localStorage.getItem("role")
+
+                console.log("User Role from Login.jsx", userRole)
+                if (userRole === 'superadmin') {
+                    // navigate(`/${RouteNames.ADMINPAGE1}`)
+                    navigate(`/${RouteNames.ADMINPAGE1}`)
+                }
+                else if (userRole === 'admin') {
+                    navigate(`/${RouteNames.PROJECT}`)
+                }
+                else {
+                    navigate(`/${RouteNames.DASHBOARD}`)
+                }
+            },
+            onError: (error) => {
+                console.error("Login failed:", error.response?.data || error.message);
             }
         })
     }
-    if (redirect) {
-        return <Navigate to={'/project'} />
-    }
+    // if (redirect) {
+    //     return <Navigate to={'/project'} />
+    // }
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>

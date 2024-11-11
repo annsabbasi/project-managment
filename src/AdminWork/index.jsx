@@ -4,7 +4,7 @@ import TopBar from "./Topbar";
 import styles from './page.module.scss';
 import PropTypes from 'prop-types';
 
-export default function Layout({ title, children }) {
+export default function AdminWork({ title, children }) {
     return (
         <Stack flexDirection="row">
             <Sidebar />
@@ -16,9 +16,9 @@ export default function Layout({ title, children }) {
 
         </Stack>
     );
-}  
+}
 
-Layout.propTypes = {
+AdminWork.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
 }
