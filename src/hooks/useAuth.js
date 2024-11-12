@@ -22,9 +22,8 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("accessToken", data?.data?.accessToken);
       localStorage.setItem("role", data?.data?.user?.role)
-      // queryClient.setQueriesData(["user"], data?.data?.user)
       queryClient.setQueryData(["user"], data?.data?.user)
       // console.log("User Role of Login deom (useAuth)", data?.data)
     },

@@ -32,6 +32,6 @@ router.route('/get-data').get(getAllData);
 // Create Task
 router.route('/create-task').post(verifyUser(['superadmin', 'admin']), createTask)
 router.route('/get-create-task').get(verifyUser('admin'), getCreateTask)
-router.route('/get-delete-task').get(verifyUser('admin'), getDeleteTask)
+router.route('/get-delete-task/:taskId').get(verifyUser('admin'), getDeleteTask)
 
 export default router

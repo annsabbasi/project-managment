@@ -2,21 +2,42 @@ import { adminTask } from "../models/adminTask.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { User } from "../models/userModel.js";
+
 
 const createTask = asyncHandler(async (req, res) => {
     const { projectTitle, teamLeadName, clientName, description, projectStatus, members, startDate, dueDate, budget } = req.body;
-    if ([projectTitle, teamLeadName, clientName, description, projectStatus, startDate, dueDate].some((fields) => fields?.trim() === "")) { throw new apiError(400, "All fields are required.") }
-
-    if (!budget || !members) {
+    if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
         throw new apiError(400, "All fields are required.")
     }
-
-    const createTask = await adminTask.create({ projectTitle, teamLeadName, clientName, description, projectStatus, members, startDate, dueDate, budget })
-    if (!createTask) {
-        throw new apiError(500, "Something went wrong white creating task... Register Controller")
+    const userTask = req.user.role;
+    console.log("UserTask Id:", userTask)
+    if (!budget) {
+        throw new apiError(400, "Budget and members array are required.");
     }
 
-    return res.status(200).json(new apiResponse(200, createTask, "Task created successfully."))
+    const teamLeadArray = teamLeadName.split(',').map(name => name.trim());
+    const tasks = [];
+    for (const teamLead of teamLeadArray) {
+        const user = await User.findOne({ name: teamLead });
+        if (!user) {
+            throw new apiError(400, `Username with ${teamLead} is not found`)
+        }
+        tasks.push(teamLead);
+    }
+
+    const newTask = new adminTask({
+        budget,
+        dueDate,
+        startDate,
+        teamLeadName: tasks,
+        projectStatus, members,
+        clientName, description
+    });
+    await newTask.save();
+    // console.log("This is task", newTask)
+
+    return res.status(200).json(new apiResponse(200, newTask, "Task created successfully."))
 })
 
 
@@ -34,7 +55,6 @@ const getDeleteTask = asyncHandler(async (req, res) => {
     if (!taskId) {
         throw new apiResponse(400, "TaskId is required")
     }
-    console.log("This is the Delete Task Id:", taskId)
 
     const deleteTask = await adminTask.findByIdAndDelete(taskId);
     if (!deleteTask) {

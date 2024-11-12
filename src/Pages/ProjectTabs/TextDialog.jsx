@@ -54,8 +54,8 @@ const TextDialog = ({ open, handleClose }) => {
                 <TextField
                     autoFocus
                     margin='dense'
-                    id="team-lead"
-                    label="Team Lead Name"
+                    id="assign-to"
+                    label="Assign user's"
                     fullWidth
                     variant="outlined"
                     size="small"
