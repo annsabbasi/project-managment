@@ -24,7 +24,7 @@ export const verifyUser = (role = []) => asyncHandler(async (req, res, next) => 
             return res.status(403).json({ message: "Access denied." });
         }
 
-        console.log("This is the authMiddleware data:", user)
+        // console.log("This is the authMiddleware data:", user)
         req.user = user
         // Step 6: For development purposes, you can log the user (optional)
         // eslint-disable-next-line no-undef
