@@ -6,12 +6,13 @@ import { User } from "../models/userModel.js";
 
 
 const createTask = asyncHandler(async (req, res) => {
-    const { projectTitle, teamLeadName, clientName, description, projectStatus, members, startDate, dueDate, budget } = req.body;
+    const { projectTitle, teamLeadName, description, projectStatus, startDate, dueDate, budget } = req.body;
     if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
         throw new apiError(400, "All fields are required.")
     }
-    const userTask = req.user.role;
-    console.log("UserTask Id:", userTask)
+    const adminId = req.user._id;
+    // console.log("UserTask Id:", userTask)
+
     if (!budget) {
         throw new apiError(400, "Budget and members array are required.");
     }
@@ -25,24 +26,26 @@ const createTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
-
     const newTask = new adminTask({
-        budget,
-        dueDate,
-        startDate,
+        projectTitle,
         teamLeadName: tasks,
-        projectStatus, members,
-        clientName, description
+        description,
+        projectStatus,
+        startDate,
+        dueDate,
+        budget,
+        assignedBy: adminId,
     });
-    await newTask.save();
-    // console.log("This is task", newTask)
 
+    await newTask.save();
     return res.status(200).json(new apiResponse(200, newTask, "Task created successfully."))
 })
 
 
 const getCreateTask = asyncHandler(async (req, res) => {
-    const tasks = await adminTask.find();
+    const tasks = await adminTask.find()
+        .populate('assignedBy', 'name email avatar role');
+
     if (!tasks || tasks.length === 0) {
         throw new apiError(400, "No tasks found.")
     }
