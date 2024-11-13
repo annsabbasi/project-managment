@@ -3,7 +3,6 @@ const router = Router();
 import validateRegistration from "../middleware/validateRegistrationMiddleware.js";
 import { verifyUser } from "../middleware/authMiddleware.js";
 
-
 import {
     registerUser,
     loginUser,
