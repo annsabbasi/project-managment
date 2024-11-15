@@ -9,7 +9,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppRoutes />
+        <AppRoutes/>
         {/* <AdminLayout /> */}
       </ThemeProvider>
     </>

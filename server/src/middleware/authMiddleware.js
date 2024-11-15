@@ -15,6 +15,7 @@ export const verifyUser = (role = []) => asyncHandler(async (req, res, next) => 
         if (!decodedToken?._id) {
             throw new apiError(401, "Invalid access token from AuthMiddleware");
         }
+        // console.log("Decoded token:", decodedToken);
 
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
         if (!user) {

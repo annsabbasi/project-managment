@@ -11,10 +11,12 @@ import {
     refreshAccessToken,
     getUserData
 } from "../controllers/userController.js";
+
 import {
     createTask,
     getCreateTask,
-    getDeleteTask
+    DeleteTask,
+    UpdateTask
 } from '../controllers/adminTask.js';
 
 
@@ -31,6 +33,7 @@ router.route('/get-data').get(getAllData);
 // Create Task
 router.route('/create-task').post(verifyUser(['superadmin', 'admin']), createTask)
 router.route('/get-create-task').get(verifyUser('admin'), getCreateTask)
-router.route('/get-delete-task/:taskId').get(verifyUser('admin'), getDeleteTask)
+router.route('/get-delete-task/:taskId').delete(verifyUser('admin'), DeleteTask)
+router.route('/get-update-task/:taskId').put(verifyUser('admin'), UpdateTask)
 
 export default router

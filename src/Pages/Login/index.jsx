@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useLogin } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
-import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Grid, Stack, } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Stack, } from '@mui/material';
 
 
 const LoginPage = () => {
@@ -98,20 +98,20 @@ const LoginPage = () => {
                         {/* <Typography>{error && <p>{error.message}</p>}</Typography> */}
                         <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>LogIn</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
-                            <Box item>
+                            <Box >
                                 <Link href="#" variant="text" size="small" className={styles.forgetPassword}>
                                     Forgot password?
                                 </Link>
                             </Box>
 
-                            <Grid item>
+                            <Box>
                                 <Typography variant="text" size="small" className={styles.dontHaveAccount}>
                                     {"Don't have an account?"}&nbsp;
                                     <Link to={`/${RouteNames.SIGNUP}`} className={styles.login}>
                                         &nbsp;Login
                                     </Link>
                                 </Typography>
-                            </Grid>
+                            </Box>
                         </Stack>
                         {/* <Stack>
                             <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>

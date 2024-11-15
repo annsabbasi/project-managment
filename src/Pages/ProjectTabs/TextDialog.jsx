@@ -6,7 +6,7 @@ import { useCreateTask } from '../../hooks/useTask';
 
 const TextDialog = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
-        projectTitle: '', teamLeadName: '', dueData: '', budget: '', description: ''
+        projectTitle: '', teamLeadName: '', dueDate: '', budget: '', description: ''
     });
 
     const renderTextField = (name, label, multiline = false) => (
