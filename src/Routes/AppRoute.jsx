@@ -64,21 +64,25 @@
 
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import Layout from "../Layout";
+import { AdminRoute, PrivateRoute, PublicRoute } from "./RoutePath";
+
 import Header from "../Components/Header";
+import Spinner from "../Components/Spinner";
+
 import RedirectRoute from "./RedirectRoute";
 import ProtectedRoute from "./ProtectedRoute";
-import { AdminRoute, PrivateRoute, PublicRoute } from "./RoutePath";
-import Spinner from "../Components/Spinner";
+
+import Layout from "../Layout";
 import AdminLayout from "../AdminWork";
 
 const renderRoutes = (routes, LayoutComponent) => {
     return (
         <>
-            {routes.map(({ path, element: Element, adminLayout, title, layout, children, index }) => (
+            {routes.map(({ path, element: Element, params, adminLayout, title, layout, children, index }) => (
                 <Route
                     key={`${path}${index}`}
-                    path={path}
+                    path={`${path}${params ?? ''}`}
+                    // path={path}
                     element={
                         <Suspense fallback={<Spinner />}>
                             {layout && adminLayout ? (

@@ -4,7 +4,6 @@ import { axiosInstance } from "./axiosInstance"
 export const createTask = async (taskId) => {
     try {
         const response = await axiosInstance.post('/user/create-task', taskId);
-        console.log("createTask taskApi success", response.data);
         return response.data
     } catch (error) {
         console.log("createTask taskApi error", error)
@@ -15,10 +14,34 @@ export const createTask = async (taskId) => {
 export const fetchTask = async (taskId) => {
     try {
         const response = await axiosInstance.get('/user/get-create-task', taskId);
-        console.log("fetchTask taskApi success", response.data);
         return response.data || [];
     } catch (error) {
-        console.log("fetchTask taskApi error", error)
-        return [];
+        if (axiosInstance.isCancel(error)) {
+            console.log("Request canceled", error.message);
+        } else {
+            console.log("error", error)
+            throw error;
+        }
+    }
+}
+
+
+export const deleteTask = async (taskId) => {
+    try {
+        const response = await axiosInstance.delete(`/user/get-delete-task/${taskId}`);
+        return response.data;
+    } catch (error) {
+        console.log("taskApi deleteTask error", error)
+    }
+}
+
+
+export const updateTask = async (taskId) => {
+    try {
+        const response = await axiosInstance.put(`/user/get-update-task/${taskId._id}`, taskId);
+        console.log("taskApi UpdateTask Success", response.data);
+        return response.data;
+    } catch (error) {
+        console.log("taskApi updateTask error", error)
     }
 }

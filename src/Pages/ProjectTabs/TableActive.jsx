@@ -2,8 +2,9 @@ import style from './style.module.scss';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
-import { useGetCreateTask } from '../../hooks/useTask';
+import { useDeleteTask, useGetCreateTask, useUpdateTask } from '../../hooks/useTask';
 import theme from '../../Theme/Theme';
+import styles from './style.module.scss';
 
 import {
     Menu, Table,
@@ -12,15 +13,21 @@ import {
     TableBody, TableHead,
     IconButton, ListItemIcon,
     TableContainer, Stack,
-    Typography
+    Typography,
+    TextField,
+    Dialog,
+    DialogTitle,
+    DialogContent
 } from '@mui/material';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+// import UploadFileIcon from '@mui/icons-material/UploadFile';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import TextDialog from './TextDialog';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+// import Spinner from '../../Components/Spinner';
 
 
 export default function TableActive() {
@@ -47,11 +54,28 @@ export default function TableActive() {
         setDialogOpen(false);
     };
 
-    if (isLoading) return <p>Loading tasks...</p>;
+    const { mutate: deleteTask } = useDeleteTask();
+    const handleDelete = (taskId) => {
+        deleteTask(taskId, {
+            onSuccess: () => {
+                handleClose();
+            }
+        })
+    }
+
+    const [editingTask, setEditingTask] = useState(null);
+    const { mutate: editTask } = useUpdateTask();
+    const handleEditClick = (task) => {
+        setEditingTask(task)
+    }
+
+
+    // if (isLoading) return <Spinner />;   
+    if (isLoading) return <p>loading...</p>;
     if (isError) return <p>Error loading tasks: {error.message}</p>;
 
 
-    console.log("This is the data", data)
+    // console.log("This is the data", data)
     return (
         <TableContainer>
             {data && data?.data?.length > 0 ?
@@ -65,6 +89,7 @@ export default function TableActive() {
                             <TableCell align="left">Start Date</TableCell>
                             <TableCell align="left">Due Date</TableCell>
                             <TableCell align="right">Budget</TableCell>
+                            <TableCell align="right">Points</TableCell>
                             <TableCell align="right">&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
@@ -75,16 +100,16 @@ export default function TableActive() {
                                 <TableCell component="th" scope="row">{task.projectTitle}</TableCell>
                                 <TableCell align="left">{task.assignedBy.name}</TableCell>
                                 <TableCell align="left">
-                                    <Link to={`${RouteNames.ADDPRODUCTS}`}>
-                                        <Button variant="text" className={style.tableBodyBtn} size="small">
-                                            {task.projectStatus}
-                                        </Button>
-                                    </Link>
+                                    <Button variant="text" className={style.tableBodyBtn} size="small">
+                                        {task.projectStatus}
+                                    </Button>
                                 </TableCell>
-                                <TableCell align="left">{task.members?.join(', ')}</TableCell>
+                                {/* <TableCell align="left">{task.members?.join(', ')}</TableCell> */}
+                                <TableCell align="left">{task.members}</TableCell>
                                 <TableCell align="left">{new Date(task.startDate).toLocaleDateString()}</TableCell>
                                 <TableCell align="left">{new Date(task.dueDate).toLocaleDateString()}</TableCell>
-                                <TableCell align="right">${task.budget.toLocaleString()}</TableCell>
+                                <TableCell align="left">${task.budget.toLocaleString()}</TableCell>
+                                <TableCell align="right">{`${task.points > 40 ? '+' : '-'} ${task.points}`}</TableCell>
                                 <TableCell align="right">
                                     <div>
                                         <IconButton
@@ -121,22 +146,31 @@ export default function TableActive() {
                                             }}
                                             className={style.anchorElParent}
                                         >
-                                            <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
+                                            <Link to={`${RouteNames.ADDPRODUCTS}`} style={{ textDecoration: 'none' }}>
+                                                <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
+                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                        <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                    </ListItemIcon>
+                                                    View
+                                                </MenuItem>
+                                            </Link>
+
+                                            {/* <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
+                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                    <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                </ListItemIcon>
+                                                Edit
+                                            </MenuItem> */}
+                                            <MenuItem onClick={() => handleEditClick(task)} className={style.anchorMenuItem}>
                                                 <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
                                                     <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
                                                 </ListItemIcon>
                                                 Edit
                                             </MenuItem>
 
-                                            <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
-                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                    <UploadFileIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                </ListItemIcon>
-                                                Upload a file
-                                            </MenuItem>
 
                                             <MenuItem
-                                                onClick={handleClose}
+                                                onClick={() => handleDelete(task._id)}
                                                 className={style.anchorMenuItem}
                                                 sx={{
                                                     bgcolor: '#E97451',
@@ -254,6 +288,61 @@ export default function TableActive() {
                 </Stack>)
             }
 
-        </TableContainer >
+            {/* @@@@@@@@@@@@@@@ */}
+            <Dialog open={Boolean(editingTask)} onClose={() => setEditingTask(null)}>
+                <DialogTitle>Edit Task</DialogTitle>
+
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        if (editingTask) editTask(editingTask);
+                    }}
+                    style={{ padding: '0 20px 20px 20px', width: '100%' }}
+                >
+                    <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+                        <TextField
+                            label="Project Title"
+                            value={editingTask?.projectTitle || ''}
+                            onChange={(e) => setEditingTask({ ...editingTask, projectTitle: e.target.value })}
+                            fullWidth
+                            sx={{ width: '500px' }}
+                        />
+                        <TextField
+                            label="Assign User"
+                            value={editingTask?.teamLeadName || ''}
+                            onChange={(e) => setEditingTask({ ...editingTask, teamLeadName: e.target.value })}
+                            fullWidth
+                        />
+                        <TextField
+                            label="Points"
+                            value={editingTask?.points || ''}
+                            onChange={(e) => setEditingTask({ ...editingTask, teamLeadName: e.target.value })}
+                            fullWidth
+                        />
+                    </DialogContent>
+                    <Button type="submit" variant="contained" color="secondary" className={styles.dialogBtnPrimary}>
+                        Update Task
+                    </Button>
+                </form>
+
+            </Dialog>
+
+            {/* <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose} className={styles.sidebar}>
+            <DialogTitle>Add a New Project</DialogTitle>
+            <DialogContent className={styles.sidebar}>
+                {renderTextField("projectTitle", "Project Title")}
+                {renderTextField("teamLeadName", "Assign User")}
+                {renderTextField("dueDate", "Due Date")}
+                {renderTextField("budget", "Add Budget")}
+                {renderTextField("description", "Project Description", true)}
+            </DialogContent>
+            <Typography variant="span" sx={{ margin: 'auto', fontSize: '0.9rem', color: 'red' }}>error will shown here</Typography>
+            <DialogActions sx={{ paddingBottom: '1rem' }}>
+                <Button onClick={handleClose} color="secondary" className={styles.dialogBtnPrimary}>Cancel</Button>
+                <Button type="submit" onClick={handleClose} color="primary" className={styles.dialogBtnSecondary}>Save</Button>
+            </DialogActions>
+        </Dialog> */}
+            {/* @@@@@@@@@@@@@@@ */}
+        </TableContainer>
     );
 }

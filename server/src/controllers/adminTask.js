@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/userModel.js";
+import mongoose from "mongoose";
 
 
 const createTask = asyncHandler(async (req, res) => {
@@ -10,8 +11,14 @@ const createTask = asyncHandler(async (req, res) => {
     if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
         throw new apiError(400, "All fields are required.")
     }
+    // const adminId = req.user._id;
     const adminId = req.user._id;
-    // console.log("UserTask Id:", userTask)
+
+    // <---CODE FOR ONLY ADMIN TO ASSIGN TASK --->
+    // const admin = await User.findById(req.user.id); // Get the current logged-in admin
+    // if (!admin || admin.role !== 'admin') {
+    //   return res.status(403).json({ message: 'Only admins can assign tasks.' });
+    // }
 
     if (!budget) {
         throw new apiError(400, "Budget and members array are required.");
@@ -26,6 +33,7 @@ const createTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
+    console.log("This is the adminId", tasks.length)
     const newTask = new adminTask({
         projectTitle,
         teamLeadName: tasks,
@@ -35,6 +43,7 @@ const createTask = asyncHandler(async (req, res) => {
         dueDate,
         budget,
         assignedBy: adminId,
+        members: tasks.length
     });
 
     await newTask.save();
@@ -44,16 +53,17 @@ const createTask = asyncHandler(async (req, res) => {
 
 const getCreateTask = asyncHandler(async (req, res) => {
     const tasks = await adminTask.find()
-        .populate('assignedBy', 'name email avatar role');
+        .populate('assignedBy', 'name avatar');
 
     if (!tasks || tasks.length === 0) {
-        throw new apiError(400, "No tasks found.")
+        // throw new apiError(400, "No tasks found")
+        return res.status(200).json(new apiResponse(200, [], "No task found"))
     }
-    return res.status(200).json(new apiResponse(200, tasks, "Get Task successfully."))
+    return res.status(200).json(new apiResponse(200, tasks, "Get Task successfully"))
 })
 
 
-const getDeleteTask = asyncHandler(async (req, res) => {
+const DeleteTask = asyncHandler(async (req, res) => {
     const taskId = req.params.taskId;
     if (!taskId) {
         throw new apiResponse(400, "TaskId is required")
@@ -67,4 +77,51 @@ const getDeleteTask = asyncHandler(async (req, res) => {
 })
 
 
-export { createTask, getCreateTask, getDeleteTask }
+const UpdateTask = asyncHandler(async (req, res) => {
+    const taskId = req.params.taskId;
+    if (!mongoose.isValidObjectId(taskId)) {
+        throw new apiError(400, "Invalid Task ID format");
+    }
+
+    const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
+    const teamLeadArray = teamLeadName.split(',').map(name => name.trim());
+    if (!teamLeadArray) {
+        throw new apiError(400, "provide multiple names after a (,) like examplename, examplename")
+    }
+    const tasks = [];
+
+    for (const teamLead of teamLeadArray) {
+        const user = await User.findOne({ name: teamLead });
+        if (!user) {
+            throw new apiError(400, `Username with ${teamLead} is not found`)
+        }
+        tasks.push(teamLead);
+    }
+    const existingTask = await adminTask.findById(taskId);
+    console.log("Existing Task:", existingTask);
+
+    if (!existingTask) {
+        throw new apiError(400, "Task is not found");
+    }
+    const updateTask = await adminTask.findByIdAndUpdate(taskId, {
+        projectTitle,
+        // teamLeadName: tasks,
+        description,
+        projectStatus,
+        points
+    }, { new: true, runValidators: true })
+    if (!updateTask) {
+        throw new apiError(400, 'Task not found')
+    }
+
+    console.log("Task updated successfully:", updateTask)
+    return res.status(200).json(new apiResponse(200, updateTask, "Task Update Successfully"))
+})
+
+
+export {
+    createTask,
+    getCreateTask,
+    DeleteTask,
+    UpdateTask
+}

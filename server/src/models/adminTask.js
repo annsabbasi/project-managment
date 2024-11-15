@@ -10,9 +10,6 @@ const taskSchema = new mongoose.Schema({
         type: [String],
         required: [true, "Please type the name of the admin"]
     },
-    // clientName: {
-    //     type: String,
-    // },
     description: {
         type: String,
         maxLength: [700, "The Description should be no longer than 700 characters"]
@@ -22,10 +19,9 @@ const taskSchema = new mongoose.Schema({
         default: 'pending',
         enum: ['pending', 'ended', 'Approved', 'Not Approved'],
     },
-    // members: {
-    //     type: [String], 
-    //     validate: [arrayLimit, "The task should have between 5 and 100 members"],
-    // },
+    members: {
+        type: Number,
+    },
     startDate: {
         type: Date,
         default: Date.now,
