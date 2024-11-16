@@ -84,16 +84,19 @@ const UpdateTask = asyncHandler(async (req, res) => {
     }
 
     const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
-    const teamLeadArray = teamLeadName.split(',').map(name => name.trim());
-    if (!teamLeadArray) {
-        throw new apiError(400, "provide multiple names after a (,) like examplename, examplename")
-    }
+    const teamLeadArray = teamLeadName && typeof teamLeadName === 'string'
+        ? teamLeadName.split(',').map(name => name.trim())
+        : [];
+
     const tasks = [];
+
+    console.log("Received Task ID:", req.params.taskId);
+    console.log("Received Body:", req.body);
 
     for (const teamLead of teamLeadArray) {
         const user = await User.findOne({ name: teamLead });
         if (!user) {
-            throw new apiError(400, `Username with ${teamLead} is not found`)
+            throw new apiError(400, `Username with ${teamLead} is not found`);
         }
         tasks.push(teamLead);
     }

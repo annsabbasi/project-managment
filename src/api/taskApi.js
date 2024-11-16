@@ -36,12 +36,12 @@ export const deleteTask = async (taskId) => {
 }
 
 
-export const updateTask = async (taskId) => {
+export const updateTask = async (taskId, updateData) => {
     try {
-        const response = await axiosInstance.put(`/user/get-update-task/${taskId._id}`, taskId);
-        console.log("taskApi UpdateTask Success", response.data);
+        const response = await axiosInstance.put(`/user/get-update-task/${taskId}`, updateData);
+        // console.log("taskApi UpdateTask Success", response);
         return response.data;
     } catch (error) {
         console.log("taskApi updateTask error", error)
     }
-}
+} 
