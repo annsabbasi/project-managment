@@ -72,10 +72,10 @@ export const useDeleteTask = () => {
 export const useUpdateTask = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ({taskId, updateData})=>  updateTask(taskId, updateData),
+        mutationFn: ({ taskId, updateData }) => updateTask(taskId, updateData),
         onSuccess: (data) => {
             queryClient.invalidateQueries(['tasks'])
-            queryClient.setQueryData(['tasks', data.data._id], data.data);
+            queryClient.setQueryData(['task', data.data._id], data.data);
         },
         onError: (error) => {
             console.error('Error updating task:', error.message)

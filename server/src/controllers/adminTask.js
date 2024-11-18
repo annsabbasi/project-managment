@@ -83,35 +83,36 @@ const UpdateTask = asyncHandler(async (req, res) => {
         throw new apiError(400, "Invalid Task ID format");
     }
 
+    const existingTask = await adminTask.findById(taskId);
+    if (!existingTask) {
+        throw new apiError(400, "Task not found");
+    }
+    console.log("This is the existingTask", existingTask)
     const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
     const teamLeadArray = teamLeadName && typeof teamLeadName === 'string'
         ? teamLeadName.split(',').map(name => name.trim())
-        : [];
-
-    const tasks = [];
+        : existingTask.teamLeadName;
 
     console.log("Received Task ID:", req.params.taskId);
     console.log("Received Body:", req.body);
 
-    for (const teamLead of teamLeadArray) {
-        const user = await User.findOne({ name: teamLead });
-        if (!user) {
-            throw new apiError(400, `Username with ${teamLead} is not found`);
+    const tasks = [];
+    if (teamLeadArray) {
+        for (const teamLead of teamLeadArray) {
+            const user = await User.findOne({ name: teamLead });
+            if (!user) {
+                throw new apiError(400, `Username with ${teamLead} is not found`);
+            }
+            tasks.push(teamLead);
         }
-        tasks.push(teamLead);
     }
-    const existingTask = await adminTask.findById(taskId);
-    console.log("Existing Task:", existingTask);
 
-    if (!existingTask) {
-        throw new apiError(400, "Task is not found");
-    }
     const updateTask = await adminTask.findByIdAndUpdate(taskId, {
-        projectTitle,
-        // teamLeadName: tasks,
-        description,
-        projectStatus,
-        points
+        projectTitle: projectTitle || existingTask.projectTitle,
+        teamLeadName: tasks || existingTask.teamLeadName,
+        description: description || existingTask.description,
+        projectStatus: projectStatus || existingTask.projectStatus,
+        points: points || existingTask.projectStatus
     }, { new: true, runValidators: true })
     if (!updateTask) {
         throw new apiError(400, 'Task not found')

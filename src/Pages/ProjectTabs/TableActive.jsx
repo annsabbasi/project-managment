@@ -28,10 +28,13 @@ import EditTextDialog from './EditTextDialog';
 export default function TableActive() {
     const [anchor, setAnchor] = useState(null);
     const { data, isLoading, isError, error } = useGetCreateTask();
-
     const open = Boolean(anchor);
-    const handleClick = (event) => {
-        setAnchor(event.currentTarget)
+    // const handleClick = (event) => {
+    //     setAnchor(event.currentTarget)
+    // }
+    const handleClick = (event, taskId) => {
+        setAnchor(event.currentTarget);
+        setSelectedTask(taskId);
     }
     const handleClose = () => {
         setAnchor(null)
@@ -47,17 +50,21 @@ export default function TableActive() {
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [selectedTask, setSelectedTask] = useState(null);
-    const handleEditClickOpen = (task) => {
-        setSelectedTask(task); // Set the selected task
+    const handleEditClickOpen = (id) => {
+        console.log("Selected Task ID:", id);
+        // setSelectedTask(id);
         setEditDialogOpen(true);
+        handleClose();
     };
     const handleEditCloseTab = () => {
         setEditDialogOpen(false);
+        setSelectedTask(null); // Reset the task
     };
 
     const { mutate: deleteTask } = useDeleteTask();
-    const handleDelete = (taskId) => {
-        deleteTask(taskId, {
+    const handleDelete = () => {
+        // deleteTask(taskId, {
+        deleteTask(selectedTask, {
             onSuccess: () => {
                 handleClose();
             }
@@ -108,7 +115,8 @@ export default function TableActive() {
                                         <IconButton
                                             disableRipple
                                             sx={{ padding: '1px', color: 'gray' }}
-                                            onClick={handleClick}
+                                            // onClick={handleClick}
+                                            onClick={(e) => handleClick(e, task._id)}
                                         >
                                             <MoreVertIcon />
                                         </IconButton>
@@ -148,15 +156,13 @@ export default function TableActive() {
                                                 </MenuItem>
                                             </Link>
 
-                                            <MenuItem onClick={() => handleEditClickOpen(task)} className={style.anchorMenuItem}>
+                                            <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
                                                 <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
                                                     <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                </ListItemIcon>
-                                                Edit
-                                            </MenuItem>
+                                                </ListItemIcon>Edit</MenuItem>
 
                                             <MenuItem
-                                                onClick={() => handleDelete(task._id)}
+                                                onClick={handleDelete}
                                                 className={style.anchorMenuItem}
                                                 sx={{
                                                     bgcolor: '#E97451',
@@ -198,7 +204,9 @@ export default function TableActive() {
 
             {/* Dialog for Update  */}
             {/* <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} taskData={selectedTask} /> */}
+            {/* <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} /> */}
             <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
+
         </TableContainer>
     );
 }

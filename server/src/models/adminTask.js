@@ -40,7 +40,8 @@ const taskSchema = new mongoose.Schema({
         enum: ['In Progress', 'Completed', 'Approved', 'Not Approved']
     },
     points: {
-        type: Number,
+        // type: Number,
+        type: String,
         default: 100
     },
     profileImage: {
