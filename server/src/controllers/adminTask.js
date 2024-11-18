@@ -83,32 +83,36 @@ const UpdateTask = asyncHandler(async (req, res) => {
         throw new apiError(400, "Invalid Task ID format");
     }
 
-    const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
-    const teamLeadArray = teamLeadName.split(',').map(name => name.trim());
-    if (!teamLeadArray) {
-        throw new apiError(400, "provide multiple names after a (,) like examplename, examplename")
-    }
-    const tasks = [];
-
-    for (const teamLead of teamLeadArray) {
-        const user = await User.findOne({ name: teamLead });
-        if (!user) {
-            throw new apiError(400, `Username with ${teamLead} is not found`)
-        }
-        tasks.push(teamLead);
-    }
     const existingTask = await adminTask.findById(taskId);
-    console.log("Existing Task:", existingTask);
-
     if (!existingTask) {
-        throw new apiError(400, "Task is not found");
+        throw new apiError(400, "Task not found");
     }
+    console.log("This is the existingTask", existingTask)
+    const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
+    const teamLeadArray = teamLeadName && typeof teamLeadName === 'string'
+        ? teamLeadName.split(',').map(name => name.trim())
+        : existingTask.teamLeadName;
+
+    console.log("Received Task ID:", req.params.taskId);
+    console.log("Received Body:", req.body);
+
+    const tasks = [];
+    if (teamLeadArray) {
+        for (const teamLead of teamLeadArray) {
+            const user = await User.findOne({ name: teamLead });
+            if (!user) {
+                throw new apiError(400, `Username with ${teamLead} is not found`);
+            }
+            tasks.push(teamLead);
+        }
+    }
+
     const updateTask = await adminTask.findByIdAndUpdate(taskId, {
-        projectTitle,
-        // teamLeadName: tasks,
-        description,
-        projectStatus,
-        points
+        projectTitle: projectTitle || existingTask.projectTitle,
+        teamLeadName: tasks || existingTask.teamLeadName,
+        description: description || existingTask.description,
+        projectStatus: projectStatus || existingTask.projectStatus,
+        points: points || existingTask.projectStatus
     }, { new: true, runValidators: true })
     if (!updateTask) {
         throw new apiError(400, 'Task not found')
