@@ -28,6 +28,7 @@ import EditTextDialog from './EditTextDialog';
 export default function TableActive() {
     const [anchor, setAnchor] = useState(null);
     const { data, isLoading, isError, error } = useGetCreateTask();
+    const [selectedTask, setSelectedTask] = useState(null);
     const open = Boolean(anchor);
     // const handleClick = (event) => {
     //     setAnchor(event.currentTarget)
@@ -49,9 +50,8 @@ export default function TableActive() {
     };
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-    const [selectedTask, setSelectedTask] = useState(null);
     const handleEditClickOpen = (id) => {
-        console.log("Selected Task ID:", id);
+        // console.log("Selected Task ID:", id);
         // setSelectedTask(id);
         setEditDialogOpen(true);
         handleClose();
@@ -96,92 +96,98 @@ export default function TableActive() {
                     </TableHead>
 
                     <TableBody sx={{ borderTop: '12px solid white' }}>
-                        {data?.data?.map((task) => (
-                            <TableRow key={task._id} className={style.tableRowBody}>
-                                <TableCell component="th" scope="row">{task.projectTitle}</TableCell>
-                                <TableCell align="left">{task.assignedBy.name}</TableCell>
-                                <TableCell align="left">
-                                    <Button variant="text" className={style.tableBodyBtn} size="small">
-                                        {task.projectStatus}
-                                    </Button>
-                                </TableCell>
-                                <TableCell align="left">{task.members}</TableCell>
-                                <TableCell align="left">{new Date(task.startDate).toLocaleDateString()}</TableCell>
-                                <TableCell align="left">{new Date(task.dueDate).toLocaleDateString()}</TableCell>
-                                <TableCell align="left">${task.budget.toLocaleString()}</TableCell>
-                                <TableCell align="right">{`${task.points > 40 ? '+' : '-'} ${task.points}`}</TableCell>
-                                <TableCell align="right">
-                                    <div>
-                                        <IconButton
-                                            disableRipple
-                                            sx={{ padding: '1px', color: 'gray' }}
-                                            // onClick={handleClick}
-                                            onClick={(e) => handleClick(e, task._id)}
-                                        >
-                                            <MoreVertIcon />
-                                        </IconButton>
-
-                                        <Menu
-                                            anchorEl={anchor}
-                                            open={open}
-                                            onClose={handleClose}
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right'
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right',
-                                            }}
-                                            sx={{
-                                                '& .MuiList-root': {
-                                                    padding: 0,
-                                                    margin: 0,
-                                                    border: '1px solid silver',
-                                                    borderRadius: '0.2rem',
-                                                    backgroundColor: 'white'
-                                                },
-                                                '& .MuiPaper-root': {
-                                                    boxShadow: '0'
-                                                },
-                                            }}
-                                            className={style.anchorElParent}
-                                        >
-                                            <Link to={`${RouteNames.ADDPRODUCTS}`} style={{ textDecoration: 'none' }}>
-                                                <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
-                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                        <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                    </ListItemIcon>
-                                                    View
-                                                </MenuItem>
-                                            </Link>
-
-                                            <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                    <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                </ListItemIcon>Edit</MenuItem>
-
-                                            <MenuItem
-                                                onClick={handleDelete}
-                                                className={style.anchorMenuItem}
-                                                sx={{
-                                                    bgcolor: '#E97451',
-                                                    color: 'white !important',
-                                                    '&:hover': {
-                                                        bgcolor: '#EE4B2B !important'
-                                                    }
-                                                }}
+                        {data?.data?.map((task) => {
+                            // console.log("Task:", task._id);
+                            return (
+                                <TableRow key={task._id} className={style.tableRowBody}>
+                                    <TableCell component="th" scope="row">{task.projectTitle}</TableCell>
+                                    <TableCell align="left">{task.assignedBy.name}</TableCell>
+                                    <TableCell align="left">
+                                        <Button variant="text" className={style.tableBodyBtn} size="small">
+                                            {task.projectStatus}
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="left">{task.members}</TableCell>
+                                    <TableCell align="left">{new Date(task.startDate).toLocaleDateString()}</TableCell>
+                                    <TableCell align="left">{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+                                    <TableCell align="left">${task.budget.toLocaleString()}</TableCell>
+                                    <TableCell align="right">{`${task.points > 40 ? '+' : '-'} ${task.points}`}</TableCell>
+                                    <TableCell align="right">
+                                        <div>
+                                            <IconButton
+                                                disableRipple
+                                                sx={{ padding: '1px', color: 'gray' }}
+                                                // onClick={handleClick}
+                                                onClick={(e) => handleClick(e, task._id)}
                                             >
-                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                    <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                </ListItemIcon>
-                                                Delete
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                                <MoreVertIcon />
+                                            </IconButton>
+
+                                            <Menu
+                                                anchorEl={anchor}
+                                                open={open && selectedTask === task._id}
+                                                onClose={handleClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'right'
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                sx={{
+                                                    '& .MuiList-root': {
+                                                        padding: 0,
+                                                        margin: 0,
+                                                        border: '1px solid silver',
+                                                        borderRadius: '0.2rem',
+                                                        backgroundColor: 'white'
+                                                    },
+                                                    '& .MuiPaper-root': {
+                                                        boxShadow: '0'
+                                                    },
+                                                }}
+                                                className={style.anchorElParent}
+                                            >
+                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => {
+                                                    // console.log("Navigating to ID:", task._id)
+                                                    handleClose();
+                                                }}>
+                                                    <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                        </ListItemIcon>
+                                                        View
+                                                    </MenuItem>
+                                                </Link>
+
+                                                <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
+                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                        <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                    </ListItemIcon>Edit</MenuItem>
+
+                                                <MenuItem
+                                                    onClick={handleDelete}
+                                                    className={style.anchorMenuItem}
+                                                    sx={{
+                                                        bgcolor: '#E97451',
+                                                        color: 'white !important',
+                                                        '&:hover': {
+                                                            bgcolor: '#EE4B2B !important'
+                                                        }
+                                                    }}
+                                                >
+                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                        <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                    </ListItemIcon>
+                                                    Delete
+                                                </MenuItem>
+                                            </Menu>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
 
                     </TableBody>
                 </Table>

@@ -50,7 +50,7 @@ const TextDialog = ({ open, handleClose }) => {
                 {renderTextField("budget", "Add Budget")}
                 {renderTextField("description", "Project Description", true)}
             </DialogContent>
-            <Typography variant="span" sx={{ margin: 'auto', fontSize: '0.9rem', color: 'red' }}>error will shown here</Typography>
+            {/* <Typography variant="span" sx={{ margin: 'auto', fontSize: '0.9rem', color: 'red' }}>error will shown here</Typography> */}
             <DialogActions sx={{ paddingBottom: '1rem' }}>
                 <Button onClick={handleClose} color="secondary" className={styles.dialogBtnPrimary}>Cancel</Button>
                 <Button type="submit" onClick={handleClose} color="primary" className={styles.dialogBtnSecondary}>Save</Button>

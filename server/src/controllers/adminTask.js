@@ -14,11 +14,12 @@ const createTask = asyncHandler(async (req, res) => {
     // const adminId = req.user._id;
     const adminId = req.user._id;
 
-    // <---CODE FOR ONLY ADMIN TO ASSIGN TASK --->
+    // <--- CODE FOR ONLY ADMIN TO ASSIGN TASK --->
     // const admin = await User.findById(req.user.id); // Get the current logged-in admin
     // if (!admin || admin.role !== 'admin') {
     //   return res.status(403).json({ message: 'Only admins can assign tasks.' });
     // }
+
 
     if (!budget) {
         throw new apiError(400, "Budget and members array are required.");
@@ -123,9 +124,22 @@ const UpdateTask = asyncHandler(async (req, res) => {
 })
 
 
+const getCreateTaskById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const task = await adminTask.findById(id);
+
+    if (!task) {
+        throw new apiError(400, "Task not found");
+    }
+    console.log("This task is from getCreateTaskById (Backend)", task)
+    return res.status(200).json(new apiResponse(200, task, "Task Update Successfully"))
+})
+
+
 export {
     createTask,
     getCreateTask,
     DeleteTask,
-    UpdateTask
+    UpdateTask,
+    getCreateTaskById
 }
