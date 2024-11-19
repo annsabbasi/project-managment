@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styles from './style.module.scss';
 import PropTypes from 'prop-types';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Typography } from '@mui/material';
@@ -13,11 +14,11 @@ const EditTextDialog = ({ open, handleClose, task }) => {
         teamLeadName: Array.isArray(task?.teamLeadName) ? task.teamLeadName.join(', ') : task?.teamLeadName || '',
         description: task?.description || '',
         projectStatus: task?.projectStatus || '',
-        points: task?.points || ''
+        points: task?.points || '',
     });
 
     useEffect(() => {
-        console.log("Editing Task with ID:", task);
+        // console.log("Editing Task with ID:", task);
     }, [task]);
 
     // const renderTextField = (name, label, multiline = false) => (
@@ -48,6 +49,7 @@ const EditTextDialog = ({ open, handleClose, task }) => {
         //     updates: formData,
         // });
         editTask({ taskId: task, updateData: formData });
+        // console.log("This is the formData", formData)
       handleClose();
     }
 

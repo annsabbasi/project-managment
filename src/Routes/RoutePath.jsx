@@ -62,7 +62,7 @@ export const PrivateRoute = [
         layout: true,
         title: 'Project',
         children: [
-            { path: RouteNames.ADDPRODUCTS, element: AddProjects, layout: true, title: 'AddProjects' }
+            { path: `${RouteNames.ADDPRODUCTS}/:id`, element: AddProjects, layout: true, title: 'AddProjects' }
         ]
     },
 ]

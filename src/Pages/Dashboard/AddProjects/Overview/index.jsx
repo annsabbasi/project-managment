@@ -1,9 +1,28 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
 import style from "./style.module.scss"
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import theme from "../../../../Theme/Theme";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchTaskById } from "../../../../api/taskApi";
 
 export default function index() {
+    const { id } = useParams();
+
+    const { data: taskData } = useQuery({
+        queryKey: ['task', id],
+        queryFn: () => fetchTaskById(id),
+
+        enabled: !!id, // Fetch only if taskId exists
+        staleTime: 50000
+    }
+    )
+
+
+
+    // console.log("THis is the data from the Overview", taskData)
+
     return (
         <Stack variant="main" flexDirection="row" gap={2}>
             <Stack gap={2} sx={{ flexGrow: '1' }}>
@@ -17,7 +36,7 @@ export default function index() {
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={style.textGrey}>Team Lead</Typography>
-                                <Typography className={style.textGreyInfo}>Steven Li</Typography>
+                                <Typography className={style.textGreyInfo}>{taskData?.data?.teamLeadName && Array.isArray(taskData?.data?.teamLeadName) && taskData?.data?.teamLeadName.join(', ')}</Typography>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={style.textGrey}>Start Date</Typography>
@@ -28,7 +47,7 @@ export default function index() {
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={style.textGrey}>Status</Typography>
-                                <Button variant="text" className={style.statusBtn}>in progress</Button>
+                                <Button variant="text" className={style.statusBtn}>{taskData?.data?.projectStatus}</Button>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={style.textGrey}>Due Date</Typography>
@@ -39,14 +58,14 @@ export default function index() {
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={style.textGrey}>Budget</Typography>
-                                <Typography className={style.textGreyInfo}>15000-$</Typography>
+                                <Typography className={style.textGreyInfo}>$-{taskData?.data?.budget}</Typography>
                             </Stack>
                         </Stack>
                     </Stack>
 
                     <Box sx={{ marginBlock: '0.8rem' }}>
                         <Typography variant="h6" className={style.texth6}>Description</Typography>
-                        <Typography variant="p" className={style.textGreyDesc}>Here, the project description will be shown up.</Typography>
+                        <Typography variant="p" className={style.textGreyDesc}>{taskData?.data?.description}</Typography>
                     </Box>
 
                     <Box mb={2}>

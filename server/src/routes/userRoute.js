@@ -16,7 +16,8 @@ import {
     createTask,
     getCreateTask,
     DeleteTask,
-    UpdateTask
+    UpdateTask,
+    getCreateTaskById
 } from '../controllers/adminTask.js';
 
 
@@ -35,5 +36,6 @@ router.route('/create-task').post(verifyUser(['superadmin', 'admin']), createTas
 router.route('/get-create-task').get(verifyUser('admin'), getCreateTask)
 router.route('/get-delete-task/:taskId').delete(verifyUser('admin'), DeleteTask)
 router.route('/get-update-task/:taskId').put(verifyUser('admin'), UpdateTask)
+router.route('/get-create-task/:id').get(verifyUser(['admin', 'user']), getCreateTaskById)
 
 export default router

@@ -39,9 +39,19 @@ export const deleteTask = async (taskId) => {
 export const updateTask = async (taskId, updateData) => {
     try {
         const response = await axiosInstance.put(`/user/get-update-task/${taskId}`, updateData);
-        console.log("taskApi UpdateTask Success", response);
+        // console.log("taskApi UpdateTask Success", response);
         return response.data;
     } catch (error) {
         console.log("taskApi updateTask error", error)
     }
-} 
+}
+
+
+export const fetchTaskById = async (id) => {
+    try {
+        const response = await axiosInstance.get(`/user/get-create-task/${id}`); // Use the taskId in the endpoint
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching task by ID:', error);
+    }
+};

@@ -102,7 +102,7 @@ export default function AddProjects() {
                         })}
                         className={project.Tab} />
 
-                    <Tab
+                    {/* <Tab
                         label="Time"
                         {...allyProps(3)}
                         sx={(theme) => ({
@@ -113,7 +113,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab} />
+                        className={project.Tab} /> */}
                     <Tab
                         label="Assign"
                         {...allyProps(4)}

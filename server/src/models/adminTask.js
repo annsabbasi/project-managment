@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema({
     projectStatus: {
         type: String,
         default: 'pending',
-        enum: ['pending', 'ended', 'Approved', 'Not Approved'],
+        enum: ['pending', 'ended', 'approved', 'not approved'],
     },
     members: {
         type: Number,
