@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
 const subUsertaskSchema = new mongoose.Schema({
-    projectTitle: {
+    title: {
         type: String,
-        // required: [true, "The project title is required"],
+        required: [true, "The project title is required"],
         maxlength: [40, "The title should be no longer than 40 characters"]
     },
-    teamLeadName: {
+    assign: {
         type: [String],
         required: [true, "Please type the name of the admin"]
     },
@@ -14,39 +14,22 @@ const subUsertaskSchema = new mongoose.Schema({
         type: String,
         maxLength: [700, "The Description should be no longer than 700 characters"]
     },
-    projectStatus: {
-        type: String,
-        default: 'pending',
-        enum: ['pending', 'ended', 'approved', 'not approved'],
-    },
-    members: {
-        type: Number,
+    dueDate: {
+        type: Date,
+        required: [true, 'The Due Date is required']
     },
     startDate: {
         type: Date,
         default: Date.now,
     },
-    dueDate: {
-        type: Date,
-        required: [true, 'The Due Date is required']
-    },
-    budget: {
-        type: Number,
-        required: true
-    },
-    status: {
+    taskList: {
         type: String,
-        default: 'In Progress',
-        enum: ['In Progress', 'Completed', 'Approved', 'Not Approved']
+        enum: ['progress', 'completed'],
+        default: 'progress',
     },
     points: {
-        // type: Number,
-        type: String,
+        type: Number,
         default: 100
-    },
-    profileImage: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "UserInfo",
     },
     assignedBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -55,11 +38,7 @@ const subUsertaskSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-// Validator to enforce members count
-// function arrayLimit(val) {
-//     return val.length >= 5 && val.length <= 100;
-// }
 
-const subUserTask = mongoose.model('userTask', subUsertaskSchema);
+const subUserTask = mongoose.model('subUserTask', subUsertaskSchema);
 
 export { subUserTask };
