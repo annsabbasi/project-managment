@@ -128,7 +128,6 @@ const getCreateTaskById = asyncHandler(async (req, res) => {
     if (!task) {
         throw new apiError(400, "Task not found");
     }
-    console.log("getCreateTaskById (adminTask)", task)
     return res.status(200).json(new apiResponse(200, task, "Task Update Successfully"))
 })
 
