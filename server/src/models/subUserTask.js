@@ -36,6 +36,11 @@ const subUsertaskSchema = new mongoose.Schema({
         ref: "UserInfo",
         required: true
     },
+    projectId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userTask",
+        required: true
+    }
 }, { timestamps: true });
 
 

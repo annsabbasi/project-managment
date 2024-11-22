@@ -1,18 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSubTask } from '../../../../api/userSubTask'; // Import API function
-import { useState } from 'react';
+import { createSubTask } from '../../../../api/userSubTask';
+import { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Box } from '@mui/material';
 import styles from './style.module.scss';
+import { useParams } from 'react-router-dom';
 
 export default function Index() {
+    const { id } = useParams();
     const queryClient = useQueryClient();
     const [formData, setFormData] = useState({
         assign: '',
         title: '',
         description: '',
         dueDate: '',
+        projectId: id || ''
     });
-
+    useEffect(() => {
+        console.log("useParams projectId:", id);
+        if (id) {
+            setFormData((prev) => ({ ...prev, id }));
+        }
+    }, [id]);
+    console.log("Assign Index.jsx", formData)
     const mutation = useMutation({
         mutationFn: createSubTask,
         onSuccess: () => {
@@ -63,7 +72,7 @@ export default function Index() {
                         onChange={handleChange}
                     />
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         variant="outlined"

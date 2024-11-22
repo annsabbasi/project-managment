@@ -5,10 +5,11 @@ import theme from "../../../../Theme/Theme";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTaskById } from "../../../../api/taskApi";
+import { getSubTask } from "../../../../api/userSubTask";
 
-export default function index() {
+export default function index({ projectId }) {
+    // Fetching The Admin User Project Task...
     const { id } = useParams();
-
     const { data: taskData } = useQuery({
         queryKey: ['task', id],
         queryFn: () => fetchTaskById(id),
@@ -16,6 +17,16 @@ export default function index() {
         staleTime: 50000
     }
     )
+
+    // Fetching The SubUser Task...
+    const { data } = useQuery({
+        queryKey: ['userSubTask', projectId],
+        queryFn: () => getSubTask(projectId),
+        enabled: !!projectId, // Ensures the query runs only when projectId is available
+    })
+    const tasks = data?.data || [];
+
+    console.log("This is the SubUserTask from the Overview.jsx", tasks)
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>

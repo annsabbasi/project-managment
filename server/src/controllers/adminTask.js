@@ -33,7 +33,6 @@ const createTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
-    console.log("This is the adminId", tasks.length)
     const newTask = new adminTask({
         projectTitle,
         teamLeadName: tasks,
@@ -129,7 +128,7 @@ const getCreateTaskById = asyncHandler(async (req, res) => {
     if (!task) {
         throw new apiError(400, "Task not found");
     }
-    console.log("This task is from getCreateTaskById (Backend)", task)
+    console.log("getCreateTaskById (adminTask)", task)
     return res.status(200).json(new apiResponse(200, task, "Task Update Successfully"))
 })
 
