@@ -22,7 +22,6 @@ const createUserTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
-    console.log("This is the adminId", tasks.length)
     const newTask = new subUserTask({
         title,
         assign: tasks,
