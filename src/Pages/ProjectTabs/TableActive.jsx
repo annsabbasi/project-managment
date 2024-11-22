@@ -22,7 +22,6 @@ import AddIcon from '@mui/icons-material/Add';
 import TextDialog from './TextDialog';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditTextDialog from './EditTextDialog';
-// import Spinner from '../../Components/Spinner';
 
 
 export default function TableActive() {
@@ -30,9 +29,7 @@ export default function TableActive() {
     const { data, isLoading, isError, error } = useGetCreateTask();
     const [selectedTask, setSelectedTask] = useState(null);
     const open = Boolean(anchor);
-    // const handleClick = (event) => {
-    //     setAnchor(event.currentTarget)
-    // }
+    
     const handleClick = (event, taskId) => {
         setAnchor(event.currentTarget);
         setSelectedTask(taskId);
@@ -50,20 +47,17 @@ export default function TableActive() {
     };
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-    const handleEditClickOpen = (id) => {
-        // console.log("Selected Task ID:", id);
-        // setSelectedTask(id);
+    const handleEditClickOpen = () => {
         setEditDialogOpen(true);
         handleClose();
     };
     const handleEditCloseTab = () => {
         setEditDialogOpen(false);
-        setSelectedTask(null); // Reset the task
+        setSelectedTask(null); 
     };
 
     const { mutate: deleteTask } = useDeleteTask();
     const handleDelete = () => {
-        // deleteTask(taskId, {
         deleteTask(selectedTask, {
             onSuccess: () => {
                 handleClose();
@@ -72,7 +66,6 @@ export default function TableActive() {
     }
 
 
-    // if (isLoading) return <Spinner />;   
     if (isLoading) return <p>loading...</p>;
     if (isError) return <p>Error loading tasks: {error.message}</p>;
 
@@ -97,7 +90,6 @@ export default function TableActive() {
 
                     <TableBody sx={{ borderTop: '12px solid white' }}>
                         {data?.data?.map((task) => {
-                            // console.log("Task:", task._id);
                             return (
                                 <TableRow key={task._id} className={style.tableRowBody}>
                                     <TableCell component="th" scope="row">{task.projectTitle}</TableCell>
@@ -117,7 +109,6 @@ export default function TableActive() {
                                             <IconButton
                                                 disableRipple
                                                 sx={{ padding: '1px', color: 'gray' }}
-                                                // onClick={handleClick}
                                                 onClick={(e) => handleClick(e, task._id)}
                                             >
                                                 <MoreVertIcon />
@@ -150,7 +141,6 @@ export default function TableActive() {
                                                 className={style.anchorElParent}
                                             >
                                                 <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => {
-                                                    // console.log("Navigating to ID:", task._id)
                                                     handleClose();
                                                 }}>
                                                     <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
@@ -208,11 +198,7 @@ export default function TableActive() {
                     </Stack>
                 )}
 
-            {/* Dialog for Update  */}
-            {/* <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} taskData={selectedTask} /> */}
-            {/* <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} /> */}
             <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
-
         </TableContainer>
     );
 }

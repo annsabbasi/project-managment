@@ -11,7 +11,6 @@ const createTask = asyncHandler(async (req, res) => {
     if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
         throw new apiError(400, "All fields are required.")
     }
-    // const adminId = req.user._id;
     const adminId = req.user._id;
 
     // <--- CODE FOR ONLY ADMIN TO ASSIGN TASK --->
@@ -34,7 +33,6 @@ const createTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
-    console.log("This is the adminId", tasks.length)
     const newTask = new adminTask({
         projectTitle,
         teamLeadName: tasks,
@@ -57,7 +55,6 @@ const getCreateTask = asyncHandler(async (req, res) => {
         .populate('assignedBy', 'name avatar');
 
     if (!tasks || tasks.length === 0) {
-        // throw new apiError(400, "No tasks found")
         return res.status(200).json(new apiResponse(200, [], "No task found"))
     }
     return res.status(200).json(new apiResponse(200, tasks, "Get Task successfully"))
@@ -131,7 +128,7 @@ const getCreateTaskById = asyncHandler(async (req, res) => {
     if (!task) {
         throw new apiError(400, "Task not found");
     }
-    console.log("This task is from getCreateTaskById (Backend)", task)
+    console.log("getCreateTaskById (adminTask)", task)
     return res.status(200).json(new apiResponse(200, task, "Task Update Successfully"))
 })
 

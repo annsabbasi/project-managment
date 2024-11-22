@@ -1,6 +1,6 @@
 .boxMain1 {
   border: 1px solid silver;
-  padding: 0.4rem 0.8rem;
+  padding: 1rem 2rem;
   border-radius: 0.4rem;
 }
 .BoxContent {
@@ -19,7 +19,8 @@
 
 .textGreyInfo {
   font-size: 0.9rem;
-  color: rgb(43, 43, 43);
+  // color: rgb(43, 43, 43);
+  color: green;
 }
 
 .textGreyDesc {
@@ -42,4 +43,21 @@
   border: 1px solid silver;
   border-radius: 0.4rem;
   height: fit-content;
+}
+
+.dialogBtnSecondary {
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  border: 1px solid grey;
+  box-shadow: none;
+  border-radius: 2rem;
+  width: fit-content;
+  min-width: 120px;
+  padding: 0.4rem 1.4rem;
+  &:hover {
+    background-color: white;
+    color: #424242;
+    box-shadow: none;
+  }
 }

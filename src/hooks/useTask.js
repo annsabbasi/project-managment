@@ -19,7 +19,6 @@ export const useCreateTask = () => {
                 };
             });
 
-            // Optionally, prefetch or refetch username if required
             queryClient.invalidateQueries(['username', newData.data.userId]);
         },
     });
@@ -34,7 +33,6 @@ export const useGetCreateTask = () => {
         initialData: [],
     });
 }
-
 
 
 export const useDeleteTask = () => {

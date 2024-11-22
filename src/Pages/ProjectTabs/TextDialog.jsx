@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Typography } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useCreateTask } from '../../hooks/useTask';
 
