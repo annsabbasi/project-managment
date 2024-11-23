@@ -21,7 +21,6 @@ export default function Index() {
             setFormData((prev) => ({ ...prev, id }));
         }
     }, [id]);
-    console.log("Assign Index.jsx", formData)
     const mutation = useMutation({
         mutationFn: createSubTask,
         onSuccess: () => {

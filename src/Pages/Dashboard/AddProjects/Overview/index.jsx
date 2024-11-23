@@ -1,11 +1,25 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Button,
+    // Divider,
+    Stack,
+    Typography,
+    Table,
+    TableRow,
+    TableCell,
+    TableBody,
+    TableHead,
+    TableContainer,
+} from "@mui/material";
 import style from "./style.module.scss"
-import theme from "../../../../Theme/Theme";
+// import theme from "../../../../Theme/Theme";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTaskById } from "../../../../api/taskApi";
 import { getSubTask } from "../../../../api/userSubTask";
+import { useEffect, useState } from "react";
 
 export default function index({ projectId }) {
     // Fetching The Admin User Project Task...
@@ -19,14 +33,32 @@ export default function index({ projectId }) {
     )
 
     // Fetching The SubUser Task...
-    const { data } = useQuery({
-        queryKey: ['userSubTask', projectId],
-        queryFn: () => getSubTask(projectId),
-        enabled: !!projectId, // Ensures the query runs only when projectId is available
-    })
-    const tasks = data?.data || [];
+    // const { data } = useQuery({
+    //     queryKey: ['userSubTask', projectId],
+    //     queryFn: () => getSubTask(projectId),
+    //     enabled: !!projectId, // Ensures the query runs only when projectId is available
+    // })
+    // const tasks = data?.data || [];
 
-    console.log("This is the SubUserTask from the Overview.jsx", tasks)
+    // console.log("This is the SubUserTask from the Overview.jsx", tasks)
+
+
+    const [subTasks, setSubTasks] = useState([]);
+
+    useEffect(() => {
+        const fetchSubTasks = async () => {
+            try {
+                const response = await getSubTask(id);
+                if (response) {
+                    setSubTasks(response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching subtasks:", error);
+            }
+        };
+
+        fetchSubTasks();
+    }, [projectId]);
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -128,37 +160,67 @@ export default function index({ projectId }) {
             </Stack>
 
             <Stack variant="div" className={style.boxMain2}>
-                <Stack justifyContent="space-between" flexDirection="row" padding="1.2rem 0" paddingInlineStart={2} paddingInlineEnd={2}>
-                    <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Title</Typography>
-                    <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Assignee</Typography>
-                    <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Due Date</Typography>
-                    <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Start Date</Typography>
-                    <Typography variant="h6" sx={{ fontSize: "1.1rem" }}>Task List</Typography>
-                </Stack>
-                <Divider />
 
-                <Box sx={{ padding: '0.2rem 0.8rem' }}>
-                    <Stack justifyContent="space-between" flexDirection="row" padding="0.2rem 0" my={1}>
-                        <Typography sx={{ maxWidth: '50px' }}>Lorem ipsum</Typography>
+                <TableContainer>
+                    <Table className={style.table}>
+                        <TableHead className={style.tableHead}>
+                            <TableRow className={style.tableRowHead}>
+                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Title</TableCell>
+                                <TableCell variant="h6" sx={{ fontSize: "1.1rem" }}>Assign To</TableCell>
+                                <TableCell variant="h6" sx={{ fontSize: "1.1rem" }}>Assign By</TableCell>
+                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Description</TableCell>
+                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Start Date</TableCell>
+                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Due Date</TableCell>
+                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>Points</TableCell>
+                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>TaskList</TableCell>
+                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>&nbsp;</TableCell>
+                            </TableRow>
+                        </TableHead>
 
-                        <Stack flexDirection="row" gap={1} sx={{ cursor: 'pointer', maxWidth: '6rem', minWidth: '6rem' }}>
-                            <Avatar sx={{ bgcolor: theme.palette.grey.A300, width: '1.4rem', height: '1.4rem' }}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" style={{ width: '1rem', height: '1rem' }}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                </svg>
-                            </Avatar>
-                        </Stack>
+                        <Box sx={{ height: '16px' }} />
+                        <TableBody>
+                            {subTasks.map((task, index) => {
+                                return (
+                                    <TableRow key={index} className={style.tableRowBody}>
+                                        <TableCell component="th" scope="row" >{task.title}</TableCell>
+                                        <TableCell component="th" scope="row" className={style.textGrey}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
 
-                        <Typography className={style.textGrey}>90/78/2020</Typography>
-                        <Typography className={style.textGrey}>90/78/2022</Typography>
-                        <Stack flexDirection="row" gap={1} alignItems="center">
-                            {/* <TaskAltIcon sx={{ width: '1.2rem', height: '1.2rem' }} /> */}
-                            <Typography className={style.textGrey}>Completed</Typography>
-                        </Stack>
-                    </Stack>
+                                        <TableCell align="left">
+                                            <Stack
+                                                flexDirection="row"
+                                                gap={1}
+                                                sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
+                                                <Avatar sx={{ bgcolor: "silver", width: "1.4rem", height: "1.4rem", fontSize: '14px' }}>
+                                                    {task.assignedBy?.name?.[0]?.toUpperCase()}
+                                                </Avatar>
+                                                <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
+                                            </Stack>
+                                        </TableCell>
 
-                </Box>
+                                        <TableCell align="left">
+                                            <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey}>{task.description}</Typography>
+                                        </TableCell>
+
+                                        <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
+                                        <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+                                        <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell>
+                                        <TableCell align="right">
+                                            <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            <Button color="error" className={`${style.dialogBtnPrimary}`}>
+                                                Delete
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+
+                </TableContainer >
             </Stack>
         </Stack>
-    )
+    );
 }
