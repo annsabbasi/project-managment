@@ -35,8 +35,6 @@ const createUserTask = asyncHandler(async (req, res) => {
     });
 
     await newTask.save();
-    console.log("Assign By User Data", userId)
-    console.log("Data from the UserSubTask", newTask)
     return res.status(200).json(new apiResponse(200, newTask, "Task created successfully."))
 })
 
@@ -54,7 +52,6 @@ const getUserSubTask = asyncHandler(async (req, res) => {
     if (!tasks || tasks.length === 0) {
         return res.status(200).json(new apiResponse(200, [], "No tasks found"));
     }
-    console.log("GetUserSubTask Data", tasks);
     return res.status(200).json(new apiResponse(200, tasks, "Tasks fetched successfully"));
 });
 
@@ -71,6 +68,8 @@ const deleteUserSubTask = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new apiResponse(200, deleteTask, "Task Deleted Successfully"))
 })
+
+
 
 
 export {
