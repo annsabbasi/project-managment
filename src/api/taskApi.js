@@ -49,9 +49,32 @@ export const updateTask = async (taskId, updateData) => {
 
 export const fetchTaskById = async (id) => {
     try {
-        const response = await axiosInstance.get(`/user/get-create-task/${id}`); // Use the taskId in the endpoint
+        const response = await axiosInstance.get(`/user/get-create-task/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching task by ID:', error);
+    }
+};
+
+
+export const submitTask = async (taskId, status) => {
+    try {
+        const response = await axiosInstance.put(`/user/submit-task/${taskId}`, { status });
+        // console.log("submitTask (taskApi) success", response);
+        return response.data;
+    } catch (error) {
+        console.log("submitTask (taskApi) error:", error)
+    }
+}
+
+
+export const projectApproval = async (taskId, projectStatus) => {
+    try {
+        const response = await axiosInstance.put(`/user/project-approval/${taskId}`, { projectStatus });
+        console.log("submitTask (taskApi) success", response);
+        return response.data;
+    } catch (error) {
+        console.log("submitTask (taskApi) error:", error);
+        throw error; // Ensure errors bubble up
     }
 };

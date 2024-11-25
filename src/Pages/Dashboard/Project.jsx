@@ -3,8 +3,9 @@ import AddIcon from '@mui/icons-material/Add';
 import Template from "../ProjectTabs/Template";
 import Complete from "../ProjectTabs/Complete";
 import TableActive from "../ProjectTabs/TableActive";
+import Request from "../ProjectTabs/Request";
 import project from "./DashboardScss/project.module.scss"
-import Request from "../../Components/Dashboard/Request/Request";
+// import Request from "../../Components/Dashboard/Request/Request";
 
 import { useState } from "react";
 import { RouteNames } from "../../Constants/route";
@@ -145,6 +146,7 @@ export default function Project() {
                         </CustomTabPanel>
 
                         <CustomTabPanel value={activeTab} index={1}>
+                            {/* <Request /> */}
                             <Request />
                         </CustomTabPanel>
 

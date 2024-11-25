@@ -15,13 +15,16 @@ import {
 } from "@mui/material";
 import style from "./style.module.scss"
 // import theme from "../../../../Theme/Theme";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTaskById } from "../../../../api/taskApi";
 import { getSubTask } from "../../../../api/userSubTask";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../../context/AuthProvider";
+import { useSubmitTask } from "../../../../hooks/useTask";
 
-export default function index({ projectId }) {
+export default function index() {
+    const { user } = useAuth();
     // Fetching The Admin User Project Task...
     const { id } = useParams();
     const { data: taskData } = useQuery({
@@ -32,19 +35,8 @@ export default function index({ projectId }) {
     }
     )
 
-    // Fetching The SubUser Task...
-    // const { data } = useQuery({
-    //     queryKey: ['userSubTask', projectId],
-    //     queryFn: () => getSubTask(projectId),
-    //     enabled: !!projectId, // Ensures the query runs only when projectId is available
-    // })
-    // const tasks = data?.data || [];
-
-    // console.log("This is the SubUserTask from the Overview.jsx", tasks)
-
 
     const [subTasks, setSubTasks] = useState([]);
-
     useEffect(() => {
         const fetchSubTasks = async () => {
             try {
@@ -56,9 +48,19 @@ export default function index({ projectId }) {
                 console.error("Error fetching subtasks:", error);
             }
         };
-
         fetchSubTasks();
-    }, [projectId]);
+    }, [id]);
+
+    const { mutate: submitTaskMutation } = useSubmitTask();
+    const submitPojectMutation = (e) => {
+        e.preventDefault();
+        if (user.role === 'admin') {
+            submitTaskMutation({ taskId: id, status: 'Completed' })
+        }
+    }
+
+    // console.log("This is the taskData", taskData)
+    // console.log("This is the user Fetched from AuthProvider", taskData?.data?.status)
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -110,22 +112,39 @@ export default function index({ projectId }) {
                             <Typography variant="h6" className={style.texth6}>Project Points</Typography>
                             <Typography variant="p" className={style.textGreyDesc} sx={{ color: 'green !important' }}>{taskData?.data?.points}</Typography>
                         </Box>
-                        <Button color="primary" className={`${style.dialogBtnSecondary}`}>
-                            Submit
+                        <Button color="primary"
+                            className={`${style.dialogBtnSecondary}`}
+                            disabled={user.role !== 'admin' || taskData?.data?.status === 'Completed'}
+                            onClick={submitPojectMutation}
+                            sx={{
+                                ...(user.role !== 'admin' || taskData?.data?.status === 'Completed') && {
+                                    backgroundColor: '#FFFFF0 !important',
+                                    color: '#424242 !important',
+                                    textTransform: 'capitalize',
+                                    letterSpacing: '1px',
+                                    fontWeight: '500 !important'
+                                },
+                            }}
+                        >
+                            {taskData?.data?.status === 'Completed' ? 'Submitted' : 'Submit'}
                         </Button>
                     </Stack>
                 </Box>
 
                 <Stack flexDirection="row" justifyContent="space-between" gap={5}>
-                    <Box className={style.BoxContent} sx={{ flexGrow: '1' }}>
+                    <Box className={style.BoxContent} sx={{ flexGrow: '1', maxHeight: '160px' }}>
                         <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
-                            <Typography variant="h6">Project Info</Typography>
+                            <Typography variant="h6">Project Links</Typography>
                         </Box>
-                        <Stack flexDirection="row" justifyContent="space-between" mb={2}>
-                            <Typography className={style.texth6}>Client Aggrement</Typography>
-                            <Button variant="text" className={style.statusBtn} sx={{ backgroundColor: 'rgba(57, 245, 57, 0.2)', color: 'green' }}>in progress</Button>
+                        <Stack sx={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', gap: 2 }}>
+                            <Link>https://www.google.co.uk/</Link>
+                            <Link>https://www.google.co.uk/</Link>
                         </Stack>
                     </Box>
+                    {/* <Stack flexDirection="row" justifyContent="space-between" mb={2}>
+                            <Typography className={style.texth6}>Client Aggrement</Typography>
+                            <Button variant="text" className={style.statusBtn} sx={{ backgroundColor: 'rgba(57, 245, 57, 0.2)', color: 'green' }}>in progress</Button>
+                        </Stack> */}
 
                     <Box className={style.BoxContent} sx={{ flexGrow: '1' }}>
                         <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
@@ -160,7 +179,6 @@ export default function index({ projectId }) {
             </Stack>
 
             <Stack variant="div" className={style.boxMain2}>
-
                 <TableContainer>
                     <Table className={style.table}>
                         <TableHead className={style.tableHead}>

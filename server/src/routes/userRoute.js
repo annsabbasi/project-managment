@@ -17,7 +17,9 @@ import {
     getCreateTask,
     DeleteTask,
     UpdateTask,
-    getCreateTaskById
+    getCreateTaskById,
+    submitTask,
+    projectApproval
 } from '../controllers/adminTask.js';
 import { createUserTask, deleteUserSubTask, getUserSubTask } from '../controllers/subUserTask.js';
 
@@ -42,6 +44,8 @@ router.route('/get-create-task').get(verifyUser('admin'), getCreateTask)
 router.route('/get-delete-task/:taskId').delete(verifyUser('admin'), DeleteTask)
 router.route('/get-update-task/:taskId').put(verifyUser('admin'), UpdateTask)
 router.route('/get-create-task/:id').get(verifyUser(['admin', 'user']), getCreateTaskById)
+router.route('/submit-task/:taskId').put(verifyUser('admin'), submitTask)
+router.route('/project-approval/:taskId').put(verifyUser('admin'), projectApproval)
 
 
 

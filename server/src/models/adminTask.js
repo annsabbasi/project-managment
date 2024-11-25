@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema({
     projectStatus: {
         type: String,
         default: 'pending',
-        enum: ['pending', 'ended', 'approved', 'not approved'],
+        enum: ['pending', 'approved', 'not approved'],
     },
     members: {
         type: Number,
@@ -37,7 +37,7 @@ const taskSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'In Progress',
-        enum: ['In Progress', 'Completed', 'Approved', 'Not Approved']
+        enum: ['In Progress', 'Completed']
     },
     points: {
         // type: Number,
