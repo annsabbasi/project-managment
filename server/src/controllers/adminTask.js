@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/userModel.js";
 import mongoose from "mongoose";
 
-
+// Creating a Task
 const createTask = asyncHandler(async (req, res) => {
     const { projectTitle, teamLeadName, description, projectStatus, startDate, dueDate, budget } = req.body;
     if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
@@ -50,6 +50,7 @@ const createTask = asyncHandler(async (req, res) => {
 })
 
 
+// Getting the data of the Task
 const getCreateTask = asyncHandler(async (req, res) => {
     const tasks = await adminTask.find()
         .populate('assignedBy', 'name avatar');
@@ -61,6 +62,7 @@ const getCreateTask = asyncHandler(async (req, res) => {
 })
 
 
+// Deleting the data of the Task
 const DeleteTask = asyncHandler(async (req, res) => {
     const taskId = req.params.taskId;
     if (!taskId) {
@@ -75,6 +77,7 @@ const DeleteTask = asyncHandler(async (req, res) => {
 })
 
 
+// Updating the Task
 const UpdateTask = asyncHandler(async (req, res) => {
     const taskId = req.params.taskId;
     if (!mongoose.isValidObjectId(taskId)) {
@@ -121,6 +124,7 @@ const UpdateTask = asyncHandler(async (req, res) => {
 })
 
 
+// Getting a Single Task by ID
 const getCreateTaskById = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const task = await adminTask.findById(id);
@@ -132,10 +136,52 @@ const getCreateTaskById = asyncHandler(async (req, res) => {
 })
 
 
+
+// Updating the Task ProjectStatus
+const submitTask = asyncHandler(async (req, res) => {
+    const { taskId } = req.params;
+    const { status } = req.body;
+
+    const task = await adminTask.findById(taskId);
+    if (!task) {
+        throw new apiError(400, "Task not found")
+    }
+    // task.status = "Completed";
+    task.status = status;
+    await task.save();
+
+    res.status(200).json(new apiResponse(200, task, "Task Status Updated"))
+})
+
+
+
+// Project Approcal or DisApproval from Admin
+const projectApproval = asyncHandler(async (req, res) => {
+    const { taskId } = req.params;
+    const { projectStatus } = req.body;
+
+    const task = await adminTask.findByIdAndUpdate(
+        taskId,
+        { projectStatus },
+        { new: true }
+    );;
+    if (!task) {
+        throw new apiError(400, "Task not found")
+    }
+
+    task.projectStatus = projectStatus;
+    await task.save();
+    console.log("SubmitTask (AdminTask)", task)
+    res.status(200).json(new apiResponse(200, task, `Task ${projectStatus} successfully`))
+})
+
+
 export {
     createTask,
     getCreateTask,
     DeleteTask,
     UpdateTask,
-    getCreateTaskById
+    getCreateTaskById,
+    submitTask,
+    projectApproval
 }

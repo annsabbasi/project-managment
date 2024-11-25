@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { createTask, deleteTask, fetchTask, updateTask } from "../api/taskApi";
+import { createTask, deleteTask, fetchTask, projectApproval, submitTask, updateTask } from "../api/taskApi";
 
 export const useCreateTask = () => {
     const queryClient = useQueryClient();
@@ -22,7 +22,6 @@ export const useCreateTask = () => {
             queryClient.invalidateQueries(['username', newData.data.userId]);
         },
     });
-
 }
 
 
@@ -80,6 +79,40 @@ export const useUpdateTask = () => {
         }
     })
 }
+
+export const useSubmitTask = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ taskId, status }) => submitTask(taskId, status),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['tasks']);
+            // queryClient.invalidateQueries(['tasks', taskId]);
+        },
+    });
+};
+
+
+// export const useSubmitTask = () => {
+//     const queryClient = useQueryClient();
+//     return useMutation({
+//         mutationFn: ({ taskId }) => submitTask(taskId),
+//         onSuccess: () => {
+//             // queryClient.invalidateQueries(['task', taskId]);
+//             queryClient.invalidateQueries(['tasks']);
+//         },
+//     });
+// }
+
+
+export const useProjectApproval = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ taskId, projectStatus }) => projectApproval(taskId, projectStatus),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['tasks']);
+        },
+    });
+};
 
 
 
