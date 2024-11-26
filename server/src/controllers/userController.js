@@ -1,8 +1,9 @@
+import jwt from 'jsonwebtoken'
 import { User } from "../models/userModel.js";
+
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import jwt from 'jsonwebtoken'
 
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
     try {
@@ -14,12 +15,13 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
         return { accessToken, refreshToken };
-
         // eslint-disable-next-line no-unused-vars
     } catch (error) {
         throw new apiError(400, "Something went wrong from the")
     }
 }
+
+
 
 // To Register a Person
 const registerUser = asyncHandler(async (req, res) => {
@@ -43,6 +45,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new apiResponse(200, createdUser, "user register successfully"));
 })
+
+
 
 // To Login a Person
 const loginUser = asyncHandler(async (req, res) => {
@@ -82,6 +86,8 @@ const loginUser = asyncHandler(async (req, res) => {
         )
 })
 
+
+
 // To Logout a Person
 const logoutUser = asyncHandler(async (req, res) => {
     res.clearCookie('accessToken')
@@ -91,6 +97,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     )
     console.log("This is the clearCookie user is logout")
 })
+
+
 
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -129,6 +137,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 })
 
+
+
 // To get Logged In user Details
 const getUserData = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
@@ -136,6 +146,7 @@ const getUserData = asyncHandler(async (req, res) => {
         new apiResponse(200, user, "User data fetched successfully")
     )
 })
+
 
 
 const getAllData = asyncHandler(async (req, res) => {
@@ -147,6 +158,8 @@ const getAllData = asyncHandler(async (req, res) => {
         new apiResponse(200, data, "Data Fetched Successfully")
     )
 })
+
+
 
 
 export {

@@ -60,6 +60,6 @@ const taskSchema = new mongoose.Schema({
 //     return val.length >= 5 && val.length <= 100;
 // }
 
-const adminTask = mongoose.model('userTask', taskSchema);
 
+const adminTask = mongoose.model('userTask', taskSchema);
 export { adminTask };

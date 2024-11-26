@@ -16,7 +16,6 @@ export default function Index() {
         projectId: id || ''
     });
     useEffect(() => {
-        console.log("useParams projectId:", id);
         if (id) {
             setFormData((prev) => ({ ...prev, id }));
         }

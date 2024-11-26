@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
                 const response = await axiosInstance.get('/user/get-user-data', {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
-                // console.log("(AuthProvider) data", response.data.data);
                 return response.data.data;
             } catch (error) {
                 console.log('(AuthProvider) data Error', error);

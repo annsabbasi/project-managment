@@ -12,6 +12,10 @@ import {
     TableBody,
     TableHead,
     TableContainer,
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon,
 } from "@mui/material";
 import style from "./style.module.scss"
 // import theme from "../../../../Theme/Theme";
@@ -19,16 +23,24 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTaskById } from "../../../../api/taskApi";
 import { getSubTask } from "../../../../api/userSubTask";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useSubmitTask } from "../../../../hooks/useTask";
+import EditIcon from '@mui/icons-material/Edit';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useDeleteSubTask } from "../../../../hooks/useSubTask";
+import EditPointsDialog from "./EditPointsDialog";
+
+
+
 
 export default function index() {
     const { user } = useAuth();
     // Fetching The Admin User Project Task...
     const { id } = useParams();
     const { data: taskData } = useQuery({
-        queryKey: ['task', id],
+        queryKey: ['tasks', id],
         queryFn: () => fetchTaskById(id),
         enabled: !!id, // Fetch only if taskId exists
         staleTime: 50000
@@ -36,20 +48,20 @@ export default function index() {
     )
 
 
-    const [subTasks, setSubTasks] = useState([]);
-    useEffect(() => {
-        const fetchSubTasks = async () => {
-            try {
-                const response = await getSubTask(id);
-                if (response) {
-                    setSubTasks(response.data);
-                }
-            } catch (error) {
-                console.error("Error fetching subtasks:", error);
-            }
-        };
-        fetchSubTasks();
-    }, [id]);
+    // const [subTasks, setSubTasks] = useState([]);
+    // // useEffect(() => {
+    // //     const fetchSubTasks = async () => {
+    // //         try {
+    // //             const response = await getSubTask(id);
+    // //             if (response) {
+    // //                 setSubTasks(response.data);
+    // //             }
+    // //         } catch (error) {
+    // //             console.error("Error fetching subtasks:", error);
+    // //         }
+    // //     };
+    // //     fetchSubTasks();
+    // // }, [id]);
 
     const { mutate: submitTaskMutation } = useSubmitTask();
     const submitPojectMutation = (e) => {
@@ -59,8 +71,49 @@ export default function index() {
         }
     }
 
-    // console.log("This is the taskData", taskData)
-    // console.log("This is the user Fetched from AuthProvider", taskData?.data?.status)
+
+    // 
+    const { data: subTasks } = useQuery({
+        queryKey: ['userSubtask', id], // Include id in queryKey for project-specific caching
+        queryFn: () => getSubTask(id),
+        enabled: !!id, // Fetch only if id exists
+        staleTime: 300000, // Optional: Cache data for 5 minutes
+    });
+
+    // WORK HERE
+    const [anchor, setAnchor] = useState(null);
+    // const { data, isLoading, isError, error } = useGetCreateTask();
+    const [selectedTask, setSelectedTask] = useState(null);
+    const open = Boolean(anchor);
+
+    const handleClick = (event, taskId) => {
+        setAnchor(event.currentTarget);
+        setSelectedTask(taskId);
+    };
+    const handleClose = () => {
+        setAnchor(null)
+    }
+
+
+    const { mutate: deleteTask } = useDeleteSubTask();
+    const handleDelete = () => {
+        deleteTask(selectedTask, {
+            onSuccess: () => {
+                handleClose();
+            },
+        });
+    };
+
+
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const handleEditClickOpen = () => {
+        setEditDialogOpen(true);
+        handleClose();
+    };
+    const handleEditCloseTab = () => {
+        setEditDialogOpen(false);
+        setSelectedTask(null);
+    };
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -114,7 +167,7 @@ export default function index() {
                         </Box>
                         <Button color="primary"
                             className={`${style.dialogBtnSecondary}`}
-                            disabled={user.role !== 'admin' || taskData?.data?.status === 'Completed'}
+                            disabled={user?.role !== 'admin' || taskData?.data?.status === 'Completed'}
                             onClick={submitPojectMutation}
                             sx={{
                                 ...(user.role !== 'admin' || taskData?.data?.status === 'Completed') && {
@@ -197,7 +250,7 @@ export default function index() {
 
                         <Box sx={{ height: '16px' }} />
                         <TableBody>
-                            {subTasks.map((task, index) => {
+                            {subTasks?.data?.map((task, index) => {
                                 return (
                                     <TableRow key={index} className={style.tableRowBody}>
                                         <TableCell component="th" scope="row" >{task.title}</TableCell>
@@ -227,9 +280,68 @@ export default function index() {
                                         </TableCell>
 
                                         <TableCell align="right">
-                                            <Button color="error" className={`${style.dialogBtnPrimary}`}>
+                                            {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
                                                 Delete
-                                            </Button>
+                                            </Button> */}
+                                            <div>
+                                                <IconButton
+                                                    disableRipple
+                                                    sx={{ padding: '1px', color: 'gray' }}
+                                                    onClick={(e) => handleClick(e, task._id)}
+                                                >
+                                                    <MoreVertIcon />
+                                                </IconButton>
+
+                                                <Menu
+                                                    anchorEl={anchor}
+                                                    open={open && selectedTask === task._id}
+                                                    onClose={handleClose}
+                                                    anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'right'
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }}
+                                                    sx={{
+                                                        '& .MuiList-root': {
+                                                            padding: 0,
+                                                            margin: 0,
+                                                            border: '1px solid silver',
+                                                            borderRadius: '0.2rem',
+                                                            backgroundColor: 'white'
+                                                        },
+                                                        '& .MuiPaper-root': {
+                                                            boxShadow: '0'
+                                                        },
+                                                    }}
+                                                    className={style.anchorElParent}
+                                                >
+
+                                                    <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                        </ListItemIcon>Edit</MenuItem>
+
+                                                    <MenuItem
+                                                        onClick={handleDelete}
+                                                        className={style.anchorMenuItem}
+                                                        sx={{
+                                                            bgcolor: '#E97451',
+                                                            color: 'white !important',
+                                                            '&:hover': {
+                                                                bgcolor: '#EE4B2B !important'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                        </ListItemIcon>
+                                                        Delete
+                                                    </MenuItem>
+                                                </Menu>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -237,6 +349,7 @@ export default function index() {
                         </TableBody>
                     </Table>
 
+                    <EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
                 </TableContainer >
             </Stack>
         </Stack>

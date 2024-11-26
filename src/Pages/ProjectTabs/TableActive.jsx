@@ -69,7 +69,6 @@ export default function TableActive() {
     if (isLoading) return <p>loading...</p>;
     if (isError) return <p>Error loading tasks: {error.message}</p>;
 
-    // console.log("This si the useGetCreateTask data", data)
     return (
         <TableContainer>
             {data && data?.data?.length > 0 ?

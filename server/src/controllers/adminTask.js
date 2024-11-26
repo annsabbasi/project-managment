@@ -1,9 +1,11 @@
-import { adminTask } from "../models/adminTask.js";
+import mongoose from "mongoose";
+import { User } from "../models/userModel.js";
+
 import { apiError } from "../utils/apiError.js";
+import { adminTask } from "../models/adminTask.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { User } from "../models/userModel.js";
-import mongoose from "mongoose";
+
 
 // Creating a Task
 const createTask = asyncHandler(async (req, res) => {
@@ -50,6 +52,7 @@ const createTask = asyncHandler(async (req, res) => {
 })
 
 
+
 // Getting the data of the Task
 const getCreateTask = asyncHandler(async (req, res) => {
     const tasks = await adminTask.find()
@@ -60,6 +63,7 @@ const getCreateTask = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new apiResponse(200, tasks, "Get Task successfully"))
 })
+
 
 
 // Deleting the data of the Task
@@ -77,6 +81,7 @@ const DeleteTask = asyncHandler(async (req, res) => {
 })
 
 
+
 // Updating the Task
 const UpdateTask = asyncHandler(async (req, res) => {
     const taskId = req.params.taskId;
@@ -88,14 +93,11 @@ const UpdateTask = asyncHandler(async (req, res) => {
     if (!existingTask) {
         throw new apiError(400, "Task not found");
     }
-    console.log("This is the existingTask", existingTask)
     const { projectTitle, teamLeadName, description, projectStatus, points } = req.body;
     const teamLeadArray = teamLeadName && typeof teamLeadName === 'string'
         ? teamLeadName.split(',').map(name => name.trim())
         : existingTask.teamLeadName;
 
-    console.log("Received Task ID:", req.params.taskId);
-    console.log("Received Body:", req.body);
 
     const tasks = [];
     if (teamLeadArray) {
@@ -119,9 +121,9 @@ const UpdateTask = asyncHandler(async (req, res) => {
         throw new apiError(400, 'Task not found')
     }
 
-    console.log("Task updated successfully:", updateTask)
     return res.status(200).json(new apiResponse(200, updateTask, "Task Update Successfully"))
 })
+
 
 
 // Getting a Single Task by ID

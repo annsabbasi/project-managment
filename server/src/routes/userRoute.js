@@ -21,7 +21,7 @@ import {
     submitTask,
     projectApproval
 } from '../controllers/adminTask.js';
-import { createUserTask, deleteUserSubTask, getUserSubTask } from '../controllers/subUserTask.js';
+import { createUserTask, deleteUserSubTask, getUserSubTask, updateUserSubTask } from '../controllers/subUserTask.js';
 
 
 // Authentication
@@ -53,5 +53,6 @@ router.route('/project-approval/:taskId').put(verifyUser('admin'), projectApprov
 router.route('/create-subTask').post(verifyUser(['admin', 'user']), createUserTask)
 router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
+router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 
 export default router

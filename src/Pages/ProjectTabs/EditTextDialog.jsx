@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-import styles from './style.module.scss';
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Typography } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useUpdateTask } from '../../hooks/useTask';
 
