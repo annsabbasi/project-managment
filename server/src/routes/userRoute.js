@@ -33,7 +33,7 @@ router.route('/get-user-data').get(verifyUser(), getUserData)
 
 
 // Refreshing Token
-router.route('/refresh-token').get(refreshAccessToken);
+router.route('/refresh-token').post(refreshAccessToken);
 router.route('/get-data').get(getAllData);
 
 

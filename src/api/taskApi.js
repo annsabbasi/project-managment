@@ -14,6 +14,7 @@ export const createTask = async (taskId) => {
 export const fetchTask = async (taskId) => {
     try {
         const response = await axiosInstance.get('/user/get-create-task', taskId);
+        console.log("Task Api response", response)
         return response.data || [];
     } catch (error) {
         if (axiosInstance.isCancel(error)) {

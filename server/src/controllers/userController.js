@@ -1,11 +1,10 @@
+/* eslint-disable no-undef */
 import jwt from 'jsonwebtoken'
 import { User } from "../models/userModel.js";
 
-import bcrypt from 'bcrypt'
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-
 
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
     try {
@@ -14,9 +13,7 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         const accessToken = user.generateAccessToken();
         const refreshToken = user.refreshAccessToken();
 
-        const encryptedToken = await bcrypt.hash(refreshToken, 10);
-
-        user.refreshToken = encryptedToken;
+        user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
         return { accessToken, refreshToken };
         // eslint-disable-next-line no-unused-vars
@@ -87,6 +84,7 @@ const loginUser = asyncHandler(async (req, res) => {
             new apiResponse(200, {
                 user: loggedInUser,
                 accessToken,
+                refreshToken
             }, "Login Successfully")
         )
 })
@@ -108,43 +106,94 @@ const logoutUser = asyncHandler(async (req, res) => {
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
-    if (!incomingRefreshToken) {
-        throw new apiError(401, "UnAuthorized Request")
-    }
+    if (!incomingRefreshToken) throw new apiError(401, "Unauthorized request, missing refresh token");
 
     try {
-        const decodedToken = jwt.verify(
-            // eslint-disable-next-line no-undef
-            incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
-        )
-        const user = await User.findById(decodedToken._id)
-        if (!user) {
-            throw new apiError(401, "Invalid Refresh Token")
+        // const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+        // const user = await User.findById(decodedToken._id);
+        console.log("Decoded Token ID:", decodedToken?._id);
+        const user = await User.findById(decodedToken?._id).select("-password");
+        console.log("User Retrieved:", user);
+        if (!user) throw new apiError(401, "User not found");
+        if (user.refreshToken !== incomingRefreshToken) {
+            throw new apiError(401, "Refresh token mismatch");
         }
 
-        if (incomingRefreshToken !== user?.refreshToken) {
-            throw new apiError(401, "Invalid or Expires Refresh Token")
-        }
+        // Generate new tokens
+        const { accessToken, refreshToken: newRefreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+        user.refreshToken = newRefreshToken;
+        await user.save();
 
+        // Set cookies with updated tokens
         const options = {
             httpOnly: true,
-            secure: true
-        }
-        const { accessToken, newRefreshToken } = await generateAccessTokenAndRefreshToken(user._id)
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+        };
 
-        return res.status(200)
+        res
+            .status(200)
             .cookie("accessToken", accessToken, options)
             .cookie("refreshToken", newRefreshToken, options)
-            .json(new apiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Access Token Refreshed Successfukky"))
+            .json({ success: true, accessToken, refreshToken: newRefreshToken });
     } catch (error) {
-        // console.log("Error from the refreshAccessToken")
-        throw new apiError(401, error?.message || "Error from the refreshAccessToken")
+        console.error("Refresh token error:", error.message);
+        throw new apiError(401, error.message || "Failed to refresh access token");
     }
-})
+});
+
+
+
+
+// const refreshAccessToken = asyncHandler(async (req, res) => {
+//     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+//     if (!incomingRefreshToken) {
+//         throw new apiError(401, "UnAuthorized Request")
+//     }
+//     console.log('incomingRefreshToken', incomingRefreshToken)
+
+//     try {
+//         const decodedToken = await jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
+//         const user = await User.findById(decodedToken._id)
+//         if (!user) {
+//             throw new apiError(401, "Invalid Refresh Token")
+//         }
+
+//         if (incomingRefreshToken !== user.refreshToken) {
+//             throw new apiError(401, "Invalid or Expires Refresh Token")
+//         }
+
+//         // Generates new accessToken
+//         const { accessToken, refreshToken: newRefreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+//         user.refreshToken = newRefreshToken;
+//         await user.save();
+
+//         const options = {
+//             httpOnly: true,
+//             secure: true,
+//             sameSite: 'Strict'
+//         }
+
+//         console.log("This is refrestToken Controller", newRefreshToken)
+//         return res.status(200)
+//             .cookie("accessToken", accessToken, options)
+//             .cookie("refreshToken", newRefreshToken, options)
+//             .json(new apiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Access Token Refreshed Successfukky"))
+//     } catch (error) {
+//         throw new apiError(401, error?.message || "Error from the refreshAccessToken")
+//     }
+// })
+
+
+
 
 
 
 // To get Logged In user Details
+
+
+
 const getUserData = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
     res.status(200).json(
