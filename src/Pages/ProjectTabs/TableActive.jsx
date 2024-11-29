@@ -65,7 +65,6 @@ export default function TableActive() {
         })
     }
 
-
     if (isLoading) return <p>loading...</p>;
     if (isError) return <p>Error loading tasks: {error.message}</p>;
 
