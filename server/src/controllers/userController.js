@@ -125,14 +125,17 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             httpOnly: true,
             secure: true
         }
-        const { accessToken, newRefreshToken } = await generateAccessTokenAndRefreshToken(user._id)
+        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
+        console.log("Success in newRefreshToken", refreshToken)
+        console.log("Success in newRefreshToken", user)
 
         return res.status(200)
             .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", newRefreshToken, options)
-            .json(new apiResponse(200, { accessToken, refreshToken: newRefreshToken }, "Access Token Refreshed Successfukky"))
+            .cookie("refreshToken", refreshToken, options)
+            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
     } catch (error) {
         // console.log("Error from the refreshAccessToken")
+        console.log("Error from refreshAccessToken", error)
         throw new apiError(401, error?.message || "Error from the refreshAccessToken")
     }
 })
