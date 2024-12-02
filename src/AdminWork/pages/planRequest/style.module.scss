@@ -1,0 +1,34 @@
+.goBack {
+  display: flex;
+  align-items: end;
+  .goBackTitle {
+    font-size: 1.2rem;
+  }
+  .goBackIcon {
+    padding: 0;
+    align-self: flex-end;
+  }
+  .goBackIconContent {
+    padding: 3px;
+    margin-right: 2px;
+  }
+  &:hover .goBackTitle,
+  &:hover .goBackIcon {
+    color: rgb(122, 122, 122);
+  }
+}
+.Tabs {
+  background-color: white;
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.2rem;
+  border: 1px solid silver;
+  min-height: auto;
+}
+.Tab {
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.6rem;
+  min-width: auto;
+  min-height: auto;
+  text-transform: capitalize;
+  color: grey;
+}
