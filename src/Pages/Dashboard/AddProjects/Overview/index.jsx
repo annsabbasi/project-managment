@@ -1,36 +1,29 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-    Avatar,
-    Box,
-    Button,
-    // Divider,
-    Stack,
-    Typography,
-    Table,
-    TableRow,
-    TableCell,
-    TableBody,
-    TableHead,
-    TableContainer,
-    IconButton,
-    Menu,
-    MenuItem,
-    ListItemIcon,
-} from "@mui/material";
-import style from "./style.module.scss"
-// import theme from "../../../../Theme/Theme";
-import { Link, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { fetchTaskById } from "../../../../api/taskApi";
-import { getSubTask } from "../../../../api/userSubTask";
 import { useState } from "react";
-import { useAuth } from "../../../../context/AuthProvider";
-import { useSubmitTask } from "../../../../hooks/useTask";
+import {
+    Avatar, Box,
+    Table, TableRow,
+    IconButton, Menu,
+    TableCell, TableBody,
+    MenuItem, ListItemIcon,
+    Button, Stack, Typography,
+    TableHead, TableContainer,
+} from "@mui/material";
+
+import style from "./style.module.scss"
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 import EditPointsDialog from "./EditPointsDialog";
+
+import { fetchTaskById } from "../../../../api/taskApi";
+import { getSubTask } from "../../../../api/userSubTask";
+import { useSubmitTask } from "../../../../hooks/useTask";
+import { useAuth } from "../../../../context/AuthProvider";
+import { useDeleteSubTask } from "../../../../hooks/useSubTask";
+
+import { useQuery } from "@tanstack/react-query";
+import { Link, useParams } from "react-router-dom";
 
 
 
@@ -194,10 +187,6 @@ export default function index() {
                             <Link>https://www.google.co.uk/</Link>
                         </Stack>
                     </Box>
-                    {/* <Stack flexDirection="row" justifyContent="space-between" mb={2}>
-                            <Typography className={style.texth6}>Client Aggrement</Typography>
-                            <Button variant="text" className={style.statusBtn} sx={{ backgroundColor: 'rgba(57, 245, 57, 0.2)', color: 'green' }}>in progress</Button>
-                        </Stack> */}
 
                     <Box className={style.BoxContent} sx={{ flexGrow: '1' }}>
                         <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
@@ -231,125 +220,136 @@ export default function index() {
                 </Stack>
             </Stack>
 
+            <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography>
             <Stack variant="div" className={style.boxMain2}>
                 <TableContainer>
-                    <Table className={style.table}>
-                        <TableHead className={style.tableHead}>
-                            <TableRow className={style.tableRowHead}>
-                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Title</TableCell>
-                                <TableCell variant="h6" sx={{ fontSize: "1.1rem" }}>Assign To</TableCell>
-                                <TableCell variant="h6" sx={{ fontSize: "1.1rem" }}>Assign By</TableCell>
-                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Description</TableCell>
-                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Start Date</TableCell>
-                                <TableCell align="left" variant="h6" sx={{ fontSize: "1.1rem" }}>Due Date</TableCell>
-                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>Points</TableCell>
-                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>TaskList</TableCell>
-                                <TableCell align="right" variant="h6" sx={{ fontSize: "1.1rem" }}>&nbsp;</TableCell>
-                            </TableRow>
-                        </TableHead>
+                    {
+                        subTasks?.data.length > 0 ? (
+                            <Table className={style.table}>
+                                <TableHead className={style.tableHead}>
+                                    <TableRow className={style.tableRowHead}>
+                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Title</TableCell>
+                                        <TableCell variant="h6" className={style.tableInfo}>Assign To</TableCell>
+                                        <TableCell variant="h6" className={style.tableInfo}>Assign By</TableCell>
+                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell>
+                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Start Date</TableCell>
+                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Due Date</TableCell>
+                                        <TableCell align="right" variant="h6" className={style.tableInfo}>Points</TableCell>
+                                        <TableCell align="right" variant="h6" className={style.tableInfo}>TaskList</TableCell>
+                                        <TableCell align="right" variant="h6" className={style.tableInfo}>&nbsp;</TableCell>
+                                    </TableRow>
+                                </TableHead>
 
-                        <Box sx={{ height: '16px' }} />
-                        <TableBody>
-                            {subTasks?.data?.map((task, index) => {
-                                return (
-                                    <TableRow key={index} className={style.tableRowBody}>
-                                        <TableCell component="th" scope="row" >{task.title}</TableCell>
-                                        <TableCell component="th" scope="row" className={style.textGrey}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
+                                <TableBody >
 
-                                        <TableCell align="left">
-                                            <Stack
-                                                flexDirection="row"
-                                                gap={1}
-                                                sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
-                                                <Avatar sx={{ bgcolor: "silver", width: "1.4rem", height: "1.4rem", fontSize: '14px' }}>
-                                                    {task.assignedBy?.name?.[0]?.toUpperCase()}
-                                                </Avatar>
-                                                <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
-                                            </Stack>
-                                        </TableCell>
+                                    {subTasks?.data?.map((task, index) => {
+                                        return (
+                                            <TableRow key={index} className={style.tableRowBody}>
+                                                <TableCell component="th" scope="row" >{task.title}</TableCell>
+                                                <TableCell component="th" scope="row" className={style.textGrey}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
 
-                                        <TableCell align="left">
-                                            <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey}>{task.description}</Typography>
-                                        </TableCell>
+                                                <TableCell align="left">
+                                                    <Stack
+                                                        flexDirection="row"
+                                                        gap={1}
+                                                        sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
+                                                        <Avatar sx={{ bgcolor: "silver", width: "1.4rem", height: "1.4rem", fontSize: '14px' }}>
+                                                            {task.assignedBy?.name?.[0]?.toUpperCase()}
+                                                        </Avatar>
+                                                        <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
+                                                    </Stack>
+                                                </TableCell>
 
-                                        <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
-                                        <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
-                                        <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell>
-                                        <TableCell align="right">
-                                            <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
-                                        </TableCell>
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey}>{task.description}</Typography>
+                                                </TableCell>
 
-                                        <TableCell align="right">
-                                            {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
+                                                <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
+                                                <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+                                                <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell>
+                                                <TableCell align="right">
+                                                    <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
+                                                </TableCell>
+
+                                                <TableCell align="right">
+                                                    {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
                                                 Delete
                                             </Button> */}
-                                            <div>
-                                                <IconButton
-                                                    disableRipple
-                                                    sx={{ padding: '1px', color: 'gray' }}
-                                                    onClick={(e) => handleClick(e, task._id)}
-                                                >
-                                                    <MoreVertIcon />
-                                                </IconButton>
+                                                    <div>
+                                                        <IconButton
+                                                            disableRipple
+                                                            sx={{ padding: '1px', color: 'gray' }}
+                                                            onClick={(e) => handleClick(e, task._id)}
+                                                        >
+                                                            <MoreVertIcon />
+                                                        </IconButton>
 
-                                                <Menu
-                                                    anchorEl={anchor}
-                                                    open={open && selectedTask === task._id}
-                                                    onClose={handleClose}
-                                                    anchorOrigin={{
-                                                        vertical: 'bottom',
-                                                        horizontal: 'right'
-                                                    }}
-                                                    transformOrigin={{
-                                                        vertical: 'top',
-                                                        horizontal: 'right',
-                                                    }}
-                                                    sx={{
-                                                        '& .MuiList-root': {
-                                                            padding: 0,
-                                                            margin: 0,
-                                                            border: '1px solid silver',
-                                                            borderRadius: '0.2rem',
-                                                            backgroundColor: 'white'
-                                                        },
-                                                        '& .MuiPaper-root': {
-                                                            boxShadow: '0'
-                                                        },
-                                                    }}
-                                                    className={style.anchorElParent}
-                                                >
+                                                        <Menu
+                                                            anchorEl={anchor}
+                                                            open={open && selectedTask === task._id}
+                                                            onClose={handleClose}
+                                                            anchorOrigin={{
+                                                                vertical: 'bottom',
+                                                                horizontal: 'right'
+                                                            }}
+                                                            transformOrigin={{
+                                                                vertical: 'top',
+                                                                horizontal: 'right',
+                                                            }}
+                                                            sx={{
+                                                                '& .MuiList-root': {
+                                                                    padding: 0,
+                                                                    margin: 0,
+                                                                    border: '1px solid silver',
+                                                                    borderRadius: '0.2rem',
+                                                                    backgroundColor: 'white'
+                                                                },
+                                                                '& .MuiPaper-root': {
+                                                                    boxShadow: '0'
+                                                                },
+                                                            }}
+                                                            className={style.anchorElParent}
+                                                        >
 
-                                                    <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                        </ListItemIcon>Edit</MenuItem>
+                                                            <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
+                                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                    <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                                </ListItemIcon>Edit</MenuItem>
 
-                                                    <MenuItem
-                                                        onClick={handleDelete}
-                                                        className={style.anchorMenuItem}
-                                                        sx={{
-                                                            bgcolor: '#E97451',
-                                                            color: 'white !important',
-                                                            '&:hover': {
-                                                                bgcolor: '#EE4B2B !important'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                        </ListItemIcon>
-                                                        Delete
-                                                    </MenuItem>
-                                                </Menu>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
+                                                            <MenuItem
+                                                                onClick={handleDelete}
+                                                                className={style.anchorMenuItem}
+                                                                sx={{
+                                                                    bgcolor: '#E97451',
+                                                                    color: 'white !important',
+                                                                    '&:hover': {
+                                                                        bgcolor: '#EE4B2B !important'
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                    <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                                </ListItemIcon>
+                                                                Delete
+                                                            </MenuItem>
+                                                        </Menu>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
 
-                    <EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
+                                </TableBody>
+                            </Table>
+                        ) : (
+                            <TableRow>
+                                <Typography className={style.noContent}>Assign a task to User to show here</Typography>
+                            </TableRow>
+
+                        )
+                    }
+
+                    < EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
                 </TableContainer >
             </Stack>
         </Stack>

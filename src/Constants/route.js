@@ -16,9 +16,15 @@ export const RouteNames = {
     SIGNUP: 'signup',
     HOME: 'home',
 
-    // ADMIN CONSTANTS
+    // SUPER ADMIN CONSTANTS
     ADMINLAYOUT: 'adminlayout',
     ADMINPAGE1: 'adminpage1',
     ADMINPAGE2: 'adminpage2',
-    ADMINPAGE3: 'adminpage3'
+    ADMINPAGE3: 'adminpage3',
+
+    BASIC: 'basic',
+    PREMIUM: 'premium',
+    STANDARD: 'standard',
+    REQUEST: 'request',
+    PLANREQUEST: 'planRequest'
 };

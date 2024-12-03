@@ -19,16 +19,28 @@ const Layout = lazy(() => import('../Layout'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
 const LoginPage = lazy(() => import('../Pages/Login'))
 const SignUpPage = lazy(() => import('../Pages/Signup'))
+
+// Super Admin Route Part
 const AdminLayout = lazy(() => import('../AdminWork'));
 const AdminPage1 = lazy(() => import('../AdminWork/pages/Page1'));
 const AdminPage2 = lazy(() => import('../AdminWork/pages/Page2'));
 const AdminPage3 = lazy(() => import('../AdminWork/pages/Page3'));
+const Basic = lazy(() => import('../AdminWork/pages/planRequest/basic'));
+const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
+const Premium = lazy(() => import('../AdminWork/pages/planRequest/premium'));
+const Request = lazy(() => import('../AdminWork/pages/planRequest/request'));
+const PlanRequest = lazy(() => import('../AdminWork/pages/planRequest'));
 
 export const AdminRoute = [
     { path: RouteNames.ADMINLAYOUT, element: AdminLayout, adminLayout: true, title: 'Admin Layout' },
     { path: RouteNames.ADMINPAGE1, element: AdminPage1, adminLayout: true, title: 'AdminPage1' },
     { path: RouteNames.ADMINPAGE2, element: AdminPage2, adminLayout: true, title: 'AdminPage2' },
     { path: RouteNames.ADMINPAGE3, element: AdminPage3, adminLayout: true, title: 'AdminPage3' },
+    { path: RouteNames.BASIC, element: Basic, adminLayout: true, title: 'Basic' },
+    { path: RouteNames.STANDARD, element: Standard, adminLayout: true, title: 'Standard' },
+    { path: RouteNames.PREMIUM, element: Premium, adminLayout: true, title: 'Premium' },
+    { path: RouteNames.REQUEST, element: Request, adminLayout: true, title: 'Request' },
+    { path: RouteNames.PLANREQUEST, element: PlanRequest, adminLayout: true, title: 'Plan Request' },
     // other admin routes
 ];
 
