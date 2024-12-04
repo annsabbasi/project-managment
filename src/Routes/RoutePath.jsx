@@ -19,6 +19,7 @@ const Layout = lazy(() => import('../Layout'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
 const LoginPage = lazy(() => import('../Pages/Login'))
 const SignUpPage = lazy(() => import('../Pages/Signup'))
+const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'))
 
 // Super Admin Route Part
 const AdminLayout = lazy(() => import('../AdminWork'));
@@ -61,7 +62,6 @@ export const PrivateRoute = [
     { path: RouteNames.CLIENT, element: Client, layout: true, title: 'Client' },
     { path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams' },
     { path: RouteNames.MEETINGS, element: Meetings, layout: true, title: 'Meetings' },
-    { path: RouteNames.REFERRALS, element: Referrals, layout: true, title: 'Referrals' },
     { path: RouteNames.SERVICES, element: Services, layout: true, title: 'Services' },
     { path: RouteNames.CONTRACTS, element: Contracts, layout: true, title: 'Contracts' },
     { path: RouteNames.INVOICES, element: Invoices, layout: true, title: 'Invoices' },
@@ -77,4 +77,14 @@ export const PrivateRoute = [
             { path: `${RouteNames.ADDPRODUCTS}/:id`, element: AddProjects, layout: true, title: 'AddProjects' }
         ]
     },
+    {
+        path: RouteNames.REFERRALS,
+        element: Referrals,
+        layout: true,
+        title: 'Referrals',
+        children: [
+            { path: `${RouteNames.CHECKOUT}`, element: Checkout, layout: true, title: 'Checkout', }
+        ]
+    },
+    // { path: RouteNames.REFERRALS, element: Referrals, layout: true, title: 'Referrals' },
 ]

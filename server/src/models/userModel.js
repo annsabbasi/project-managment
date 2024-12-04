@@ -42,9 +42,15 @@ const UserSchema = new Schema({
         enum: Object.values(ROLES),
         default: ROLES.USER
     },
-    userPlan: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "userplan"
+    plan: {
+        type: String,
+        enum: ['basic', 'standard', 'premium'],
+        default: 'null',
+        required: true
+    },
+    requestedAt: {
+        type: Date,
+        default: Date.now
     },
     refreshToken: {
         type: String
