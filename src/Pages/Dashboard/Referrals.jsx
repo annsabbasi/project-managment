@@ -1,22 +1,31 @@
+// import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
 // import { loadStripe } from '@stripe/stripe-js';
+import { Outlet, useLocation } from 'react-router-dom';
+import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { RouteNames } from "../../Constants/route";
+import { axiosInstance } from '../../api/axiosInstance';
 
+
+const stripePromise = loadStripe('pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n'); // Replace with your Stripe Publishable Key
 
 const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
+  const handlePlanSelection = async () => {
+    try {
+      const { data } = await axiosInstance.post('/user/create-checkout-session', {
+        plan,
+        price,
+      });
 
-  // const makePayment = async () => {
-  //   const stripe = await loadStripe("pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n")
-  // }
-
-  const navigate = useNavigate();
-  const handlePlanSelection = () => {
-    navigate('/referrals/checkout', {
-      state: { plan, price, features }
-    })
-  }
+      // Redirect to Stripe payment page
+      // const stripe = await stripePromise;
+      // await stripe.redirectToCheckout({ sessionId: data.sessionId });
+      console.log("This is the stripe", data)
+      window.location.href = data.url;
+    } catch (error) {
+      console.error('Error redirecting to Stripe:', error);
+    }
+  };
 
   return (
     <Card
@@ -64,7 +73,6 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
     </Card>
   );
 };
-
 
 const Referrals = () => {
   const location = useLocation();
@@ -146,3 +154,74 @@ PlanCard.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
   highlighted: PropTypes.bool.isRequired,
 }
+
+
+
+
+
+
+
+
+
+// import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
+// // import { loadStripe } from '@stripe/stripe-js';
+// import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+// import PropTypes from 'prop-types';
+// // import { RouteNames } from "../../Constants/route";
+
+
+// const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
+
+//   const navigate = useNavigate();
+//   const handlePlanSelection = () => {
+//     navigate('/referrals/checkout', {
+//       state: { plan, price, features }
+//     })
+//   }
+
+//   return (
+//     <Card
+//       sx={{
+//         borderRadius: '12px',
+//         boxShadow: highlighted ? '0px 4px 10px rgba(0, 123, 255, 0.3)' : '0px 2px 10px rgba(0, 0, 0, 0.1)',
+//         transform: highlighted ? 'scale(1.05)' : 'scale(1)',
+//         transition: 'transform 0.3s, box-shadow 0.3s',
+//         border: highlighted ? '1px solid #007BFF' : '1px solid #e0e0e0',
+//         '&:hover': {
+//           transform: 'scale(1.05)',
+//           boxShadow: '0px 4px 10px rgba(54, 69, 79, 0.2)',
+//         },
+//       }}
+//     >
+//       <CardContent>
+//         <Typography variant="h5" align="center" fontWeight="semiBold" gutterBottom>
+//           {plan}
+//         </Typography>
+//         <Typography variant="h3" align="center" color="primary" fontWeight="bold">
+//           ${price}
+//         </Typography>
+//         <Typography variant="subtitle2" align="center" color="textSecondary" gutterBottom>
+//           per month
+//         </Typography>
+//         <Box sx={{ mt: 2 }}>
+//           {features.map((feature, index) => (
+//             <Typography key={index} variant="body1" align="center" sx={{ mb: 1, color: 'gray' }}>
+//               • {feature}
+//             </Typography>
+//           ))}
+//         </Box>
+//         <Box textAlign="center" sx={{ mt: 3 }}>
+//           <Button
+//             variant="contained"
+//             color={highlighted ? 'primary' : 'secondary'}
+//             size="large"
+//             sx={{ borderRadius: '20px', px: 4, textTransform: 'capitalize' }}
+//             onClick={handlePlanSelection}
+//           >
+//             {buttonLabel}
+//           </Button>
+//         </Box>
+//       </CardContent>
+//     </Card>
+//   );
+// };

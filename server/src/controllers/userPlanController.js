@@ -1,49 +1,65 @@
-/* eslint-disable no-undef */
-import { userPlan } from "../models/userPlans.js";
-import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import Stripe from 'stripe'
+import Stripe from 'stripe';
 
-const stripe = Stripe("-------Add you Stripe SECRET_KEY HERE!!!------")
-
+const stripe = Stripe("sk_test_51QSBs2F1BVeaeMn2zhPaHbSmtv7cnQWXGXlMooMPGizgDTMmEgcTLQ9j9mHavfF4M7BsOG6WKNX6M3tUGOVHoQlW00uESxXwlO")
 const createSubscriptionCheckout = asyncHandler(async (req, res) => {
-    const { plan, price, features } = req.body;
-    // const value = req.body; 
-    console.log("This is the createSubscriptionCheckoit", plan, price, features)
-
-
+    const { plan, price } = req.body;
+    // Fetching the list of customers
+    // const customers = await stripe.customers.list();
+    // console.log("This is the Customer List:", customers);
     try {
-        const session = await stripe.checkout.session.create({
+
+        const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
                 {
                     price_data: {
                         currency: 'usd',
-                        product_data: { name: plan },
+                        product_data: {
+                            name: plan,
+                        },
                         unit_amount: price * 100, // Convert to cents
                     },
                     quantity: 1,
                 },
             ],
             mode: 'payment',
-            success_url: "http://localhost:5173/success",
-            cancel_url: "http://localhost:5173/error"
-        })
+            success_url: 'http://localhost:5173/success',
+            cancel_url: 'http://localhost:5173/referrals',
+        });
 
-        res.status(200).json({ plan, price, features })
+        res.json({ url: session.url });
     } catch (error) {
-        console.log("Error from the create Subscription Checkout (userPlanController)", error)
+        console.log("Error from the createSubscriptionCheckout (userPlanController)", error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-})
+});
 
-export { createSubscriptionCheckout }
-
-
+export { createSubscriptionCheckout };
 
 
 
 
 
+// const session = await stripe.checkout.sessions.create({
+//     payment_method_types: ["card"],
+//     line_items: [
+//         {
+//             price_data: {
+//                 currency: "usd",
+//                 product_data: { name: plan },
+//                 unit_amount: price * 100,
+//             },
+//             quantity: 1,
+//         }
+//     ],
+//     mode: "payment",
+//     success_url: "http://localhost:5173/success",
+//     cancel_url: "http://localhost:5173/cancel",
+// })
+
+// // res.status(200).json({ plan, price, features });
+// res.status(200).json({ id: session.id });
 
 
 

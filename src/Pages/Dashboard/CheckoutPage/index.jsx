@@ -1,19 +1,117 @@
-import { useLocation } from 'react-router-dom'
-import { axiosInstance } from '../../../api/axiosInstance';
+import { useLocation } from 'react-router-dom';
+import { Typography, Box } from '@mui/material';
 
-export default function Index() {
+const Index = () => {
     const location = useLocation();
-    const { plan, price, features } = location.state;
+    const { state } = location || {};
+    const { plan, price, features } = state || {};
 
-    const handleClick = async () => {
-        const result = await axiosInstance.post('/user/create-subs', { plan, price, features })
-        console.log("This is the ", result.data.plan, "plan.")
+    if (!plan) {
+        return <Typography>Loading...</Typography>;
     }
 
     return (
-        <div>
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur sed rem omnis id voluptatibus laudantium magni ipsa, dignissimos dolore? Error dolor dolorum non nesciunt. Voluptatum eos aliquid debitis amet labore error doloremque cumque sint. Obcaecati, culpa reiciendis facere voluptates a similique reprehenderit repudiandae magnam neque ducimus eius error mollitia debitis deleniti animi excepturi earum sed. Veniam repellendus eaque sit. Fuga magnam facere omnis impedit iste sunt totam aperiam quaerat atque ipsum a, nisi illo perferendis. Sit laborum corrupti possimus perspiciatis rerum amet atque minima incidunt, fuga omnis ea voluptatem maxime ipsum, harum cumque quaerat eveniet beatae veniam exercitationem! Repellat cupiditate tenetur et assumenda quibusdam incidunt accusantium nemo illum veritatis nisi pariatur modi, sunt, enim facilis ducimus error consectetur nulla! Quos voluptas quasi omnis ab, maxime dolorem sequi voluptatem quaerat ut non molestias inventore reprehenderit sit alias libero esse repellat, architecto cum fuga et maiores molestiae? Blanditiis, cumque nobis. Eum quod distinctio quasi enim rem. Exercitationem autem veniam illum soluta, asperiores cum iste quo. Sint porro velit fugiat totam harum, praesentium commodi fugit, optio veniam necessitatibus minus doloremque fuga repellat iusto magni. Tempore, illo maiores! Voluptates placeat ipsam, soluta nam quis sapiente nisi tempore illum explicabo ad repellendus nesciunt quasi. Eligendi.</p>
-            <button onClick={handleClick}>Click me</button>
-        </div>
-    )
-}
+        <Box>
+            <Typography variant="h4">{plan} Plan</Typography>
+            <Typography variant="h5">Price: ${price}</Typography>
+            <Typography>Features:</Typography>
+            <ul>
+                {features.map((feature, index) => (
+                    <li key={index}>{feature}</li>
+                ))}
+            </ul>
+        </Box>
+    );
+};
+
+export default Index;
+
+
+
+
+
+
+
+
+// import { useLocation } from 'react-router-dom';
+// import { axiosInstance } from '../../../api/axiosInstance';
+// // import Stripe from 'stripe';
+// import { loadStripe } from '@stripe/stripe-js';
+
+// // const stripe = Stripe("sk_test_51QSBs2F1BVeaeMn2zhPaHbSmtv7cnQWXGXlMooMPGizgDTMmEgcTLQ9j9mHavfF4M7BsOG6WKNX6M3tUGOVHoQlW00uESxXwlO");
+// const stripePromise = loadStripe("sk_test_51QSBs2F1BVeaeMn2zhPaHbSmtv7cnQWXGXlMooMPGizgDTMmEgcTLQ9j9mHavfF4M7BsOG6WKNX6M3tUGOVHoQlW00uESxXwlO");
+
+// export default function Index() {
+//     const location = useLocation();
+//     const { plan, price, features } = location.state;
+
+//     const handleClick = async () => {
+//         try {
+//             const stripe = await stripePromise; // Load Stripe
+//             const res = await axiosInstance.post('/user/create-subs', { plan, price, features });
+
+//             // Redirect to Stripe Checkout
+//             const sessionId = res.data.id;
+//             const result = await stripe.redirectToCheckout({ sessionId });
+
+//             if (result.error) {
+//                 console.error('Error redirecting to Stripe Checkout:', result.error.message);
+//             }
+//         } catch (error) {
+//             console.error('Error creating subscription:', error);
+//         }
+//     };
+
+//     return (
+//         <div>
+//             <p>You have selected the {plan} plan for ${price}/month.</p>
+//             <button onClick={handleClick}>Proceed to Checkout</button>
+//         </div>
+//     );
+// }
+
+
+
+
+
+
+
+
+
+// import { useLocation } from 'react-router-dom';
+// import { axiosInstance } from '../../../api/axiosInstance';
+// // import Stripe from 'stripe';
+// import { loadStripe } from '@stripe/stripe-js';
+
+// // const stripe = Stripe("sk_test_51QSBs2F1BVeaeMn2zhPaHbSmtv7cnQWXGXlMooMPGizgDTMmEgcTLQ9j9mHavfF4M7BsOG6WKNX6M3tUGOVHoQlW00uESxXwlO");
+// const stripePromise = loadStripe("sk_test_51QSBs2F1BVeaeMn2zhPaHbSmtv7cnQWXGXlMooMPGizgDTMmEgcTLQ9j9mHavfF4M7BsOG6WKNX6M3tUGOVHoQlW00uESxXwlO");
+
+// export default function Index() {
+//     const location = useLocation();
+//     const { plan, price, features } = location.state;
+
+//     const handleClick = async () => {
+//         try {
+//             const res = await axiosInstance.post('/user/create-subs', { plan, price, features });
+//             // window.location.href = result.data.url; // Redirect to Stripe Checkout
+//             const session = await res.json();
+//             const result = stripe.redirectToCheckout({
+//                 sessionId: session.id
+//             })
+
+//             if (result.error) {
+//                 console.log("Error from the result Stripe Frontend (Checkout)")
+//             }
+
+//         } catch (error) {
+//             console.error('Error creating subscription:', error);
+//         }
+//     };
+
+//     return (
+//         <div>
+//             <p>You have selected the {plan} plan for ${price}/month.</p>
+//             <button onClick={handleClick}>Proceed to Checkout</button>
+//         </div>
+//     );
+// }
