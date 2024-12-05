@@ -1,6 +1,23 @@
 import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
+// import { loadStripe } from '@stripe/stripe-js';
+import PropTypes from 'prop-types';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { RouteNames } from "../../Constants/route";
+
 
 const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
+
+  // const makePayment = async () => {
+  //   const stripe = await loadStripe("pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n")
+  // }
+
+  const navigate = useNavigate();
+  const handlePlanSelection = () => {
+    navigate('/referrals/checkout', {
+      state: { plan, price, features }
+    })
+  }
+
   return (
     <Card
       sx={{
@@ -38,6 +55,7 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
             color={highlighted ? 'primary' : 'secondary'}
             size="large"
             sx={{ borderRadius: '20px', px: 4, textTransform: 'capitalize' }}
+            onClick={handlePlanSelection}
           >
             {buttonLabel}
           </Button>
@@ -47,58 +65,84 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
   );
 };
 
+
 const Referrals = () => {
+  const location = useLocation();
+  const isReferralsRoot = location.pathname === '/referrals';
+
   return (
     <Box sx={{ flexGrow: 1, px: 2 }}>
-      <Typography variant="h4" align="start" gutterBottom mb={5} mt={2} color='rgb(56, 56, 56)'>
-        Choose Your Plan
-      </Typography>
-      <Grid container spacing={4} justifyContent="center">
-        <Grid item xs={12} sm={6} md={4}>
-          <PlanCard
-            plan="Basic"
-            price="9"
-            features={[
-              'Access to basic features',
-              'Email support',
-              'Limited storage space',
-            ]}
-            buttonLabel="Choose Basic"
-            highlighted={false}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <PlanCard
-            plan="Standard"
-            price="19"
-            features={[
-              'Access to all features',
-              'Priority email support',
-              'Increased storage capacity',
-              'Monthly usage reports',
-            ]}
-            buttonLabel="Choose Standard"
-            highlighted={true}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <PlanCard
-            plan="Premium"
-            price="29"
-            features={[
-              'Access to premium features',
-              '24/7 phone support',
-              'Unlimited storage',
-              'Advanced analytics',
-              'Custom integrations',
-            ]}
-            buttonLabel="Choose Premium"
-            highlighted={false}
-          />
-        </Grid>
-      </Grid>
+      {isReferralsRoot ? (
+        <>
+          <Typography
+            variant="h4"
+            align="start"
+            gutterBottom
+            mb={5}
+            mt={2}
+            color="rgb(56, 56, 56)"
+          >
+            Choose Your Plan
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} sm={6} md={4}>
+              <PlanCard
+                plan="Basic"
+                price={9}
+                features={[
+                  'Access to basic features',
+                  'Email support',
+                  'Limited storage space',
+                ]}
+                buttonLabel="Choose Basic"
+                highlighted={false}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <PlanCard
+                plan="Standard"
+                price={19}
+                features={[
+                  'Access to all features',
+                  'Priority email support',
+                  'Increased storage capacity',
+                  'Monthly usage reports',
+                ]}
+                buttonLabel="Choose Standard"
+                highlighted={true}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <PlanCard
+                plan="Premium"
+                price={29}
+                features={[
+                  'Access to premium features',
+                  '24/7 phone support',
+                  'Unlimited storage',
+                  'Advanced analytics',
+                  'Custom integrations',
+                ]}
+                buttonLabel="Choose Premium"
+                highlighted={false}
+              />
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <Outlet />
+      )}
     </Box>
   );
 };
 
 export default Referrals;
+
+
+PlanCard.propTypes = {
+  plan: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  features: PropTypes.array.isRequired,
+  buttonLabel: PropTypes.string.isRequired,
+  highlighted: PropTypes.bool.isRequired,
+}

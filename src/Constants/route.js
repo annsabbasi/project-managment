@@ -26,5 +26,7 @@ export const RouteNames = {
     PREMIUM: 'premium',
     STANDARD: 'standard',
     REQUEST: 'request',
-    PLANREQUEST: 'planRequest'
+    PLANREQUEST: 'planRequest',
+
+    CHECKOUT: 'checkout'
 };

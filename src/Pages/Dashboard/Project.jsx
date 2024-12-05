@@ -37,11 +37,11 @@ const allyProps = (index) => {
 
 export default function Project() {
     const [activeTab, setActiveTab] = useState(0)
-    const location = useLocation('')
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
     }
-
+    
+    const location = useLocation('')
     const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPRODUCTS}`)
 
     // This is for the Dialog
