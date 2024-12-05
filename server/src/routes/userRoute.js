@@ -56,6 +56,6 @@ router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 
-router.route('/create-subs').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
+router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
 
 export default router

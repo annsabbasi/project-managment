@@ -18,6 +18,13 @@ app.use(cookieParser());
 
 // The Routes are imported & used here...
 import userRoute from './routes/userRoute.js'
+app.use((req, res, next) => {
+    res.setHeader(
+        'Content-Security-Policy',
+        "script-src 'self' 'unsafe-inline' https://js.stripe.com"
+    );
+    next();
+});
 
 app.use('/user', userRoute)
 
