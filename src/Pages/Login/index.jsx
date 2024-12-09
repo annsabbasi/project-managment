@@ -13,6 +13,7 @@ const LoginPage = () => {
     const { mutate } = useLogin();
     // const [redirect, setRedirect] = useState(false)
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    const [error, setError] = useState("")
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -39,7 +40,11 @@ const LoginPage = () => {
                 }
             },
             onError: (error) => {
-                console.error("Login failed:", error.response?.data || error.message);
+                console.error("Login Error", error);
+                setError(error.response?.data?.error || error.response?.data?.errors)
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
             }
         })
     }

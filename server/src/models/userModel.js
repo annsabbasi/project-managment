@@ -10,7 +10,6 @@ const UserSchema = new Schema({
         required: [true, 'name field is required'],
         unique: true,
         trim: true,
-        minlength: [3, 'name must be atleast 3 character long'],
     },
     email: {
         type: String,
@@ -23,7 +22,6 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: [true, 'password field is required'],
-        minlength: [8, 'password must be atleast 8 character long'],
     },
     confirmPassword: {
         type: String,
@@ -44,7 +42,7 @@ const UserSchema = new Schema({
     },
     plan: {
         type: String,
-        enum: ['basic', 'standard', 'premium'],
+        enum: ['basic', 'standard', 'premium', 'null'],
         default: 'null',
         required: true
     },
@@ -60,7 +58,7 @@ const UserSchema = new Schema({
 
 // Hashing Bcrypt Password 
 UserSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
+    if (!this.isModified("password")) next();
     this.password = await bcrypt.hash(this.password, 10)
     next()
 })

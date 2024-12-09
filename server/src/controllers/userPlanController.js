@@ -18,7 +18,7 @@ const createSubscriptionCheckout = asyncHandler(async (req, res) => {
                         product_data: {
                             name: plan,
                         },
-                        unit_amount: price * 100, // Convert to cents
+                        unit_amount: price * 100,
                     },
                     quantity: 1,
                 },

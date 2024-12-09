@@ -25,77 +25,74 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
 
 // To Register a Person
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-        throw new apiError(400, "password doesn't matched")
-    }
+    const { name, email, password } = req.body;
 
-    // TODO HAVE TO RESOLVE THIS
     const existedUser = await User.findOne({ $or: [{ email }, { name }] });
     if (existedUser) {
-        console.error("Attempted to register with existing credentials:", { existedUser });
-        throw new apiError(400, "User with given credentials already exists");
+        return res.status(400).json({ error: "User with given credentials already exists" });
     }
+    const registerUser = await User.create({ name, email, password });
+    const createdUser = await User.findById(registerUser._id).select("-password -refreshToken");
 
-    const registerUser = await User.create({ name, email, password })
-    const createdUser = await User.findById(registerUser._id).select("-password -refreshToken")
     if (!createdUser) {
-        throw new apiError(500, "Something went wrong white Registrating User... Register Controller")
+        throw new Error("Something went wrong while registering the user");
     }
-
-    return res.status(200).json(new apiResponse(200, createdUser, "user register successfully"));
-})
+    return res.status(200).json({
+        message: "User registered successfully",
+        user: createdUser,
+    });
+});
 
 
 
 // To Login a Person
 const loginUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
-    if ([name || email, password].some((fields) => fields?.trim() === "")) {
-        throw new apiError(400, "All fields are required.")
+    if ((!name || !email) && !password) {
+        throw new apiError(404, "All fields are required")
     }
-
-    const user = await User.findOne({ $or: [{ name }, { email }] })
+    const user = await User.findOne({ $or: [{ name }, { email }] });
     if (!user) {
-        throw new apiError(404, "User not found")
+        throw new apiError(404, "User not found");
     }
-
     const isPasswordCorrect = await user.isPasswordCorrect(password);
     if (!isPasswordCorrect) {
-        throw new apiError(404, "Password is incorrect")
+        throw new apiError(401, "Password is incorrect");
     }
 
-    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
-
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
-
+    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
+    // const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+    const loggedInUser = await User.findById(user._id).select("-password");
     const options = {
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict'
-    }
-    console.log("This is RefreshToken", refreshToken)
+        sameSite: 'Strict',
+    };
     return res.status(200)
         .cookie('accessToken', accessToken, options)
         .cookie('refreshToken', refreshToken, options)
         .json(
             new apiResponse(200, {
-                user: loggedInUser, accessToken,
-                refreshToken
-            }, "user logged in successfully")
-        )
-})
+                user: loggedInUser,
+                accessToken,
+                refreshToken,
+            }, "User logged in successfully")
+        );
+});
 
 
 
 // To Logout a Person
 const logoutUser = asyncHandler(async (req, res) => {
-    res.clearCookie('accessToken')
-    res.clearCookie('refreshToken')
-    res.status(200).json(
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+    res.clearCookie('accessToken', options)
+    res.clearCookie('refreshToken', options)
+    return res.status(200).json(
         new apiResponse(200, true, "User logged out successfully")
     )
-    console.log("This is the clearCookie user is logout")
 })
 
 
@@ -103,10 +100,10 @@ const logoutUser = asyncHandler(async (req, res) => {
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+    console.log("This si the incomingRefreshToken", incomingRefreshToken)
     if (!incomingRefreshToken) {
         throw new apiError(401, "UnAuthorized Request")
     }
-
     try {
         const decodedToken = jwt.verify(
             // eslint-disable-next-line no-undef

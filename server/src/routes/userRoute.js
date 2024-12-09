@@ -1,6 +1,5 @@
-import { Router } from 'express'
 const router = Router();
-import validateRegistration from "../middleware/validateRegistrationMiddleware.js";
+import { Router } from 'express'
 import { verifyUser } from "../middleware/authMiddleware.js";
 
 import {
@@ -23,10 +22,11 @@ import {
 } from '../controllers/adminTask.js';
 import { createUserTask, deleteUserSubTask, getUserSubTask, updateUserSubTask } from '../controllers/subUserTask.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
+import { validateRegisterFields } from '../controllers/validations/authValidation.js';
 
 
 // Authentication
-router.route('/signup').post(validateRegistration, registerUser);
+router.route('/signup').post(validateRegisterFields(['name', 'email', 'password', 'confirmPassword']), registerUser);
 router.route('/login').post(loginUser);
 router.route('/logout').post(verifyUser(), logoutUser)
 router.route('/get-user-data').get(verifyUser(), getUserData)
@@ -56,6 +56,7 @@ router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 
+// For The Stripe Session Checkout
 router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
 
 export default router

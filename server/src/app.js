@@ -1,14 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
+
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
-    // methods: ['GET', 'POST'],
     credentials: true,
 }));
 
@@ -16,8 +18,6 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 
-// The Routes are imported & used here...
-import userRoute from './routes/userRoute.js'
 app.use((req, res, next) => {
     res.setHeader(
         'Content-Security-Policy',
@@ -26,6 +26,17 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/user', userRoute)
+import userRoute from './routes/userRoute.js';
+app.use('/user', userRoute);
 
-export { app }
+// Handle 404 errors for unmatched routes
+app.use((req, res, next) => {
+    res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: "Route not found",
+    });
+});
+app.use(errorHandler);
+
+export { app };
