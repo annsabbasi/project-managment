@@ -13,6 +13,7 @@ const errorHandler = (err, req, res, next) => {
         errors: err.errors || [],
         stack,
     });
+    next();
 };
 
 

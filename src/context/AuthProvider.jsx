@@ -6,11 +6,12 @@ import { axiosInstance } from '../api/axiosInstance';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-
+    const Token = localStorage.getItem('accessToken')
+    const [accessToken, setAccessToken] = useState(Token);
+    // console.log("AccessToke (AuthProvider)", accessToken)
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],
-        queryFn: async () => {
+        queryFn: async () => { 
             if (!accessToken) return null;
             try {
                 const response = await axiosInstance.get('/user/get-user-data', {
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }) => {
             }
         }
     });
- 
+
     return (
         <AuthContext.Provider value={{ user, accessToken, isLoading }}>
             {children}

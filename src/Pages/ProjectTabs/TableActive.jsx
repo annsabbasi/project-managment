@@ -22,6 +22,7 @@ import AddIcon from '@mui/icons-material/Add';
 import TextDialog from './TextDialog';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditTextDialog from './EditTextDialog';
+import { toast } from 'react-toastify';
 
 
 export default function TableActive() {
@@ -61,6 +62,15 @@ export default function TableActive() {
         deleteTask(selectedTask, {
             onSuccess: () => {
                 handleClose();
+                toast.success("Task Deleted Successfully", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: false,
+                });
             }
         })
     }

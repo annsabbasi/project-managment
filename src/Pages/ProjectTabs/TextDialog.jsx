@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useCreateTask } from '../../hooks/useTask';
+import { toast } from 'react-toastify';
 
 const TextDialog = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
         projectTitle: '', teamLeadName: '', dueDate: '', budget: '', description: ''
     });
 
-    const renderTextField = (name, label, multiline = false) => (
+    const renderTextField = (name, label, multiline = false, type) => (
         <TextField
             margin="dense"
             name={name}
@@ -22,6 +23,7 @@ const TextDialog = ({ open, handleClose }) => {
             multiline={multiline}
             rows={multiline ? 4 : undefined}
             InputLabelProps={{ sx: { fontSize: '0.9rem' } }}
+            type={type}
         />
     );
 
@@ -29,13 +31,32 @@ const TextDialog = ({ open, handleClose }) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
-    const { mutate: createTask } = useCreateTask();
+    const { mutate: createTask, error } = useCreateTask();
     const handleSubmit = (e) => {
         e.preventDefault();
         createTask(formData, {
             onSuccess: () => {
-                console.log("Task Successfully Created")
                 setFormData('')
+                toast.success("Task created Successfully", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: false,
+                })
+            },
+            onError: () => {
+                toast.error(error?.response?.data?.message, {
+                    position: "top-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: false,
+                })
             }
         });
     };
@@ -46,8 +67,8 @@ const TextDialog = ({ open, handleClose }) => {
             <DialogContent className={styles.sidebar}>
                 {renderTextField("projectTitle", "Project Title")}
                 {renderTextField("teamLeadName", "Assign User")}
-                {renderTextField("dueDate", "Due Date")}
-                {renderTextField("budget", "Add Budget")}
+                {renderTextField("dueDate", "Due Date", false, "date")}
+                {renderTextField("budget", "Add Budget", false, "number")}
                 {renderTextField("description", "Project Description", true)}
             </DialogContent>
             {/* <Typography variant="span" sx={{ margin: 'auto', fontSize: '0.9rem', color: 'red' }}>error will shown here</Typography> */}

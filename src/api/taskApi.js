@@ -2,12 +2,13 @@ import { axiosInstance } from "./axiosInstance"
 
 
 export const createTask = async (taskId) => {
-    try {
-        const response = await axiosInstance.post('/user/create-task', taskId);
-        return response.data
-    } catch (error) {
-        console.log("createTask taskApi error", error)
-    }
+    // try {
+    const response = await axiosInstance.post('/user/create-task', taskId);
+    return response.data
+    // } catch (error) {
+    //     console.log("error", error)
+    //     throw error
+    // }
 }
 
 

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { loginUser, logoutUser, signUpUser } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
 
 export const useSignup = () => {
   const queryClient = useQueryClient();
@@ -11,9 +10,6 @@ export const useSignup = () => {
       queryClient.setQueryData(['accessToken'], data.user);
       localStorage.setItem('token', data.token);
     },
-    // onError: (error) => {
-    //   console.error('(useAuth) Signup failed:', error);
-    // },
   });
 };
 
@@ -26,7 +22,6 @@ export const useLogin = () => {
       localStorage.setItem("accessToken", data?.data?.accessToken);
       localStorage.setItem("role", data?.data?.user?.role)
       queryClient.setQueryData(["user"], data?.data?.user)
-      // console.log("User Role of Login deom (useAuth)", data?.data)
     },
     onError: (error) => {
       console.error("(useAuth) Login failed:", error.response?.data || error.message)

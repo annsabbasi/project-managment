@@ -29,12 +29,12 @@ app.use((req, res, next) => {
 import userRoute from './routes/userRoute.js';
 app.use('/user', userRoute);
 
-// Handle 404 errors for unmatched routes
-app.use((req, res, next) => {
-    res.status(404).json({
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    res.status(statusCode).json({
         success: false,
-        statusCode: 404,
-        message: "Route not found",
+        message,
     });
 });
 app.use(errorHandler);

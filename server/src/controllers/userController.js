@@ -5,6 +5,8 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+
+// Generate Access & Refresh Token of User
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
     try {
         const user = await User.findById(tokenId);
@@ -20,6 +22,45 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
         throw new apiError(400, "Something went wrong from the")
     }
 }
+
+
+// To Refresh user Login Access Token
+const refreshAccessToken = asyncHandler(async (req, res) => {
+    const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
+    console.log("The incomingRefreshToken (refreshAccessToken) Controllers", incomingRefreshToken)
+    if (!incomingRefreshToken) {
+        throw new apiError(401, "UnAuthorized Request")
+    }
+    try {
+        const decodedToken = jwt.verify(
+            // eslint-disable-next-line no-undef
+            incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
+        )
+        const user = await User.findById(decodedToken.id)
+        if (!user) {
+            throw new apiError(401, "Invalid Refresh Token")
+        }
+
+        if (incomingRefreshToken !== user?.refreshToken) {
+            throw new apiError(401, "Invalid or Expires Refresh Token")
+        }
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
+        console.log("Successfully refreshed The AccessToken", refreshToken)
+
+        return res.status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", refreshToken, options)
+            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
+    } catch (error) {
+        console.log("Error from refreshAccessToken", error)
+        throw new apiError(401, error?.message || "Error from the refreshAccessToken")
+    }
+})
 
 
 
@@ -57,11 +98,10 @@ const loginUser = asyncHandler(async (req, res) => {
     }
     const isPasswordCorrect = await user.isPasswordCorrect(password);
     if (!isPasswordCorrect) {
-        throw new apiError(401, "Password is incorrect");
+        throw new apiError("Password is incorrect");
     }
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
-    // const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
     const loggedInUser = await User.findById(user._id).select("-password");
     const options = {
         httpOnly: true,
@@ -97,46 +137,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 
 
-// To Refresh user Login Access Token
-const refreshAccessToken = asyncHandler(async (req, res) => {
-    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
-    console.log("This si the incomingRefreshToken", incomingRefreshToken)
-    if (!incomingRefreshToken) {
-        throw new apiError(401, "UnAuthorized Request")
-    }
-    try {
-        const decodedToken = jwt.verify(
-            // eslint-disable-next-line no-undef
-            incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
-        )
-        const user = await User.findById(decodedToken._id)
-        if (!user) {
-            throw new apiError(401, "Invalid Refresh Token")
-        }
-
-        if (incomingRefreshToken !== user?.refreshToken) {
-            throw new apiError(401, "Invalid or Expires Refresh Token")
-        }
-
-        const options = {
-            httpOnly: true,
-            secure: true
-        }
-        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
-        console.log("Successfully refreshed The AccessToken", refreshToken)
-
-        return res.status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", refreshToken, options)
-            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
-    } catch (error) {
-        console.log("Error from refreshAccessToken", error)
-        throw new apiError(401, error?.message || "Error from the refreshAccessToken")
-    }
-})
-
-
-
 // To get Logged In user Details
 const getUserData = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
@@ -147,6 +147,7 @@ const getUserData = asyncHandler(async (req, res) => {
 
 
 
+// Get Data of Logged In User
 const getAllData = asyncHandler(async (req, res) => {
     const data = await User.find();
     if (data.length === 0) {

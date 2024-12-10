@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useUpdateSubTask } from '../../../../hooks/useSubTask';
 
 const EditPointsDialog = ({ open, handleClose, task }) => {
@@ -11,9 +11,9 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
         points: task?.points || '',
     });
 
-    useEffect(() => {
-        // console.log("Editing Task with ID:", task);
-    }, [task]);
+    // useEffect(() => {
+    //     // console.log("Editing Task with ID:", task);
+    // }, [task]);
 
 
     const handleChange = (e) => {

@@ -14,7 +14,6 @@ const createTask = asyncHandler(async (req, res) => {
         throw new apiError(400, "All fields are required.")
     }
     const adminId = req.user._id;
-
     // <--- CODE FOR ONLY ADMIN TO ASSIGN TASK --->
     // const admin = await User.findById(req.user.id); // Get the current logged-in admin
     // if (!admin || admin.role !== 'admin') {
@@ -25,7 +24,6 @@ const createTask = asyncHandler(async (req, res) => {
     if (!budget) {
         throw new apiError(400, "Budget and members array are required.");
     }
-
     const teamLeadArray = teamLeadName.split(',').map(name => name.trim());
     const tasks = [];
     for (const teamLead of teamLeadArray) {
@@ -35,6 +33,7 @@ const createTask = asyncHandler(async (req, res) => {
         }
         tasks.push(teamLead);
     }
+
     const newTask = new adminTask({
         projectTitle,
         teamLeadName: tasks,
@@ -117,10 +116,10 @@ const UpdateTask = asyncHandler(async (req, res) => {
         projectStatus: projectStatus || existingTask.projectStatus,
         points: points || existingTask.projectStatus
     }, { new: true, runValidators: true })
+
     if (!updateTask) {
         throw new apiError(400, 'Task not found')
     }
-
     return res.status(200).json(new apiResponse(200, updateTask, "Task Update Successfully"))
 })
 

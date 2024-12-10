@@ -7,11 +7,11 @@ import { useLogin } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Stack, } from '@mui/material';
+import { toast } from 'react-toastify';
 
 
 const LoginPage = () => {
-    const { mutate } = useLogin();
-    // const [redirect, setRedirect] = useState(false)
+    const { mutate } = useLogin(); 
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const [error, setError] = useState("")
     const navigate = useNavigate();
@@ -23,13 +23,9 @@ const LoginPage = () => {
         e.preventDefault();
         mutate(formData, {
             onSuccess: () => {
-                // setRedirect(true);
-                // const userToken = localStorage.getItem("accessToken")
                 const userRole = localStorage.getItem("role")
 
-                console.log("User Role from Login.jsx", userRole)
                 if (userRole === 'superadmin') {
-                    // navigate(`/${RouteNames.ADMINPAGE1}`)
                     navigate(`/${RouteNames.ADMINPAGE1}`)
                 }
                 else if (userRole === 'admin') {
@@ -38,19 +34,24 @@ const LoginPage = () => {
                 else {
                     navigate(`/${RouteNames.DASHBOARD}`)
                 }
+                toast.success("User Login Successfully.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                })
             },
             onError: (error) => {
-                console.error("Login Error", error);
-                setError(error.response?.data?.error || error.response?.data?.errors)
+                setError(error?.response?.data?.message || error.response?.data?.errors)
                 setTimeout(() => {
                     setError("");
-                }, 3000);
+                }, 5000);
             }
         })
     }
-    // if (redirect) {
-    //     return <Navigate to={'/project'} />
-    // }
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
@@ -67,7 +68,7 @@ const LoginPage = () => {
                         <Box className={styles.boxText}>
                             <TextField
                                 margin="normal"
-                                size="small"
+                                size="small" 
                                 label="Email Address"
                                 name="email"
                                 autoFocus
@@ -99,30 +100,21 @@ const LoginPage = () => {
                                 }} />
                         </Box>
 
-
-                        {/* <Typography>{error && <p>{error.message}</p>}</Typography> */}
+                        <Typography className={`${styles.errMessageTxt}`}>{error} &nbsp;</Typography>
                         <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>LogIn</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
-                            <Box >
-                                <Link href="#" variant="text" size="small" className={styles.forgetPassword}>
-                                    Forgot password?
-                                </Link>
-                            </Box>
-
+                            {/* <Box>
+                                <Link href="#" variant="text" size="small" className={styles.forgetPassword}>Forgot password?</Link>
+                            </Box> */}
                             <Box>
                                 <Typography variant="text" size="small" className={styles.dontHaveAccount}>
                                     {"Don't have an account?"}&nbsp;
                                     <Link to={`/${RouteNames.SIGNUP}`} className={styles.login}>
-                                        &nbsp;Login
+                                        &nbsp;Register here
                                     </Link>
                                 </Typography>
                             </Box>
                         </Stack>
-                        {/* <Stack>
-                            <Typography sx={{ fontSize: '0.9rem' }}>Forget Password?</Typography>
-                            <Typography sx={{ fontSize: '0.9rem' }}>Don't have an account? Sign Up</Typography>
-                        </Stack> */}
-
 
                     </Box>
                 </Box>

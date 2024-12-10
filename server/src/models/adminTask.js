@@ -40,7 +40,6 @@ const taskSchema = new mongoose.Schema({
         enum: ['In Progress', 'Completed']
     },
     points: {
-        // type: Number,
         type: String,
         default: 100
     },

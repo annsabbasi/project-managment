@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteSubTask, updateSubTask } from "../api/userSubTask";
+import { toast } from "react-toastify";
 
 export const useDeleteSubTask = () => {
     const queryClient = useQueryClient();
@@ -48,10 +49,19 @@ export const useUpdateSubTask = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries(['userSubtask'])
             queryClient.setQueryData(['userSubtask', data.data._id], data.data);
+            toast.success("Task Updated Successfully", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            })
         },
-        onError: (error) => {
-            console.error('Error updating task:', error.message)
-        }
+        // onError: (error) => {
+        //     console.error('Error updating task:', error.message)
+        // }
     })
 }
 

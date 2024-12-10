@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Box } from '@mui/material';
 import styles from './style.module.scss';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Index() {
     const { id } = useParams();
@@ -24,9 +25,27 @@ export default function Index() {
         mutationFn: createSubTask,
         onSuccess: () => {
             queryClient.invalidateQueries(['userSubtask']);
+            setFormData("")
+            toast.success("The Sub Task Created Successfully", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            })
         },
         onError: (error) => {
-            console.error('Error creating task:', error);
+            toast.error(error?.response?.data?.message, {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            })
         },
     });
 
@@ -40,6 +59,7 @@ export default function Index() {
     const handleSubmit = (e) => {
         e.preventDefault();
         mutation.mutate(formData);
+        setFormData("")
     };
 
 

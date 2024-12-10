@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createTask, deleteTask, fetchTask, projectApproval, submitTask, updateTask } from "../api/taskApi";
+import { toast } from "react-toastify";
 
 export const useCreateTask = () => {
     const queryClient = useQueryClient();
@@ -18,9 +19,12 @@ export const useCreateTask = () => {
                     ]
                 };
             });
-
             queryClient.invalidateQueries(['username', newData.data.userId]);
         },
+        // onError: (error) => {
+        // console.error("(useAuth) Login failed:", error.response?.data || error.message)
+        // console.error("(useTask) useCreate Task:", error)
+        // },
     });
 }
 
@@ -73,6 +77,15 @@ export const useUpdateTask = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries(['tasks'])
             queryClient.setQueryData(['task', data.data._id], data.data);
+            toast.success("The task updated successfully", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            })
         },
         onError: (error) => {
             console.error('Error updating task:', error.message)

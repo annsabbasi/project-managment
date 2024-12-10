@@ -120,46 +120,9 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 
 
 
-// const updateUserSubTask = asyncHandler(async (req, res) => {
-//     const taskId = req.params.taskId;
-//     if (!mongoose.isValidObjectId(taskId)) {
-//         throw new apiError(400, "Invalid Task ID format");
-//     }
-//     const existingTask = await subUserTask.findById(taskId);
-//     if (!existingTask) {
-//         throw new apiError(400, "Task not found");
-//     }
-
-//     const { points } = req.body;
-//     const updateSubTask = await subUserTask.findByIdAndUpdate(taskId, {
-//         points: points || existingTask.projectStatus
-//     }, { new: true, runValidators: true })
-//     if (!updateSubTask) {
-//         throw new apiError(400, 'Task not found')
-//     }
-
-//     return res.status(200).json(new apiResponse(200, updateSubTask, "Task Update Successfully"))
-// })
-
-
-
 export {
     createUserTask,
     getUserSubTask,
     deleteUserSubTask,
     updateUserSubTask
 }
-
-
-
-
-// const getUserSubTask = asyncHandler(async (req, res) => {
-//     const tasks = await subUserTask.find()
-//         .populate('assignedBy', 'name avatar');
-
-//     if (!tasks || tasks.length === 0) {
-//         // throw new apiError(400, "No tasks found")
-//         return res.status(200).json(new apiResponse(200, [], "No task found"))
-//     }
-//     return res.status(200).json(new apiResponse(200, tasks, "Get Task successfully"))
-// })

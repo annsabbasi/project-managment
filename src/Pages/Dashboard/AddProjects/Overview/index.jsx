@@ -24,37 +24,21 @@ import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
 
 export default function index() {
     const { user } = useAuth();
-    // Fetching The Admin User Project Task...
     const { id } = useParams();
     const { data: taskData } = useQuery({
         queryKey: ['tasks', id],
         queryFn: () => fetchTaskById(id),
-        enabled: !!id, // Fetch only if taskId exists
+        enabled: !!id,
         staleTime: 50000
     }
     )
-
-
-    // const [subTasks, setSubTasks] = useState([]);
-    // // useEffect(() => {
-    // //     const fetchSubTasks = async () => {
-    // //         try {
-    // //             const response = await getSubTask(id);
-    // //             if (response) {
-    // //                 setSubTasks(response.data);
-    // //             }
-    // //         } catch (error) {
-    // //             console.error("Error fetching subtasks:", error);
-    // //         }
-    // //     };
-    // //     fetchSubTasks();
-    // // }, [id]);
 
     const { mutate: submitTaskMutation } = useSubmitTask();
     const submitPojectMutation = (e) => {
@@ -65,12 +49,11 @@ export default function index() {
     }
 
 
-    // 
     const { data: subTasks } = useQuery({
-        queryKey: ['userSubtask', id], // Include id in queryKey for project-specific caching
+        queryKey: ['userSubtask', id],
         queryFn: () => getSubTask(id),
-        enabled: !!id, // Fetch only if id exists
-        staleTime: 300000, // Optional: Cache data for 5 minutes
+        enabled: !!id,
+        staleTime: 300000,
     });
 
     // WORK HERE
@@ -93,6 +76,15 @@ export default function index() {
         deleteTask(selectedTask, {
             onSuccess: () => {
                 handleClose();
+                toast.success("Task Deleted Successfully", {
+                    position: "top-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: false,
+                })
             },
         });
     };

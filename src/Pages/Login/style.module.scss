@@ -26,13 +26,14 @@
 }
 .loginBtn {
   margin-top: 0.6rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 1rem;
   background-color: black;
   color: white;
 }
 .forgetPassword {
   font-size: 14px;
   color: #1877f2;
+  margin-bottom: 1rem;
   text-decoration: none;
 }
 .dontHaveAccount {
@@ -42,4 +43,10 @@
 .login {
   color: #1877f2;
   text-decoration: none;
+}
+.errMessageTxt {
+  font-size: 0.9rem;
+  color: red;
+  font-family: cursive;
+  margin-top: 1rem;
 }
