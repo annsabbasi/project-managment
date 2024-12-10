@@ -2,12 +2,12 @@
 import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
 // import { loadStripe } from '@stripe/stripe-js';
 import { Outlet, useLocation } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
 import { axiosInstance } from '../../api/axiosInstance';
 
 
-const stripePromise = loadStripe('pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n'); // Replace with your Stripe Publishable Key
+// const stripePromise = loadStripe('pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n'); // Replace with your Stripe Publishable Key
 
 const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
   const handlePlanSelection = async () => {

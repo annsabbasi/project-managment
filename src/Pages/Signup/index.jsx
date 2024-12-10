@@ -3,15 +3,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import styles from './style.module.scss'
 
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useSignup } from '../../hooks/useAuth';
 import { Link, Navigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { Box, Button, TextField, Typography, Container, Avatar, Grid, Stack, } from '@mui/material';
-import { useSignup } from '../../hooks/useAuth';
 
 const Index = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
-    // const signUpMutation = useSignup();
-    const { mutate: signup, error } = useSignup();
+    const { mutate: signup } = useSignup();
+    const [error, setError] = useState("")
     const [redirect, setRedirect] = useState(false);
     const handleData = (value) => {
         setFormData({ ...formData, [value.target.name]: value.target.value })
@@ -19,8 +20,18 @@ const Index = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        signup(formData);
-        setRedirect(true);
+        signup(formData, {
+            onSuccess: () => {
+                setRedirect(true);
+                toast.success("User Registered Successfully.")
+            },
+            onError: (err) => {
+                setError(err.response?.data?.error || err.response?.data?.errors)
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
+            }
+        });
     }
     if (redirect) {
         return <Navigate to={'/login'} />
@@ -83,7 +94,7 @@ const Index = () => {
                                 className={`${styles.textInputPassword}`} />
                         </Box>
 
-                        <Typography className={`${styles.errMessageTxt}`}>{error && <p>{error.message}</p>}</Typography>
+                        <Typography className={`${styles.errMessageTxt}`}>{error} &nbsp;</Typography>
                         <Button type="submit" fullWidth variant="contained" className={`${styles.btnSignup}`}>Sign Up</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
                             <Grid item>
@@ -93,7 +104,6 @@ const Index = () => {
                                 </Typography>
                             </Grid>
                         </Stack>
-
 
                     </Box>
                 </Box>
