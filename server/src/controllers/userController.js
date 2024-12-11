@@ -27,7 +27,7 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
-    console.log("The incomingRefreshToken (refreshAccessToken) Controllers", incomingRefreshToken)
+    // console.log("The incomingRefreshToken (refreshAccessToken) Controllers", incomingRefreshToken)
     if (!incomingRefreshToken) {
         throw new apiError(401, "UnAuthorized Request")
     }
@@ -36,7 +36,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             // eslint-disable-next-line no-undef
             incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
         )
-        const user = await User.findById(decodedToken.id)
+
+        const user = await User.findById(decodedToken._id).select("refreshToken")
+        console.log("This is the user (userController.js)", user)
         if (!user) {
             throw new apiError(401, "Invalid Refresh Token")
         }
@@ -49,7 +51,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             httpOnly: true,
             secure: true
         }
-        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id)
+        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user?._id);
         console.log("Successfully refreshed The AccessToken", refreshToken)
 
         return res.status(200)
