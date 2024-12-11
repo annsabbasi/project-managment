@@ -6,12 +6,11 @@ import { axiosInstance } from '../api/axiosInstance';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const Token = localStorage.getItem('accessToken')
-    const [accessToken, setAccessToken] = useState(Token);
-    // console.log("AccessToke (AuthProvider)", accessToken)
+    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],
-        queryFn: async () => { 
+        queryFn: async () => {
             if (!accessToken) return null;
             try {
                 const response = await axiosInstance.get('/user/get-user-data', {
@@ -20,9 +19,9 @@ export const AuthProvider = ({ children }) => {
                 return response.data.data;
             } catch (error) {
                 console.log('(AuthProvider) data Error', error);
-                setAccessToken(null);
-                localStorage.removeItem('accessToken');
-                return null;
+                // setAccessToken(null);
+                // localStorage.removeItem('accessToken');
+                // return null;
             }
         }
     });
@@ -39,3 +38,5 @@ AuthProvider.propTypes = {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+

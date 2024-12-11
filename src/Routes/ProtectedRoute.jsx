@@ -13,7 +13,8 @@ export default function ProtectedRoute({ allowedRoles, layout: LayoutComponent }
 
         if (accessToken && allowedRoles.includes(role)) {
             setIsAuthenticated(true);
-        } else {
+        } 
+        else {
             navigate(`/${RouteNames.LOGIN}`);
         }
     }, [navigate, allowedRoles]);
