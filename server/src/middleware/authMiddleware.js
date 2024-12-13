@@ -6,25 +6,18 @@ import jwt from "jsonwebtoken";
 
 export const verifyUser = (role = []) => asyncHandler(async (req, res, next) => {
     const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-    // const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
-    // if (incomingRefreshToken) {
-    //     console.log("RefreshToken missing (authMiddleware) backend", incomingRefreshToken)
-    // }
     if (!token) throw new apiError(401, "Access token missing");
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log("decodedToken (authMiddleware) backend", decodedToken)
-        if (!decodedToken?._id) {
+        if (!decodedToken) {
             throw new apiError(401, "Invalid access token from AuthMiddleware");
         }
 
-        // const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
         const user = await User.findById(decodedToken?._id).select("-password")
         if (!user) throw new apiError(401, "User not found");
         if (role.length > 0 && !role.includes(user.role)) {
             return res.status(403).json({ message: "Access denied." });
         }
-        // console.log("user (authMiddleware) backend", user)
         req.user = user
         // if (process.env.NODE_ENV === "development") {
         //     console.log("Authenticated user:", user);

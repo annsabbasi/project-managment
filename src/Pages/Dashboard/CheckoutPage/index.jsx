@@ -32,6 +32,7 @@ export default Index;
 
 
 
+// ------------------ Stripe Custom Maded Checkout Page ------------------
 
 // import { useLocation } from 'react-router-dom';
 // import { axiosInstance } from '../../../api/axiosInstance';

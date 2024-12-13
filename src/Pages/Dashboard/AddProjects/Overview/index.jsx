@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
+
 import {
     Avatar, Box,
     Table, TableRow,
@@ -10,17 +11,20 @@ import {
     TableHead, TableContainer,
 } from "@mui/material";
 
+
 import style from "./style.module.scss"
 import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditPointsDialog from "./EditPointsDialog";
 
+
 import { fetchTaskById } from "../../../../api/taskApi";
 import { getSubTask } from "../../../../api/userSubTask";
 import { useSubmitTask } from "../../../../hooks/useTask";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useDeleteSubTask } from "../../../../hooks/useSubTask";
+
 
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
@@ -43,8 +47,8 @@ export default function index() {
     const { mutate: submitTaskMutation } = useSubmitTask();
     const submitPojectMutation = (e) => {
         e.preventDefault();
-        if (user.role === 'admin') {
-            submitTaskMutation({ taskId: id, status: 'Completed' })
+        if (user?.role === 'admin') {
+            submitTaskMutation({ taskId: id, status: 'Completed' });
         }
     }
 
@@ -56,11 +60,12 @@ export default function index() {
         staleTime: 300000,
     });
 
-    // WORK HERE
+
+    // TODO: WORK REMAINING
     const [anchor, setAnchor] = useState(null);
-    // const { data, isLoading, isError, error } = useGetCreateTask();
     const [selectedTask, setSelectedTask] = useState(null);
     const open = Boolean(anchor);
+
 
     const handleClick = (event, taskId) => {
         setAnchor(event.currentTarget);
@@ -99,6 +104,7 @@ export default function index() {
         setEditDialogOpen(false);
         setSelectedTask(null);
     };
+
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -155,17 +161,14 @@ export default function index() {
                             disabled={user?.role !== 'admin' || taskData?.data?.status === 'Completed'}
                             onClick={submitPojectMutation}
                             sx={{
-                                ...(user.role !== 'admin' || taskData?.data?.status === 'Completed') && {
+                                ...(user?.role !== 'admin' || taskData?.data?.status === 'Completed') && {
                                     backgroundColor: '#FFFFF0 !important',
                                     color: '#424242 !important',
                                     textTransform: 'capitalize',
                                     letterSpacing: '1px',
                                     fontWeight: '500 !important'
                                 },
-                            }}
-                        >
-                            {taskData?.data?.status === 'Completed' ? 'Submitted' : 'Submit'}
-                        </Button>
+                            }}>{taskData?.data?.status === 'Completed' ? 'Submitted' : 'Submit'}</Button>
                     </Stack>
                 </Box>
 
@@ -233,7 +236,6 @@ export default function index() {
                                 </TableHead>
 
                                 <TableBody >
-
                                     {subTasks?.data?.map((task, index) => {
                                         return (
                                             <TableRow key={index} className={style.tableRowBody}>
@@ -330,7 +332,6 @@ export default function index() {
                                             </TableRow>
                                         )
                                     })}
-
                                 </TableBody>
                             </Table>
                         ) : (
@@ -340,7 +341,6 @@ export default function index() {
 
                         )
                     }
-
                     < EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
                 </TableContainer >
             </Stack>

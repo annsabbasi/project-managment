@@ -21,6 +21,8 @@ const LoginPage = lazy(() => import('../Pages/Login'))
 const SignUpPage = lazy(() => import('../Pages/Signup'))
 const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'))
 
+
+
 // Super Admin Route Part
 const AdminLayout = lazy(() => import('../AdminWork'));
 const AdminPage1 = lazy(() => import('../AdminWork/pages/Page1'));
@@ -31,6 +33,8 @@ const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
 const Premium = lazy(() => import('../AdminWork/pages/planRequest/premium'));
 const Request = lazy(() => import('../AdminWork/pages/planRequest/request'));
 const PlanRequest = lazy(() => import('../AdminWork/pages/planRequest'));
+
+
 
 export const AdminRoute = [
     { path: RouteNames.ADMINLAYOUT, element: AdminLayout, adminLayout: true, title: 'Admin Layout' },
@@ -46,6 +50,7 @@ export const AdminRoute = [
 ];
 
 
+
 export const PublicRoute = [
     { path: RouteNames.HOME, element: Home },
     // { path: '/', element: Home },
@@ -54,6 +59,7 @@ export const PublicRoute = [
     { path: RouteNames.SIGNUP, element: SignUpPage },
     // { path: '*', element: NotFound }
 ]
+
 
 
 export const PrivateRoute = [

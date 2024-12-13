@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
+import { useQuery } from '@tanstack/react-query';
 import { createContext, useContext, useState } from 'react';
+
 import { axiosInstance } from '../api/axiosInstance';
+
 
 const AuthContext = createContext();
 
@@ -19,9 +21,9 @@ export const AuthProvider = ({ children }) => {
                 return response.data.data;
             } catch (error) {
                 console.log('(AuthProvider) data Error', error);
-                // setAccessToken(null);
-                // localStorage.removeItem('accessToken');
-                // return null;
+                setAccessToken(null);
+                localStorage.removeItem('accessToken');
+                return null;
             }
         }
     });
@@ -33,10 +35,12 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
+
+
+
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired
 };
 
+
 export const useAuth = () => useContext(AuthContext);
-
-

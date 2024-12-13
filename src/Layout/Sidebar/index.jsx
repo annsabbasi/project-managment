@@ -68,8 +68,8 @@ const Sidebar = () => {
                     alignItems: 'center',
                     overflow: 'hidden',
                 },
-            }}
-        >
+            }}>
+
             <Box className={styles.sidebar}>
                 <Box className={styles.upperRow}>
                     <Box className={styles.logo}>
@@ -77,6 +77,7 @@ const Sidebar = () => {
                     </Box>
 
                     <List className={styles.list}>
+
                         {pages.map(({ name, Icon, ActiveIcon, path }) => (
                             <React.Fragment key={name}>
                                 {name === 'Clients' && <Typography className={styles.title}>Collaborate</Typography>}
@@ -96,8 +97,10 @@ const Sidebar = () => {
                                 </ListItem>
                             </React.Fragment>
                         ))}
+
                     </List>
                 </Box>
+
             </Box>
         </Drawer>
     );

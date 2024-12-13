@@ -1,17 +1,24 @@
 import PropTypes from 'prop-types';
 import OverView from "./Overview"
-import Files from "./Files"
 import Teams from "./Teams"
-import Time from "./Time"
 import Assign from "./Assign"
-import Controls from "./Controls"
 import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
+
+{/* Further Tabs if Needed Imports! */ }
+// import Files from "./Files"
+// import Time from "./Time"
+// import Controls from "./Controls"
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Box, Button, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
+import {
+    Typography
+    Box, Button,
+    Tab, Tabs,
+    IconButton, Stack,
+} from "@mui/material";
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -27,6 +34,7 @@ const CustomTabPanel = (props) => {
     )
 }
 
+
 const allyProps = (index) => {
     return {
         id: `simpleTab-${index}`,
@@ -40,6 +48,8 @@ export default function AddProjects() {
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
     }
+
+
     return (
         <Box>
             <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between">
@@ -55,6 +65,7 @@ export default function AddProjects() {
                     </IconButton>
                     <Typography className={project.goBackTitle}>Project Title</Typography>
                 </Link>
+
 
                 <Tabs
                     onChange={handleChangeTab}
@@ -73,11 +84,11 @@ export default function AddProjects() {
                             '&.Mui-selected': {
                                 color: theme.palette.grey.darkGrey,
                             },
-                        })}
-                        className={project.Tab} />
+                        })} className={project.Tab} />
+
 
                     <Tab
-                        label="Files"
+                        label="Team"
                         {...allyProps(1)}
                         sx={(theme) => ({
                             backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
@@ -86,11 +97,11 @@ export default function AddProjects() {
                             '&.Mui-selected': {
                                 color: theme.palette.grey.darkGrey,
                             },
-                        })}
-                        className={project.Tab} />
+                        })} className={project.Tab} />
+
 
                     <Tab
-                        label="Team"
+                        label="Assign"
                         {...allyProps(2)}
                         sx={(theme) => ({
                             backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
@@ -99,10 +110,23 @@ export default function AddProjects() {
                             '&.Mui-selected': {
                                 color: theme.palette.grey.darkGrey,
                             },
-                        })}
-                        className={project.Tab} />
+                        })} className={project.Tab} />
 
-                    <Tab
+
+                    {/* Further Tabs if Needed! */}
+                    {/* <Tab
+                            label="Files"
+                            {...allyProps(1)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 1 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })}
+                            className={project.Tab} /> */}
+                    {/* <Tab
                         label="Time"
                         {...allyProps(3)}
                         sx={(theme) => ({
@@ -113,20 +137,8 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab} />
-                    <Tab
-                        label="Assign"
-                        {...allyProps(4)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 4 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })}
-                        className={project.Tab} />
-                    <Tab
+                        className={project.Tab} /> */}
+                    {/* <Tab
                         label="Controls"
                         {...allyProps(5)}
                         sx={(theme) => ({
@@ -137,7 +149,7 @@ export default function AddProjects() {
                                 color: theme.palette.grey.darkGrey,
                             },
                         })}
-                        className={project.Tab} />
+                        className={project.Tab} /> */}
                 </Tabs>
 
                 <Button
@@ -151,32 +163,35 @@ export default function AddProjects() {
                     }}>In Progress</Button>
             </Stack>
 
+
             <Box>
                 <CustomTabPanel value={activeTab} index={0}>
                     <OverView />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={1}>
-                    <Files />
-                </CustomTabPanel>
-
-                <CustomTabPanel value={activeTab} index={2}>
                     <Teams />
                 </CustomTabPanel>
 
-                <CustomTabPanel value={activeTab} index={3}>
-                    <Time />
-                </CustomTabPanel>
-                <CustomTabPanel value={activeTab} index={4}>
+                <CustomTabPanel value={activeTab} index={2}>
                     <Assign />
                 </CustomTabPanel>
-                <CustomTabPanel value={activeTab} index={5}>
+
+                {/* <CustomTabPanel value={activeTab} index={1}>
+                    <Files />
+                </CustomTabPanel> */}
+                {/* <CustomTabPanel value={activeTab} index={3}>
+                    <Time />
+                </CustomTabPanel> */}
+                {/* <CustomTabPanel value={activeTab} index={5}>
                     <Controls />
-                </CustomTabPanel>
+                </CustomTabPanel> */}
             </Box>
         </Box >
     )
 }
+
+
 
 CustomTabPanel.propTypes = {
     children: PropTypes.node.isRequired,

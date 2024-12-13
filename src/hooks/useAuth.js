@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { loginUser, logoutUser, signUpUser } from '../api/authApi';
 import { useNavigate } from 'react-router-dom';
+
+import { loginUser, logoutUser, signUpUser } from '../api/authApi';
+
+
 
 export const useSignup = () => {
   const queryClient = useQueryClient();
@@ -14,15 +17,19 @@ export const useSignup = () => {
 };
 
 
+
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: loginUser,
+
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data?.data?.accessToken);
+      localStorage.setItem("refreshToken", data?.data?.refreshToken);
       localStorage.setItem("role", data?.data?.user?.role)
       queryClient.setQueryData(["user"], data?.data?.user)
     },
+
     onError: (error) => {
       console.error("(useAuth) Login failed:", error.response?.data || error.message)
     }
@@ -30,16 +37,19 @@ export const useLogin = () => {
 }
 
 
+
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: logoutUser,
+
     onSuccess: () => {
       queryClient.clear();
       localStorage.removeItem("accessToken");
       navigate('/login');
     },
+
     onError: (error) => {
       console.error("(useAuth) Logout failed:", error.message || error);
     }

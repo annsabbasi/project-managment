@@ -8,7 +8,8 @@ import {
     getAllData,
     logoutUser,
     refreshAccessToken,
-    getUserData
+    getUserData,
+    getUserProfile
 } from "../controllers/userController.js";
 
 import {
@@ -60,6 +61,13 @@ router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updat
 
 // For The Stripe Session Checkout
 router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
+
+
+
+
+// Testing Purpose
+router.route('/testing').get(verifyUser(['admin', 'user']), getUserProfile)
+
 
 
 export default router

@@ -1,15 +1,18 @@
-// import { Box, Button, Card, CardContent, Typography } from '@mui/material';
-import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
-// import { loadStripe } from '@stripe/stripe-js';
-import { Outlet, useLocation } from 'react-router-dom';
-// import { loadStripe } from '@stripe/stripe-js';
 import PropTypes from 'prop-types';
+// import { loadStripe } from '@stripe/stripe-js';
+
+import { Outlet, useLocation } from 'react-router-dom';
 import { axiosInstance } from '../../api/axiosInstance';
+import {
+  Box, Card,
+  CardContent, Typography,
+  Button, Grid
+} from '@mui/material';
 
 
 // const stripePromise = loadStripe('pk_test_51QSBs2F1BVeaeMn2OftmykQ5IdzOi5NQGqGmzX77qr8B55mifdGgFZzZMtI1JXAh9VdXR6r2ZcKFrjpbZ5PtVtb100vAGNz02n'); // Replace with your Stripe Publishable Key
-
 const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
+
   const handlePlanSelection = async () => {
     try {
       const { data } = await axiosInstance.post('/user/create-checkout-session', {
@@ -27,6 +30,7 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
     }
   };
 
+
   return (
     <Card
       sx={{
@@ -39,18 +43,21 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
           transform: 'scale(1.05)',
           boxShadow: '0px 4px 10px rgba(54, 69, 79, 0.2)',
         },
-      }}
-    >
+      }}>
+
       <CardContent>
         <Typography variant="h5" align="center" fontWeight="semiBold" gutterBottom>
           {plan}
         </Typography>
+
         <Typography variant="h3" align="center" color="primary" fontWeight="bold">
           ${price}
         </Typography>
+
         <Typography variant="subtitle2" align="center" color="textSecondary" gutterBottom>
           per month
         </Typography>
+
         <Box sx={{ mt: 2 }}>
           {features.map((feature, index) => (
             <Typography key={index} variant="body1" align="center" sx={{ mb: 1, color: 'gray' }}>
@@ -58,17 +65,18 @@ const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {
             </Typography>
           ))}
         </Box>
+
         <Box textAlign="center" sx={{ mt: 3 }}>
           <Button
             variant="contained"
             color={highlighted ? 'primary' : 'secondary'}
             size="large"
             sx={{ borderRadius: '20px', px: 4, textTransform: 'capitalize' }}
-            onClick={handlePlanSelection}
-          >
+            onClick={handlePlanSelection}>
             {buttonLabel}
           </Button>
         </Box>
+
       </CardContent>
     </Card>
   );
@@ -88,10 +96,8 @@ const Referrals = () => {
             gutterBottom
             mb={5}
             mt={2}
-            color="rgb(56, 56, 56)"
-          >
-            Choose Your Plan
-          </Typography>
+            color="rgb(56, 56, 56)">Choose Your Plan</Typography>
+
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={6} md={4}>
               <PlanCard
@@ -103,9 +109,9 @@ const Referrals = () => {
                   'Limited storage space',
                 ]}
                 buttonLabel="Choose Basic"
-                highlighted={false}
-              />
+                highlighted={false} />
             </Grid>
+
             <Grid item xs={12} sm={6} md={4}>
               <PlanCard
                 plan="Standard"
@@ -117,9 +123,9 @@ const Referrals = () => {
                   'Monthly usage reports',
                 ]}
                 buttonLabel="Choose Standard"
-                highlighted={true}
-              />
+                highlighted={true} />
             </Grid>
+
             <Grid item xs={12} sm={6} md={4}>
               <PlanCard
                 plan="Premium"
@@ -132,19 +138,20 @@ const Referrals = () => {
                   'Custom integrations',
                 ]}
                 buttonLabel="Choose Premium"
-                highlighted={false}
-              />
+                highlighted={false} />
             </Grid>
+
           </Grid>
         </>
-      ) : (
-        <Outlet />
-      )}
+      ) : (<Outlet />)
+      }
+
     </Box>
   );
 };
 
 export default Referrals;
+
 
 
 PlanCard.propTypes = {
@@ -162,12 +169,12 @@ PlanCard.propTypes = {
 
 
 
+// --------------- Plain Code Without Stripe Implementation ---------------
 
-// import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
-// // import { loadStripe } from '@stripe/stripe-js';
-// import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 // // import { RouteNames } from "../../Constants/route";
+// import { Box, Card, CardContent, Typography, Button, Grid } from '@mui/material';
+// import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 
 // const PlanCard = ({ plan, price, features, buttonLabel, highlighted }) => {

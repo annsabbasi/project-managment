@@ -1,19 +1,26 @@
-import AddIcon from '@mui/icons-material/Add';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import styles from './page.module.scss'
 import PropTypes from 'prop-types';
+
+import AddIcon from '@mui/icons-material/Add';
+import styles from './page.module.scss'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/useAuth";
-import { AppBar, Avatar, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
+import {
+    AppBar, Avatar,
+    IconButton, Menu,
+    MenuItem, Stack,
+    Toolbar, Typography
+} from "@mui/material";
+// import { useNavigate } from "react-router-dom";
 
 export default function TopBar({ title }) {
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState(null);
-    // const navigate = useNavigate();
     const { mutate: logout } = useLogout();
+    // const navigate = useNavigate();
+
 
     const handleClick = (event) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
@@ -35,6 +42,7 @@ export default function TopBar({ title }) {
             <Toolbar className={styles.navbarcontent}>
                 <Typography variant="h5" sx={{ fontWeight: '600', color: theme.palette.grey['darkGrey'] }}>{title}</Typography>
 
+
                 <Stack direction='row' spacing={2} alignItems='center' sx={{
                     '& svg': {
                         cursor: 'pointer',
@@ -42,12 +50,14 @@ export default function TopBar({ title }) {
                         color: theme.palette.grey['lightGrey']
                     }
                 }}>
+
                     <AddIcon aria-label="Add" />
                     <NotificationsNoneIcon aria-label="Notifications" />
                     <IconButton onClick={handleClick}>
                         <Avatar alt="User Avatar" />
                     </IconButton>
                 </Stack>
+
 
                 <Menu
                     anchorEl={anchorEl}

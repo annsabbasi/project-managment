@@ -1,10 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSubTask } from '../../../../api/userSubTask';
-import { useEffect, useState } from 'react';
-import { Grid, TextField, Button, Box } from '@mui/material';
 import styles from './style.module.scss';
-import { useParams } from 'react-router-dom';
+import { createSubTask } from '../../../../api/userSubTask';
+
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Grid, TextField, Button, Box } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+
 
 export default function Index() {
     const { id } = useParams();
@@ -16,13 +19,18 @@ export default function Index() {
         dueDate: '',
         projectId: id || ''
     });
+
+
     useEffect(() => {
         if (id) {
             setFormData((prev) => ({ ...prev, id }));
         }
     }, [id]);
+
+
     const mutation = useMutation({
         mutationFn: createSubTask,
+
         onSuccess: () => {
             queryClient.invalidateQueries(['userSubtask']);
             setFormData("")
@@ -36,6 +44,7 @@ export default function Index() {
                 progress: false,
             })
         },
+
         onError: (error) => {
             toast.error(error?.response?.data?.message, {
                 position: "top-center",
@@ -75,9 +84,9 @@ export default function Index() {
                         size="small"
                         fullWidth
                         value={formData.assign}
-                        onChange={handleChange}
-                    />
+                        onChange={handleChange} />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         variant="outlined"
@@ -87,8 +96,7 @@ export default function Index() {
                         size="small"
                         fullWidth
                         value={formData.title}
-                        onChange={handleChange}
-                    />
+                        onChange={handleChange} />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -102,9 +110,9 @@ export default function Index() {
                         multiline
                         rows={4}
                         value={formData.description}
-                        onChange={handleChange}
-                    />
+                        onChange={handleChange} />
                 </Grid>
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         variant="outlined"
@@ -116,8 +124,7 @@ export default function Index() {
                         size="small"
                         fullWidth
                         value={formData.dueDate}
-                        onChange={handleChange}
-                    />
+                        onChange={handleChange} />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -126,15 +133,13 @@ export default function Index() {
                             color="secondary"
                             className={`${styles.dialogBtnPrimary}`}
                             type="button"
-                            onClick={() => setFormData({})}
-                        >
-                            Cancel
-                        </Button>
+                            onClick={() => setFormData({})}>Cancel</Button>
                         <Button color="primary" className={`${styles.dialogBtnSecondary}`} type="submit">
                             Save
                         </Button>
                     </Box>
                 </Grid>
+
             </Grid>
         </form>
     );

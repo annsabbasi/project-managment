@@ -2,20 +2,15 @@ import { axiosInstance } from "./axiosInstance"
 
 
 export const createTask = async (taskId) => {
-    // try {
     const response = await axiosInstance.post('/user/create-task', taskId);
     return response.data
-    // } catch (error) {
-    //     console.log("error", error)
-    //     throw error
-    // }
 }
+
 
 
 export const fetchTask = async (taskId) => {
     try {
         const response = await axiosInstance.get('/user/get-create-task', taskId);
-        // console.log("Task Api response", response)
         return response.data || [];
     } catch (error) {
         if (axiosInstance.isCancel(error)) {
@@ -28,6 +23,7 @@ export const fetchTask = async (taskId) => {
 }
 
 
+
 export const deleteTask = async (taskId) => {
     try {
         const response = await axiosInstance.delete(`/user/get-delete-task/${taskId}`);
@@ -38,15 +34,16 @@ export const deleteTask = async (taskId) => {
 }
 
 
+
 export const updateTask = async (taskId, updateData) => {
     try {
         const response = await axiosInstance.put(`/user/get-update-task/${taskId}`, updateData);
-        // console.log("taskApi UpdateTask Success", response);
         return response.data;
     } catch (error) {
         console.log("taskApi updateTask error", error)
     }
 }
+
 
 
 export const fetchTaskById = async (id) => {
@@ -59,15 +56,16 @@ export const fetchTaskById = async (id) => {
 };
 
 
+
 export const submitTask = async (taskId, status) => {
     try {
         const response = await axiosInstance.put(`/user/submit-task/${taskId}`, { status });
-        // console.log("submitTask (taskApi) success", response);
         return response.data;
     } catch (error) {
         console.log("submitTask (taskApi) error:", error)
     }
 }
+
 
 
 export const projectApproval = async (taskId, projectStatus) => {
@@ -77,6 +75,6 @@ export const projectApproval = async (taskId, projectStatus) => {
         return response.data;
     } catch (error) {
         console.log("submitTask (taskApi) error:", error);
-        throw error; // Ensure errors bubble up
+        throw error;
     }
 };

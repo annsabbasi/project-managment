@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import jwt from 'jsonwebtoken'
 import { User } from "../models/userModel.js";
 
@@ -37,8 +38,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
         )
 
-        const user = await User.findById(decodedToken._id).select("refreshToken")
-        console.log("This is the user (userController.js)", user)
+        const user = await User.findById(decodedToken._id).select("-password")
+        // console.log("This is the user (userController.js)", user)
         if (!user) {
             throw new apiError(401, "Invalid Refresh Token")
         }
@@ -52,7 +53,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             secure: true
         }
         const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user?._id);
-        console.log("Successfully refreshed The AccessToken", refreshToken)
+        console.log("Successfully refreshed The AccessToken", accessToken)
 
         return res.status(200)
             .cookie("accessToken", accessToken, options)
@@ -161,6 +162,20 @@ const getAllData = asyncHandler(async (req, res) => {
 })
 
 
+// For The Testing Purpose To Get the User Data
+const getUserProfile = asyncHandler(async (req, res) => {
+    const token = req.cookies?.accessToken;
+    try {
+        const verify = jwt.verify(token, process.env.JWT_SECRET);
+        const findUser = await User.findById(verify._id).select("-password -refreshToken");
+        if (!findUser) {
+            throw new apiError(404, "User Not Found!");
+        }
+        res.status(200).json(new apiResponse(200, findUser, "User data fetched successfully!"));
+    } catch (error) {
+        console.log("ERROR from (UserController.js) getUserProfile", error)
+    }
+})
 
 
 export {
@@ -169,5 +184,6 @@ export {
     getAllData,
     logoutUser,
     refreshAccessToken,
-    getUserData
+    getUserData,
+    getUserProfile
 }

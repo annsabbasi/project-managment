@@ -1,15 +1,20 @@
-import { AppBar, Avatar, Stack, Toolbar, Typography } from "@mui/material";
+import styles from './styles.scss'
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useTheme } from "@mui/material/styles";
-import styles from './styles.scss'
+
+import {
+    Typography,
+    AppBar, Avatar,
+    Stack, Toolbar,
+} from "@mui/material";
+
 
 export default function TopBar() {
     const theme = useTheme();
 
     return (
-        <AppBar
-            position="static" sx={{
+        <AppBar position="static" sx={{
                 backgroundColor: 'background.default',
                 boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
             }}>

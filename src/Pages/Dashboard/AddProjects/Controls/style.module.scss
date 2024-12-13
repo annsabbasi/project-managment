@@ -141,7 +141,6 @@ $hover-grey: #e9e9e9;
 .sidebar {
   scrollbar-width: thin;
   scrollbar-color: $hover-grey transparent;
-  // background-color: pink;
   &::-webkit-scrollbar {
     width: 2px;
   }
@@ -162,10 +161,6 @@ $hover-grey: #e9e9e9;
   font-weight: 600;
   border: 1px solid grey;
   box-shadow: none;
-//   border-radius: 2rem;
-//   width: fit-content;
-//   min-width: 90px;
-//   padding: 0.4rem 1rem;
   &:hover {
     background-color: black;
     color: white;

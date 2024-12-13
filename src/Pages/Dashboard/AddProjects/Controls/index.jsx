@@ -1,15 +1,11 @@
-import {
-    Box,
-    Table,
-    Button,
-    TableRow,
-    TableCell,
-    TableBody,
-    TableHead,
-    TableContainer,
-    Typography,
-} from '@mui/material';
 import style from './style.module.scss';
+
+import {
+    Button, TableRow,
+    TableCell, TableBody,
+    Box, Table, Typography,
+    TableHead, TableContainer,
+} from '@mui/material';
 
 
 export default function TableActive() {
@@ -28,6 +24,8 @@ export default function TableActive() {
                         <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
+
+
                 <Box sx={{ height: '16px' }} />
                 <TableBody>
                     <TableRow className={style.tableRowBody}>
@@ -40,14 +38,12 @@ export default function TableActive() {
                         <TableCell align="left">8/15/24</TableCell>
                         <TableCell align="right">$5,000</TableCell>
                         <TableCell align="right">
-                            <Button color="secondary" className={`${style.dialogBtnPrimary}`}>
-                                Done
-                            </Button>
+                            <Button color="secondary" className={`${style.dialogBtnPrimary}`}>Done</Button>
                         </TableCell>
                     </TableRow>
                 </TableBody>
-            </Table>
 
+            </Table>
         </TableContainer >
     );
 }

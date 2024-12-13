@@ -61,6 +61,7 @@ const images = [
 const TaskImages = () => {
     return (
         <Grid container spacing={2}>
+            
             {images.map((image) => (
                 <Grid item xs={12} sm={6} md={4} key={image.id}>
                     <CardMedia
@@ -72,10 +73,10 @@ const TaskImages = () => {
                             objectFit: 'cover',
                             margin: 0,
                             width: '100%',
-                        }}
-                    />
+                        }} />
                 </Grid>
             ))}
+
         </Grid>
     );
 };

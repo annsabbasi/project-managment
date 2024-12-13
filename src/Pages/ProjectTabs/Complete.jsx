@@ -1,19 +1,18 @@
-import {
-    Table,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Box,
-    TableBody,
-    Button,
-} from '@mui/material';
 import style from './style.module.scss'
+
+import {
+    Table, TableCell,
+    TableContainer, TableHead,
+    TableRow, Box,
+    TableBody, Button,
+} from '@mui/material';
+
 
 export default function Complete() {
     return (
         <TableContainer>
             <Table className={style.table}>
+
                 <TableHead className={style.tableHead}>
                     <TableRow className={style.tableRowHead}>
                         <TableCell>Project Title</TableCell>
@@ -25,11 +24,14 @@ export default function Complete() {
                         <TableCell align="left">&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
+
+
                 <Box sx={{ height: '16px' }} />
                 <TableBody>
                     <TableRow className={style.tableRowBody}>
                         <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
                         <TableCell align="left">Charley Robertson</TableCell>
+
                         <TableCell align="left">
                             <Button
                                 variant="outlined"
@@ -48,17 +50,18 @@ export default function Complete() {
                                     '& .MuiButton-endIcon': {
                                         marginLeft: '1px',
                                     },
-                                }}
-                            >Completed</Button>
+                                }}>Completed</Button>
                         </TableCell>
+
                         <TableCell align="left">3/18/23</TableCell>
                         <TableCell align="left">Flexible</TableCell>
                         <TableCell align="left">3/18/23</TableCell>
                         <TableCell align="right">&nbsp;</TableCell>
                     </TableRow>
                 </TableBody>
-            </Table>
 
+
+            </Table>
         </TableContainer >
     );
 }

@@ -1,26 +1,20 @@
-/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+
 import { useState } from 'react';
 import { useUpdateSubTask } from '../../../../hooks/useSubTask';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 
 const EditPointsDialog = ({ open, handleClose, task }) => {
     const { mutate: editTask } = useUpdateSubTask();
-
     const [formData, setFormData] = useState({
         points: task?.points || '',
     });
-
-    // useEffect(() => {
-    //     // console.log("Editing Task with ID:", task);
-    // }, [task]);
 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
-
     const handleSubmit = (e) => {
         e.preventDefault()
         editTask({ taskId: task, updateData: formData });
@@ -39,8 +33,9 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.title}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
+
                 <TextField
                     margin="dense"
                     name="assign"
@@ -49,8 +44,9 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.assign}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
+
                 <TextField
                     margin="dense"
                     name="description"
@@ -59,8 +55,9 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.description}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
+
                 <TextField
                     margin="dense"
                     name="taskList"
@@ -69,8 +66,9 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.taskList}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
+
                 <TextField
                     margin="dense"
                     name="points"
@@ -79,17 +77,15 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.points}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
             </DialogContent>
+
+
             <DialogActions>
-                <Button onClick={handleClose} color="secondary">
-                    Cancel
-                </Button>
-                <Button type="submit" color="primary">
-                    Update
-                </Button>
+                <Button onClick={handleClose} color="secondary">Cancel</Button>
+                <Button type="submit" color="primary">Update</Button>
             </DialogActions>
+
         </Dialog>
     );
 };

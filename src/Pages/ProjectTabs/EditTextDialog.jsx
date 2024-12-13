@@ -1,8 +1,14 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useUpdateTask } from '../../hooks/useTask';
+
+import {
+    Dialog, DialogActions,
+    DialogContent, DialogTitle,
+    Button, TextField
+} from '@mui/material';
+
 
 const EditTextDialog = ({ open, handleClose, task }) => {
     const { mutate: editTask } = useUpdateTask();
@@ -20,7 +26,6 @@ const EditTextDialog = ({ open, handleClose, task }) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
-
     const handleSubmit = (e) => {
         e.preventDefault()
         editTask({ taskId: task, updateData: formData });
@@ -28,10 +33,12 @@ const EditTextDialog = ({ open, handleClose, task }) => {
         handleClose();
     }
 
+
     return (
         <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose}>
             <DialogTitle>Edit Project</DialogTitle>
             <DialogContent>
+
                 <TextField
                     margin="dense"
                     name="projectTitle"
@@ -40,8 +47,8 @@ const EditTextDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.projectTitle}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
                 <TextField
                     margin="dense"
                     name="teamLeadName"
@@ -50,8 +57,8 @@ const EditTextDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.teamLeadName}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
                 <TextField
                     margin="dense"
                     name="description"
@@ -62,8 +69,8 @@ const EditTextDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.description}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
                 <TextField
                     margin="dense"
                     name="projectStatus"
@@ -72,8 +79,8 @@ const EditTextDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.projectStatus}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
+
                 <TextField
                     margin="dense"
                     name="points"
@@ -82,20 +89,20 @@ const EditTextDialog = ({ open, handleClose, task }) => {
                     variant="outlined"
                     size="small"
                     value={formData.points}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange} />
             </DialogContent>
+
+
             <DialogActions>
-                <Button onClick={handleClose} color="secondary">
-                    Cancel
-                </Button>
-                <Button type="submit" color="primary">
-                    Update
-                </Button>
+                <Button onClick={handleClose} color="secondary">Cancel</Button>
+                <Button type="submit" color="primary">Update</Button>
             </DialogActions>
+
         </Dialog>
     );
 };
+
+
 
 EditTextDialog.propTypes = {
     open: PropTypes.bool.isRequired,

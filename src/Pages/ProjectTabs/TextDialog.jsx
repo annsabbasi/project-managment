@@ -1,14 +1,22 @@
 import styles from './style.module.scss';
 import PropTypes from 'prop-types';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+
 import { useState } from 'react';
 import { useCreateTask } from '../../hooks/useTask';
 import { toast } from 'react-toastify';
+
+import {
+    Button, TextField,
+    Dialog, DialogActions,
+    DialogContent, DialogTitle,
+} from '@mui/material';
+
 
 const TextDialog = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
         projectTitle: '', teamLeadName: '', dueDate: '', budget: '', description: ''
     });
+
 
     const renderTextField = (name, label, multiline = false, type) => (
         <TextField
@@ -23,18 +31,20 @@ const TextDialog = ({ open, handleClose }) => {
             multiline={multiline}
             rows={multiline ? 4 : undefined}
             InputLabelProps={{ sx: { fontSize: '0.9rem' } }}
-            type={type}
-        />
+            type={type} />
     );
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
+
+
     const { mutate: createTask, error } = useCreateTask();
     const handleSubmit = (e) => {
         e.preventDefault();
         createTask(formData, {
+
             onSuccess: () => {
                 setFormData('')
                 toast.success("Task created Successfully", {
@@ -47,6 +57,7 @@ const TextDialog = ({ open, handleClose }) => {
                     progress: false,
                 })
             },
+
             onError: () => {
                 toast.error(error?.response?.data?.message, {
                     position: "top-center",
@@ -58,12 +69,14 @@ const TextDialog = ({ open, handleClose }) => {
                     progress: false,
                 })
             }
+
         });
     };
 
     return (
         <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose} className={styles.sidebar}>
             <DialogTitle>Add a New Project</DialogTitle>
+
             <DialogContent className={styles.sidebar}>
                 {renderTextField("projectTitle", "Project Title")}
                 {renderTextField("teamLeadName", "Assign User")}
@@ -71,14 +84,18 @@ const TextDialog = ({ open, handleClose }) => {
                 {renderTextField("budget", "Add Budget", false, "number")}
                 {renderTextField("description", "Project Description", true)}
             </DialogContent>
-            {/* <Typography variant="span" sx={{ margin: 'auto', fontSize: '0.9rem', color: 'red' }}>error will shown here</Typography> */}
+
+
             <DialogActions sx={{ paddingBottom: '1rem' }}>
                 <Button onClick={handleClose} color="secondary" className={styles.dialogBtnPrimary}>Cancel</Button>
                 <Button type="submit" onClick={handleClose} color="primary" className={styles.dialogBtnSecondary}>Save</Button>
             </DialogActions>
+
         </Dialog>
     );
 };
+
+
 
 TextDialog.propTypes = {
     open: PropTypes.bool.isRequired,

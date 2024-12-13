@@ -6,12 +6,17 @@ import { useState } from 'react';
 import { useLogin } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
-import { Box, Button, TextField, Typography, Container, CssBaseline, Avatar, Stack, } from '@mui/material';
 import { toast } from 'react-toastify';
+import {
+    Box, Button,
+    TextField, Typography,
+    Container, CssBaseline,
+    Avatar, Stack,
+} from '@mui/material';
 
 
 const LoginPage = () => {
-    const { mutate } = useLogin(); 
+    const { mutate } = useLogin();
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const [error, setError] = useState("")
     const navigate = useNavigate();
@@ -19,12 +24,13 @@ const LoginPage = () => {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         mutate(formData, {
             onSuccess: () => {
                 const userRole = localStorage.getItem("role")
-
                 if (userRole === 'superadmin') {
                     navigate(`/${RouteNames.ADMINPAGE1}`)
                 }
@@ -35,15 +41,16 @@ const LoginPage = () => {
                     navigate(`/${RouteNames.DASHBOARD}`)
                 }
                 toast.success("User Login Successfully.", {
-                    position: "top-right",
-                    autoClose: 3000,
+                    position: "top-center",
+                    autoClose: 2000,
                     hideProgressBar: false,
                     closeOnClick: true,
-                    pauseOnHover: true,
+                    pauseOnHover: false,
                     draggable: true,
-                    progress: undefined,
+                    progress: false,
                 })
             },
+
             onError: (error) => {
                 setError(error?.response?.data?.message || error.response?.data?.errors)
                 setTimeout(() => {
@@ -64,11 +71,12 @@ const LoginPage = () => {
                     </Avatar>
                     <Typography component="h1" variant="h6" className={styles.loginText}>Login</Typography>
 
+
                     <Box sx={{ mt: 1, width: '100%' }} >
                         <Box className={styles.boxText}>
                             <TextField
                                 margin="normal"
-                                size="small" 
+                                size="small"
                                 label="Email Address"
                                 name="email"
                                 autoFocus
@@ -82,6 +90,7 @@ const LoginPage = () => {
                                         fontSize: '14px',
                                     },
                                 }} />
+
                             <TextField
                                 margin="dense"
                                 size="small"
@@ -100,12 +109,11 @@ const LoginPage = () => {
                                 }} />
                         </Box>
 
+
                         <Typography className={`${styles.errMessageTxt}`}>{error} &nbsp;</Typography>
                         <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>LogIn</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
-                            {/* <Box>
-                                <Link href="#" variant="text" size="small" className={styles.forgetPassword}>Forgot password?</Link>
-                            </Box> */}
+
                             <Box>
                                 <Typography variant="text" size="small" className={styles.dontHaveAccount}>
                                     {"Don't have an account?"}&nbsp;
@@ -114,9 +122,10 @@ const LoginPage = () => {
                                     </Link>
                                 </Typography>
                             </Box>
-                        </Stack>
 
+                        </Stack>
                     </Box>
+
                 </Box>
             </Container>
         </Box>
