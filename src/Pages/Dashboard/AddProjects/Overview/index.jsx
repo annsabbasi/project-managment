@@ -27,7 +27,7 @@ import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 
 
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -171,48 +171,6 @@ export default function index() {
                             }}>{taskData?.data?.status === 'Completed' ? 'Submitted' : 'Submit'}</Button>
                     </Stack>
                 </Box>
-
-                <Stack flexDirection="row" justifyContent="space-between" gap={5}>
-                    <Box className={style.BoxContent} sx={{ flexGrow: '1', maxHeight: '160px' }}>
-                        <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
-                            <Typography variant="h6">Project Links</Typography>
-                        </Box>
-                        <Stack sx={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', gap: 2 }}>
-                            <Link>https://www.google.co.uk/</Link>
-                            <Link>https://www.google.co.uk/</Link>
-                        </Stack>
-                    </Box>
-
-                    <Box className={style.BoxContent} sx={{ flexGrow: '1' }}>
-                        <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
-                            <Typography variant="h6">Project Info</Typography>
-                        </Box>
-
-                        <Stack flexDirection="row" justifyContent='space-between' gap={4} mb={2}>
-                            <Stack flexDirection="row" gap={1} sx={{ color: 'silver' }}>
-                                <Stack gap={1}>
-                                    <Typography sx={{ color: 'black' }}>Income</Typography>
-                                    <Typography className={style.textGreyDesc}>$10,000</Typography>
-                                </Stack>
-                                =
-                                <Stack gap={1}>
-                                    <Typography sx={{ color: 'black' }}>Expense</Typography>
-                                    <Typography className={style.textGreyDesc}>$5,000</Typography>
-                                </Stack>
-                                =
-                                <Stack gap={1}>
-                                    <Typography sx={{ color: 'black' }}>Profit</Typography>
-                                    <Typography className={style.textGreyDesc}>$1,000</Typography>
-                                </Stack>
-                            </Stack>
-
-                            <Box>
-                                <Typography className={style.textGrey}>Margin</Typography>
-                                <Typography variant="h6" sx={{ color: 'green' }}>50%</Typography>
-                            </Box>
-                        </Stack>
-                    </Box>
-                </Stack>
             </Stack>
 
             <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography>

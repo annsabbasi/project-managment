@@ -6,7 +6,7 @@ import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
 
 {/* Further Tabs if Needed Imports! */ }
-// import Files from "./Files"
+import Files from "./Files"
 // import Time from "./Time"
 // import Controls from "./Controls"
 
@@ -14,7 +14,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
-    Typography
+    Typography,
     Box, Button,
     Tab, Tabs,
     IconButton, Stack,
@@ -114,18 +114,18 @@ export default function AddProjects() {
 
 
                     {/* Further Tabs if Needed! */}
-                    {/* <Tab
-                            label="Files"
-                            {...allyProps(1)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 1 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })}
-                            className={project.Tab} /> */}
+                    <Tab
+                        label="Files"
+                        {...allyProps(3)}
+                        sx={(theme) => ({
+                            backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
+                            color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                            fontWeight: activeTab === 3 ? '600' : '500',
+                            '&.Mui-selected': {
+                                color: theme.palette.grey.darkGrey,
+                            },
+                        })}
+                        className={project.Tab} />
                     {/* <Tab
                         label="Time"
                         {...allyProps(3)}
@@ -177,9 +177,9 @@ export default function AddProjects() {
                     <Assign />
                 </CustomTabPanel>
 
-                {/* <CustomTabPanel value={activeTab} index={1}>
+                <CustomTabPanel value={activeTab} index={3}>
                     <Files />
-                </CustomTabPanel> */}
+                </CustomTabPanel>
                 {/* <CustomTabPanel value={activeTab} index={3}>
                     <Time />
                 </CustomTabPanel> */}

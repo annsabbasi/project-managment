@@ -129,11 +129,6 @@ export default function Index() {
 
                 <Grid item xs={12}>
                     <Box display="flex" gap={2}>
-                        <Button
-                            color="secondary"
-                            className={`${styles.dialogBtnPrimary}`}
-                            type="button"
-                            onClick={() => setFormData({})}>Cancel</Button>
                         <Button color="primary" className={`${styles.dialogBtnSecondary}`} type="submit">
                             Save
                         </Button>

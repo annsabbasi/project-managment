@@ -1,11 +1,11 @@
 .itemContainer {
   color: rgb(75, 74, 74);
-  max-width: 200px;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 .headText {
   font-weight: 600;
+  min-width: fit-content;
 }
 .itemContent {
   border: 1px solid silver;
@@ -13,20 +13,39 @@
   display: flex;
   align-items: center;
   border-radius: 0.4rem;
-  padding: 1.3rem 0.4rem;
-  padding-inline-end: 0.8rem;
+  padding: 0.7rem 0.8rem;
   gap: 0.4rem;
+  padding-bottom: 0.8rem;
   transition: 0.1s ease all;
   min-width: 230px;
+  transition: 0.1s ease all;
+  flex: 1 1 calc(25% - 1rem);
+  box-sizing: border-box;
   &:hover {
     background-color: rgb(241, 241, 241, 0.2);
     border: 1px solid rgb(231, 231, 231);
   }
 }
 .itemTextHead {
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  color: rgb(75, 74, 74);
 }
 .itemTextBody {
   font-size: 0.8rem;
   color: gray;
+}
+.linkBtn {
+  background: #000;
+  border: 1px solid transparent;
+  height: max-content;
+  width: fit-content;
+  align-self: center;
+  &:hover {
+    background-color: white;
+    box-shadow: none !important;
+    color: #000;
+    border: 1px solid silver;
+  }
 }
