@@ -6,9 +6,73 @@ import {
   IconButton, Stack,
   TextField, Typography
 } from "@mui/material";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useEffect, useState } from 'react';
+import { useCreateDocsLink, useDeleteDocsLinks, useFetchDocsLinks } from '../../../../api/userSubTask';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
-export default function index() {
+export default function Index() {
+  const { id: projectId } = useParams();
+  const [inputData, setInputData] = useState({
+    title: '',
+    link: '',
+    projectId: projectId || ''
+  });
+
+  useEffect(() => {
+    if (projectId) {
+      setInputData((prev) => ({ ...prev, projectId }))
+    }
+  }, [projectId])
+  const handleInputData = (event) => {
+    const { name, value } = event.target;
+    setInputData((prevData) => ({ ...prevData, [name]: value }));
+  }
+
+
+
+  // Create Docs Link Code
+  const { mutate } = useCreateDocsLink();
+  const handleSubmitInputData = (e) => {
+    e.preventDefault();
+    mutate(inputData, {
+      onSuccess: () => {
+        setInputData({
+          title: '',
+          link: ''
+        })
+      }
+    })
+  }
+
+
+  // Fetch Docs Link Code
+  const { data } = useFetchDocsLinks(projectId);
+
+  // Delete Docs Link Code
+  const { mutate: deleteTask } = useDeleteDocsLinks();
+  const handleDelete = (id) => {
+    deleteTask(id, {
+      onSuccess: () => {
+        toast.success("Task Deleted Successfully", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: false,
+        })
+        // setTasks((prevTasks) => [...prevTasks, id]);
+      },
+    });
+  };
+
+  const tasks = data?.data || [];
+
+
 
   return (
     <Stack spacing={5} mt={2}>
@@ -35,15 +99,16 @@ export default function index() {
           alignItems="baseline"
           justifyContent="space-between"
           flexWrap="wrap">
-          <InputComps label="Title Link" name="titleLink" />
-          <InputComps label="Docs Link" name="docsLink" />
+          <InputComps label="Title Link" name="title" onChange={handleInputData} value={inputData.title} />
+          <InputComps label="Docs Link" name="link" onChange={handleInputData} value={inputData.link} />
         </Stack>
 
-        <Button variant='contained' className={style.linkBtn} size='medium'>Add Link</Button>
+        <Button variant='contained' className={style.linkBtn} size='medium' onClick={handleSubmitInputData}>Add Link</Button>
       </Stack>
 
 
       <Stack className={style.itemContainer}>
+
         <Stack flexDirection="row" alignItems="center" gap={0.3}>
           <Typography className={style.headText}>All Links</Typography>
 
@@ -60,38 +125,51 @@ export default function index() {
           </IconButton>
         </Stack>
 
-
-        <Stack flexDirection="row" gap="1rem" flexWrap="wrap">
-          <Typography
-            component="a"
-            href="https://www.youtube.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={style.itemTextBody} sx={{ textDecoration: 'none' }}>
-
-            <Box className={style.itemContent}>
-              <Stack>
-                <Typography variant="p" className={style.itemTextHead}>Title is this</Typography>
-                <Typography
-                  className={style.itemTextBody} sx={{ textDecoration: 'underline', color: '#0437F2 !important' }}>https://www.youtube.com/</Typography>
-              </Stack>
-            </Box>
-
-          </Typography>
+        <Stack flexDirection="row" gap="1rem" flexWrap="wrap" flex>
+          {tasks.map((docs) => (
+            <Stack key={docs._id} className={style.linkContainer}>
+              <IconButton
+                className={style.linkDelete}
+                onClick={() => handleDelete(docs._id)}>
+                <DeleteOutlineIcon />
+              </IconButton>
+              <Typography
+                component="a"
+                href={docs.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={style.itemTextBody}
+                sx={{ textDecoration: 'none' }}>
+                <Box className={style.itemContent}>
+                  <Stack>
+                    <Typography variant="p" className={style.itemTextHead}>
+                      {docs.title}
+                    </Typography>
+                    <Typography
+                      className={style.itemTextBody}
+                      sx={{ textDecoration: 'underline', color: '#0437F2 !important' }}>
+                      {docs.link}
+                    </Typography>
+                  </Stack>
+                </Box>
+              </Typography>
+            </Stack>
+          ))}
         </Stack>
-
       </Stack>
-    </Stack>
+    </Stack >
   )
 }
 
-export const InputComps = ({ label, name, }) => {
+export const InputComps = ({ label, name, onChange, value }) => {
   return (
     <TextField
       margin="normal"
       size="small"
       label={label}
       name={name}
+      onChange={onChange}
+      value={value}
       variant="standard"
       fullWidth
       sx={{
@@ -106,5 +184,7 @@ export const InputComps = ({ label, name, }) => {
 
 InputComps.propTypes = {
   label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string,
 }

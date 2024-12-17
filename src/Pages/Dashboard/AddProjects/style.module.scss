@@ -1,8 +1,10 @@
 .goBack {
   display: flex;
   align-items: end;
+  text-decoration: none;
   .goBackTitle {
     font-size: 1.2rem;
+    color: rgb(61, 61, 61);
   }
   .goBackIcon {
     padding: 0;
