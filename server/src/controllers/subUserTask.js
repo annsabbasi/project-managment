@@ -5,6 +5,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { subUserTask } from "../models/subUserTask.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { doscSubTask } from "../models/Docs_SubTask/docs_Subtask.js";
 
 // Cerate User Sub Task inside Project
 const createUserTask = asyncHandler(async (req, res) => {
@@ -118,11 +119,59 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 })
 
 
+// ----------- Creating Docs and Videos Links Controllers -------------
+// Create Docs SubTask Links
+const docsSubTask = asyncHandler(async (req, res) => {
+    const { title, link, projectId } = req.body;
+    if ([title, link].some((fields) => !fields)) {
+        throw new apiError(400, "All fields are required.")
+    }
+
+    const createDocs = await doscSubTask.create({ title, link, projectId })
+    return res.status(200).json(new apiResponse(200, createDocs, "Docs Link Created Successfully!"))
+})
+
+
+
+// Fetch Docs SubTask Links
+const fetchDocsSubTasks = asyncHandler(async (req, res) => {
+    const { projectId } = req.query;
+    if (!projectId) {
+        throw new apiError(404, "No documents found.");
+    }
+
+    const docs = await doscSubTask.find({ projectId });
+    if (!docs || docs.length === 0) {
+        // throw new apiError(404, "No documents found for this project.");
+        return new apiResponse(200, [], "No Uploaded links yet")
+    }
+    return res.status(200).json(new apiResponse(200, docs, "Docs fetched successfully!"));
+});
+
+
+
+// Delete Docs SubTask Links
+const deleteDocsSubTask = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    if (!id) {
+        throw new apiError(404, "Link is required to delete")
+    }
+    const deleteDocs = await doscSubTask.findOneAndDelete({ _id: id });
+    if (!deleteDocs) {
+        throw new apiError(400, "No Link founded to delete")
+    }
+    return res.status(200).json(new apiResponse(200, deleteDocs, "Docs Link Deleted Successfully!"))
+})
 
 
 export {
     createUserTask,
     getUserSubTask,
     deleteUserSubTask,
-    updateUserSubTask
+    updateUserSubTask,
+
+    // Docs SubTask Links
+    docsSubTask,
+    deleteDocsSubTask,
+    fetchDocsSubTasks
 }

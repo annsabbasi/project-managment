@@ -4,6 +4,7 @@ import Teams from "./Teams"
 import Assign from "./Assign"
 import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
+import Videos from "./Videos"
 
 {/* Further Tabs if Needed Imports! */ }
 import Files from "./Files"
@@ -14,9 +15,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
-    Typography,
-    Box, Button,
     Tab, Tabs,
+    Typography, Box,
     IconButton, Stack,
 } from "@mui/material";
 
@@ -52,7 +52,7 @@ export default function AddProjects() {
 
     return (
         <Box>
-            <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between">
+            <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="center">
                 <Link className={project.goBack} to={`/project`}>
                     <IconButton disableRipple sx={{
                         '&:hover': {
@@ -66,67 +66,81 @@ export default function AddProjects() {
                     <Typography className={project.goBackTitle}>Project Title</Typography>
                 </Link>
 
-
-                <Tabs
-                    onChange={handleChangeTab}
-                    aria-label="user details tabs"
-                    value={activeTab}
-                    TabIndicatorProps={{ sx: { display: 'none' } }}
-                    sx={{ backgroundColor: 'white' }}
-                    className={project.Tabs}>
-                    <Tab
-                        {...allyProps(0)}
-                        label="Overview"
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 0 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
-
-
-                    <Tab
-                        label="Team"
-                        {...allyProps(1)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 1 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
-
-
-                    <Tab
-                        label="Assign"
-                        {...allyProps(2)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 2 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
+                <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+                    <Tabs
+                        onChange={handleChangeTab}
+                        aria-label="user details tabs"
+                        value={activeTab}
+                        TabIndicatorProps={{ sx: { display: 'none' } }}
+                        sx={{ backgroundColor: 'white' }}
+                        className={project.Tabs}>
+                        <Tab
+                            {...allyProps(0)}
+                            label="Overview"
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 0 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })} className={project.Tab} />
+                        <Tab
+                            label="Docs"
+                            {...allyProps(1)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 1 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })}
+                            className={project.Tab} />
 
 
-                    {/* Further Tabs if Needed! */}
-                    <Tab
-                        label="Files"
-                        {...allyProps(3)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 3 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })}
-                        className={project.Tab} />
-                    {/* <Tab
+                        <Tab
+                            label="Videos"
+                            {...allyProps(2)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 2 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })} className={project.Tab} />
+
+
+                        <Tab
+                            label="Team"
+                            {...allyProps(3)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 3 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })} className={project.Tab} />
+
+
+                        <Tab
+                            label="Assign"
+                            {...allyProps(4)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 4 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })} className={project.Tab} />
+
+
+
+                        {/* Further Tabs if Needed! */}
+                        {/* <Tab
                         label="Time"
                         {...allyProps(3)}
                         sx={(theme) => ({
@@ -138,7 +152,7 @@ export default function AddProjects() {
                             },
                         })}
                         className={project.Tab} /> */}
-                    {/* <Tab
+                        {/* <Tab
                         label="Controls"
                         {...allyProps(5)}
                         sx={(theme) => ({
@@ -150,17 +164,8 @@ export default function AddProjects() {
                             },
                         })}
                         className={project.Tab} /> */}
-                </Tabs>
-
-                <Button
-                    variant="text"
-                    sx={{
-                        borderColor: (theme) => theme.palette.primary.main,
-                        textTransform: 'capitalize',
-                        borderRadius: '0.4rem',
-                        padding: '0.1rem 0.6rem',
-                        cursor: 'default'
-                    }}>In Progress</Button>
+                    </Tabs>
+                </Box>
             </Stack>
 
 
@@ -170,19 +175,20 @@ export default function AddProjects() {
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={1}>
-                    <Teams />
+                    <Files />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={2}>
-                    <Assign />
+                    <Videos />
                 </CustomTabPanel>
 
                 <CustomTabPanel value={activeTab} index={3}>
-                    <Files />
+                    <Teams />
                 </CustomTabPanel>
-                {/* <CustomTabPanel value={activeTab} index={3}>
-                    <Time />
-                </CustomTabPanel> */}
+
+                <CustomTabPanel value={activeTab} index={4}>
+                    <Assign />
+                </CustomTabPanel>
                 {/* <CustomTabPanel value={activeTab} index={5}>
                     <Controls />
                 </CustomTabPanel> */}

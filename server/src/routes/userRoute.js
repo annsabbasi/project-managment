@@ -3,13 +3,10 @@ import { Router } from 'express'
 import { verifyUser } from "../middleware/authMiddleware.js";
 
 import {
-    registerUser,
-    loginUser,
-    getAllData,
-    logoutUser,
     refreshAccessToken,
-    getUserData,
-    getUserProfile
+    getAllData, logoutUser,
+    registerUser, loginUser,
+    getUserData, getUserProfile
 } from "../controllers/userController.js";
 
 import {
@@ -20,7 +17,7 @@ import {
 } from '../controllers/adminTask.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { createUserTask, deleteUserSubTask, getUserSubTask, updateUserSubTask } from '../controllers/subUserTask.js';
+import { createUserTask, deleteDocsSubTask, deleteUserSubTask, docsSubTask, fetchDocsSubTasks, getUserSubTask, updateUserSubTask } from '../controllers/subUserTask.js';
 
 
 
@@ -61,6 +58,11 @@ router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updat
 router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
 
 
+
+// Create Docs Link In User SubTask Routes
+router.route('/create-docslink').post(verifyUser(['admin', 'user']), docsSubTask)
+router.route('/fetch-docslink').get(verifyUser(['admin', 'user']), fetchDocsSubTasks)
+router.route('/delete-docslink/:id').delete(verifyUser(['admin', 'user']), deleteDocsSubTask)
 
 
 // Testing Purpose
