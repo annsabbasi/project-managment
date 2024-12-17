@@ -15,9 +15,17 @@ import {
     createTask, getCreateTask,
     submitTask, projectApproval,
 } from '../controllers/adminTask.js';
+
+import {
+    createUserTask, deleteDocsSubTask,
+    deleteUserSubTask, deleteVideoSubTask,
+    docsSubTask, fetchDocsSubTasks,
+    fetchVideoSubTasks, getUserSubTask,
+    updateUserSubTask, videosSubTask
+} from '../controllers/subUserTask.js';
+
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { createUserTask, deleteDocsSubTask, deleteUserSubTask, docsSubTask, fetchDocsSubTasks, getUserSubTask, updateUserSubTask } from '../controllers/subUserTask.js';
 
 
 
@@ -63,6 +71,10 @@ router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), cre
 router.route('/create-docslink').post(verifyUser(['admin', 'user']), docsSubTask)
 router.route('/fetch-docslink').get(verifyUser(['admin', 'user']), fetchDocsSubTasks)
 router.route('/delete-docslink/:id').delete(verifyUser(['admin', 'user']), deleteDocsSubTask)
+// Create Video Link In User SubTask Routes
+router.route('/create-videolink').post(verifyUser(['admin', 'user']), videosSubTask)
+router.route('/fetch-videolink').get(verifyUser(['admin', 'user']), fetchVideoSubTasks)
+router.route('/delete-videolink/:id').delete(verifyUser(['admin', 'user']), deleteVideoSubTask)
 
 
 // Testing Purpose

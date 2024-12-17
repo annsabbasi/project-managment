@@ -68,7 +68,6 @@ export const useCreateDocsLink = () => {
 };
 
 
-
 // Fetch the Docs Link Code
 export const fetchDocsLinks = async (projectId) => {
     try {
@@ -103,7 +102,6 @@ export const deleteDocsLinks = async (projectId) => {
     }
 };
 
-
 export const useDeleteDocsLinks = () => {
     const queryClient = useQueryClient();
 
@@ -132,6 +130,113 @@ export const useDeleteDocsLinks = () => {
 
         onSettled: () => {
             queryClient.invalidateQueries(['docsCreateLinks']);
+        },
+    });
+};
+
+
+
+
+// ----------- Creating Videos Links API's -------------
+// Create the Video Link Code
+export const createVideoLink = async (value) => {
+    const response = await axiosInstance.post('/user/create-videolink', value);
+    return response.data;
+}
+
+export const useCreateVideoLink = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: createVideoLink,
+        onSuccess: (newData) => {
+            queryClient.setQueryData(['videoCreateLinks'], (oldQueryData = { data: [] }) => {
+                return {
+                    ...oldQueryData,
+                    data: [
+                        ...oldQueryData.data,
+                        {
+                            ...newData.data,
+                            status: 'Creating...',
+                        }
+                    ]
+                };
+            });
+
+            queryClient.invalidateQueries(['videoCreateLinks']);
+            queryClient.invalidateQueries(['relatedVideoQuery', newData.data.someId]);
+        },
+        onError: (error) => {
+            console.error('Error creating VideoLink:', error);
+        },
+    });
+};
+
+
+
+// Fetch the Video Link Code
+export const fetchVideoLinks = async (projectId) => {
+    try {
+        const response = await axiosInstance.get('/user/fetch-videolink', { params: { projectId } });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching video links:', error);
+        throw error;
+    }
+};
+
+export const useFetchVideoLinks = (projectId) => {
+    return useQuery({
+        queryKey: ['videoCreateLinks', projectId],
+        queryFn: () => fetchVideoLinks(projectId),
+        // staleTime: 300000,
+        onError: (error) => {
+            console.error('Error fetching video links:', error);
+        },
+    });
+};
+
+
+// Delete the Video Link Code
+export const deleteVideoLinks = async (projectId) => {
+    try {
+        const response = await axiosInstance.delete(`/user/delete-videolink/${projectId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting video links:', error);
+        throw error;
+    }
+};
+
+
+export const useDeleteVideoLinks = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: deleteVideoLinks,
+
+        onMutate: async (taskId) => {
+            await queryClient.cancelQueries(['videoCreateLinks']);
+            const previousTasks = queryClient.getQueryData(['videoCreateLinks']);
+            queryClient.setQueryData(['videoCreateLinks'], (oldData = { data: [] }) => {
+                return {
+                    ...oldData,
+                    data: oldData.data.filter((task) => task._id !== taskId),
+                };
+            });
+
+            return { previousTasks };
+        },
+
+        onError: (error, taskId, context) => {
+            console.error('Error deleting task:', error.message);
+            if (context?.previousTasks) {
+                queryClient.setQueryData(['videoCreateLinks'], context.previousTasks);
+            }
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries(['videoCreateLinks']);
         },
     });
 };

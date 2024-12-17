@@ -6,6 +6,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import { subUserTask } from "../models/subUserTask.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { doscSubTask } from "../models/Docs_SubTask/docs_Subtask.js";
+import { videoSubTask } from "../models/Video_SubTask/video_Subtask.js";
 
 // Cerate User Sub Task inside Project
 const createUserTask = asyncHandler(async (req, res) => {
@@ -119,6 +120,8 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 })
 
 
+
+
 // ----------- Creating Docs and Videos Links Controllers -------------
 // Create Docs SubTask Links
 const docsSubTask = asyncHandler(async (req, res) => {
@@ -130,8 +133,6 @@ const docsSubTask = asyncHandler(async (req, res) => {
     const createDocs = await doscSubTask.create({ title, link, projectId })
     return res.status(200).json(new apiResponse(200, createDocs, "Docs Link Created Successfully!"))
 })
-
-
 
 // Fetch Docs SubTask Links
 const fetchDocsSubTasks = asyncHandler(async (req, res) => {
@@ -148,8 +149,6 @@ const fetchDocsSubTasks = asyncHandler(async (req, res) => {
     return res.status(200).json(new apiResponse(200, docs, "Docs fetched successfully!"));
 });
 
-
-
 // Delete Docs SubTask Links
 const deleteDocsSubTask = asyncHandler(async (req, res) => {
     const { id } = req.params
@@ -164,6 +163,45 @@ const deleteDocsSubTask = asyncHandler(async (req, res) => {
 })
 
 
+
+// ----------- Videos Links Controllers -------------
+const videosSubTask = asyncHandler(async (req, res) => {
+    const { title, video, projectId } = req.body;
+    if ([title, video].some((fields) => !fields)) {
+        throw new apiError(400, "All fields are required.")
+    }
+
+    const createDocs = await videoSubTask.create({ title, video, projectId })
+    return res.status(200).json(new apiResponse(200, createDocs, "Video Link Created Successfully!"))
+})
+
+// Fetch Docs SubTask Links
+const fetchVideoSubTasks = asyncHandler(async (req, res) => {
+    const { projectId } = req.query;
+    if (!projectId) {
+        throw new apiError(404, "No Video Link found.");
+    }
+
+    const docs = await videoSubTask.find({ projectId });
+    if (!docs || docs.length === 0) {
+        return new apiResponse(200, [], "No Uploaded links yet")
+    }
+    return res.status(200).json(new apiResponse(200, docs, "Video fetched successfully!"));
+});
+
+// Delete Docs SubTask Links
+const deleteVideoSubTask = asyncHandler(async (req, res) => {
+    const { id } = req.params
+    if (!id) {
+        throw new apiError(404, "Video Link is required to delete")
+    }
+    const deleteDocs = await videoSubTask.findOneAndDelete({ _id: id });
+    if (!deleteDocs) {
+        throw new apiError(400, "No Link founded to delete")
+    }
+    return res.status(200).json(new apiResponse(200, deleteDocs, "Video Link Deleted Successfully!"))
+})
+
 export {
     createUserTask,
     getUserSubTask,
@@ -173,5 +211,10 @@ export {
     // Docs SubTask Links
     docsSubTask,
     deleteDocsSubTask,
-    fetchDocsSubTasks
+    fetchDocsSubTasks,
+
+    // Video SubTask Links
+    videosSubTask,
+    fetchVideoSubTasks,
+    deleteVideoSubTask
 }
