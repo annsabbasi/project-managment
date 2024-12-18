@@ -45,7 +45,7 @@ router.route('/get-data').get(getAllData);
 
 // Create Task for Admin
 router.route('/create-task').post(verifyUser(['superadmin', 'admin']), createTask)
-router.route('/get-create-task').get(verifyUser('admin'), getCreateTask)
+router.route('/get-create-task').get(verifyUser(['admin', 'user']), getCreateTask)
 router.route('/get-delete-task/:taskId').delete(verifyUser('admin'), DeleteTask)
 router.route('/get-update-task/:taskId').put(verifyUser('admin'), UpdateTask)
 router.route('/get-create-task/:id').get(verifyUser(['admin', 'user']), getCreateTaskById)

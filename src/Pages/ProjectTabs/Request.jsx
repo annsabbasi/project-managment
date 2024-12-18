@@ -103,7 +103,7 @@ export default function Request() {
                   </TableCell> */}
 
                     <TableCell align="right" className={style.btnCell}>
-                      {user.role === 'admin' &&
+                      {user?.role === 'admin' &&
                         <>
                           {task.status === 'Completed' && (
                             <>

@@ -2,13 +2,13 @@ import style from './style.module.scss';
 import theme from '../../Theme/Theme';
 
 import {
+    Typography,
     Menu, Table,
     Button, TableRow,
     MenuItem, TableCell,
     TableBody, TableHead,
-    IconButton, ListItemIcon,
     TableContainer, Stack,
-    Typography
+    IconButton, ListItemIcon,
 } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -23,9 +23,11 @@ import TextDialog from './TextDialog';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditTextDialog from './EditTextDialog';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../context/AuthProvider';
 
 
 export default function TableActive() {
+    const { user } = useAuth();
     const [anchor, setAnchor] = useState(null);
     const { data, isLoading, isError, error } = useGetCreateTask();
     const [selectedTask, setSelectedTask] = useState(null);
@@ -146,11 +148,8 @@ export default function TableActive() {
                                                         boxShadow: '0'
                                                     },
                                                 }}
-                                                className={style.anchorElParent}
-                                            >
-                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => {
-                                                    handleClose();
-                                                }}>
+                                                className={style.anchorElParent}>
+                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => { handleClose() }}>
                                                     <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
                                                         <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
                                                             <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
@@ -159,27 +158,31 @@ export default function TableActive() {
                                                     </MenuItem>
                                                 </Link>
 
-                                                <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                        <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                    </ListItemIcon>Edit</MenuItem>
+                                                {user?.role === 'admin' &&
+                                                    <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                        </ListItemIcon>Edit</MenuItem>
+                                                }
 
-                                                <MenuItem
-                                                    onClick={handleDelete}
-                                                    className={style.anchorMenuItem}
-                                                    sx={{
-                                                        bgcolor: '#E97451',
-                                                        color: 'white !important',
-                                                        '&:hover': {
-                                                            bgcolor: '#EE4B2B !important'
-                                                        }
-                                                    }}
-                                                >
-                                                    <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                        <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                    </ListItemIcon>
-                                                    Delete
-                                                </MenuItem>
+                                                {user?.role === 'admin' &&
+                                                    <MenuItem
+                                                        onClick={handleDelete}
+                                                        className={style.anchorMenuItem}
+                                                        sx={{
+                                                            bgcolor: '#E97451',
+                                                            color: 'white !important',
+                                                            '&:hover': {
+                                                                bgcolor: '#EE4B2B !important'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                        </ListItemIcon>
+                                                        Delete
+                                                    </MenuItem>
+                                                }
                                             </Menu>
                                         </div>
                                     </TableCell>
