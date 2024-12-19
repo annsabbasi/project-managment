@@ -13,7 +13,10 @@ export const AuthProvider = ({ children }) => {
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],
         queryFn: async () => {
-            if (!accessToken) return null;
+            if (!accessToken) {
+                localStorage.removeItem('refreshToken');
+                return null;
+            }
             try {
                 const response = await axiosInstance.get('/user/get-user-data', {
                     headers: { Authorization: `Bearer ${accessToken}` }

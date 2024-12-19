@@ -34,7 +34,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
         )
 
-        const user = await User.findById(decodedToken._id).select("-password")
+        const user = await User.findById(decodedToken._id).select("-password");
         // console.log("This is the user (userController.js)", user)
         if (!user) {
             throw new apiError(401, "Invalid Refresh Token")
@@ -74,8 +74,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
         }
-
-        throw new apiError(401, error?.message || "Refresh Token Expired or Invalid");
+        return res.status(401).json({ message: "Refresh Token Expired" })
+        // throw new apiError(401, error?.message || "Refresh Token Expired or Invalid");
     }
 })
 
