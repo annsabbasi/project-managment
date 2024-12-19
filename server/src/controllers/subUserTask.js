@@ -175,7 +175,7 @@ const videosSubTask = asyncHandler(async (req, res) => {
     return res.status(200).json(new apiResponse(200, createDocs, "Video Link Created Successfully!"))
 })
 
-// Fetch Docs SubTask Links
+// Fetch Video SubTask Links
 const fetchVideoSubTasks = asyncHandler(async (req, res) => {
     const { projectId } = req.query;
     if (!projectId) {
@@ -189,7 +189,7 @@ const fetchVideoSubTasks = asyncHandler(async (req, res) => {
     return res.status(200).json(new apiResponse(200, docs, "Video fetched successfully!"));
 });
 
-// Delete Docs SubTask Links
+// Delete Video SubTask Links
 const deleteVideoSubTask = asyncHandler(async (req, res) => {
     const { id } = req.params
     if (!id) {

@@ -93,13 +93,8 @@ export const useFetchDocsLinks = (projectId) => {
 
 // Delete the Docs Link Code
 export const deleteDocsLinks = async (projectId) => {
-    try {
-        const response = await axiosInstance.delete(`/user/delete-docslink/${projectId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting docs links:', error);
-        throw error;
-    }
+    const response = await axiosInstance.delete(`/user/delete-docslink/${projectId}`);
+    return response.data;
 };
 
 export const useDeleteDocsLinks = () => {
@@ -122,7 +117,7 @@ export const useDeleteDocsLinks = () => {
         },
 
         onError: (error, taskId, context) => {
-            console.error('Error deleting task:', error.message);
+            // console.error('Error deleting task:', error.message);
             if (context?.previousTasks) {
                 queryClient.setQueryData(['docsCreateLinks'], context.previousTasks);
             }
@@ -166,9 +161,9 @@ export const useCreateVideoLink = () => {
             queryClient.invalidateQueries(['videoCreateLinks']);
             queryClient.invalidateQueries(['relatedVideoQuery', newData.data.someId]);
         },
-        onError: (error) => {
-            console.error('Error creating VideoLink:', error);
-        },
+        // onError: (error) => {
+        //     console.error('Error creating VideoLink:', error);
+        // },
     });
 };
 
