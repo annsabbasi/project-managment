@@ -9,19 +9,15 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Generate Access & Refresh Token of User
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
-    try {
-        const user = await User.findById(tokenId);
-        if (!user) throw new apiError(404, "User not found");
-        const accessToken = user.generateAccessToken();
-        const refreshToken = user.refreshAccessToken();
+    const user = await User.findById(tokenId);
+    if (!user) throw new apiError(404, "User not found");
 
-        user.refreshToken = refreshToken;
-        await user.save({ validateBeforeSave: false });
-        return { accessToken, refreshToken };
-        // eslint-disable-next-line no-unused-vars
-    } catch (error) {
-        throw new apiError(400, "Something went wrong from the")
-    }
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.refreshAccessToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+    return { accessToken, refreshToken };
 }
 
 
@@ -50,7 +46,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            sameSite: 'Strict',
         }
         const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user?._id);
         console.log("Successfully refreshed The AccessToken", accessToken)
@@ -60,8 +57,25 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             .cookie("refreshToken", refreshToken, options)
             .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
     } catch (error) {
-        console.log("Error from refreshAccessToken", error)
-        throw new apiError(401, error?.message || "Error from the refreshAccessToken")
+        // console.log("Error from refreshAccessToken", error)
+        // throw new apiError(401, error?.message || "Error from the refreshAccessToken")
+        console.error("Error from refreshAccessToken", error);
+
+        if (error.name === "TokenExpiredError") {
+            // Clear refresh token from database and cookies
+            const decodedToken = jwt.decode(incomingRefreshToken);
+            if (decodedToken?._id) {
+                const user = await User.findById(decodedToken._id);
+                if (user) {
+                    user.refreshToken = null;
+                    await user.save();
+                }
+            }
+            res.clearCookie("accessToken");
+            res.clearCookie("refreshToken");
+        }
+
+        throw new apiError(401, error?.message || "Refresh Token Expired or Invalid");
     }
 })
 
@@ -105,7 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
-    const loggedInUser = await User.findById(user._id).select("-password");
+    const loggedInUser = await User.findById(user._id).select("-password")
     const options = {
         httpOnly: true,
         secure: true,

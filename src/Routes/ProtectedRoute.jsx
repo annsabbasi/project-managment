@@ -7,17 +7,20 @@ export default function ProtectedRoute({ allowedRoles, layout: LayoutComponent }
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken");
         const role = localStorage.getItem("role");
-
+        if (!refreshToken) {
+            navigate(`/${RouteNames.LOGIN}`);
+        }
         if (accessToken && allowedRoles.includes(role)) {
             setIsAuthenticated(true);
-        } 
+        }
         else {
             navigate(`/${RouteNames.LOGIN}`);
         }
-    }, [navigate, allowedRoles]);
+    }, [navigate, allowedRoles, accessToken, refreshToken]);
 
     return isAuthenticated ? (
         LayoutComponent ? <LayoutComponent><Outlet /></LayoutComponent> : <Outlet />
