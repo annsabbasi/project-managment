@@ -1,9 +1,9 @@
 import style from './style.module.scss'
 
 import {
+    TableRow,
     Table, TableCell,
     TableContainer, TableHead,
-    TableRow, Box,
     TableBody, Button,
 } from '@mui/material';
 
@@ -26,8 +26,7 @@ export default function Complete() {
                 </TableHead>
 
 
-                <Box sx={{ height: '16px' }} />
-                <TableBody>
+                <TableBody sx={{ borderTop: '12px solid white' }}>
                     <TableRow className={style.tableRowBody}>
                         <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
                         <TableCell align="left">Charley Robertson</TableCell>

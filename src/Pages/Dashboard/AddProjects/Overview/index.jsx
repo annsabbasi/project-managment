@@ -227,7 +227,7 @@ export default function index() {
                                                     {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
                                                 Delete
                                             </Button> */}
-                                                    <div>
+                                                    {/* <div> */}
                                                         <IconButton
                                                             disableRipple
                                                             sx={{ padding: '1px', color: 'gray' }}
@@ -285,7 +285,7 @@ export default function index() {
                                                                 Delete
                                                             </MenuItem>
                                                         </Menu>
-                                                    </div>
+                                                    {/* </div> */}
                                                 </TableCell>
                                             </TableRow>
                                         )
@@ -293,9 +293,9 @@ export default function index() {
                                 </TableBody>
                             </Table>
                         ) : (
-                            <TableRow>
+                            <Stack>
                                 <Typography className={style.noContent}>Assign a task to User to show here</Typography>
-                            </TableRow>
+                            </Stack>
 
                         )
                     }
