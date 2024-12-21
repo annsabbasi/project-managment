@@ -24,22 +24,17 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
-    // console.log("The incomingRefreshToken (refreshAccessToken) Controllers", incomingRefreshToken)
     if (!incomingRefreshToken) {
         throw new apiError(401, "UnAuthorized Request")
     }
     try {
         const decodedToken = jwt.verify(
-            // eslint-disable-next-line no-undef
             incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
         )
-
         const user = await User.findById(decodedToken._id).select("-password");
-        // console.log("This is the user (userController.js)", user)
         if (!user) {
             throw new apiError(401, "Invalid Refresh Token")
         }
-
         if (incomingRefreshToken !== user?.refreshToken) {
             throw new apiError(401, "Invalid or Expires Refresh Token")
         }
@@ -57,8 +52,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             .cookie("refreshToken", refreshToken, options)
             .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
     } catch (error) {
-        // console.log("Error from refreshAccessToken", error)
-        // throw new apiError(401, error?.message || "Error from the refreshAccessToken")
         console.error("Error from refreshAccessToken", error);
 
         if (error.name === "TokenExpiredError") {

@@ -1,41 +1,40 @@
+/* eslint-disable react-refresh/only-export-components */
 import { lazy } from "react";
 import { RouteNames } from "../Constants/route";
 
-
 import Dashboard from '../Pages/Dashboard/Dashboard'
-const Project = lazy(() => import('../Pages/Dashboard/Project'));
-const Message = lazy(() => import('../Pages/Dashboard/Message'));
-const Client = lazy(() => import('../Pages/Dashboard/Client'));
+const Layout = lazy(() => import('../Layout'));
+const Home = lazy(() => import('../Pages/Home'));
+const LoginPage = lazy(() => import('../Pages/Login'));
+const SignUpPage = lazy(() => import('../Pages/Signup'));
+const Forms = lazy(() => import('../Pages/Dashboard/Forms'));
 const Teams = lazy(() => import('../Pages/Dashboard/Teams'));
+const Client = lazy(() => import('../Pages/Dashboard/Client'));
+const Message = lazy(() => import('../Pages/Dashboard/Message'));
+const Project = lazy(() => import('../Pages/Dashboard/Project'));
+const Services = lazy(() => import('../Pages/Dashboard/Services'));
+const Invoices = lazy(() => import('../Pages/Dashboard/Invoices'));
+const Finances = lazy(() => import('../Pages/Dashboard/Finances'));
 const Meetings = lazy(() => import('../Pages/Dashboard/Meetings'));
 const Referrals = lazy(() => import('../Pages/Dashboard/Referrals'));
-const Services = lazy(() => import('../Pages/Dashboard/Services'));
 const Contracts = lazy(() => import('../Pages/Dashboard/Contracts'));
-const Invoices = lazy(() => import('../Pages/Dashboard/Invoices'));
-const Forms = lazy(() => import('../Pages/Dashboard/Forms'));
-const Finances = lazy(() => import('../Pages/Dashboard/Finances'));
-const Home = lazy(() => import('../Pages/Home'));
-const Layout = lazy(() => import('../Layout'));
-const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'))
-const LoginPage = lazy(() => import('../Pages/Login'))
-const SignUpPage = lazy(() => import('../Pages/Signup'))
-const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'))
-
-
+const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'));
+const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'));
 
 // Super Admin Route Part
 const AdminLayout = lazy(() => import('../AdminWork'));
 const AdminPage1 = lazy(() => import('../AdminWork/pages/Page1'));
 const AdminPage2 = lazy(() => import('../AdminWork/pages/Page2'));
 const AdminPage3 = lazy(() => import('../AdminWork/pages/Page3'));
-const Basic = lazy(() => import('../AdminWork/pages/planRequest/basic'));
-const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
-const Premium = lazy(() => import('../AdminWork/pages/planRequest/premium'));
-const Request = lazy(() => import('../AdminWork/pages/planRequest/request'));
 const PlanRequest = lazy(() => import('../AdminWork/pages/planRequest'));
+const Basic = lazy(() => import('../AdminWork/pages/planRequest/basic'));
+const Request = lazy(() => import('../AdminWork/pages/planRequest/request'));
+const Premium = lazy(() => import('../AdminWork/pages/planRequest/premium'));
+const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
 
 
 
+// ------------ Admin Routes which are Protected ------------
 export const AdminRoute = [
     { path: RouteNames.ADMINLAYOUT, element: AdminLayout, adminLayout: true, title: 'Admin Layout' },
     { path: RouteNames.ADMINPAGE1, element: AdminPage1, adminLayout: true, title: 'AdminPage1' },
@@ -51,6 +50,7 @@ export const AdminRoute = [
 
 
 
+// ------------ Public Routes which are not Protected ------------
 export const PublicRoute = [
     { path: RouteNames.HOME, element: Home },
     // { path: '/', element: Home },
@@ -62,6 +62,7 @@ export const PublicRoute = [
 
 
 
+// ------------ Private Routes which are Protected ------------
 export const PrivateRoute = [
     { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Dashboard' },
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
