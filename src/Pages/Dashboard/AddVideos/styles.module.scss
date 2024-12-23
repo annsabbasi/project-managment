@@ -1,0 +1,67 @@
+.mainContainer {
+  max-width: 600px;
+}
+.previewVideo {
+  margin-top: 10px;
+  text-align: center;
+  background-color: #e3f2fd;
+  padding: 18px;
+  border-radius: 10px;
+}
+
+.dialogBtnSecondary {
+  background-color: transparent;
+  color: grey;
+  font-weight: 600;
+  border: 1px solid silver;
+  box-shadow: none;
+  width: fit-content;
+  padding: 0.4rem 1.4rem;
+  &:hover {
+    background-color: white;
+    color: #424242;
+    box-shadow: none;
+  }
+}
+
+.linkBtn {
+  background: #000;
+  border: 1px solid transparent;
+  height: max-content;
+  width: fit-content;
+  align-self: center;
+  width: 100%;
+  &:hover {
+    background-color: white;
+    box-shadow: none !important;
+    color: #424242;
+    border: 1px solid silver;
+  }
+}
+
+// ---------------- Videos Page Scss ----------------
+.textClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.link {
+  text-decoration: none;
+}
+// .dialogBtnSecondary {
+//   background-color: black;
+//   color: white;
+//   font-weight: 600;
+//   border: 1px solid grey;
+//   box-shadow: none;
+//   border-radius: 2rem;
+//   width: fit-content;
+//   padding: 0.4rem 1.4rem;
+//   &:hover {
+//     background-color: white;
+//     color: #424242;
+//     box-shadow: none;
+//   }
+// }

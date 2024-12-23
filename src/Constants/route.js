@@ -15,6 +15,7 @@ export const RouteNames = {
     LOGIN: 'login',
     SIGNUP: 'signup',
     HOME: 'home',
+    SINGLEVIDEO: 'child-video',
 
     // SUPER ADMIN CONSTANTS
     ADMINLAYOUT: 'adminlayout',
