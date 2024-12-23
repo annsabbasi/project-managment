@@ -42,7 +42,7 @@ const Sidebar = () => {
         { name: 'Dashboard', path: `/${RouteNames.DASHBOARD}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
         { name: 'Projects', path: `/${RouteNames.PROJECT}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
         { name: 'Messages', path: `/${RouteNames.MESSAGE}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
-        { name: 'Clients', path: `/${RouteNames.CLIENT}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
+        { name: 'SOP\'s', path: `/${RouteNames.CLIENT}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
         { name: 'Teams', path: `/${RouteNames.TEAMS}`, Icon: TeamsIcon, ActiveIcon: TeamsIconWhite },
         { name: 'Meetings', path: `/${RouteNames.MEETINGS}`, Icon: MeetingsIcon, ActiveIcon: MeetingsIconWhite },
         { name: 'Referrals', path: `/${RouteNames.REFERRALS}`, Icon: ReferralsIcon, ActiveIcon: ReferralsIconWhite },
@@ -82,12 +82,19 @@ const Sidebar = () => {
                             <React.Fragment key={name}>
                                 {name === 'Clients' && <Typography className={styles.title}>Collaborate</Typography>}
                                 {name === 'Services' && <Typography className={styles.title}>Tools</Typography>}
-                                <ListItem disablePadding className={`${styles.listItem} ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}`}>
+                                <ListItem disablePadding className={`
+                                    ${styles.listItem} 
+                                    ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}
+                                    ${(name === 'SOP\'s' && currentPath.includes(RouteNames.SINGLEVIDEO)) || currentPath === path ? styles.activeItem : ''}
+                                    `}>
 
                                     <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
-                                                src={(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? ActiveIcon : Icon}
+                                                src={
+                                                    (name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) ||
+                                                        (name === 'SOP\'s' && currentPath.includes(RouteNames.SINGLEVIDEO)) ||
+                                                        currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}
                                                 className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                         </ListItemIcon>

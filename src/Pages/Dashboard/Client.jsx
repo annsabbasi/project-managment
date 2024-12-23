@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import AddIcon from '@mui/icons-material/Add';
 import project from "./DashboardScss/project.module.scss"
 import PropTypes from 'prop-types';
 import Videos from "./AddVideos/Videos";
-import TaskImages from "./AddVideos/TaskImages";
+import Uploads from "./AddVideos/Uploads";
 
 
 import {
-    Box, IconButton,
-    MenuItem, Stack,
+    Box, Stack,
     Tab, Tabs,
-    TextField, Typography
+    Typography
 } from "@mui/material";
+import { Outlet, useLocation } from "react-router-dom";
+import { RouteNames } from "../../Constants/route";
 
 
 const CustomTabPanel = (props) => {
@@ -44,94 +44,67 @@ export default function Client() {
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
     }
+    const location = useLocation()
+    const isClientPage = location.pathname.includes(`${RouteNames.SINGLEVIDEO}`)
 
 
     return (
         <Box>
-            <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between">
-                <Link >
-                    <IconButton>
-                        <AddIcon />
-                    </IconButton>
-                </Link>
+            {/* {!isClientPage && ( */}
+            {!isClientPage && (
+                <>
+                    <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="center">
 
-                <Tabs
-                    onChange={handleChangeTab}
-                    value={activeTab}
-                    aria-label="user details tabs"
-                    TabIndicatorProps={{ sx: { display: 'none' } }}
-                    sx={{ backgroundColor: 'white' }} className={project.Tabs}>
+                        <Tabs
+                            onChange={handleChangeTab}
+                            value={activeTab}
+                            aria-label="user details tabs"
+                            TabIndicatorProps={{ sx: { display: 'none' } }}
+                            sx={{ backgroundColor: 'white' }} className={project.Tabs}>
 
-                    <Tab
-                        {...allyProps(0)}
-                        label="Videos"
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 0 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
+                            <Tab
+                                {...allyProps(0)}
+                                label="Videos"
+                                sx={(theme) => ({
+                                    backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
+                                    color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                                    fontWeight: activeTab === 0 ? '600' : '500',
+                                    '&.Mui-selected': {
+                                        color: theme.palette.grey.darkGrey,
+                                    },
+                                })} className={project.Tab} />
 
 
-                    <Tab
-                        label="Images"
-                        {...allyProps(0)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 1 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
+                            <Tab
+                                label="Upload"
+                                {...allyProps(0)}
+                                sx={(theme) => ({
+                                    backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                                    color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                    fontWeight: activeTab === 1 ? '600' : '500',
+                                    '&.Mui-selected': {
+                                        color: theme.palette.grey.darkGrey,
+                                    },
+                                })} className={project.Tab} />
 
 
-                    <Tab
-                        label="Demo"
-                        {...allyProps(2)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 2 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })} className={project.Tab} />
-
-                </Tabs>
+                        </Tabs>
+                    </Stack>
 
 
-                <Box width="200px" alignItems="center" mx-auto >
-                    <TextField
-                        label='Select here'
-                        fullWidth
-                        select
-                        size="small">
-                        <MenuItem value='add item'>Add Item</MenuItem>
-                        <MenuItem value='menu item'>Menu Task</MenuItem>
-                        <MenuItem value='single'>Single</MenuItem>
-                    </TextField>
-                </Box>
-            </Stack>
+                    <Box>
+                        <CustomTabPanel value={activeTab} index={0}>
+                            <Videos />
+                        </CustomTabPanel>
 
+                        <CustomTabPanel value={activeTab} index={1}>
+                            <Uploads />
+                        </CustomTabPanel>
+                    </Box>
+                </>
+            )}
 
-            <Box>
-                <CustomTabPanel value={activeTab} index={0}>
-                    <Videos />
-                </CustomTabPanel>
-
-                <CustomTabPanel value={activeTab} index={1}>
-                    <TaskImages />
-                </CustomTabPanel>
-
-                <CustomTabPanel value={activeTab} index={2}>
-                    <Typography>Hey Three</Typography>
-                </CustomTabPanel>
-            </Box>
-
-
+            <Outlet />
         </Box >
     )
 }
