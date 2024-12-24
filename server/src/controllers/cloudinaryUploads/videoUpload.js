@@ -1,0 +1,44 @@
+import { uploadSingleVideo } from "../../models/Video_SubTask/uploadSingleVideo.js";
+import { apiError } from "../../utils/apiError.js";
+import { apiResponse } from "../../utils/apiResponse.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../../utils/cloudinary.js";
+
+const updateUserAvatar = asyncHandler(async (req, res) => {
+    const file = req.file;
+    const { description } = req.body;
+
+    if (!description) {
+        throw new apiError("Video description not provided")
+    }
+    if (!file) {
+        throw new apiError("No video file uploaded")
+    }
+
+    if (file.size > 100 * 1024 * 1024) {
+        throw new apiError("Video is size is greater then 100MB")
+    }
+
+    // upload the file on cloudinary
+    const localFilePath = file.path;
+    const uploadResult = await uploadOnCloudinary(localFilePath);
+
+    // Handle upload failure
+    if (!uploadResult) {
+        throw new apiError("Failed to upload video to Cloudinary");
+    }
+
+    const videoUrl = uploadResult.url;
+
+    const newVideoSubTask = await uploadSingleVideo.create({
+        description,
+        video: videoUrl,
+    });
+    console.log("Success from videoUpload (Controller)", newVideoSubTask)
+    res.status(200).json(
+        new apiResponse(200, newVideoSubTask, "Video uploaded successfully")
+    )
+
+})
+
+export { updateUserAvatar }

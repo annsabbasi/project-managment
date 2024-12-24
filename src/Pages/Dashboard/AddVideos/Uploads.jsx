@@ -3,6 +3,8 @@ import {
     Stack,
     Box, Button,
     TextField, Typography,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 
 import { styled } from "@mui/system";
@@ -18,10 +20,15 @@ const Uploads = () => {
     const [video, setVideo] = useState(null);
     const [videoURL, setVideoURL] = useState("");
     const [description, setDescription] = useState("");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
 
     const handleVideoChange = (e) => {
         const file = e.target.files[0];
-        if (file) {
+        if (!file || file.size > 100 * 1024 * 1024) {
+            setSnackbarOpen(true);
+            return;
+        } else {
             setVideo(file);
             const videoPreviewURL = URL.createObjectURL(file);
             setVideoURL(videoPreviewURL);
@@ -38,6 +45,10 @@ const Uploads = () => {
         e.preventDefault();
         console.log("Uploaded Video:", video);
         console.log("Description:", description);
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
     };
 
 
@@ -90,6 +101,21 @@ const Uploads = () => {
                     className={style.linkBtn}
                 >Submit</Button>
             </Stack>
+            {/* Snackbar for showing file size error */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity="error"
+                    sx={{ width: '100%' }}
+                >
+                    File size exceeds 100MB!
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
