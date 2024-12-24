@@ -10,7 +10,6 @@ import Uploads from "./AddVideos/Uploads";
 import {
     Box, Stack,
     Tab, Tabs,
-    Typography
 } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import { RouteNames } from "../../Constants/route";

@@ -47,7 +47,7 @@ const Videos = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            
+
             <Grid container spacing={2}>
 
                 {videos.map((video, index) => {
@@ -60,8 +60,8 @@ const Videos = () => {
                                     <CardActionArea
                                         onMouseEnter={() => handleVideoHover(videoRefs.current[index])}
                                         onMouseLeave={() => handleVideoMouseOut(videoRefs.current[index])}
-                                        // onClick={() => handleVideoClick(videoRefs.current[index])}
-                                        >
+                                    // onClick={() => handleVideoClick(videoRefs.current[index])}
+                                    >
                                         <video
                                             ref={videoRefs.current[index]}
                                             width="100%"
