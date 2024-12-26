@@ -39,11 +39,17 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             throw new apiError(401, "Invalid or Expires Refresh Token")
         }
 
+        // const options = {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: 'Strict',
+        // }
         const options = {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV !== 'development',
             sameSite: 'Strict',
-        }
+            maxAge: 12 * 24 * 60 * 60 * 1000, // 12 days in milliseconds
+        };
         const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user?._id);
         console.log("Successfully refreshed The AccessToken", accessToken)
 
@@ -113,10 +119,16 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
     const loggedInUser = await User.findById(user._id).select("-password")
+    // const options = {
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: 'Strict',
+    // };
     const options = {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV !== 'development',
         sameSite: 'Strict',
+        maxAge: 12 * 24 * 60 * 60 * 1000,
     };
     return res.status(200)
         .cookie('accessToken', accessToken, options)

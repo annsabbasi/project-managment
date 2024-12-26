@@ -9,7 +9,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Creating a Task
 const createTask = asyncHandler(async (req, res) => {
-    const { projectTitle, teamLeadName, description, projectStatus, startDate, dueDate, budget } = req.body;
+    const { projectTitle, teamLeadName, description, projectStatus, startDate, dueDate, budget, link } = req.body;
     if ([projectTitle, teamLeadName, description, dueDate].some((fields) => !fields?.trim())) {
         throw new apiError(400, "All fields are required.")
     }
@@ -42,6 +42,7 @@ const createTask = asyncHandler(async (req, res) => {
         startDate,
         dueDate,
         budget,
+        link,
         assignedBy: adminId,
         members: tasks.length
     });

@@ -4,7 +4,7 @@ import { apiResponse } from "../../utils/apiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 
-const updateUserAvatar = asyncHandler(async (req, res) => {
+const uploadVideoController = asyncHandler(async (req, res) => {
     const file = req.file;
     const { description } = req.body;
 
@@ -41,4 +41,20 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
 
 })
 
-export { updateUserAvatar }
+
+
+const getVideoController = asyncHandler(async (req, res) => {
+    const videosData = await uploadSingleVideo.find({});
+    if (!videosData) {
+        new apiResponse(201, "upload any data to show up here")
+    }
+    res.status(200).json(new apiResponse(200, videosData, "uploaded data successfully fetched"))
+})
+
+
+
+
+
+
+
+export { uploadVideoController, getVideoController }

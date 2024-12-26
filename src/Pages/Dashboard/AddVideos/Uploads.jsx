@@ -9,6 +9,7 @@ import {
 
 import { styled } from "@mui/system";
 import style from './styles.module.scss'
+import { useAddVideo } from "./videoApi/addVideo";
 
 
 const StyledInput = styled("input")({
@@ -21,6 +22,7 @@ const Uploads = () => {
     const [videoURL, setVideoURL] = useState("");
     const [description, setDescription] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const { mutate: addVideo } = useAddVideo();
 
 
     const handleVideoChange = (e) => {
@@ -43,7 +45,12 @@ const Uploads = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append("video", video);
+        formData.append("description", description);
+        addVideo(formData);
         console.log("Uploaded Video:", video);
+        console.log("This vifro is brrn uploafrf gtom ghr vloifinatrye  ", video)
         console.log("Description:", description);
     };
 
@@ -53,7 +60,7 @@ const Uploads = () => {
 
 
     return (
-        <Box className={style.mainContainer}>
+        <Box component="form" onSubmit={handleSubmit} noValidate className={style.mainContainer}>
             <Typography variant="h4" component="h1" gutterBottom textAlign="left" mb={4}>
                 Upload Your Video
             </Typography>
@@ -97,8 +104,9 @@ const Uploads = () => {
                 <Button
                     variant="contained"
                     size="md"
-                    onClick={handleSubmit}
+                    // onClick={handleSubmit}
                     className={style.linkBtn}
+                    type="submit"
                 >Submit</Button>
             </Stack>
             {/* Snackbar for showing file size error */}

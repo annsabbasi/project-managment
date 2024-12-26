@@ -52,6 +52,9 @@ const taskSchema = new mongoose.Schema({
         ref: "UserInfo",
         required: true
     },
+    link: {
+        type: String,
+    }
 }, { timestamps: true });
 
 const adminTask = mongoose.model('userTask', taskSchema);

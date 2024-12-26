@@ -14,7 +14,7 @@ import {
 
 const TextDialog = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
-        projectTitle: '', teamLeadName: '', dueDate: '', budget: '', description: ''
+        projectTitle: '', link: '', teamLeadName: '', dueDate: '', budget: '', description: ''
     });
 
 
@@ -80,6 +80,7 @@ const TextDialog = ({ open, handleClose }) => {
             <DialogContent className={styles.sidebar}>
                 {renderTextField("projectTitle", "Project Title")}
                 {renderTextField("teamLeadName", "Assign User")}
+                {renderTextField("link", "Add Link")}
                 {renderTextField("dueDate", "Due Date", false, "date")}
                 {renderTextField("budget", "Add Budget", false, "number")}
                 {renderTextField("description", "Project Description", true)}
