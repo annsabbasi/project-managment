@@ -143,6 +143,10 @@ export default function index() {
                                 <Typography className={style.textGrey}>Budget</Typography>
                                 <Typography className={style.textGreyInfo}>$-{taskData?.data?.budget}</Typography>
                             </Stack>
+                            <Stack flexDirection="row" gap={2} alignItems="center">
+                                <Typography className={style.textGrey}>Link:</Typography>
+                                <Typography variant="a" className={style.textGreyInfo} sx={{ color: '#87CEEB !important', textDecoration: 'underline', cursor: 'pointer' }}>{taskData?.data?.link}</Typography>
+                            </Stack>
                         </Stack>
                     </Stack>
 
@@ -228,63 +232,63 @@ export default function index() {
                                                 Delete
                                             </Button> */}
                                                     {/* <div> */}
-                                                        <IconButton
-                                                            disableRipple
-                                                            sx={{ padding: '1px', color: 'gray' }}
-                                                            onClick={(e) => handleClick(e, task._id)}
-                                                        >
-                                                            <MoreVertIcon />
-                                                        </IconButton>
+                                                    <IconButton
+                                                        disableRipple
+                                                        sx={{ padding: '1px', color: 'gray' }}
+                                                        onClick={(e) => handleClick(e, task._id)}
+                                                    >
+                                                        <MoreVertIcon />
+                                                    </IconButton>
 
-                                                        <Menu
-                                                            anchorEl={anchor}
-                                                            open={open && selectedTask === task._id}
-                                                            onClose={handleClose}
-                                                            anchorOrigin={{
-                                                                vertical: 'bottom',
-                                                                horizontal: 'right'
-                                                            }}
-                                                            transformOrigin={{
-                                                                vertical: 'top',
-                                                                horizontal: 'right',
-                                                            }}
+                                                    <Menu
+                                                        anchorEl={anchor}
+                                                        open={open && selectedTask === task._id}
+                                                        onClose={handleClose}
+                                                        anchorOrigin={{
+                                                            vertical: 'bottom',
+                                                            horizontal: 'right'
+                                                        }}
+                                                        transformOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'right',
+                                                        }}
+                                                        sx={{
+                                                            '& .MuiList-root': {
+                                                                padding: 0,
+                                                                margin: 0,
+                                                                border: '1px solid silver',
+                                                                borderRadius: '0.2rem',
+                                                                backgroundColor: 'white'
+                                                            },
+                                                            '& .MuiPaper-root': {
+                                                                boxShadow: '0'
+                                                            },
+                                                        }}
+                                                        className={style.anchorElParent}
+                                                    >
+
+                                                        <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
+                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                            </ListItemIcon>Edit</MenuItem>
+
+                                                        <MenuItem
+                                                            onClick={handleDelete}
+                                                            className={style.anchorMenuItem}
                                                             sx={{
-                                                                '& .MuiList-root': {
-                                                                    padding: 0,
-                                                                    margin: 0,
-                                                                    border: '1px solid silver',
-                                                                    borderRadius: '0.2rem',
-                                                                    backgroundColor: 'white'
-                                                                },
-                                                                '& .MuiPaper-root': {
-                                                                    boxShadow: '0'
-                                                                },
+                                                                bgcolor: '#E97451',
+                                                                color: 'white !important',
+                                                                '&:hover': {
+                                                                    bgcolor: '#EE4B2B !important'
+                                                                }
                                                             }}
-                                                            className={style.anchorElParent}
                                                         >
-
-                                                            <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                                    <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                                </ListItemIcon>Edit</MenuItem>
-
-                                                            <MenuItem
-                                                                onClick={handleDelete}
-                                                                className={style.anchorMenuItem}
-                                                                sx={{
-                                                                    bgcolor: '#E97451',
-                                                                    color: 'white !important',
-                                                                    '&:hover': {
-                                                                        bgcolor: '#EE4B2B !important'
-                                                                    }
-                                                                }}
-                                                            >
-                                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                                    <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                                </ListItemIcon>
-                                                                Delete
-                                                            </MenuItem>
-                                                        </Menu>
+                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                            </ListItemIcon>
+                                                            Delete
+                                                        </MenuItem>
+                                                    </Menu>
                                                     {/* </div> */}
                                                 </TableCell>
                                             </TableRow>

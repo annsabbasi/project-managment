@@ -24,7 +24,7 @@ const Index = () => {
 
 
     const handleData = (value) => {
-        setFormData({ ...formData, [value.target.name]: value.target.value })
+        setFormData({ ...formData, [value.target.name]: value.target.value });
     }
     const handleSubmit = async (e) => {
         e.preventDefault()

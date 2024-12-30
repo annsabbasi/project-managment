@@ -26,7 +26,7 @@ import {
 
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { updateUserAvatar } from '../controllers/cloudinaryUploads/videoUpload.js';
+import { getVideoController, uploadVideoController } from '../controllers/cloudinaryUploads/videoUpload.js';
 import { upload } from '../middleware/multerMiddleware.js';
 
 
@@ -79,12 +79,14 @@ router.route('/fetch-videolink').get(verifyUser(['admin', 'user']), fetchVideoSu
 router.route('/delete-videolink/:id').delete(verifyUser(['admin', 'user']), deleteVideoSubTask)
 
 
+
 // Cloudinary Single Video Upload
+router.get('/get-video-upload', verifyUser(['admin']), getVideoController)
 router.post(
     '/video-upload',
     verifyUser(['admin']),
     upload.single('video'),
-    updateUserAvatar
+    uploadVideoController
 )
 
 

@@ -26,12 +26,12 @@ export const useLogin = () => {
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data?.data?.accessToken);
       localStorage.setItem("refreshToken", data?.data?.refreshToken);
-      localStorage.setItem("role", data?.data?.user?.role)
-      queryClient.setQueryData(["user"], data?.data?.user)
+      localStorage.setItem("role", data?.data?.user?.role);
+      queryClient.setQueryData(["user"], data?.data?.user);
     },
 
     onError: (error) => {
-      console.error("(useAuth) Login failed:", error.response?.data || error.message)
+      console.error("(useAuth) Login failed:", error.response?.data || error.message);
     }
   })
 }
