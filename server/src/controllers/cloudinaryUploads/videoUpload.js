@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { uploadSingleVideo } from "../../models/Video_SubTask/uploadSingleVideo.js";
 import { apiError } from "../../utils/apiError.js";
 import { apiResponse } from "../../utils/apiResponse.js";
@@ -34,7 +35,6 @@ const uploadVideoController = asyncHandler(async (req, res) => {
         description,
         video: videoUrl,
     });
-    console.log("Success from videoUpload (Controller)", newVideoSubTask)
     res.status(200).json(
         new apiResponse(200, newVideoSubTask, "Video uploaded successfully")
     )
@@ -43,7 +43,7 @@ const uploadVideoController = asyncHandler(async (req, res) => {
 
 
 
-const getVideoController = asyncHandler(async (req, res) => {
+const getAllVideoController = asyncHandler(async (req, res) => {
     const videosData = await uploadSingleVideo.find({});
     if (!videosData) {
         new apiResponse(201, "upload any data to show up here")
@@ -52,9 +52,21 @@ const getVideoController = asyncHandler(async (req, res) => {
 })
 
 
+const getSingleVideoController = asyncHandler(async (req, res) => {
+    const { videoId } = req.params;
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new apiError(400, "Invalid Task ID format");
+    }
+    const getVideo = await uploadSingleVideo.findById(videoId);
+    if (!getVideo) {
+        throw new apiError("No video Found!")
+    }
+
+    res.status(200).json(new apiResponse(200, getVideo, "Video Get Successfully!"))
+})
 
 
 
 
 
-export { uploadVideoController, getVideoController }
+export { uploadVideoController, getAllVideoController, getSingleVideoController }

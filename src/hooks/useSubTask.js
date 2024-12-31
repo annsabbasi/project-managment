@@ -61,6 +61,17 @@ export const useUpdateSubTask = () => {
                 draggable: true,
                 progress: false,
             })
+        },
+        onError: (data) => {
+            toast.error(data.response?.data?.message, {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            })
         }
     })
 }

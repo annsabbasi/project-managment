@@ -1,165 +1,146 @@
-import style from './style.module.scss'
-import theme from '../../../../Theme/Theme';
+import style from "./style.module.scss"
+
+// import EditIcon from '@mui/icons-material/Edit';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+// import EditPointsDialog from "./EditPointsDialog";
 
 import {
-    Card, CardContent,
-    Typography, Avatar,
-    Grid, Divider,
-    Box, Stack,
-    MenuItem, Select,
-    InputLabel, FormControl
-} from '@mui/material';
+    // Avatar, Button,
+    // IconButton, ListItemIcon,
+    // Menu, MenuItem,
+    Stack, Table,
+    TableBody, TableCell,
+    TableContainer, TableHead,
+    TableRow, Typography
+} from '@mui/material'
 
-
-
-export default function Time() {
-    const members = [
-        { name: 'Steven Li', avatar: 'SL', billable: '6h 24m', nonBillable: '3h 10m', total: '6h 24m' },
-        { name: 'James Smith', avatar: 'JS', billable: '5h 15m', nonBillable: '1h 40m', total: '5h 15m' },
-        { name: 'Philip Barnwell', avatar: 'PB', billable: '6h 40m', nonBillable: '4h 20m', total: '6h 40m' },
-        { name: 'Charley Robertson', avatar: 'CR', billable: '4h 50m', nonBillable: '3h 40m', total: '4h 50m' },
+export default function index() {
+    const subTasks = [
+        { id: 1, title: "Title", assign: "example@gmail.com", name: "John Doe", description: "Dummy Description", taskList: "TaskList", startDate: "12/12/2020", dueDate: "12/12/2020", points: "7" },
+        { id: 2, title: "Title", assign: "work@gmail.com", name: "Jane Smith", description: "Dummy Description", taskList: "TaskList", startDate: "12/12/2020", dueDate: "12/12/2020", points: "10" },
+        { id: 3, title: "Title", assign: "example32@gmail.com", name: "Alice Johnson", description: "Dummy Description", taskList: "TaskList", startDate: "12/12/2020", dueDate: "12/12/2020", points: "9" },
+        { id: 4, title: "Title", assign: "assign", name: "Bob Lee", description: "Dummy Description", taskList: "TaskList", startDate: "12/12/2020", dueDate: "12/12/2020", points: "2" },
     ];
+
+    const sortedSubTasks = subTasks.sort((a, b) => Number(a.points) - Number(b.points));
 
 
     return (
-        <Box>
-            <Box className={style.mainContainer}>
-                <Card sx={{ boxShadow: 3, flexGrow: '1' }}>
-                    <CardContent>
-                        <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-                            <Typography variant="h6" fontWeight="bold">Time Tracked</Typography>
-                            <Typography variant="body2" color="textSecondary">This Week</Typography>
-                        </Grid>
-                        <Divider />
+        <Stack variant="div" className={style.boxMain2}>
+            <TableContainer>
+                {
+                    subTasks?.length > 0 ? (
+                        <Table className={style.table}>
+                            <TableHead className={style.tableHead}>
+                                <TableRow className={style.tableRowHead}>
+                                    <TableCell align="left" variant="h6" className={style.tableInfo}>name</TableCell>
+                                    <TableCell variant="h6" className={style.tableInfo}>email</TableCell>
+                                    <TableCell align="left" variant="h6" className={style.tableInfo} >Points</TableCell>
+                                    {/* <TableCell variant="h6" className={style.tableInfo}>Task Completed</TableCell> */}
+                                    {/* <TableCell align="left" variant="h6" className={style.tableInfo}>Start Date</TableCell>
+                                    <TableCell align="left" variant="h6" className={style.tableInfo}>Due Date</TableCell>
+                                    <TableCell align="right" variant="h6" className={style.tableInfo}>Points</TableCell>
+                                    <TableCell align="right" variant="h6" className={style.tableInfo}>TaskList</TableCell>
+                                    <TableCell align="right" variant="h6" className={style.tableInfo}>&nbsp;</TableCell> */}
+                                </TableRow>
+                            </TableHead>
 
-                        <Box mt={2}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }} className={style.TrackedHeadText}>Member</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }} className={style.TrackedHeadText}>Billable</Typography>
-                            </Box>
+                            <TableBody >
+                                {sortedSubTasks?.map((task, index) => {
+                                    return (
+                                        <TableRow key={index} className={style.tableRowBody}>
+                                            <TableCell component="th" scope="row" >{task.name}</TableCell>
+                                            <TableCell component="th" scope="row" className={style.textGrey} sx={{ color: 'purple !important' }}>{task.assign}</TableCell>
 
-                            {members.map((member, index) => (
-                                <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
-                                    <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar className={style.trackedAvatar}>{member.avatar}</Avatar>
-                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
-                                    </Box>
+                                            <TableCell align="left">
+                                                <Stack
+                                                    flexDirection="row"
+                                                    gap={1}
+                                                    sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
+                                                    {/* <Avatar sx={{ bgcolor: "silver", width: "1.4rem", height: "1.4rem", fontSize: '14px' }}>
+                                                        {task.name?.[0]?.toUpperCase()}
+                                                    </Avatar> */}
+                                                    <Typography className={style.textGrey} sx={{ color: 'green !important' }}>{task.points}/10</Typography>
+                                                </Stack>
+                                            </TableCell>
 
-                                    <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }} className={style.trackedFooterText}>{member.billable}</Typography>
-                                    </Box>
+                                            {/* <TableCell align="left">
+                                                <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey}>{task.description}</Typography>
+                                            </TableCell> */}
 
-                                    <Box>
-                                        <Typography className={style.trackedFooterText}>{member.nonBillable}</Typography>
-                                    </Box>
+                                            {/* <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
+                                            <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+                                            <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell> */}
 
-                                    <Box>
-                                        <Typography className={style.trackedFooterText}>{member.total}</Typography>
-                                    </Box>
-                                </Stack>
-                            ))}
-                        </Box>
-                        <Divider />
+                                            {/* <TableCell align="right">
 
+                                                <IconButton
+                                                    disableRipple
+                                                    sx={{ padding: '1px', color: 'gray' }}>
+                                                    <MoreVertIcon />
+                                                </IconButton>
 
-                        <Box className={style.trackedFooter}>
-                            <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }} className={style.trackedFooterTxt}>Totals</Typography>
-                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
-                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
-                            <Typography className={style.trackedFooterTxt}>23h 9m</Typography>
-                        </Box>
-                    </CardContent>
+                                                <Menu
+                                                    anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'right'
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }}
+                                                    sx={{
+                                                        '& .MuiList-root': {
+                                                            padding: 0,
+                                                            margin: 0,
+                                                            border: '1px solid silver',
+                                                            borderRadius: '0.2rem',
+                                                            backgroundColor: 'white'
+                                                        },
+                                                        '& .MuiPaper-root': {
+                                                            boxShadow: '0'
+                                                        },
+                                                    }}
+                                                    className={style.anchorElParent}
+                                                >
 
-                </Card>
+                                                    <MenuItem
+                                                        className={style.anchorMenuItem}>
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                        </ListItemIcon>Edit</MenuItem>
 
-                <Card sx={{ boxShadow: 3, flexGrow: '1' }}>
-                    <CardContent>
-                        <Grid container justifyContent="space-between" alignItems="center" mb={2}>
-                            <Typography variant="h6" fontWeight="bold">Time Tracked</Typography>
-                            <Typography variant="body2" color="textSecondary">This Week</Typography>
-                        </Grid>
-                        <Divider />
+                                                    <MenuItem
+                                                        className={style.anchorMenuItem}
+                                                        sx={{
+                                                            bgcolor: '#E97451',
+                                                            color: 'white !important',
+                                                            '&:hover': {
+                                                                bgcolor: '#EE4B2B !important'
+                                                            }
+                                                        }}
+                                                    >
+                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                        </ListItemIcon>
+                                                        Delete
+                                                    </MenuItem>
+                                                </Menu>
+                                            </TableCell> */}
+                                        </TableRow>
+                                    )
+                                })}
+                            </TableBody>
+                        </Table>
+                    ) : (
+                        <Stack>
+                            <Typography className={style.noContent}>Assign a task to User to show here</Typography>
+                        </Stack>
 
-                        <Box mt={2}>
-                            <Box className={style.tracked2Content}>
-                                <Typography width="20%" sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900], }}>Member</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
-                                <Typography sx={{ fontSize: '1rem', fontWeight: 500, color: theme.palette.grey[900] }}>Billable</Typography>
-                            </Box>
-
-
-                            {members.map((member, index) => (
-                                <Stack key={index} sx={{ mb: 2 }} alignItems="center" justifyContent="space-between" flexDirection="row">
-                                    <Box display="flex" alignItems="center" width="20%">
-                                        <Avatar sx={{ width: '2.2rem', height: '2.2rem', fontSize: '0.8rem' }}>{member.avatar}</Avatar>
-                                        <Typography variant="body1" sx={{ marginLeft: 1, color: theme.palette.grey[600], fontSize: '0.8rem', lineHeight: '1.2' }}>{member.name}</Typography>
-                                    </Box>
-
-                                    <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.billable}</Typography>
-                                    </Box>
-
-                                    <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.nonBillable}</Typography>
-                                    </Box>
-
-                                    <Box>
-                                        <Typography sx={{ fontSize: '0.8rem', color: theme.palette.grey[600], }}>{member.total}</Typography>
-                                    </Box>
-                                </Stack>
-                            ))}
-                        </Box>
-                        <Divider />
-
-
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.9rem' }}>
-                            <Typography width="21%" sx={{ fontSize: '1rem', fontWeight: 600, color: theme.palette.grey[700], }}>Totals</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                            <Typography sx={{ fontSize: '0.8rem', fontWeight: 600, color: theme.palette.grey[700] }}>23h 9m</Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
-            </Box>
-
-
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                gap={2}
-                sx={{ margin: "0 auto", marginTop: '1.5rem' }}>
-                {/* Members Dropdown */}
-                <FormControl fullWidth size="small">
-                    <InputLabel>All Members</InputLabel>
-
-                    <Select label="All Members">
-                        <MenuItem value="Member 1">Member 1</MenuItem>
-                        <MenuItem value="Member 2">Member 2</MenuItem>
-                        <MenuItem value="Member 3">Member 3</MenuItem>
-                    </Select>
-
-                </FormControl>
-
-                {/* Date Pickers */}
-
-                {/* Projects Dropdown */}
-                <FormControl fullWidth size="small">
-                    <InputLabel>All Projects</InputLabel>
-
-                    <Select label="All Projects">
-                        <MenuItem value="Project 1">Project 1</MenuItem>
-                        <MenuItem value="Project 2">Project 2</MenuItem>
-                        <MenuItem value="Project 3">Project 3</MenuItem>
-                    </Select>
-
-                </FormControl>
-            </Box>
-
-
-        </Box>
-    );
+                    )
+                }
+            </TableContainer >
+        </Stack>
+    )
 }

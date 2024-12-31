@@ -5,6 +5,7 @@ import Assign from "./Assign"
 import project from "./style.module.scss"
 import theme from "../../../Theme/Theme";
 import Videos from "./Videos"
+import Time from "./Time"
 
 {/* Further Tabs if Needed Imports! */ }
 import Files from "./Files"
@@ -138,20 +139,21 @@ export default function AddProjects() {
                             })} className={project.Tab} />
 
 
+                        <Tab
+                            label="Leaderboard"
+                            {...allyProps(5)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 5 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })}
+                            className={project.Tab} />
+
 
                         {/* Further Tabs if Needed! */}
-                        {/* <Tab
-                        label="Time"
-                        {...allyProps(3)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 3 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })}
-                        className={project.Tab} /> */}
                         {/* <Tab
                         label="Controls"
                         {...allyProps(5)}
@@ -189,9 +191,9 @@ export default function AddProjects() {
                 <CustomTabPanel value={activeTab} index={4}>
                     <Assign />
                 </CustomTabPanel>
-                {/* <CustomTabPanel value={activeTab} index={5}>
-                    <Controls />
-                </CustomTabPanel> */}
+                <CustomTabPanel value={activeTab} index={5}>
+                    <Time />
+                </CustomTabPanel>
             </Box>
         </Box >
     )
