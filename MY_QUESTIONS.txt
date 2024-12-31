@@ -1,11 +1,3 @@
-(DONE) First Task to do is that Search how to use the data of the user in different pages like I do in Context but I'm using TanStack. (DONE)
-
-Second Task make the seperate user logins for the SuperAdmin, Admin, User
-
-
-
-
-
 
 
 THIS IS THE DATA EXAMPLE WHICH I CAN USE WITHOUT SETTING UP THE AUTHPROVIDER AND USE THE ISER DETAILS IN ANY PAGE.

@@ -1,8 +1,12 @@
 import { Container, Typography, Box, IconButton, Stack } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { usegetSingleVideo } from "./videoApi/addVideo";
 
 const SingleVideo = () => {
+    const { id } = useParams();
+    const { data } = usegetSingleVideo(id);
+
     return (
         <Stack >
             {/* Video Section */}
@@ -30,11 +34,12 @@ const SingleVideo = () => {
                             borderRadius: "8px",
                         }}>
                         <source
-                            src="https://www.w3schools.com/html/mov_bbb.mp4"
+                            src={data?.data?.video}
                             type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </Box>
+
 
                 {/* Description Section */}
                 <Box>
@@ -45,27 +50,7 @@ const SingleVideo = () => {
                     <Typography
                         variant="body1"
                         sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
-                        This is the first paragraph of the video description. It provides an
-                        introduction to the content of the video, explaining its purpose and
-                        significance. This paragraph is intended to give the reader a clear
-                        understanding of what they can expect from the video.
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
-                        In the second paragraph, we delve deeper into the specifics of the
-                        video&lsquo;s content. This section highlights the key points, concepts, or
-                        topics covered in the video. It is important to keep this part
-                        informative yet concise to maintain the reader&#39;s interest.
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
-                        Finally, the third paragraph concludes the description by summarizing
-                        the value the viewer can gain from watching the video. Whether it&apos;s
-                        educational, entertaining, or inspirational, this part emphasizes the
-                        unique qualities of the video and encourages the reader to explore it
-                        further.
+                        {data?.data?.description}
                     </Typography>
                 </Box>
             </Container>

@@ -21,6 +21,7 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
         handleClose();
     }
 
+
     return (
         <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose}>
             <DialogTitle>Edit Task</DialogTitle>
@@ -93,6 +94,7 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
 EditPointsDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+    task: PropTypes.string
 };
 
 export default EditPointsDialog;

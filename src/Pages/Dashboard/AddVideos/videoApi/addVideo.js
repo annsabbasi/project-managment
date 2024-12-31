@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../../api/axiosInstance"
 
+
+// Upload The Video Code 
 export const addVideo = async (data) => {
     try {
         const response = await axiosInstance.post('/user/video-upload', data);
@@ -11,7 +13,6 @@ export const addVideo = async (data) => {
         console.log("Error from addVideo (Dashboard/AddVideos)", error);
     }
 }
-
 
 export const useAddVideo = () => {
     const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ export const useAddVideo = () => {
 
 
 
-
+// Get All Videos Data Code
 export const fetchVideos = async () => {
     try {
         const response = await axiosInstance.get('/user/get-video-upload');
@@ -43,6 +44,23 @@ export const useFetchVideos = () => {
         queryFn: fetchVideos,
     })
 }
+
+
+
+// Get Single Video Data Code
+const getSingleVideo = async (videoId) => {
+    const response = await axiosInstance.get(`/user/get-single-video-upload/${videoId}`)
+    return response.data
+}
+
+export const usegetSingleVideo = (videoId) => {
+    return useQuery({
+        queryKey: ['useUploadVideo', videoId],
+        queryFn: () => getSingleVideo(videoId),
+        enabled: !!videoId, // Ensures query only runs if videoId exists
+    })
+}
+
 
 
 // export const useFetchVideos = () => {

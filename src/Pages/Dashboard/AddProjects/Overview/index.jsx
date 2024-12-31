@@ -75,6 +75,7 @@ export default function index() {
         setAnchor(null)
     }
 
+    // console.log("This is the editTask", subTasks)
 
     const { mutate: deleteTask } = useDeleteSubTask();
     const handleDelete = () => {

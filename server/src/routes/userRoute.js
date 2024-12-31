@@ -26,7 +26,7 @@ import {
 
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { getVideoController, uploadVideoController } from '../controllers/cloudinaryUploads/videoUpload.js';
+import { getAllVideoController, getSingleVideoController, uploadVideoController } from '../controllers/cloudinaryUploads/videoUpload.js';
 import { upload } from '../middleware/multerMiddleware.js';
 
 
@@ -81,7 +81,8 @@ router.route('/delete-videolink/:id').delete(verifyUser(['admin', 'user']), dele
 
 
 // Cloudinary Single Video Upload
-router.get('/get-video-upload', verifyUser(['admin']), getVideoController)
+router.get('/get-video-upload', verifyUser(['admin']), getAllVideoController)
+router.get('/get-single-video-upload/:videoId', verifyUser(['admin', 'user']), getSingleVideoController)
 router.post(
     '/video-upload',
     verifyUser(['admin']),

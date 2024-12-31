@@ -88,6 +88,17 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
     if (!existingTask) {
         throw new apiError(400, "Task not found");
     }
+
+    // This is for the User cannot update the task if He's already present in that
+    const mentionedUser = req.user.name;
+    const isUserAssigned = existingTask.assign.some((user) => {
+        return user.toString() === mentionedUser.toString()
+    });
+    if (isUserAssigned) {
+        throw new apiError(403, "You are not allowed to update this task because you are assigned to it.");
+    }
+
+
     const { title, assign, description, taskList, points } = req.body;
     const teamLeadArray = assign && typeof assign === 'string'
         ? assign.split(',').map(name => name.trim())
