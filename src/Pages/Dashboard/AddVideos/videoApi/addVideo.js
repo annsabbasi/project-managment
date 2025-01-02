@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../../api/axiosInstance"
 
 
 // Upload The Video Code 
-export const addVideo = async (data) => {
+const addVideo = async (data) => {
     try {
         const response = await axiosInstance.post('/user/video-upload', data);
         const result = response.data;
@@ -13,7 +14,6 @@ export const addVideo = async (data) => {
         console.log("Error from addVideo (Dashboard/AddVideos)", error);
     }
 }
-
 export const useAddVideo = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -27,8 +27,9 @@ export const useAddVideo = () => {
 
 
 
+
 // Get All Videos Data Code
-export const fetchVideos = async () => {
+const fetchVideos = async () => {
     try {
         const response = await axiosInstance.get('/user/get-video-upload');
         return response.data;
@@ -37,7 +38,6 @@ export const fetchVideos = async () => {
         throw error;
     }
 };
-
 export const useFetchVideos = () => {
     return useQuery({
         queryKey: ['useUploadVideo'],
@@ -47,12 +47,12 @@ export const useFetchVideos = () => {
 
 
 
+
 // Get Single Video Data Code
 const getSingleVideo = async (videoId) => {
     const response = await axiosInstance.get(`/user/get-single-video-upload/${videoId}`)
     return response.data
 }
-
 export const usegetSingleVideo = (videoId) => {
     return useQuery({
         queryKey: ['useUploadVideo', videoId],
