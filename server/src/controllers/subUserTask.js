@@ -61,6 +61,11 @@ const getUserSubTask = asyncHandler(async (req, res) => {
 });
 
 
+const getUserData = asyncHandler(async (req, res) => {
+res.status(200).send("Work pending")
+})
+
+
 
 // Delete User Sub Task for Project
 const deleteUserSubTask = asyncHandler(async (req, res) => {
@@ -129,6 +134,7 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 
     return res.status(200).json(new apiResponse(200, updateTask, "Task Update Successfully"))
 })
+
 
 
 
@@ -218,6 +224,7 @@ export {
     getUserSubTask,
     deleteUserSubTask,
     updateUserSubTask,
+    getUserData,
 
     // Docs SubTask Links
     docsSubTask,
