@@ -40,7 +40,11 @@ const subUsertaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "userTask",
         required: true
-    }
+    },
+    users: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserInfo",
+    },
 }, { timestamps: true });
 
 

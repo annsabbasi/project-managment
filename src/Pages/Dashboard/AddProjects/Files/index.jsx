@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { useCreateDocsLink, useDeleteDocsLinks, useFetchDocsLinks } from '../../../../api/userSubTask';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
 
 
 export default function Index() {
@@ -59,7 +58,6 @@ export default function Index() {
 
   // Delete Docs Link Code
   const { mutate: deleteTask } = useDeleteDocsLinks();
-  const queryClient = useQueryClient();
   const handleDelete = (id) => {
     deleteTask(id, {
       onSuccess: () => {
@@ -73,9 +71,6 @@ export default function Index() {
           progress: false,
         })
         // setTasks((prevTasks) => [...prevTasks, id]);
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['docsCreateLinks', projectId]);
       },
     });
   };

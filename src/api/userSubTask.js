@@ -41,7 +41,6 @@ export const createDocsLink = async (value) => {
 
 export const useCreateDocsLink = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: createDocsLink,
         onSuccess: (newData) => {
