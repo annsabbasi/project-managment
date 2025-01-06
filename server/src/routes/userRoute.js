@@ -6,7 +6,8 @@ import {
     refreshAccessToken,
     getAllData, logoutUser,
     registerUser, loginUser,
-    getUserData, getUserProfile
+    getUserData, getUserProfile,
+    promoteUser
 } from "../controllers/userController.js";
 
 import {
@@ -20,14 +21,19 @@ import {
     createUserTask, deleteDocsSubTask,
     deleteUserSubTask, deleteVideoSubTask,
     docsSubTask, fetchDocsSubTasks,
-    fetchVideoSubTasks, getUserSubTask,
-    updateUserSubTask, videosSubTask
+    updateUserSubTask, videosSubTask,
+    fetchVideoSubTasks, getUserForSubTask, getUserSubTask,
 } from '../controllers/subUserTask.js';
 
+import {
+    getAllVideoController,
+    getSingleVideoController,
+    uploadVideoController
+} from '../controllers/cloudinaryUploads/videoUpload.js';
+
+import { upload } from '../middleware/multerMiddleware.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { getAllVideoController, getSingleVideoController, uploadVideoController } from '../controllers/cloudinaryUploads/videoUpload.js';
-import { upload } from '../middleware/multerMiddleware.js';
 
 
 
@@ -36,6 +42,8 @@ router.route('/signup').post(validateRegisterFields(['name', 'email', 'password'
 router.route('/login').post(loginUser);
 router.route('/logout').post(verifyUser(), logoutUser)
 router.route('/get-user-data').get(verifyUser(), getUserData)
+// Promote User Role
+router.route('/promote-user').post(verifyUser('admin'), promoteUser)
 
 
 
@@ -61,6 +69,7 @@ router.route('/create-subTask').post(verifyUser(['admin', 'user']), createUserTa
 router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
+router.route('/get-userOfSubTask/:projectId').get(verifyUser(['admin', 'user']), getUserForSubTask)
 
 
 
@@ -89,6 +98,8 @@ router.post(
     upload.single('video'),
     uploadVideoController
 )
+
+
 
 
 // Testing Purpose

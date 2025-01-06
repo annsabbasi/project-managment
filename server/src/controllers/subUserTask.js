@@ -61,10 +61,41 @@ const getUserSubTask = asyncHandler(async (req, res) => {
 });
 
 
-const getUserData = asyncHandler(async (req, res) => {
-res.status(200).send("Work pending")
-})
+// Get Users From Assign Sub Tasks
+const getUserForSubTask = async (req, res) => {
+    const { projectId } = req.params;
+    if (!mongoose.isValidObjectId(projectId)) {
+        throw new apiError(400, "Invalid Project ID");
+    }
 
+    const objectId = new mongoose.Types.ObjectId(projectId)
+    if (!objectId) {
+        throw new apiError(400, "Invalid objectID");
+    }
+
+    const assignedUsers = await subUserTask.aggregate([
+        { $match: { projectId: objectId } },
+        { $unwind: "$assign" },
+        {
+            $group: {
+                _id: "$assign",
+            }
+        },
+
+        {
+            $project: {
+                _id: 0,
+                userName: "$_id"
+            }
+        }
+    ]);
+
+    const userNames = assignedUsers.map(user => user.userName);
+    if (assignedUsers.length <= 0) {
+        return res.status(200).json(new apiResponse(200, [], "No Assign Task Member yet"))
+    }
+    return res.status(200).json(new apiResponse(200, userNames, "Tasks fetched successfully"));
+};
 
 
 // Delete User Sub Task for Project
@@ -224,7 +255,7 @@ export {
     getUserSubTask,
     deleteUserSubTask,
     updateUserSubTask,
-    getUserData,
+    getUserForSubTask,
 
     // Docs SubTask Links
     docsSubTask,
