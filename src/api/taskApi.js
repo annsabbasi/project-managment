@@ -2,8 +2,8 @@ import { axiosInstance } from "./axiosInstance"
 
 
 export const createTask = async (taskId) => {
-    const response = await axiosInstance.post('/user/create-task', taskId);
-    return response.data
+        const response = await axiosInstance.post('/user/create-task', taskId);
+        return response.data
 }
 
 
@@ -37,13 +37,13 @@ export const fetchTaskById = async (id) => {
 
 
 export const submitTask = async (taskId, status) => {
-    const response = await axiosInstance.put(`/user/submit-task/${taskId}`, { status });
-    return response.data;
+        const response = await axiosInstance.put(`/user/submit-task/${taskId}`, { status });
+        return response.data;
 }
 
 
 
 export const projectApproval = async (taskId, projectStatus) => {
-    const response = await axiosInstance.put(`/user/project-approval/${taskId}`, { projectStatus });
-    return response.data;
+        const response = await axiosInstance.put(`/user/project-approval/${taskId}`, { projectStatus });
+        return response.data;
 };

@@ -3,6 +3,7 @@
   padding: 1rem 2rem;
   border-radius: 0.4rem;
 }
+
 .texth6 {
   font-size: 1.1rem;
   font-weight: 600;
@@ -46,18 +47,21 @@
   width: fit-content;
   min-width: 120px;
   padding: 0.4rem 1.4rem;
+
   &:hover {
     background-color: white;
     color: #424242;
     box-shadow: none;
   }
 }
+
 .tableInfo {
   font-size: 0.9rem;
   font-weight: 500;
   min-width: 100px !important;
   color: #424242;
 }
+
 .noContent {
   margin-left: 0.6rem;
   color: silver;
@@ -70,6 +74,7 @@
   padding-inline-end: 30px;
   font-size: 12px;
   color: gray;
+
   &:hover {
     background-color: rgba(216, 216, 216, 0.2);
   }
@@ -83,7 +88,8 @@
 
 .tableRowHead {
   background-color: rgba(155, 155, 155, 0.1);
-  & > th {
+
+  &>th {
     min-width: fit-content;
     text-wrap: nowrap;
   }
@@ -101,7 +107,8 @@
 
 .tableRowBody {
   background-color: rgb(218, 218, 218, 0.1);
-  & > th {
+
+  &>th {
     min-width: fit-content;
     text-wrap: nowrap;
   }
@@ -120,4 +127,13 @@
     border-top-right-radius: 0.4rem !important;
     border-bottom-right-radius: 0.4rem !important;
   }
+}
+
+.desctext {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }

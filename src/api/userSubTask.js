@@ -41,11 +41,10 @@ export const createDocsLink = async (value) => {
 
 export const useCreateDocsLink = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: createDocsLink,
         onSuccess: (newData) => {
-            queryClient.setQueryData(['docsCreateLinks'], (oldQueryData = { data: [] }) => {
+            queryClient.setQueryData(['docsCreateLinks', newData.data.projectId], (oldQueryData = { data: [] }) => {
                 return {
                     ...oldQueryData,
                     data: [
@@ -58,34 +57,12 @@ export const useCreateDocsLink = () => {
                 };
             });
 
-            queryClient.invalidateQueries(['docsCreateLinks']);
-            queryClient.invalidateQueries(['relatedQuery', newData.data.someId]);
+            // queryClient.invalidateQueries(['docsCreateLinks']);
+            // queryClient.invalidateQueries(['status', newData.data.someId]);
+            queryClient.invalidateQueries(['docsCreateLinks', newData.data.projectId]);
         },
         onError: (error) => {
             console.error('Error creating DocsLink:', error);
-        },
-    });
-};
-
-
-// Fetch the Docs Link Code
-export const fetchDocsLinks = async (projectId) => {
-    try {
-        const response = await axiosInstance.get('/user/fetch-docslink', { params: { projectId } });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching docs links:', error);
-        throw error;
-    }
-};
-
-export const useFetchDocsLinks = (projectId) => {
-    return useQuery({
-        queryKey: ['docsCreateLinks', projectId],
-        queryFn: () => fetchDocsLinks(projectId),
-        // staleTime: 300000,
-        onError: (error) => {
-            console.error('Error fetching docs links:', error);
         },
     });
 };
@@ -112,12 +89,12 @@ export const useDeleteDocsLinks = () => {
                     data: oldData.data.filter((task) => task._id !== taskId),
                 };
             });
-
             return { previousTasks };
         },
 
         onError: (error, taskId, context) => {
             // console.error('Error deleting task:', error.message);
+            // queryClient.setQueryData(['docsCreateLinks'], context.previousTasks);
             if (context?.previousTasks) {
                 queryClient.setQueryData(['docsCreateLinks'], context.previousTasks);
             }
@@ -128,6 +105,31 @@ export const useDeleteDocsLinks = () => {
         },
     });
 };
+
+
+// Fetch the Docs Link Code
+export const fetchDocsLinks = async (projectId) => {
+    try {
+        const response = await axiosInstance.get('/user/fetch-docslink', { params: { projectId } });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching docs links:', error);
+        throw error;
+    }
+};
+
+export const useFetchDocsLinks = (projectId) => {
+    return useQuery({
+        queryKey: ['docsCreateLinks', projectId],
+        queryFn: () => fetchDocsLinks(projectId),
+        // initialData: { data: [] },
+        initialData: [],
+        onError: (error) => {
+            console.error('Error fetching docs links:', error);
+        },
+    });
+};
+
 
 
 

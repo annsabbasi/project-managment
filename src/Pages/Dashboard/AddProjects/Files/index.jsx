@@ -41,15 +41,20 @@ export default function Index() {
       onSuccess: () => {
         setInputData({
           title: '',
-          link: ''
+          link: '',
+          projectId: projectId || '',
         })
-      }
+        toast.success("Task Created Successfully", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+      },
     })
   }
 
 
   // Fetch Docs Link Code
-  const { data } = useFetchDocsLinks(projectId);
+  const { data } = useFetchDocsLinks(projectId || 'defaultProjectId');
 
   // Delete Docs Link Code
   const { mutate: deleteTask } = useDeleteDocsLinks();
@@ -69,8 +74,6 @@ export default function Index() {
       },
     });
   };
-
-  const tasks = data?.data || [];
 
 
 
@@ -124,38 +127,43 @@ export default function Index() {
             </svg>
           </IconButton>
         </Stack>
+        {data?.data?.length > 0 ? (
 
-        <Stack flexDirection="row" gap="1rem" flexWrap="wrap" flex>
-          {tasks.map((docs) => (
-            <Stack key={docs._id} className={style.linkContainer}>
-              <IconButton
-                className={style.linkDelete}
-                onClick={() => handleDelete(docs._id)}>
-                <DeleteOutlineIcon />
-              </IconButton>
-              <Typography
-                component="a"
-                href={docs.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={style.itemTextBody}
-                sx={{ textDecoration: 'none' }}>
-                <Box className={style.itemContent}>
-                  <Stack>
-                    <Typography variant="p" className={style.itemTextHead}>
-                      {docs.title}
-                    </Typography>
-                    <Typography
-                      className={style.itemTextBody}
-                      sx={{ textDecoration: 'underline', color: '#0437F2 !important' }}>
-                      {docs.link}
-                    </Typography>
-                  </Stack>
-                </Box>
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
+          <Stack flexDirection="row" gap="1rem" flexWrap="wrap" flex>
+            {data?.data?.map((docs) => (
+              <Stack key={docs._id} className={style.linkContainer}>
+                <IconButton
+                  className={style.linkDelete}
+                  onClick={() => handleDelete(docs._id)}>
+                  <DeleteOutlineIcon />
+                </IconButton>
+                <Typography
+                  component="a"
+                  href={docs.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={style.itemTextBody}
+                  sx={{ textDecoration: 'none' }}>
+                  <Box className={style.itemContent}>
+                    <Stack>
+                      <Typography variant="p" className={style.itemTextHead}>
+                        {docs.title}
+                      </Typography>
+                      <Typography
+                        className={style.itemTextBody}
+                        sx={{ textDecoration: 'underline', color: '#0437F2 !important' }}>
+                        {docs.link}
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
+        ) : (
+          <Typography>No Task to show yet</Typography>
+        )}
+
       </Stack>
     </Stack >
   )
