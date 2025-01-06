@@ -5,6 +5,7 @@ import { User } from "../models/userModel.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { ROLES } from '../config/roles.js';
 
 
 // Generate Access & Refresh Token of User
@@ -19,6 +20,7 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
     await user.save({ validateBeforeSave: false });
     return { accessToken, refreshToken };
 }
+
 
 
 // To Refresh user Login Access Token
@@ -39,11 +41,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             throw new apiError(401, "Invalid or Expires Refresh Token")
         }
 
-        // const options = {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: 'Strict',
-        // }
         const options = {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
@@ -74,7 +71,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             res.clearCookie("refreshToken");
         }
         return res.status(401).json({ message: "Refresh Token Expired" })
-        // throw new apiError(401, error?.message || "Refresh Token Expired or Invalid");
     }
 })
 
@@ -119,11 +115,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
     const loggedInUser = await User.findById(user._id).select("-password")
-    // const options = {
-    //     httpOnly: true,
-    //     secure: true,
-    //     sameSite: 'Strict',
-    // };
+
     const options = {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
@@ -197,6 +189,34 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 
+
+// Promoting a User To QC-Admin
+const promoteUser = asyncHandler(async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) {
+        throw new apiError(400, "User ID is required.");
+    }
+
+    if (req.user.role !== ROLES.ADMIN) {
+        throw new apiError(403, "You don't have to authority to perform this action");
+    }
+
+    const userToPromote = await User.findById(userId);
+    if (!userToPromote) {
+        throw new apiError(404, "User not found.");
+    }
+    if (userToPromote.role === ROLES.QCADMIN) {
+        return res.status(400).json(new apiResponse(400, {}, "User is already a QcAdmin."));
+    }
+
+    userToPromote.role = ROLES.QCADMIN
+    await userToPromote.save();
+
+    return res.status(200).json(new apiResponse(200, { userId: userToPromote._id, role: userToPromote.role }, "User promoted to QcAdmin successfully."))
+})
+
+
+
 export {
     registerUser,
     loginUser,
@@ -204,5 +224,6 @@ export {
     logoutUser,
     refreshAccessToken,
     getUserData,
-    getUserProfile
+    getUserProfile,
+    promoteUser
 }

@@ -218,7 +218,7 @@ export default function index() {
                                                 </TableCell>
 
                                                 <TableCell align="left">
-                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey}>{task.description}</Typography>
+                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey || style.desctext}>{task.description}</Typography>
                                                 </TableCell>
 
                                                 <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
