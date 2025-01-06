@@ -11,7 +11,7 @@ export const RouteNames = {
     INVOICES: 'invoices',
     FORMS: 'forms',
     FINANCES: 'finances',
-    ADDPRODUCTS: 'addproduct',
+    ADDPROJECTS: 'addproject',
     LOGIN: 'login',
     SIGNUP: 'signup',
     HOME: 'home',

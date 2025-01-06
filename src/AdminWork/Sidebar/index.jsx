@@ -51,12 +51,12 @@ const Sidebar = () => {
                     <List className={styles.list}>
                         {pages.map(({ name, Icon, ActiveIcon, path }) => (
                             <React.Fragment key={name}>
-                                <ListItem disablePadding className={`${styles.listItem} ${(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}`}>
+                                <ListItem disablePadding className={`${styles.listItem} ${(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPROJECTS)) || currentPath === path ? styles.activeItem : ''}`}>
 
                                     <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
-                                                src={(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? ActiveIcon : Icon}
+                                                src={(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPROJECTS)) || currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}
                                                 className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
                                         </ListItemIcon>

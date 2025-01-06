@@ -84,7 +84,7 @@ const Sidebar = () => {
                                 {name === 'Services' && <Typography className={styles.title}>Tools</Typography>}
                                 <ListItem disablePadding className={`
                                     ${styles.listItem} 
-                                    ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}
+                                    ${(name === 'Projects' && currentPath.includes(RouteNames.ADDPROJECTS)) || currentPath === path ? styles.activeItem : ''}
                                     ${(name === 'SOP\'s' && currentPath.includes(RouteNames.SINGLEVIDEO)) || currentPath === path ? styles.activeItem : ''}
                                     `}>
 
@@ -92,7 +92,7 @@ const Sidebar = () => {
                                         <ListItemIcon className={styles.listItemIcon}>
                                             <img
                                                 src={
-                                                    (name === 'Projects' && currentPath.includes(RouteNames.ADDPRODUCTS)) ||
+                                                    (name === 'Projects' && currentPath.includes(RouteNames.ADDPROJECTS)) ||
                                                         (name === 'SOP\'s' && currentPath.includes(RouteNames.SINGLEVIDEO)) ||
                                                         currentPath === path ? ActiveIcon : Icon}
                                                 alt={name}

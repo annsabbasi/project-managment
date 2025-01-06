@@ -40,7 +40,7 @@ const allyProps = (index) => {
 export default function Project() {
     const [activeTab, setActiveTab] = useState(0)
     const location = useLocation('')
-    const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPRODUCTS}`)
+    const isAddProjectPage = location.pathname.includes(`${RouteNames.ADDPROJECTS}`)
 
 
     const handleChangeTab = (event, newValue) => {
@@ -59,7 +59,7 @@ export default function Project() {
 
     return (
         <Box>
-            {!isAddProductPage && (
+            {!isAddProjectPage && (
                 <>
                     <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="space-between" flex>
                         <Link onClick={handleClickOpen}>

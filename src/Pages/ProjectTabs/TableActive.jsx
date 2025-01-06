@@ -149,7 +149,7 @@ export default function TableActive() {
                                                     },
                                                 }}
                                                 className={style.anchorElParent}>
-                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => { handleClose() }}>
+                                                <Link to={`${RouteNames.ADDPROJECTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => { handleClose() }}>
                                                     <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
                                                         <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
                                                             <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
