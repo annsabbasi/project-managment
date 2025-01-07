@@ -58,7 +58,7 @@ export default function index() {
         queryFn: () => getSubTask(id),
         enabled: !!id,
         staleTime: 300000,
-    });
+    }); 
 
 
     // TODO: WORK REMAINING

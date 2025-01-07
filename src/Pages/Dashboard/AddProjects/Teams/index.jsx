@@ -1,100 +1,180 @@
+/* eslint-disable no-unused-vars */
 import theme from "../../../../Theme/Theme";
 import { Box, Stack, Typography, Avatar, Grid, MenuItem, Menu, IconButton } from "@mui/material";
 import style from "./style.module.scss"
 import { useState } from "react";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { getUserForSubTask } from "../../../../api/userSubTask";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { usePromoteUser } from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function Teams() {
-
-  const persons = [
-    { name: 'John Doe', img: '/path/to/avatar1.jpg' },
-    { name: 'Jane Smith', img: '/path/to/avatar2.jpg' },
-    { name: 'Bob Brown', img: '/path/to/avatar3.jpg' },
-    { name: 'Alice White', img: '/path/to/avatar4.jpg' },
-  ];
-
-
+  const { id: projectId } = useParams();
+  const [_, setUserRole] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuClick = (event) => {
+
+  const handleMenuClick = (event, userId) => {
     setAnchorEl(event.currentTarget);
+    setUserRole(userId)
   };
 
+
+  const { data: getUserInfo } = useQuery({
+    queryKey: ['assignedUsers', projectId],
+    queryFn: () => getUserForSubTask(projectId),
+    enabled: !!projectId,
+    staleTime: 300000,
+  });
+  const userData = getUserInfo?.data;
+
+
+
+  const { mutate: promoteUser } = usePromoteUser();
+  const handlePromoteUser = (userId) => {
+    promoteUser({ userId });
+    setAnchorEl(null);
+  }
+
   const handleMenuClose = () => {
+    setAnchorEl(null);
     setAnchorEl(null);
   };
 
 
   return (
-    <Stack variant="div" gap={6} my={4}>
+    <Stack variant="div" gap={8} my={4}>
       <Box>
-        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>Head Team</Typography>
-        <Grid container spacing={3}>
+        <Typography variant="h5" mb={1} className={style.memberText}>
+          Team: (QcAdmin)
+        </Typography>
+        {userData?.length > 0 ? (
+          <Grid container spacing={3} ml="1px">
+            {userData?.map((person, index) => (
+              <Stack key={index} className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
+                <Grid item className={style.gridBox}>
+                  <Avatar
+                    alt={person.name}
+                    src={person.avatar}
+                    sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                  <Typography
+                    variant="body2"
+                    align="center"
+                    sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    {person.userId}
+                  </Typography>
+                  <Typography className={style.QC}>QC</Typography>
+                  <IconButton
+                    onClick={(event) => handleMenuClick(event, person)}
+                    className={style.iconButton}>
+                    <MoreVertIcon />
+                  </IconButton>
+                </Grid>
 
-          {persons.map((person, index) => (
-            <Grid item key={index}>
-              <Avatar
-                alt={person.name}
-                src={person.img}
-                sx={{ width: 55, height: 55, margin: 'auto', backgroundColor: theme.palette.grey[400] }}
-              />
-              <Typography variant="p" align="center" sx={{ marginTop: 1, color: theme.palette.grey[700], fontSize: '0.9rem' }}>
-                {person.name}
-              </Typography>
-            </Grid>
-          ))}
-
-        </Grid>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  classes={{ paper: style.dropdown }}>
+                  <MenuItem onClick={() => handlePromoteUser(person.id,
+                    toast.success(`${person.userId} Successfully Promoted to QCAdmin`, {
+                      position: "top-center",
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: false,
+                      draggable: true,
+                      progress: false,
+                    })
+                  )} className={style.boxMenuItem}>
+                    Promote to QC
+                  </MenuItem>
+                </Menu>
+              </Stack>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="p" mb={3} className={style.noTaskAssignText}>
+            No tasks assigned QcAdmin
+          </Typography>
+        )}
       </Box>
 
 
+
+      {/* TEAM USERS */}
       <Box>
-        <Typography variant="h5" mb={2} sx={{ fontSize: '1.4rem' }}>
-          All Members
+        <Typography variant="h5" mb={1} className={style.memberText}>
+          Team: (users)
         </Typography>
-        <Grid container spacing={3}>
-          {persons.map((person, index) => (
-            <Stack key={index} className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
-              <Grid item className={style.gridBox}>
-                <Avatar
-                  alt={person.name}
-                  src={person.img}
-                  sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
-                <Typography
-                  variant="body2"
-                  align="center"
-                  sx={{ marginTop: 1, color: theme.palette.grey[700], fontSize: '0.9rem', textAlign: 'center' }}>
-                  {person.name}
-                </Typography>
-                <Typography className={style.QC}>QC</Typography>
-                <IconButton
-                  onClick={(event) => handleMenuClick(event, person)}
-                  className={style.iconButton}>
-                  <MoreVertIcon />
-                </IconButton>
-              </Grid>
+        {userData?.length > 0 ? (
+          <Grid container spacing={3} ml="1px">
+            {userData?.map((person, index) => (
+              <Stack key={index} className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
+                <Grid item className={style.gridBox}>
+                  <Avatar
+                    alt={person.name}
+                    src={person.avatar}
+                    sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                  <Typography
+                    variant="body2"
+                    align="center"
+                    sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    {person.userId}
+                  </Typography>
+                  <Typography className={style.QC}>QC</Typography>
+                  <IconButton
+                    onClick={(event) => handleMenuClick(event, person)}
+                    className={style.iconButton}>
+                    <MoreVertIcon />
+                  </IconButton>
+                </Grid>
 
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleMenuClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                classes={{ paper: style.dropdown }}>
-                <MenuItem onClick={handleMenuClose} className={style.boxMenuItem}>
-                  Promote to QC
-                </MenuItem>
-              </Menu>
-            </Stack>
-          ))}
-        </Grid>
-
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  classes={{ paper: style.dropdown }}>
+                  <MenuItem onClick={() => handlePromoteUser(person.id,
+                    toast.success(`${person.userId} Successfully Promoted to QCAdmin`, {
+                      position: "top-center",
+                      autoClose: 4000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: false,
+                      draggable: true,
+                      progress: false,
+                    })
+                  )} className={style.boxMenuItem}>
+                    Promote to QC
+                  </MenuItem>
+                </Menu>
+              </Stack>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="p" mb={3} className={style.noTaskAssignText}>
+            No tasks assigned users
+          </Typography>
+        )}
       </Box>
     </Stack>
   )
