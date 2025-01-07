@@ -24,3 +24,9 @@ export const logoutUser = async (user) => {
         console.log("Error from the logout AuthApi.js", error)
     }
 }
+
+
+export const promoteUser = async (user) => {
+    const response = await axiosInstance.post("/user/promote-user", user)
+    return response.data
+}
