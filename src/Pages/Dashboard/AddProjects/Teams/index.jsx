@@ -1,24 +1,33 @@
 /* eslint-disable no-unused-vars */
 import theme from "../../../../Theme/Theme";
-import { Box, Stack, Typography, Avatar, Grid, MenuItem, Menu, IconButton } from "@mui/material";
-import style from "./style.module.scss"
-import { useState } from "react";
+import style from "./style.module.scss";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getUserForSubTask } from "../../../../api/userSubTask";
+
+import {
+  Box, Stack,
+  Typography, Avatar,
+  Grid, MenuItem,
+  Menu, IconButton
+} from "@mui/material";
+
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { usePromoteUser } from "../../../../hooks/useAuth";
+import { useState } from "react";
 import { toast } from "react-toastify";
+
+import { getUserForSubTask } from "../../../../api/userSubTask";
+import { usePromoteUser } from "../../../../hooks/useAuth";
+
 
 export default function Teams() {
   const { id: projectId } = useParams();
-  const [_, setUserRole] = useState(null);
+  // const [_, setUserRole] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
 
   const handleMenuClick = (event, userId) => {
     setAnchorEl(event.currentTarget);
-    setUserRole(userId)
+    // setUserRole(userId)
   };
 
 
@@ -26,10 +35,10 @@ export default function Teams() {
     queryKey: ['assignedUsers', projectId],
     queryFn: () => getUserForSubTask(projectId),
     enabled: !!projectId,
-    staleTime: 300000,
   });
   const userData = getUserInfo?.data;
-
+  const QcAdmins = userData?.filter((user) => user.role === "QcAdmin") || [];
+  const Users = userData?.filter((user) => user.role === "user") || [];
 
 
   const { mutate: promoteUser } = usePromoteUser();
@@ -50,9 +59,9 @@ export default function Teams() {
         <Typography variant="h5" mb={1} className={style.memberText}>
           Team: (QcAdmin)
         </Typography>
-        {userData?.length > 0 ? (
+        {QcAdmins.length > 0 ? (
           <Grid container spacing={3} ml="1px">
-            {userData?.map((person, index) => (
+            {QcAdmins?.map((person, index) => (
               <Stack key={index} className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
                 <Grid item className={style.gridBox}>
                   <Avatar
@@ -65,12 +74,15 @@ export default function Teams() {
                     sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
                     {person.userId}
                   </Typography>
-                  <Typography className={style.QC}>QC</Typography>
-                  <IconButton
-                    onClick={(event) => handleMenuClick(event, person)}
-                    className={style.iconButton}>
-                    <MoreVertIcon />
-                  </IconButton>
+                  {person.role === "QcAdmin" ? (
+                    <Typography className={style.QC}>QC</Typography>
+                  ) : (
+                    <IconButton
+                      onClick={(event) => handleMenuClick(event, person)}
+                      className={style.iconButton}>
+                      <MoreVertIcon />
+                    </IconButton>
+                  )}
                 </Grid>
 
                 <Menu
@@ -89,7 +101,7 @@ export default function Teams() {
                   <MenuItem onClick={() => handlePromoteUser(person.id,
                     toast.success(`${person.userId} Successfully Promoted to QCAdmin`, {
                       position: "top-center",
-                      autoClose: 4000,
+                      autoClose: 2000,
                       hideProgressBar: false,
                       closeOnClick: true,
                       pauseOnHover: false,
@@ -117,9 +129,9 @@ export default function Teams() {
         <Typography variant="h5" mb={1} className={style.memberText}>
           Team: (users)
         </Typography>
-        {userData?.length > 0 ? (
+        {Users.length > 0 ? (
           <Grid container spacing={3} ml="1px">
-            {userData?.map((person, index) => (
+            {Users?.map((person, index) => (
               <Stack key={index} className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
                 <Grid item className={style.gridBox}>
                   <Avatar
@@ -132,7 +144,9 @@ export default function Teams() {
                     sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
                     {person.userId}
                   </Typography>
-                  <Typography className={style.QC}>QC</Typography>
+                  {person.role === "user" ? (
+                    <Typography className={style.QC}>U</Typography>
+                  ) : null}
                   <IconButton
                     onClick={(event) => handleMenuClick(event, person)}
                     className={style.iconButton}>
@@ -156,7 +170,7 @@ export default function Teams() {
                   <MenuItem onClick={() => handlePromoteUser(person.id,
                     toast.success(`${person.userId} Successfully Promoted to QCAdmin`, {
                       position: "top-center",
-                      autoClose: 4000,
+                      autoClose: 2000,
                       hideProgressBar: false,
                       closeOnClick: true,
                       pauseOnHover: false,
