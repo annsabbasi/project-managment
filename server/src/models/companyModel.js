@@ -5,23 +5,23 @@ import jwt from 'jsonwebtoken'
 import { ROLES } from '../config/roles.js';
 
 const CompanySchema = new Schema({
-    name: {
+    companyName: {
         type: String,
-        required: [true, 'name field is required'],
+        required: [true, 'Company name field is required'],
         unique: true,
         trim: true,
     },
     email: {
         type: String,
-        required: [true, 'email field is required'],
+        required: [true, 'Email field is required'],
         unique: true,
         trim: true,
         lowercase: true,
-        match: [/\S+@\S+\.\S+/, 'please provide a valid email address'],
+        match: [/\S+@\S+\.\S+/, 'Please provide a valid email address'],
     },
     password: {
         type: String,
-        required: [true, 'password field is required'],
+        required: [true, 'Password field is required'],
     },
     confirmPassword: {
         type: String,
@@ -79,7 +79,7 @@ CompanySchema.pre("validate", function () {
 CompanySchema.methods.generateAccessToken = function () {
     return jwt.sign({
         _id: this._id,
-        name: this.name,
+        companyName: this.companyName,
         email: this.email
     }, process.env.JWT_SECRET, { expiresIn: process.env.ACCESS_TOKEN_JWT_EXPIRY })
 }
@@ -93,5 +93,5 @@ CompanySchema.methods.refreshAccessToken = function () {
 }
 
 
-const User = mongoose.model("CompanyInfo", CompanySchema)
-export { User }
+const Company = mongoose.model("CompanyInfo", CompanySchema)
+export { Company }

@@ -3,7 +3,7 @@ import styles from './style.module.scss'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { useState } from 'react';
-import { useLogin } from '../../hooks/useAuth';
+import { useLogin, useLoginCompany } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { toast } from 'react-toastify';
@@ -11,68 +11,116 @@ import {
     Box, Button,
     TextField, Typography,
     Container, CssBaseline,
-    Avatar, Stack,
+    Avatar, Stack, RadioGroup, FormControlLabel, Radio,
 } from '@mui/material';
 
-
 const LoginPage = () => {
-    const { mutate } = useLogin();
-    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-    const [error, setError] = useState("")
+    const { mutate : login } = useLogin();
+    const { mutate : loginCompany } = useLoginCompany();
+    const [formData, setFormData] = useState({ email: '', password: '', role: 'user' }); // Default role as 'user'
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        mutate(formData, {
-            onSuccess: () => {
-                const userRole = localStorage.getItem("role")
-                if (userRole === 'superadmin') {
-                    navigate(`/${RouteNames.ADMINPAGE1}`)
+        console.log(formData.role);
+        if(formData.role == 'admin'){
+            loginCompany(formData, {
+                onSuccess: () => {
+                    const userRole = localStorage.getItem("role");
+                    if (userRole === 'superadmin') {
+                        navigate(`/${RouteNames.ADMINPAGE1}`);
+                    } else if (userRole === 'admin') {
+                        console.log(' i am logged in as admin');
+                        navigate(`/${RouteNames.PROJECT}`);
+                    } else {
+                        navigate(`/${RouteNames.DASHBOARD}`);
+                    }
+                    toast.success("User Login Successfully.", {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: false,
+                    });
+                },
+    
+                onError: (error) => {
+                    setError(error?.response?.data?.message || error.response?.data?.errors);
+                    setTimeout(() => {
+                        setError("");
+                    }, 5000);
                 }
-                else if (userRole === 'admin') {
-                    navigate(`/${RouteNames.PROJECT}`)
+            });
+        } else{
+            login(formData, {
+                onSuccess: () => {
+                    const userRole = localStorage.getItem("role");
+                    if (userRole === 'superadmin') {
+                        navigate(`/${RouteNames.ADMINPAGE1}`);
+                    } else if (userRole === 'admin') {
+                        navigate(`/${RouteNames.PROJECT}`);
+                    } else {
+                        navigate(`/${RouteNames.DASHBOARD}`);
+                    }
+                    toast.success("User Login Successfully.", {
+                        position: "top-center",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: false,
+                    });
+                },
+    
+                onError: (error) => {
+                    setError(error?.response?.data?.message || error.response?.data?.errors);
+                    setTimeout(() => {
+                        setError("");
+                    }, 5000);
                 }
-                else {
-                    navigate(`/${RouteNames.DASHBOARD}`)
-                }
-                toast.success("User Login Successfully.", {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: false,
-                })
-            },
-
-            onError: (error) => {
-                setError(error?.response?.data?.message || error.response?.data?.errors)
-                setTimeout(() => {
-                    setError("");
-                }, 5000);
-            }
-        })
-    }
+            });
+        }
+    };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ backgroundColor: theme.palette.grey[50] }}
+            className={styles.container}
+        >
             <Container component="main" maxWidth="xs">
-
                 <CssBaseline />
                 <Box className={styles.boxItem}>
                     <Avatar sx={{ m: 1, bgcolor: 'black' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h6" className={styles.loginText}>Login</Typography>
+                    <Typography component="h1" variant="h6" className={styles.loginText}>Login as</Typography>
 
+                    {/* Role Selection */}
+                    <RadioGroup
+                        aria-label="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        row
+                        className={styles.radioGroup}
+                    >
+                        <FormControlLabel value="user" control={<Radio />} label="User" />
+                        <FormControlLabel value="admin" control={<Radio />} label="Company" />
+                    </RadioGroup>
 
-                    <Box sx={{ mt: 1, width: '100%' }} >
+                    <Box sx={{ mt: 1, width: '100%' }}>
                         <Box className={styles.boxText}>
                             <TextField
                                 margin="normal"
@@ -89,7 +137,8 @@ const LoginPage = () => {
                                     '& .MuiInputBase-input': {
                                         fontSize: '14px',
                                     },
-                                }} />
+                                }}
+                            />
 
                             <TextField
                                 margin="dense"
@@ -106,14 +155,13 @@ const LoginPage = () => {
                                     '& .MuiInputBase-input': {
                                         fontSize: '14px',
                                     },
-                                }} />
+                                }}
+                            />
                         </Box>
 
-
                         <Typography className={`${styles.errMessageTxt}`}>{error} &nbsp;</Typography>
-                        <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>LogIn</Button>
+                        <Button type="submit" fullWidth variant="contained" className={styles.loginBtn}>Log In</Button>
                         <Stack justifyContent="space-between" gap={0.5}>
-
                             <Box>
                                 <Typography variant="text" size="small" className={styles.dontHaveAccount}>
                                     {"Don't have an account?"}&nbsp;
@@ -122,10 +170,8 @@ const LoginPage = () => {
                                     </Link>
                                 </Typography>
                             </Box>
-
                         </Stack>
                     </Box>
-
                 </Box>
             </Container>
         </Box>

@@ -4,7 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useSignup } from '../../hooks/useAuth';
+import { useSignup, useSignupCompany } from '../../hooks/useAuth';
 import { Link, Navigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 
@@ -20,6 +20,7 @@ import {
 
 const Index = () => {
     const { mutate: signup } = useSignup();
+    const { mutate: signupComapny } = useSignupCompany();
     const [error, setError] = useState("");
     const [redirect, setRedirect] = useState(false);
     const [formData, setFormData] = useState({ 
@@ -28,7 +29,7 @@ const Index = () => {
         password: '', 
         confirmPassword: '', 
         companyName: '', 
-        role: 'user' // Default to "user"
+        role: 'admin' // Default to "user"
     });
 
     const handleData = (value) => {
@@ -41,18 +42,33 @@ const Index = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        signup(formData, {
-            onSuccess: () => {
-                setRedirect(true);
-                toast.success("Registration Successful.");
-            },
-            onError: (err) => {
-                setError(err.response?.data?.error || err.response?.data?.errors);
-                setTimeout(() => {
-                    setError("");
-                }, 3000);
-            }
-        });
+        if(formData.role == 'admin'){
+            signupComapny(formData, {
+                onSuccess: () => {
+                    setRedirect(true);
+                    toast.success("Registration Successful.");
+                },
+                onError: (err) => {
+                    setError(err.response?.data?.error || err.response?.data?.errors);
+                    setTimeout(() => {
+                        setError("");
+                    }, 3000);
+                }
+            });
+        } else{            
+            signup(formData, {
+                onSuccess: () => {
+                    setRedirect(true);
+                    toast.success("Registration Successful.");
+                },
+                onError: (err) => {
+                    setError(err.response?.data?.error || err.response?.data?.errors);
+                    setTimeout(() => {
+                        setError("");
+                    }, 3000);
+                }
+            });
+        }
     };
 
     if (redirect) {
@@ -82,7 +98,7 @@ const Index = () => {
                                     onChange={handleRoleChange}
                                 >
                                     <FormControlLabel value="user" control={<Radio />} label="User" />
-                                    <FormControlLabel value="company" control={<Radio />} label="Company" />
+                                    <FormControlLabel value="admin" control={<Radio />} label="Company" />
                                 </RadioGroup>
                             </FormControl>
                             <Stack flexWrap="wrap" gap="1rem" flexDirection="row" flex={1} className={`${styles.contentMainStack}`}>
@@ -103,7 +119,7 @@ const Index = () => {
                                 )}
 
                                 {/* Company Name Field (conditionally rendered) */}
-                                {formData.role === 'company' && (
+                                {formData.role === 'admin' && (
                                     <TextField
                                         margin="normal"
                                         size="small"

@@ -6,7 +6,6 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-
 // Generate Access & Refresh Token of Company
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
     const company = await Company.findById(tokenId);
@@ -60,7 +59,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     } catch (error) {
         console.error("Error from refreshAccessToken", error);
 
-        if (error.name === "TokenExpiredError") {
+        if (error.companyName === "TokenExpiredError") {
             // Clear refresh token from database and cookies
             const decodedToken = jwt.decode(incomingRefreshToken);
             if (decodedToken?._id) {
@@ -82,13 +81,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 // To Register a Person
 const registerCompany = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
+    const { companyName, email, password } = req.body;
 
-    const existedCompany = await Company.findOne({ $or: [{ email }, { name }] });
+    const existedCompany = await Company.findOne({ $or: [{ email }, { companyName }] });
     if (existedCompany) {
         return res.status(400).json({ error: "Company with given credentials already exists" });
     }
-    const registerCompany = await Company.create({ name, email, password });
+    const registerCompany = await Company.create({ companyName, email, password });
     const createdCompany = await Company.findById(registerCompany._id).select("-password -refreshToken");
 
     if (!createdCompany) {
@@ -104,11 +103,11 @@ const registerCompany = asyncHandler(async (req, res) => {
 
 // To Login a Person
 const loginCompany = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
-    if ((!name || !email) && !password) {
+    const { companyName, email, password } = req.body;
+    if ((!companyName || !email) && !password) {
         throw new apiError(404, "All fields are required")
     }
-    const company = await Company.findOne({ $or: [{ name }, { email }] });
+    const company = await Company.findOne({ $or: [{ companyName }, { email }] });
     if (!company) {
         throw new apiError(404, "Company not found");
     }
@@ -196,6 +195,30 @@ const getCompanyProfile = asyncHandler(async (req, res) => {
     }
 })
 
+// Promoting a User To QC-Admin
+const promoteUser = asyncHandler(async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) {
+        throw new apiError(400, "User ID is required.");
+    }
+
+    if (req.user.role !== ROLES.ADMIN) {
+        throw new apiError(403, "You don't have to authority to perform this action");
+    }
+
+    const userToPromote = await User.findById(userId);
+    if (!userToPromote) {
+        throw new apiError(404, "User not found.");
+    }
+    if (userToPromote.role === ROLES.QCADMIN) {
+        return res.status(400).json(new apiResponse(400, {}, "User is already a QcAdmin."));
+    }
+
+    userToPromote.role = ROLES.QCADMIN
+    await userToPromote.save();
+
+    return res.status(200).json(new apiResponse(200, { userId: userToPromote._id, role: userToPromote.role }, "User promoted to QcAdmin successfully."))
+})
 
 export {
     registerCompany,
@@ -204,5 +227,6 @@ export {
     logoutCompany,
     refreshAccessToken,
     getCompanyData,
-    getCompanyProfile
+    getCompanyProfile,
+    promoteUser
 }

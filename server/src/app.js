@@ -30,8 +30,10 @@ app.use((req, res, next) => {
 
 // Routing of the App Starts Here...
 import userRoute from './routes/userRoute.js';
+import companyRoute from './routes/companyRoute.js';
 
 app.use('/user', userRoute);
+app.use('/company', companyRoute);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
