@@ -48,6 +48,6 @@ const subUsertaskSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-
+ 
 const subUserTask = mongoose.model('subUserTask', subUsertaskSchema);
 export { subUserTask };
