@@ -6,8 +6,6 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "build": "echo 'No build step required'"
   },
   "keywords": [],
   "author": "",

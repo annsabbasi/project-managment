@@ -12,7 +12,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://workbackend-ten.vercel.app/',
+        target: 'http://localhost:6007',
+        // target: 'https://workbackend-red.vercel.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // Musr add this api before any route EXP:('/api/your-route)
       }
