@@ -1,4 +1,6 @@
-Created a new branch (safeSide) for the collobrating purpose.
+safeSide
+rolling back to the successfull check
+
 
 THIS IS THE DATA EXAMPLE WHICH I CAN USE WITHOUT SETTING UP THE AUTHPROVIDER AND USE THE ISER DETAILS IN ANY PAGE.
 // In Profile.js or another component
