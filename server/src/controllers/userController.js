@@ -48,14 +48,12 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             maxAge: 12 * 24 * 60 * 60 * 1000, // 12 days in milliseconds
         };
         const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user?._id);
-        console.log("Successfully refreshed The AccessToken", accessToken)
 
         return res.status(200)
             .cookie("accessToken", accessToken, options)
             .cookie("refreshToken", refreshToken, options)
             .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
     } catch (error) {
-        console.error("Error from refreshAccessToken", error);
 
         if (error.name === "TokenExpiredError") {
             // Clear refresh token from database and cookies
@@ -173,19 +171,16 @@ const getAllData = asyncHandler(async (req, res) => {
 })
 
 
+
 // For The Testing Purpose To Get the User Data
 const getUserProfile = asyncHandler(async (req, res) => {
     const token = req.cookies?.accessToken;
-    try {
-        const verify = jwt.verify(token, process.env.JWT_SECRET);
-        const findUser = await User.findById(verify._id).select("-password -refreshToken");
-        if (!findUser) {
-            throw new apiError(404, "User Not Found!");
-        }
-        res.status(200).json(new apiResponse(200, findUser, "User data fetched successfully!"));
-    } catch (error) {
-        console.log("ERROR from (UserController.js) getUserProfile", error)
+    const verify = jwt.verify(token, process.env.JWT_SECRET);
+    const findUser = await User.findById(verify._id).select("-password -refreshToken");
+    if (!findUser) {
+        throw new apiError(404, "User Not Found!");
     }
+    res.status(200).json(new apiResponse(200, findUser, "User data fetched successfully!"));
 })
 
 

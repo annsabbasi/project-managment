@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { loginUser, logoutUser, signUpUser } from '../api/authApi';
+import { loginUser, logoutUser, promoteUser, signUpUser } from '../api/authApi';
 
 
 
@@ -53,5 +53,18 @@ export const useLogout = () => {
     onError: (error) => {
       console.error("(useAuth) Logout failed:", error.message || error);
     }
+  })
+}
+
+
+// Promote user Hook
+
+export const usePromoteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: promoteUser,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['userPromotion'], data.user);
+    },
   })
 }

@@ -3,10 +3,12 @@ import { User } from "../models/userModel.js";
 
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
-import { subUserTask } from "../models/subUserTask.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+
+import { subUserTask } from "../models/subUserTask.js";
 import { doscSubTask } from "../models/Docs_SubTask/docs_Subtask.js";
 import { videoSubTask } from "../models/Video_SubTask/video_Subtask.js";
+
 
 // Cerate User Sub Task inside Project
 const createUserTask = asyncHandler(async (req, res) => {
@@ -61,6 +63,7 @@ const getUserSubTask = asyncHandler(async (req, res) => {
 });
 
 
+
 // Get Users From Assign Sub Tasks
 const getUserForSubTask = async (req, res) => {
     const { projectId } = req.params;
@@ -68,7 +71,7 @@ const getUserForSubTask = async (req, res) => {
         throw new apiError(400, "Invalid Project ID");
     }
 
-    const objectId = new mongoose.Types.ObjectId(projectId)
+    const objectId = new mongoose.Types.ObjectId(projectId);
     if (!objectId) {
         throw new apiError(400, "Invalid objectID");
     }
@@ -77,25 +80,39 @@ const getUserForSubTask = async (req, res) => {
         { $match: { projectId: objectId } },
         { $unwind: "$assign" },
         {
-            $group: {
-                _id: "$assign",
+            $lookup: {
+                from: "userinfos",
+                localField: "assign",
+                foreignField: "name",
+                as: "userDetails"
             }
         },
-
+        { $unwind: "$userDetails" },
+        {
+            $group: {
+                _id: "$assign",
+                avatar: { $first: "$userDetails.avatar" },
+                id: { $first: "$userDetails._id" },
+                role: { $first: "$userDetails.role" }
+            }
+        },
         {
             $project: {
                 _id: 0,
-                userName: "$_id"
+                userId: "$_id",
+                avatar: 1,
+                id: 1,
+                role: 1
             }
         }
     ]);
 
-    const userNames = assignedUsers.map(user => user.userName);
     if (assignedUsers.length <= 0) {
-        return res.status(200).json(new apiResponse(200, [], "No Assign Task Member yet"))
+        return res.status(200).json(new apiResponse(200, [], "No assigned task members found"));
     }
-    return res.status(200).json(new apiResponse(200, userNames, "Tasks fetched successfully"));
+    return res.status(200).json(new apiResponse(200, assignedUsers, "Tasks fetched successfully"));
 };
+
 
 
 // Delete User Sub Task for Project
@@ -249,6 +266,9 @@ const deleteVideoSubTask = asyncHandler(async (req, res) => {
     }
     return res.status(200).json(new apiResponse(200, deleteDocs, "Video Link Deleted Successfully!"))
 })
+
+
+
 
 export {
     createUserTask,

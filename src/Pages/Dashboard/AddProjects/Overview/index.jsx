@@ -9,6 +9,8 @@ import {
     MenuItem, ListItemIcon,
     Button, Stack, Typography,
     TableHead, TableContainer,
+    FormControl, InputLabel,
+    Select, TextField,
 } from "@mui/material";
 
 
@@ -75,7 +77,6 @@ export default function index() {
         setAnchor(null)
     }
 
-    // console.log("This is the editTask", subTasks)
 
     const { mutate: deleteTask } = useDeleteSubTask();
     const handleDelete = () => {
@@ -178,7 +179,42 @@ export default function index() {
                 </Box>
             </Stack>
 
-            <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography>
+
+            <Stack flexDirection="row" justifyContent="space-between">
+                <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography>
+                {/* <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography> */}
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{
+                        alignItems: "center",
+                        mb: 2,
+                    }}>
+                    <TextField
+                        label="Search"
+                        variant="outlined"
+                        fullWidth
+                        // value={searchTerm}
+                        // onChange={handleSearchChange}
+                        size="small" />
+
+                    <FormControl variant="outlined" sx={{ minWidth: 150 }}>
+                        <InputLabel id="filter-label" size="small">Filter Here</InputLabel>
+                        <Select
+                            labelId="filter-label"
+                            label="Filter By Role"
+                            size="small"
+                            className={style.filterSelect}>
+                            <MenuItem value="">
+                                <em>All</em>
+                            </MenuItem>
+                            <MenuItem value="QcAdmin">QcAdmin</MenuItem>
+                            <MenuItem value="user">User</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Stack>
+            </Stack>
+
             <Stack variant="div" className={style.boxMain2}>
                 <TableContainer>
                     {

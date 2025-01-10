@@ -2,28 +2,35 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "./axiosInstance"
 
 
-
+// Cerate User Sub Task inside Project
 export const createSubTask = async (taskData) => {
     const { data } = await axiosInstance.post('/user/create-subTask', taskData);
     return data;
 };
 
 
-
+// Get User Sub Task inside Project
 export const getSubTask = async (projectId) => {
     const { data } = await axiosInstance.get('/user/get-subtask', { params: { projectId } })
     return data;
 }
 
 
+// Get User Name & Detail Task inside Project
+export const getUserForSubTask = async (projectId) => {
+    const response = await axiosInstance.get(`/user/get-userOfSubTask/${projectId}`)
+    return response.data;
+}
 
+
+// Delete User Sub Task for Project
 export const deleteSubTask = async (taskId) => {
     const response = await axiosInstance.delete(`/user/delete-subTask/${taskId}`);
     return response.data;
 }
 
 
-
+// Update User Sub Task for Project
 export const updateSubTask = async (taskId, updateData) => {
     const response = await axiosInstance.put(`/user/update-subTask/${taskId}`, updateData);
     return response.data;
@@ -31,8 +38,9 @@ export const updateSubTask = async (taskId, updateData) => {
 
 
 
-// ----------- Creating Docs and Videos Links API's -------------
 
+
+// ----------- Creating Docs and Videos Links API's -------------
 // Create the Docs Link Code
 export const createDocsLink = async (value) => {
     const response = await axiosInstance.post('/user/create-docslink', value);
