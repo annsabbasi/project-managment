@@ -185,6 +185,21 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 
 
 
+// Filtering the SubTask Data
+const filterSubTask = asyncHandler(async (req, res) => {
+    const { searchText, filterField } = req.query;
+    const query = {};
+
+    // if (searchText) {
+    if (filterField && searchText) {
+        query[filterField] = { $regex: searchText, $options: 'i' }
+    }
+    const result = await subUserTask.find(query);
+    res.status(200).json(new apiResponse(200, result, "Data fetching successfully."))
+})
+
+
+
 
 
 // ----------- Creating Docs and Videos Links Controllers -------------
@@ -276,6 +291,7 @@ export {
     deleteUserSubTask,
     updateUserSubTask,
     getUserForSubTask,
+    filterSubTask,
 
     // Docs SubTask Links
     docsSubTask,
