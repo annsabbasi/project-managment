@@ -38,6 +38,14 @@ export const updateSubTask = async (taskId, updateData) => {
 
 
 
+// Filtering the SubTask Data
+export const filterSubTask = async (searchText, filterField) => {
+    const response = await axiosInstance.get('/user/search-subTask', { params: { searchText: searchText, filterField: filterField } })
+    return response.data;
+}
+
+
+
 
 
 // ----------- Creating Docs and Videos Links API's -------------

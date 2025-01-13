@@ -22,7 +22,7 @@ import EditPointsDialog from "./EditPointsDialog";
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
-import { getSubTask } from "../../../../api/userSubTask";
+import { filterSubTask, getSubTask } from "../../../../api/userSubTask";
 import { useSubmitTask } from "../../../../hooks/useTask";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useDeleteSubTask } from "../../../../hooks/useSubTask";
@@ -31,6 +31,7 @@ import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import useDebounce from "../../../../hooks/useDebounce";
 
 
 
@@ -106,6 +107,19 @@ export default function index() {
         setEditDialogOpen(false);
         setSelectedTask(null);
     };
+
+
+    // Filtering Search SubTask
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filterField, setFilterField] = useState("");
+    const debounceSearchTerm = useDebounce(searchTerm, 500)
+
+    const { data: filteredSubTask } = useQuery({
+        queryKey: ['filteredSubTask', debounceSearchTerm, filterField],
+        queryFn: () => filterSubTask(debounceSearchTerm, filterField),
+        enabled: !!debounceSearchTerm || !!filterField
+    })
+
 
 
     return (
@@ -194,8 +208,8 @@ export default function index() {
                         label="Search"
                         variant="outlined"
                         fullWidth
-                        // value={searchTerm}
-                        // onChange={handleSearchChange}
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         size="small" />
 
                     <FormControl variant="outlined" sx={{ minWidth: 150 }}>
@@ -204,12 +218,14 @@ export default function index() {
                             labelId="filter-label"
                             label="Filter By Role"
                             size="small"
-                            className={style.filterSelect}>
+                            className={style.filterSelect}
+                            value={filterField}
+                            onChange={(e) => setFilterField(e.target.value)}>
                             <MenuItem value="">
                                 <em>All</em>
                             </MenuItem>
-                            <MenuItem value="QcAdmin">QcAdmin</MenuItem>
-                            <MenuItem value="user">User</MenuItem>
+                            <MenuItem value="title">Title</MenuItem>
+                            <MenuItem value="assign">Assign</MenuItem>
                         </Select>
                     </FormControl>
                 </Stack>
@@ -224,22 +240,25 @@ export default function index() {
                                     <TableRow className={style.tableRowHead}>
                                         <TableCell align="left" variant="h6" className={style.tableInfo}>Title</TableCell>
                                         <TableCell variant="h6" className={style.tableInfo}>Assign To</TableCell>
+                                        <TableCell variant="h6" className={style.tableInfo}>Checked By</TableCell>
                                         <TableCell variant="h6" className={style.tableInfo}>Assign By</TableCell>
-                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell>
                                         <TableCell align="left" variant="h6" className={style.tableInfo}>Start Date</TableCell>
                                         <TableCell align="left" variant="h6" className={style.tableInfo}>Due Date</TableCell>
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>Points</TableCell>
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>TaskList</TableCell>
+                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell>
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>&nbsp;</TableCell>
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody >
-                                    {subTasks?.data?.map((task, index) => {
+                                    {/* {filteredSubTask?.data?.map((task, index) => { */}
+                                    {(filteredSubTask?.data?.length > 0 ? filteredSubTask.data : subTasks?.data || []).map((task, index) => {
                                         return (
                                             <TableRow key={index} className={style.tableRowBody}>
                                                 <TableCell component="th" scope="row" >{task.title}</TableCell>
                                                 <TableCell component="th" scope="row" className={style.textGrey}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
+                                                <TableCell component="th" scope="row" className={style.textGrey}>Qc-Admin</TableCell>
 
                                                 <TableCell align="left">
                                                     <Stack
@@ -253,15 +272,16 @@ export default function index() {
                                                     </Stack>
                                                 </TableCell>
 
-                                                <TableCell align="left">
-                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey || style.desctext}>{task.description}</Typography>
-                                                </TableCell>
-
                                                 <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
                                                 <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+
                                                 <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell>
                                                 <TableCell align="right">
                                                     <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
+                                                </TableCell>
+
+                                                <TableCell align="left">
+                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey || style.desctext}>{task.description}</Typography>
                                                 </TableCell>
 
                                                 <TableCell align="right">

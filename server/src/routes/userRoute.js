@@ -23,6 +23,7 @@ import {
     docsSubTask, fetchDocsSubTasks,
     updateUserSubTask, videosSubTask,
     fetchVideoSubTasks, getUserForSubTask, getUserSubTask,
+    filterSubTask,
 } from '../controllers/subUserTask.js';
 
 import {
@@ -70,6 +71,7 @@ router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 router.route('/get-userOfSubTask/:projectId').get(verifyUser(['admin', 'user']), getUserForSubTask)
+router.route('/search-subTask').get(verifyUser(['admin', 'user']), filterSubTask)
 
 
 
