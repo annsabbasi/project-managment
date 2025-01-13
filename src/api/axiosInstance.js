@@ -25,11 +25,12 @@ axiosInstance.interceptors.response.use(
                 window.location.href = '/login';
                 return Promise.reject(error);
             }
-
+            
             try {
                 const { data } = await axiosInstance.post(`/user/refresh-token`, { token: refreshToken });
                 localStorage.setItem('accessToken', data?.accessToken);
                 axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+                console.log("Original Request of Headers", originalRequest.headers['Authorization']);
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
                 localStorage.removeItem('accessToken');

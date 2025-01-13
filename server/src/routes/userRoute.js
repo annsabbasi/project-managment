@@ -23,7 +23,9 @@ import {
     docsSubTask, fetchDocsSubTasks,
     updateUserSubTask, videosSubTask,
     fetchVideoSubTasks, getUserForSubTask, getUserSubTask,
-    filterSubTask,
+    filterSubTask, completeUserSubTask,
+    getCompleteUserSubTask,
+    subTaskApproval,
 } from '../controllers/subUserTask.js';
 
 import {
@@ -68,6 +70,9 @@ router.route('/project-approval/:taskId').put(verifyUser('admin'), projectApprov
 // UserSub Task
 router.route('/create-subTask').post(verifyUser(['admin', 'user']), createUserTask)
 router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
+router.route('/complete-subTask/:taskID').patch(verifyUser(['admin', 'user']), completeUserSubTask)
+router.route('/get-complete-subTask').get(verifyUser(['admin', 'user', 'QcAdmin']), getCompleteUserSubTask)
+router.route('/approve-subTask/:taskID').patch(verifyUser(['admin', 'QcAdmin']), subTaskApproval)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 router.route('/get-userOfSubTask/:projectId').get(verifyUser(['admin', 'user']), getUserForSubTask)

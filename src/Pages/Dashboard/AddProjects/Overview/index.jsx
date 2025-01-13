@@ -19,6 +19,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditPointsDialog from "./EditPointsDialog";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
@@ -119,6 +120,9 @@ export default function index() {
         queryFn: () => filterSubTask(debounceSearchTerm, filterField),
         enabled: !!debounceSearchTerm || !!filterField
     })
+
+    // console.log("Filered Data", filteredSubTask)
+    // console.log("subTasks Data", subTasks)
 
 
 
@@ -246,7 +250,7 @@ export default function index() {
                                         <TableCell align="left" variant="h6" className={style.tableInfo}>Due Date</TableCell>
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>Points</TableCell>
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>TaskList</TableCell>
-                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell>
+                                        {/* <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell> */}
                                         <TableCell align="right" variant="h6" className={style.tableInfo}>&nbsp;</TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -280,9 +284,9 @@ export default function index() {
                                                     <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
                                                 </TableCell>
 
-                                                <TableCell align="left">
+                                                {/*  <TableCell align="left">
                                                     <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey || style.desctext}>{task.description}</Typography>
-                                                </TableCell>
+                                                </TableCell> */}
 
                                                 <TableCell align="right">
                                                     {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
@@ -345,6 +349,11 @@ export default function index() {
                                                             </ListItemIcon>
                                                             Delete
                                                         </MenuItem>
+
+                                                        <MenuItem onClick={() => console.log("Click")} className={style.anchorMenuItemCompleted}>
+                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                <TaskAltIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                            </ListItemIcon>Completed</MenuItem>
                                                     </Menu>
                                                     {/* </div> */}
                                                 </TableCell>

@@ -8,6 +8,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { subUserTask } from "../models/subUserTask.js";
 import { doscSubTask } from "../models/Docs_SubTask/docs_Subtask.js";
 import { videoSubTask } from "../models/Video_SubTask/video_Subtask.js";
+import { ROLES } from "../config/roles.js";
 
 
 // Cerate User Sub Task inside Project
@@ -184,6 +185,68 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 })
 
 
+const completeUserSubTask = asyncHandler(async (req, res) => {
+    const { taskID } = req.params;
+    const userId = req.user.name;
+    if (!mongoose.isValidObjectId(taskID)) {
+        throw new apiError(400, "Task ID not valid")
+    }
+
+    const getTaskId = await subUserTask.findById(taskID).select("taskList assign")
+    if (!getTaskId) {
+        throw new apiError(400, "Task not found");
+    }
+
+    const userInAssign = getTaskId.assign.includes(userId.toString());
+    if (!userInAssign) {
+        throw new apiError("you cannot perform this action")
+    }
+    if (getTaskId.taskList === 'completed') {
+        throw new apiError(400, "The task is already is completed")
+    }
+
+    getTaskId.taskList = 'completed';
+    await getTaskId.save();
+    res.status(200).json(new apiResponse(200, getTaskId, "Task marked completed successfully"))
+})
+
+
+
+const getCompleteUserSubTask = asyncHandler(async (req, res) => {
+    const completedTasks = await subUserTask.find({ taskList: 'completed' }).populate("assignedBy", "name avatar");
+    if (!completedTasks || completedTasks.length === 0) {
+        return res.status(200).json(new apiResponse(200, [], "No completed tasks found"));
+    }
+    return res.status(200).json(new apiResponse(200, completedTasks, "Completed tasks fetched successfully"));
+})
+
+
+const subTaskApproval = asyncHandler(async (req, res) => {
+    const { taskID } = req.params;
+    const userRole = req.user.role;
+    console.log("userRole", userRole)
+    if (userRole !== ROLES.ADMIN && userRole !== ROLES.QCADMIN) {
+        throw new apiError(400, "you are not Authorized to perform this action")
+    }
+    if (!mongoose.isValidObjectId(taskID)) {
+        throw new apiError(400, "Task ID not valid")
+    }
+
+    const approveTask = await subUserTask.findById(taskID).select("taskList")
+    if (!approveTask) {
+        throw new apiError(400, "Task not found");
+    }
+
+    approveTask.taskList = 'approved';
+    approveTask.save();
+    console.log("approveTask result", approveTask)
+    res.status(200).json(new apiResponse(200, approveTask, "Task Approves successfully"))
+})
+
+
+
+
+
 
 // Filtering the SubTask Data
 const filterSubTask = asyncHandler(async (req, res) => {
@@ -290,6 +353,9 @@ export {
     getUserSubTask,
     deleteUserSubTask,
     updateUserSubTask,
+    getCompleteUserSubTask,
+    completeUserSubTask,
+    subTaskApproval,
     getUserForSubTask,
     filterSubTask,
 
