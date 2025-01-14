@@ -185,6 +185,7 @@ const updateUserSubTask = asyncHandler(async (req, res) => {
 })
 
 
+// Complete User Sub Task for Project
 const completeUserSubTask = asyncHandler(async (req, res) => {
     const { taskID } = req.params;
     const userId = req.user.name;
@@ -222,9 +223,9 @@ const getCompleteUserSubTask = asyncHandler(async (req, res) => {
 
 
 const subTaskApproval = asyncHandler(async (req, res) => {
+    const { status } = req.body;
     const { taskID } = req.params;
     const userRole = req.user.role;
-    console.log("userRole", userRole)
     if (userRole !== ROLES.ADMIN && userRole !== ROLES.QCADMIN) {
         throw new apiError(400, "you are not Authorized to perform this action")
     }
@@ -237,9 +238,23 @@ const subTaskApproval = asyncHandler(async (req, res) => {
         throw new apiError(400, "Task not found");
     }
 
-    approveTask.taskList = 'approved';
+    if (status === 'approved') {
+        if (approveTask.taskList === 'approved') {
+            return res.status(200).json(new apiResponse(200, approveTask, "The Task is already approved"));
+        }
+        approveTask.taskList = 'approved';
+    } else if (status === 'progress') {
+        if (approveTask.taskList === 'progress') {
+            return res.status(200).json(new apiResponse(200, approveTask, "The Task is already rejected and is in progress"));
+        }
+        approveTask.taskList = 'progress';
+        approveTask.save();
+        return res.status(200).json(new apiResponse(200, approveTask, "Task rejected and moved back to progress successfully"));
+    } else {
+        throw new apiError(400, "Invalid status. Use 'approved' or 'reject'");
+    }
+
     approveTask.save();
-    console.log("approveTask result", approveTask)
     res.status(200).json(new apiResponse(200, approveTask, "Task Approves successfully"))
 })
 

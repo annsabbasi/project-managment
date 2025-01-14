@@ -23,13 +23,14 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
-import { filterSubTask, getSubTask } from "../../../../api/userSubTask";
+import { completeSubTask, filterSubTask, getSubTask } from "../../../../api/userSubTask";
 import { useSubmitTask } from "../../../../hooks/useTask";
 import { useAuth } from "../../../../context/AuthProvider";
 import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 
 
 import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useDebounce from "../../../../hooks/useDebounce";
@@ -99,6 +100,9 @@ export default function index() {
     };
 
 
+
+
+
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const handleEditClickOpen = () => {
         setEditDialogOpen(true);
@@ -121,9 +125,38 @@ export default function index() {
         enabled: !!debounceSearchTerm || !!filterField
     })
 
-    // console.log("Filered Data", filteredSubTask)
-    // console.log("subTasks Data", subTasks)
 
+
+    // Handling the Completed Functionality
+    const queryClient = useQueryClient();
+
+    const handleCompleteTask = async (taskId) => {
+        try {
+            const response = await completeSubTask(taskId);
+            toast.success(response.message, {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            });
+            queryClient.invalidateQueries(['userSubtask', taskId])
+        } catch (error) {
+            toast.error(error.response?.data?.message || "An error occurred", {
+                position: "top-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: false,
+            });
+        } finally {
+            handleClose();
+        }
+    }
 
 
     return (
@@ -325,8 +358,7 @@ export default function index() {
                                                                 boxShadow: '0'
                                                             },
                                                         }}
-                                                        className={style.anchorElParent}
-                                                    >
+                                                        className={style.anchorElParent}>
 
                                                         <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
                                                             <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
@@ -342,18 +374,22 @@ export default function index() {
                                                                 '&:hover': {
                                                                     bgcolor: '#EE4B2B !important'
                                                                 }
-                                                            }}
-                                                        >
+                                                            }}>
                                                             <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
                                                                 <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
                                                             </ListItemIcon>
                                                             Delete
                                                         </MenuItem>
 
-                                                        <MenuItem onClick={() => console.log("Click")} className={style.anchorMenuItemCompleted}>
-                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                                <TaskAltIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                            </ListItemIcon>Completed</MenuItem>
+                                                        {task.assign.includes(user?.name) &&
+                                                            <MenuItem
+                                                                onClick={() => handleCompleteTask(selectedTask)}
+                                                                className={style.anchorMenuItemCompleted}
+                                                                disabled={task.taskList === 'completed'}>
+                                                                <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
+                                                                    <TaskAltIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                                </ListItemIcon>{task.taskList === "completed" ? "Completed" : "Mark Complete"}</MenuItem>
+                                                        }
                                                     </Menu>
                                                     {/* </div> */}
                                                 </TableCell>

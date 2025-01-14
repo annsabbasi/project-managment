@@ -10,7 +10,7 @@ import Time from "./Time"
 {/* Further Tabs if Needed Imports! */ }
 import Files from "./Files"
 // import Time from "./Time"
-// import Controls from "./Controls"
+import Controls from "./Controls"
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -154,18 +154,18 @@ export default function AddProjects() {
 
 
                         {/* Further Tabs if Needed! */}
-                        {/* <Tab
-                        label="Controls"
-                        {...allyProps(5)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 5 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })}
-                        className={project.Tab} /> */}
+                        <Tab
+                            label="Statics"
+                            {...allyProps(5)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 6 ? theme.palette.grey.hoverGrey : 'transparent',
+                                color: activeTab === 6 ? theme.palette.grey.darkGrey : 'grey',
+                                fontWeight: activeTab === 6 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })}
+                            className={project.Tab} />
                     </Tabs>
                 </Box>
             </Stack>
@@ -193,6 +193,9 @@ export default function AddProjects() {
                 </CustomTabPanel>
                 <CustomTabPanel value={activeTab} index={5}>
                     <Time />
+                </CustomTabPanel>
+                <CustomTabPanel value={activeTab} index={6}>
+                    <Controls />
                 </CustomTabPanel>
             </Box>
         </Box >
