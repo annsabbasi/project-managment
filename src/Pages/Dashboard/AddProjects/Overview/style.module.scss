@@ -80,6 +80,20 @@
   }
 }
 
+.anchorMenuItemCompleted {
+  padding: 6px 4px;
+  padding-inline-end: 30px;
+  font-size: 12px;
+  color: white;
+  background-color: #50C878;
+
+
+  &:hover {
+    // background-color: rgba(216, 216, 216, 0.2);
+    background-color: #00A36C;
+  }
+}
+
 .tableHead {
   border: none;
   overflow: hidden;
