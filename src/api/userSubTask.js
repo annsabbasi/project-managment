@@ -45,6 +45,26 @@ export const filterSubTask = async (searchText, filterField) => {
 }
 
 
+// Complete the Sub User Task 
+export const completeSubTask = async (taskID, updateData) => {
+    const response = await axiosInstance.patch(`/user/complete-subTask/${taskID}`, updateData);
+    return response.data;
+}
+
+
+// Get Complete the Sub User Task
+export const getCompleteSubTask = async () => {
+    const response = await axiosInstance.get('/user/get-complete-subTask');
+    return response.data;
+}
+
+
+// Get Complete the Sub User Task
+export const subCompleteTaskApproval = async (taskID, updateData) => {
+    const response = await axiosInstance.patch(`/user/approve-subTask/${taskID}`, updateData);
+    return response.data;
+}
+
 
 
 
