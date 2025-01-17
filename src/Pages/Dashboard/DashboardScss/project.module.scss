@@ -1,15 +1,32 @@
 .Tabs {
-  background-color: white;
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.2rem;
-  border: 1px solid silver;
-  min-height: auto;
+  background-color: white !important;
+  border-radius: 0.4rem !important;
+  padding: 0.2rem 0.2rem !important;
+  border: 1px solid silver !important;
+  min-height: auto !important;
 }
+
 .Tab {
-  border-radius: 0.4rem;
-  padding: 0.6rem 0.6rem;
-  min-width: auto;
-  min-height: auto;
-  text-transform: capitalize;
-  color: grey;
+  border-radius: 0.4rem !important;
+  padding: 0.6rem 0.6rem !important;
+  min-width: auto !important;
+  min-height: auto !important;
+  text-transform: capitalize !important;
+  color: grey !important;
+}
+
+.addItemLink {
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+}
+
+.addItemText {
+  color: #424242 !important;
+  font-size: 1.3rem !important;
+  font-weight: 500 !important;
+}
+
+.addItemHeader {
+  margin-bottom: 1.8rem !important;
 }
