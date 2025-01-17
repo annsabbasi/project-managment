@@ -15,7 +15,7 @@ import { getCompleteSubTask, subCompleteTaskApproval } from '../../../../api/use
 import { toast } from 'react-toastify';
 
 
-export default function Request() {
+export default function Request() {  
     const queryClient = useQueryClient();
 
     const { data: getCompleteTask } = useQuery({
@@ -111,12 +111,10 @@ export default function Request() {
                     </TableBody>
                 </Table>
             ) : (
-
-
                 <Stack alignItems='center' justifyContent='end' height='50vh' gap={2} variant="div">
-                    <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No Completed project yet</Typography>
+                    <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No Completed Sub-Task yet!</Typography>
                     <Stack width={350} textAlign='center'>
-                        <Typography component='p' className={style.btnText}>When any of the User's Completes their Task then it will be shown up here.</Typography>
+                        <Typography component='p' className={style.btnText}>When any of the User&apos;s Completes their Task then it will be shown up here.</Typography>
                     </Stack>
                 </Stack>
             )}

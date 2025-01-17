@@ -39,7 +39,7 @@ const Sidebar = () => {
     const currentPath = location.pathname;
 
     const pages = [
-        { name: 'Dashboard', path: `/${RouteNames.DASHBOARD}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
+        { name: 'Department', path: `/${RouteNames.DASHBOARD}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
         { name: 'Projects', path: `/${RouteNames.PROJECT}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
         { name: 'Messages', path: `/${RouteNames.MESSAGE}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
         { name: 'SOP\'s', path: `/${RouteNames.CLIENT}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
