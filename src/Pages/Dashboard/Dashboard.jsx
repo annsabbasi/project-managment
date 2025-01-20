@@ -25,31 +25,30 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Stack className={style.addItemHeader}>
+      <Stack className={style.addItemHeader} sx={{ width: 'fit-content' }}>
         <Link onClick={handleClickOpen} className={style.addItemLink}>
           <Typography className={style.addItemText}>Add Here</Typography>
           <IconButton disableRipple><AddIcon /></IconButton>
         </Link>
       </Stack>
+
       <Grid container spacing={2}>
         {data.map((item, index) => (
           // <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
           <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
             <Card sx={{ boxShadow: 2, padding: 2 }}>
               <CardContent>
+
                 {/* Heading Section */}
                 <Box display="flex" justifyContent="space-between">
-                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#424242", fontWeight: "500" }}>
-                    Title
-                  </Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#424242", fontWeight: "500" }}>Title</Typography>
                   <Divider
                     orientation="vertical"
                     flexItem
                     sx={{ mx: 2, backgroundColor: "silver", marginLeft: "25px" }} />
-                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#424242", fontWeight: "500" }}>
-                    Designation
-                  </Typography>
+                  <Typography variant="h6" fontWeight="bold" sx={{ color: "#424242", fontWeight: "500" }}>Designation</Typography>
                 </Box>
+
                 <Divider sx={{ my: 1, backgroundColor: "silver" }} />
 
                 {/* Details Section */}
@@ -59,7 +58,8 @@ const Dashboard = () => {
                     <Typography variant="body1" sx={{ textAlign: "left", marginRight: "10px", color: "#424242" }}>{i.designation}</Typography>
                   </Box>
                 ))}
-                < Divider sx={{ my: 1, backgroundColor: "silver" }} />
+
+                <Divider sx={{ my: 1, backgroundColor: "silver" }} />
 
                 <Stack mt={3}>
                   <Typography mb={1} variant="h6" fontWeight="bold" sx={{ color: "#424242", fontWeight: "500" }}>Description</Typography>
@@ -67,9 +67,11 @@ const Dashboard = () => {
                 </Stack>
               </CardContent>
             </Card>
+
           </Grid>
         ))}
       </Grid>
+
       <TextDialog open={dialogOpen} handleClose={handleCloseTab} />
     </Box>
   );
