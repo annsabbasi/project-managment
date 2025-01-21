@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
+import style from './style.module.scss';
 import { useState } from 'react';
-import { useUpdateTask } from '../../hooks/useTask';
+
 
 import {
     Dialog, DialogActions,
     DialogContent, DialogTitle,
     Button, TextField
 } from '@mui/material';
+import { useUpdateTask } from '../../hooks/useTask';
+
 
 
 const EditTextDialog = ({ open, handleClose, task }) => {
@@ -94,8 +97,8 @@ const EditTextDialog = ({ open, handleClose, task }) => {
 
 
             <DialogActions>
-                <Button onClick={handleClose} color="secondary">Cancel</Button>
-                <Button type="submit" color="primary">Update</Button>
+                <Button onClick={handleClose} className={style.decline}>Cancel</Button>
+                <Button type="submit" className={style.accept}>Update</Button>
             </DialogActions>
 
         </Dialog>

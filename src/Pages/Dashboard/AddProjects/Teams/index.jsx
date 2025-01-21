@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import theme from "../../../../Theme/Theme";
+// import theme from "../../../../Theme/Theme";
 import style from "./style.module.scss";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -67,11 +67,13 @@ export default function Teams() {
                   <Avatar
                     alt={person.name}
                     src={person.avatar}
-                    sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                    // sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                    sx={{ width: 55, height: 55 }} />
                   <Typography
                     variant="body2"
                     align="center"
-                    sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    // sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    sx={{ marginTop: 1, fontSize: '0.8rem', textAlign: 'center' }}>
                     {person.userId}
                   </Typography>
                   {person.role === "QcAdmin" ? (
@@ -137,11 +139,13 @@ export default function Teams() {
                   <Avatar
                     alt={person.name}
                     src={person.avatar}
-                    sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                    // sx={{ width: 55, height: 55, backgroundColor: theme.palette.grey[400] }} />
+                    sx={{ width: 55, height: 55 }} />
                   <Typography
                     variant="body2"
                     align="center"
-                    sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    // sx={{ marginTop: 1, color: theme.palette.grey[500], fontSize: '0.8rem', textAlign: 'center' }}>
+                    sx={{ marginTop: 1, fontSize: '0.8rem', textAlign: 'center' }}>
                     {person.userId}
                   </Typography>
                   {person.role === "user" ? (

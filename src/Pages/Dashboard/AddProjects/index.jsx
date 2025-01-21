@@ -3,7 +3,7 @@ import OverView from "./Overview"
 import Teams from "./Teams"
 import Assign from "./Assign"
 import project from "./style.module.scss"
-import theme from "../../../Theme/Theme";
+// import theme from "../../../Theme/Theme";
 import Videos from "./Videos"
 import Time from "./Time"
 
@@ -60,9 +60,11 @@ export default function AddProjects() {
                             backgroundColor: 'transparent'
                         }
                     }} className={project.goBackIconContent}>
-                        <ArrowBackIosNewIcon sx={{
-                            color: theme.palette.grey[800],
-                        }} className={project.goBackIcon} />
+                        <ArrowBackIosNewIcon
+                            // sx={{
+                            //     color: theme.palette.grey[800],
+                            // }} 
+                            className={project.goBackIcon} />
                     </IconButton>
                     <Typography className={project.goBackTitle}>Project Title</Typography>
                 </Link>
@@ -78,78 +80,82 @@ export default function AddProjects() {
                         <Tab
                             {...allyProps(0)}
                             label="Overview"
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 0 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })} className={project.Tab} />
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 0 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })} 
+                            className={project.Tab} />
                         <Tab
                             label="Docs"
                             {...allyProps(1)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 1 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })}
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 1 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })}
                             className={project.Tab} />
 
 
                         <Tab
                             label="Videos"
                             {...allyProps(2)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 2 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })} className={project.Tab} />
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 2 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })} 
+                            className={project.Tab} />
 
 
                         <Tab
                             label="Team"
                             {...allyProps(3)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 3 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })} className={project.Tab} />
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 3 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })}
+                            className={project.Tab} />
 
 
                         <Tab
                             label="Assign"
                             {...allyProps(4)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 4 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })} className={project.Tab} />
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 4 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })} 
+                            className={project.Tab} />
 
 
                         <Tab
                             label="Leaderboard"
                             {...allyProps(5)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 5 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })}
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 5 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })}
                             className={project.Tab} />
 
 
@@ -157,14 +163,14 @@ export default function AddProjects() {
                         <Tab
                             label="Statics"
                             {...allyProps(5)}
-                            sx={(theme) => ({
-                                backgroundColor: activeTab === 6 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 6 ? theme.palette.grey.darkGrey : 'grey',
-                                fontWeight: activeTab === 6 ? '600' : '500',
-                                '&.Mui-selected': {
-                                    color: theme.palette.grey.darkGrey,
-                                },
-                            })}
+                            // sx={(theme) => ({
+                            //     backgroundColor: activeTab === 6 ? theme.palette.grey.hoverGrey : 'transparent',
+                            //     color: activeTab === 6 ? theme.palette.grey.darkGrey : 'grey',
+                            //     fontWeight: activeTab === 6 ? '600' : '500',
+                            //     '&.Mui-selected': {
+                            //         color: theme.palette.grey.darkGrey,
+                            //     },
+                            // })}
                             className={project.Tab} />
                     </Tabs>
                 </Box>

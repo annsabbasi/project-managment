@@ -1,4 +1,6 @@
 import style from './style.module.scss'
+import { useAuth } from '../../context/AuthProvider';
+
 
 import {
     TableRow,
@@ -9,9 +11,17 @@ import {
 
 
 export default function Complete() {
+    const { theme, mode } = useAuth();
+    const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+
     return (
         <TableContainer>
-            <Table className={style.table}>
+            <Table sx={{
+                backgroundColor: theme.palette.background.paper,
+                color: theme.palette.text.primary,
+                overflow: 'visible',
+                borderRadius: '0.6rem'
+            }}>
 
                 <TableHead className={style.tableHead}>
                     <TableRow className={style.tableRowHead}>
@@ -25,8 +35,7 @@ export default function Complete() {
                     </TableRow>
                 </TableHead>
 
-
-                <TableBody sx={{ borderTop: '12px solid white' }}>
+                <TableBody className={tableGap}>
                     <TableRow className={style.tableRowBody}>
                         <TableCell component="th" scope="row">Website Design with Responsiveness</TableCell>
                         <TableCell align="left">Charley Robertson</TableCell>
@@ -38,17 +47,9 @@ export default function Complete() {
                                 className={style.tableBodyBtn}
                                 size="small"
                                 sx={{
-                                    backgroundColor: 'transparent',
                                     color: '#1CAC78',
                                     border: 'none',
-                                    cursor: 'default',
-                                    '&:hover': {
-                                        backgroundColor: 'transparent',
-                                        boxShadow: 'none'
-                                    },
-                                    '& .MuiButton-endIcon': {
-                                        marginLeft: '1px',
-                                    },
+                                    cursor: 'default'
                                 }}>Completed</Button>
                         </TableCell>
 
