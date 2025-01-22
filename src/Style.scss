@@ -13,6 +13,29 @@ $hover-grey: #e9e9e9;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.lightTableText {
+  color: #36454F !important;
+}
+
+.darkTableText {
+  color: #ffffff;
+}
+.decline {
+  padding: 0.1rem 0.9rem !important;
+  text-transform: capitalize !important;
+  font-size: 0.8rem !important;
+  border-radius: 0.4rem !important;
+}
+
+.accept {
+  padding: 0.1rem 0.9rem !important;
+  text-transform: capitalize !important;
+  font-size: 0.8rem !important;
+  border-radius: 0.4rem !important;
+}
+
+
 // SCROLL BAR
 .sidebar {
   scrollbar-width: thin;

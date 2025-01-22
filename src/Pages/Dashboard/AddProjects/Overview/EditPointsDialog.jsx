@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import style from './style.module.scss'
 
 import { useState } from 'react';
 import { useUpdateSubTask } from '../../../../hooks/useSubTask';
@@ -83,8 +84,8 @@ const EditPointsDialog = ({ open, handleClose, task }) => {
 
 
             <DialogActions>
-                <Button onClick={handleClose} color="secondary">Cancel</Button>
-                <Button type="submit" color="primary">Update</Button>
+                <Button onClick={handleClose} variant='contained' className={style.decline} >Cancel</Button>
+                <Button type="submit" variant='outlined' className={style.accept}>Update</Button>
             </DialogActions>
 
         </Dialog>

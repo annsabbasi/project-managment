@@ -13,6 +13,7 @@ import {
 export default function Complete() {
     const { theme, mode } = useAuth();
     const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+    const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
 
     return (
         <TableContainer>
@@ -25,13 +26,13 @@ export default function Complete() {
 
                 <TableHead className={style.tableHead}>
                     <TableRow className={style.tableRowHead}>
-                        <TableCell>Project Title</TableCell>
-                        <TableCell align="left">Client Name</TableCell>
-                        <TableCell align="left">Project Status</TableCell>
-                        <TableCell align="left">Start Date</TableCell>
-                        <TableCell align="left">Due Date</TableCell>
-                        <TableCell align="left">Complete Date</TableCell>
-                        <TableCell align="left">&nbsp;</TableCell>
+                        <TableCell className={tableClassText}>Project Title</TableCell>
+                        <TableCell align="left" className={tableClassText}>Client Name</TableCell>
+                        <TableCell align="left" className={tableClassText}>Project Status</TableCell>
+                        <TableCell align="left" className={tableClassText}>Start Date</TableCell>
+                        <TableCell align="left" className={tableClassText}>Due Date</TableCell>
+                        <TableCell align="left" className={tableClassText}>Complete Date</TableCell>
+                        <TableCell align="left" className={tableClassText}>&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
 

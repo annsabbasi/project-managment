@@ -25,6 +25,8 @@ export default function Request() {
   const { user, theme, mode } = useAuth();
   const { mutate: submitProjectApproval } = useProjectApproval();
   const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+  const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
+
 
 
   const { data } = useGetCreateTask();
@@ -62,14 +64,14 @@ export default function Request() {
 
           <TableHead>
             <TableRow className={style.tableRowHead}>
-              <TableCell>Project Title</TableCell>
-              <TableCell align="left">Owner</TableCell>
-              <TableCell align="left">Members</TableCell>
-              <TableCell align="left">Start Date</TableCell>
-              <TableCell align="left">Due Date</TableCell>
-              <TableCell align="right">Budget</TableCell>
-              <TableCell align="right">Points</TableCell>
-              <TableCell align="right">&nbsp;</TableCell>
+              <TableCell className={tableClassText}>Project Title</TableCell>
+              <TableCell align="left" className={tableClassText}>Owner</TableCell>
+              <TableCell align="left" className={tableClassText}>Members</TableCell>
+              <TableCell align="left" className={tableClassText}>Start Date</TableCell>
+              <TableCell align="left" className={tableClassText}>Due Date</TableCell>
+              <TableCell align="right" className={tableClassText}>Budget</TableCell>
+              <TableCell align="right" className={tableClassText}>Points</TableCell>
+              <TableCell align="right" className={tableClassText}>&nbsp;</TableCell>
             </TableRow>
           </TableHead>
 
@@ -129,7 +131,13 @@ export default function Request() {
 
             <Link onClick={handleClickOpen}>
               <Button variant='contained' size='large' startIcon={<AddIcon />}
-                className={style.projectBtn} >Add Project</Button>
+                className={style.projectBtn} sx={{
+                  color: theme.palette.text.primary,
+                  border: `1px solid ${theme.palette.text.primary}`,
+                  '&:hover': {
+                    opacity: `0.4 !important`,
+                  }
+                }} >Add Project</Button>
             </Link>
 
           </Stack>
