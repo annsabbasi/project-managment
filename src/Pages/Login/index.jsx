@@ -1,4 +1,4 @@
-import theme from '../../Theme/Theme';
+// import theme from '../../Theme/Theme';
 import styles from './style.module.scss'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -61,7 +61,8 @@ const LoginPage = () => {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
+        // <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
+        <Box component="form" onSubmit={handleSubmit} noValidate className={styles.container}>
             <Container component="main" maxWidth="xs">
 
                 <CssBaseline />

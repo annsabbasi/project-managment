@@ -64,27 +64,29 @@ export default function Client() {
                             <Tab
                                 {...allyProps(0)}
                                 label="Videos"
-                                sx={(theme) => ({
-                                    backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                                    color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                                    fontWeight: activeTab === 0 ? '600' : '500',
-                                    '&.Mui-selected': {
-                                        color: theme.palette.grey.darkGrey,
-                                    },
-                                })} className={project.Tab} />
+                                // sx={(theme) => ({
+                                //     backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
+                                //     color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                                //     fontWeight: activeTab === 0 ? '600' : '500',
+                                //     '&.Mui-selected': {
+                                //         color: theme.palette.grey.darkGrey,
+                                //     },
+                                // })} 
+                                className={project.Tab} />
 
 
                             <Tab
                                 label="Upload"
                                 {...allyProps(0)}
-                                sx={(theme) => ({
-                                    backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                    color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                                    fontWeight: activeTab === 1 ? '600' : '500',
-                                    '&.Mui-selected': {
-                                        color: theme.palette.grey.darkGrey,
-                                    },
-                                })} className={project.Tab} />
+                                // sx={(theme) => ({
+                                //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                                //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                //     fontWeight: activeTab === 1 ? '600' : '500',
+                                //     '&.Mui-selected': {
+                                //         color: theme.palette.grey.darkGrey,
+                                //     },
+                                // })} 
+                                className={project.Tab} />
 
 
                         </Tabs>
