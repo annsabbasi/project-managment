@@ -132,49 +132,24 @@ $hoverGrey: var(--hover-grey);
   background-color: transparent !important;
   // color: #424242 !important;
   font-weight: 600 !important;
-  border: 1px solid grey !important;
+  // border: 1px solid grey !important;
   box-shadow: none !important;
   border-radius: 2rem !important;
   width: fit-content !important;
   margin: auto !important;
-
-  &:hover {
-    // background-color: black !important;
-    color: white !important;
-    box-shadow: none !important;
-  }
 }
 
 // .btnText {
 //   // color: #757575 !important;
 // }
 
-.anchorMenuItem {
-  padding: 6px 4px !important;
-  padding-inline-end: 30px !important;
-  font-size: 12px !important;
-  // color: gray !important;
+// .anchorMenuItem {
+//   padding: 6px 4px !important;
+//   padding-inline-end: 30px !important;
+//   font-size: 12px !important;
+//   // color: gray !important;
 
-  &:hover {
-    background-color: rgba(216, 216, 216, 0.2) !important;
-  }
-}
-
-// .sidebar {
-//   scrollbar-width: thin;
-//   scrollbar-color: $hover-grey transparent;
-
-//   // background-color: pink;
-//   &::-webkit-scrollbar {
-//     width: 2px;
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background-color: #4a4a4a;
-//     border-radius: 20px;
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: transparent;
+//   &:hover {
+//     background-color: rgba(216, 216, 216, 0.2) !important;
 //   }
 // }

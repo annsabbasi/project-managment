@@ -11,15 +11,20 @@ import { useEffect, useState } from 'react';
 import { useCreateVideoLink, useDeleteVideoLinks, useFetchVideoLinks } from '../../../../api/userSubTask';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../../../context/AuthProvider';
 
 
 export default function Index() {
+    const { mode } = useAuth();
+    const tableClassText = mode === 'light' ? 'lightTableText' : 'darkTableText';
+
     const { id: projectId } = useParams();
     const [inputData, setInputData] = useState({
         title: '',
         video: '',
         projectId: projectId || ''
     });
+
 
     useEffect(() => {
         if (projectId) {
@@ -30,7 +35,6 @@ export default function Index() {
         const { name, value } = event.target;
         setInputData((prevData) => ({ ...prevData, [name]: value }));
     }
-
 
 
     // Create Docs Link Code
@@ -69,7 +73,6 @@ export default function Index() {
             },
         });
     };
-
     const tasks = data?.data || [];
 
 
@@ -79,7 +82,7 @@ export default function Index() {
             <Stack className={style.itemContainer}>
 
                 <Stack flexDirection="row" alignItems="center" gap={0.3} width="100%">
-                    <Typography className={style.headText}>Attach Video Link</Typography>
+                    <Typography className={tableClassText} sx={{ fontWeight: 600 }}>Attach Video Link</Typography>
                     <IconButton sx={{
                         '&:hover': {
                             backgroundColor: 'transparent',
@@ -93,24 +96,19 @@ export default function Index() {
                 </Stack>
 
 
-                <Stack
-                    gap={2}
-                    flexDirection="row"
-                    alignItems="baseline"
-                    justifyContent="space-between"
-                    flexWrap="wrap">
+                <Stack gap={2} flexDirection="row" alignItems="center" justifyContent="space-between" flexWrap="wrap">
                     <InputComps label="Title Link" name="title" onChange={handleInputData} value={inputData.title} />
                     <InputComps label="Video Link" name="video" onChange={handleInputData} value={inputData.video} />
                 </Stack>
 
-                <Button variant='contained' className={style.linkBtn} size='medium' onClick={handleSubmitInputData}>Add Link</Button>
+                <Button className={`accept ${style.addBtn}`} size='medium' variant="outlined" onClick={handleSubmitInputData}>Add Link</Button>
             </Stack>
 
 
             <Stack className={style.itemContainer}>
 
                 <Stack flexDirection="row" alignItems="center" gap={0.3}>
-                    <Typography className={style.headText}>All Links</Typography>
+                    <Typography className={tableClassText} sx={{ fontWeight: 600 }}>All Links</Typography>
 
                     <IconButton
                         sx={{
@@ -133,21 +131,16 @@ export default function Index() {
                                 onClick={() => handleDelete(docs._id)}>
                                 <DeleteOutlineIcon />
                             </IconButton>
-                            <Typography
-                                component="a"
-                                href={docs.video}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={style.itemTextBody}
-                                sx={{ textDecoration: 'none' }}>
+
+                            <Typography component="a" href={docs.video} target="_blank" rel="noopener noreferrer" className={style.itemTextBody}>
                                 <Box className={style.itemContent}>
                                     <Stack>
-                                        <Typography variant="p" className={style.itemTextHead}>
+                                        <Typography variant="p" className={tableClassText} sx={{ fontSize: '1rem' }}>
                                             {docs.title}
                                         </Typography>
                                         <Typography
                                             className={style.itemTextBody}
-                                            sx={{ textDecoration: 'underline', color: '#0437F2 !important' }}>
+                                            sx={{ textDecoration: 'underline !important', color: '#60C3EB !important' }}>
                                             {docs.video}
                                         </Typography>
                                     </Stack>
@@ -161,6 +154,8 @@ export default function Index() {
     )
 }
 
+
+
 export const InputComps = ({ label, name, onChange, value }) => {
     return (
         <TextField
@@ -173,7 +168,6 @@ export const InputComps = ({ label, name, onChange, value }) => {
             variant="standard"
             fullWidth
             sx={{
-                backgroundColor: '#ffffff',
                 flex: '1 0 300px',
                 '& .MuiInputBase-input': {
                     padding: '6px 10px',
@@ -181,6 +175,8 @@ export const InputComps = ({ label, name, onChange, value }) => {
             }} />
     )
 }
+
+
 
 InputComps.propTypes = {
     label: PropTypes.string.isRequired,

@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import AddIcon from '@mui/icons-material/Add';
-import theme from '../../../../Theme/Theme';
+// import theme from '../../../../Theme/Theme';
 
 
 export default function index() {
@@ -47,7 +47,7 @@ export default function index() {
             </TableBody>
         </Table>
             <Stack alignItems='center' justifyContent='end' height='50vh' gap={4} variant="div">
-                <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No active project yet</Typography>
+                <Typography sx={{ fontWeight: '600', fontSize: '1.3rem' }}>No active project yet</Typography>
 
                 <Stack gap={2} width={350} textAlign='center'>
                     <Typography component='p' className={style.btnText}>You haven&apos;t started any projects. Begin a new project to see it appear in your active list.</Typography>

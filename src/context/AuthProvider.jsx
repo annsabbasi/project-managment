@@ -12,20 +12,18 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
     // Theme Setup
-    const [mode, setMode] = useState('light')
+    // const [mode, setMode] = useState('light')
+    const [mode, setMode] = useState(() => {
+        return localStorage.getItem("Theme") || 'light'
+    })
     const theme = useMemo(() => (mode === 'light' ? lightTheme : darkTheme), [mode]);
     const toggleTheme = () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
     };
-    // useEffect(() => {
-    //     const root = document.documentElement;
-    //     root.style.setProperty('--dark-grey', theme.palette.grey.darkGrey);
-    //     root.style.setProperty('--medium-grey', theme.palette.grey.mediumGrey);
-    //     root.style.setProperty('--light-grey', theme.palette.grey.lightGrey);
-    //     root.style.setProperty('--hover-grey', theme.palette.grey.hoverGrey);
-    // }, [theme]);
-
-
+    useEffect(() => {
+        localStorage.setItem('Theme', mode)
+        document.body.setAttribute('data-theme', mode);
+    }, [mode])
 
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],

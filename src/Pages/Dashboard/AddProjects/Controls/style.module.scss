@@ -1,123 +1,57 @@
-.table {
-  width: 100%;
+// For The Gap Between TableHead & TableBody
+.tableBodyDark {
+  border-top: 10px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-.tableHead {
-  border: none;
-  overflow: hidden;
-  border-radius: 0.4rem;
+.tableBodyLight {
+  border-top: 10px solid rgb(255, 255, 255) !important;
 }
 
-.tableRowHead {
-  background-color: rgba(155, 155, 155, 0.1);
-
-  &>* {
-    border: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 0.9rem 1.4rem;
-    color: rgb(75, 74, 74);
-  }
-
-  &>th {
-    min-width: fit-content;
-    text-wrap: nowrap;
-  }
-
-  th:first-of-type {
-    border-top-left-radius: 0.4rem;
-    border-bottom-left-radius: 0.4rem;
-  }
-
-  th:last-of-type {
-    border-top-right-radius: 0.4rem;
-    border-bottom-right-radius: 0.4rem;
-  }
+// For The Table Theme
+.lightTableText {
+  color: #36454F !important;
 }
 
-.tableRowBody {
-  background-color: rgb(218, 218, 218, 0.1);
-
-  &>* {
-    border: none;
-    font-size: 0.9rem;
-    color: gray;
-    padding: 1.1rem 1.4rem;
-  }
-
-  &>th {
-    min-width: fit-content;
-    text-wrap: nowrap;
-  }
-
-  th:first-of-type {
-    border-top-left-radius: 0.4rem;
-    border-bottom-left-radius: 0.4rem;
-    border-bottom-right-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-    color: rgb(75, 74, 74);
-    min-width: auto;
-    text-wrap: wrap;
-  }
-
-  th:last-of-type {
-    border-top-right-radius: 0.4rem !important;
-    border-bottom-right-radius: 0.4rem !important;
-  }
+.darkTableText {
+  color: #ffffff !important;
 }
-
-.tableBodyBtn {
-  padding: 0.1rem 0.4rem;
-  text-transform: capitalize;
-  text-wrap: nowrap;
-
-  &:hover {
-    background-color: transparent !important;
-  }
-}
-
-
 
 .btnCell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
 }
 
 .decline {
-  padding: 0.1rem 0.8rem;
-  text-transform: capitalize;
-  font-size: 0.8rem;
-  color: black;
-  border-radius: 0.9rem;
-  border: 1px solid black;
-  background-color: white;
-
-  &:hover {
-    background-color: black;
-    color: white;
-  }
+  padding: 0.1rem 0.9rem !important;
+  text-transform: capitalize !important;
+  font-size: 0.8rem !important;
+  border-radius: 0.4rem !important;
 }
 
 .accept {
-  padding: 0.1rem 0.9rem;
-  text-transform: capitalize;
-  font-size: 0.8rem;
-  color: white;
-  border-radius: 0.9rem;
-  border: 1px solid black;
-  background-color: black;
-  box-shadow: none;
+  padding: 0.1rem 0.9rem !important;
+  text-transform: capitalize !important;
+  font-size: 0.8rem !important;
+  border-radius: 0.4rem !important;
+}
 
-  &:hover {
-    background-color: white;
-    box-shadow: none;
-    color: black;
+
+.tableRowHead {
+  &>* {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    padding: 0.9rem 1.4rem;
   }
 }
 
-.btnText {
-  color: #757575;
-  font-size: 0.8rem;
+
+.tableRowBody:last-of-type>* {
+  border-bottom: none !important;
+}
+
+.textGreyInfo {
+  font-size: 0.9rem !important;
+  color: #1CAC78 !important;
 }

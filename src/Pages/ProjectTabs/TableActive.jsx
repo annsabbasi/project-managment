@@ -208,7 +208,13 @@ export default function TableActive() {
                             <Typography component='p' className={style.btnText}>You haven&apos;t started any projects. Begin a new project to see it appear in your active list.</Typography>
                             <Link onClick={handleClickOpen}>
                                 <Button variant='contained' size='large' startIcon={<AddIcon />}
-                                    className={style.projectBtn} >Add Project</Button>
+                                    className={style.projectBtn} sx={{
+                                        color: theme.palette.text.primary,
+                                        border: `1px solid ${theme.palette.text.primary}`,
+                                        '&:hover': {
+                                            opacity: `0.4 !important`,
+                                        }
+                                    }}>Add Project</Button>
                             </Link>
                         </Stack>
 

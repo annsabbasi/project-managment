@@ -39,11 +39,11 @@ const allyProps = (index) => {
 
 
 export default function Project() {
-    const { theme } = useAuth();
+    const { theme, mode } = useAuth();
+    const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
     const [activeTab, setActiveTab] = useState(0)
     const location = useLocation('')
     const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPRODUCTS}`)
-
 
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
@@ -74,7 +74,6 @@ export default function Project() {
                                 aria-label="user details tabs"
                                 value={activeTab}
                                 TabIndicatorProps={{ sx: { display: 'none' } }}
-                                // sx={{ backgroundColor: 'white' }}
                                 sx={{ backgroundColor: theme.palette.background.default }}
                                 className={style.Tabs}>
                                 <Tab
@@ -82,7 +81,7 @@ export default function Project() {
                                     label="Active"
                                     sx={(theme) => ({
                                         backgroundColor: activeTab === 0 ? theme.palette.background.paper : 'transparent',
-                                        color: activeTab === 0 ? theme.palette.background.paper : 'grey',
+                                        color: activeTab === 0 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 0 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
@@ -92,11 +91,11 @@ export default function Project() {
 
 
                                 <Tab
-                                    label="Request"
                                     {...allyProps(0)}
+                                    label="Request"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 1 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 1 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 1 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
@@ -106,11 +105,11 @@ export default function Project() {
 
 
                                 <Tab
-                                    label="Complete"
                                     {...allyProps(2)}
+                                    label="Complete"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 2 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 2 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 2 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
@@ -120,11 +119,11 @@ export default function Project() {
 
 
                                 <Tab
-                                    label="Template"
                                     {...allyProps(3)}
+                                    label="Template"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 3 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 3 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 3 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
