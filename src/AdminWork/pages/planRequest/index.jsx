@@ -10,7 +10,7 @@ import Standard from "./standard"
 import Request from "./request"
 
 import project from "./style.module.scss"
-import theme from "../../../Theme/Theme";
+// import theme from "../../../Theme/Theme";
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -54,7 +54,6 @@ export default function AddProjects() {
                         }
                     }} className={project.goBackIconContent}>
                         <ArrowBackIosNewIcon sx={{
-                            color: theme.palette.grey[800],
                         }} className={project.goBackIcon} />
                     </IconButton>
                     <Typography className={project.goBackTitle}>Project Title</Typography>

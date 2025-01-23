@@ -1,23 +1,22 @@
-// Variables for theme modes
-$light-background: #f8f8f8;
-$dark-background: #28282B;
-$light-text-primary: #606060;
-$dark-text-primary: #E2DFD2;
-$light-hover: #eaeaea;
-$dark-hover: #424242;
-$light-active: #060606;
-$dark-active: #bb86fc;
-
 // For the Testing purpose 
-.activeTab {
-  // background-color: rgba(128, 128, 128, 0.2); //primary
-  background-color: rgb(0, 0, 0); //primary
-  // background-color: rgba(137, 148, 153,0.2); //secondary
-}
+// .activeTab {
+//   background-color: #808080; // primary Text Light
+//   background-color: #899499; // secondary Text Light
+//   background-color: #E2DFD2; // primary Text Dark
+//   background-color: #D3D3D3; // secondary Text Dark
+//   background-color: rgb(255, 255, 255); // secondary Text Dark
 
-// background-color: rgba(226, 223, 210,0.2);
-// background-color: rgba(211, 211, 211,0.2);
+//   background-color: #1976d2; // primary main Light
+//   background-color: #bb86fc; // primary main Dark
+//   background-color: #9c27b0; // secondary main Light
+//   background-color: #03dac6; // secondary main Dark
 
+//   background-color: #FAF9F6; // background paper Light
+//   background-color: #343434; // background paper Dark
+
+//   background-color: #ffffff; // background default Light
+//   background-color: #28282B; // background default Dark
+// }
 // For the Testing purpose 
 
 
@@ -61,6 +60,7 @@ $dark-active: #bb86fc;
 
         .listItemBtn {
           padding: 0.4rem 10px;
+          border-radius: 6px;
         }
 
         .listItemIcon {

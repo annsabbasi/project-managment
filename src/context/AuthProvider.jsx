@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     };
     useEffect(() => {
         localStorage.setItem('Theme', mode)
+        document.body.setAttribute('data-theme', mode);
     }, [mode])
 
     const { data: user, isLoading } = useQuery({

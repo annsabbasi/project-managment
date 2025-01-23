@@ -36,7 +36,6 @@ import { useAuth } from '../../context/AuthProvider';
 
 const Sidebar = () => {
     const { theme, mode } = useAuth();
-    const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
     const navigate = useNavigate();
     const location = useLocation();
     const currentPath = location.pathname;
@@ -79,15 +78,12 @@ const Sidebar = () => {
                 style={{
                     '--sidebar-background': mode === 'light' ? theme.palette.background.paper : theme.palette.background.default,
                     '--text-primary': mode === 'light' ? theme.palette.text.primary : theme.palette.text.primary,
-                    '--hover-color': mode === 'light' ? `rgba(128, 128, 128, 0.2)` : 'rgba(226, 223, 210,0.2)',
-                    // '--hover-color': mode === 'light' ? `rgba(128, 128, 128, 0.2)` : 'rgb(0, 0, 0) !important',
-                    // '--active-background': mode === 'light' ? `${styles.activeTab} !important` : 'rgba(128, 128, 128, 0.2)',
-                    '--active-background': mode === 'light' ? 'rgb(0, 0, 0)' : 'rgba(128, 128, 128, 0.2)',
-                    '--active-text': mode === 'light' ? '#ffffff !important' : theme.palette.text.primary,
+                    '--hover-color': mode === 'light' ? 'rgba(128, 128, 128, 0.2)' : 'rgba(149, 149, 149, 0.1)',
+                    '--active-background': mode === 'light' ? 'rgb(0, 0, 0)' : 'rgba(226, 223, 210, 0.3)',
+                    '--active-text': mode === 'light' ? 'rgb(255, 255, 255)' : theme.palette.text.primary,
                     '--logo-brightness': mode === 'light' ? '1' : '0.8',
-                    '--icon-brightness': mode === 'light' ? '1' : '0.8',
-                }}
-            >
+                    '--icon-brightness': mode === 'light' ? '1' : '1',
+                }}>
 
                 <Box className={styles.upperRow}>
                     <Box className={styles.logo}>

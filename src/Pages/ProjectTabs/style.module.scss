@@ -153,22 +153,3 @@ $hoverGrey: var(--hover-grey);
 //     background-color: rgba(216, 216, 216, 0.2) !important;
 //   }
 // }
-
-// .sidebar {
-//   scrollbar-width: thin;
-//   scrollbar-color: $hover-grey transparent;
-
-//   // background-color: pink;
-//   &::-webkit-scrollbar {
-//     width: 2px;
-//   }
-
-//   &::-webkit-scrollbar-thumb {
-//     background-color: #4a4a4a;
-//     border-radius: 20px;
-//   }
-
-//   &::-webkit-scrollbar-track {
-//     background: transparent;
-//   }
-// }
