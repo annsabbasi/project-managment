@@ -1,12 +1,20 @@
+.addBtn {
+  width: fit-content;
+  align-self: center;
+  padding: 0.4rem 1.6rem !important;
+}
+
 .itemContainer {
   color: rgb(75, 74, 74);
   gap: 0.5rem;
   margin-top: 1rem;
 }
-.headText {
-  font-weight: 600;
-  min-width: fit-content;
-}
+
+// .headText {
+//   font-weight: 600;
+//   min-width: fit-content;
+// }
+
 .linkDelete {
   position: absolute;
   opacity: 0;
@@ -15,20 +23,24 @@
   z-index: 9;
   color: silver;
   transition: 0.3s ease opacity;
+
   &:hover {
     background-color: rgba(250, 128, 114, 0.1) !important;
     color: #ff3131;
   }
 }
+
 .linkContainer {
   position: relative;
   z-index: 1;
   height: fit-content;
+
   &:hover .linkDelete {
     background-color: transparent;
     opacity: 1;
   }
 }
+
 .itemContent {
   border: 1px solid silver;
   cursor: pointer;
@@ -44,32 +56,32 @@
   transition: 0.1s ease all;
   flex: 1 1 calc(25% - 1rem);
   box-sizing: border-box;
+
   &:hover {
     background-color: rgb(241, 241, 241, 0.2);
     border: 1px solid rgb(231, 231, 231);
   }
 }
-.itemTextHead {
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 0.2rem;
-  color: rgb(75, 74, 74);
-}
+
+
 .itemTextBody {
   font-size: 0.8rem;
   color: gray;
   overflow-wrap: anywhere;
+  text-decoration: none;
 }
-.linkBtn {
-  background: #000;
-  border: 1px solid transparent;
-  height: max-content;
-  width: fit-content;
-  align-self: center;
-  &:hover {
-    background-color: white;
-    box-shadow: none !important;
-    color: #000;
-    border: 1px solid silver;
-  }
-}
+
+// .linkBtn {
+//   background: #000;
+//   border: 1px solid transparent;
+//   height: max-content;
+//   width: fit-content;
+//   align-self: center;
+
+//   &:hover {
+//     background-color: white;
+//     box-shadow: none !important;
+//     color: #000;
+//     border: 1px solid silver;
+//   }
+// }

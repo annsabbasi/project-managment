@@ -1,7 +1,7 @@
 import styles from './styles.scss'
 import AddIcon from '@mui/icons-material/Add';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import { useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
 
 import {
     Typography,
@@ -11,7 +11,7 @@ import {
 
 
 export default function TopBar() {
-    const theme = useTheme();
+    // const theme = useTheme();
 
     return (
         <AppBar position="static" sx={{
@@ -20,13 +20,14 @@ export default function TopBar() {
             }}>
 
             <Toolbar className={styles.navbarcontent}>
-                <Typography variant="h5" sx={{ fontWeight: '600', color: theme.palette.grey['dark-grey'] }}>Route Title</Typography>
+                {/* <Typography variant="h5" sx={{ fontWeight: '600', color: theme.palette.grey['dark-grey'] }}>Route Title</Typography> */}
+                <Typography variant="h5" sx={{ fontWeight: '600' }}>Route Title</Typography>
 
                 <Stack direction='row' spacing={2} alignItems='center' sx={{
                     '& svg': {
                         cursor: 'pointer',
                         fontSize: '1.8rem',
-                        color: theme.palette.grey['light-grey']
+                        // color: theme.palette.grey['light-grey']
                     }
                 }}>
                     <AddIcon aria-label="Add" />

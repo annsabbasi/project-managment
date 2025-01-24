@@ -1,19 +1,23 @@
 import style from './style.module.scss';
-import theme from '../../Theme/Theme';
+
 
 import {
-    Typography,
-    Menu, Table,
+    Typography, Menu, Table,
     Button, TableRow,
     MenuItem, TableCell,
     TableBody, TableHead,
     TableContainer, Stack,
     IconButton, ListItemIcon,
 } from '@mui/material';
+
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { useDeleteTask, useGetCreateTask } from '../../hooks/useTask';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../context/AuthProvider';
+
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -22,15 +26,18 @@ import AddIcon from '@mui/icons-material/Add';
 import TextDialog from './TextDialog';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditTextDialog from './EditTextDialog';
-import { toast } from 'react-toastify';
-import { useAuth } from '../../context/AuthProvider';
+
 
 
 export default function TableActive() {
-    const { user } = useAuth();
+    const { user, theme, mode } = useAuth();
+    const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
+    const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+
     const [anchor, setAnchor] = useState(null);
-    const { data, isLoading, isError, error } = useGetCreateTask();
+    const { data } = useGetCreateTask();
     const [selectedTask, setSelectedTask] = useState(null);
+
     const open = Boolean(anchor);
 
     const handleClick = (event, taskId) => {
@@ -41,6 +48,7 @@ export default function TableActive() {
         setAnchor(null)
     }
 
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const handleClickOpen = () => {
         setDialogOpen(true);
@@ -48,6 +56,7 @@ export default function TableActive() {
     const handleCloseTab = () => {
         setDialogOpen(false);
     };
+
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const handleEditClickOpen = () => {
@@ -58,6 +67,7 @@ export default function TableActive() {
         setEditDialogOpen(false);
         setSelectedTask(null);
     };
+
 
     const { mutate: deleteTask } = useDeleteTask();
     const handleDelete = () => {
@@ -77,28 +87,33 @@ export default function TableActive() {
         })
     }
 
-    if (isLoading) return <p>loading...</p>;
-    if (isError) return <p>Error loading tasks: {error.message}</p>;
 
     return (
         <TableContainer>
             {data && data?.data?.length > 0 ?
-                (<Table className={style.table}>
-                    <TableHead className={style.tableHead}>
+                (<Table
+                    sx={{
+                        backgroundColor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
+                        overflow: 'visible',
+                        borderRadius: '0.6rem'
+                    }}>
+
+                    <TableHead>
                         <TableRow className={style.tableRowHead}>
-                            <TableCell>Project Title</TableCell>
-                            <TableCell align="left">Owner</TableCell>
-                            <TableCell align="left">Project Status</TableCell>
-                            <TableCell align="left">Members</TableCell>
-                            <TableCell align="left">Start Date</TableCell>
-                            <TableCell align="left">Due Date</TableCell>
-                            <TableCell align="right">Budget</TableCell>
-                            <TableCell align="right">Points</TableCell>
-                            <TableCell align="right">&nbsp;</TableCell>
+                            <TableCell className={tableClassText}>Project Title</TableCell>
+                            <TableCell align="left" className={tableClassText}>Owner</TableCell>
+                            <TableCell align="left" className={tableClassText}>Project Status</TableCell>
+                            <TableCell align="left" className={tableClassText}>Members</TableCell>
+                            <TableCell align="left" className={tableClassText}>Start Date</TableCell>
+                            <TableCell align="left" className={tableClassText}>Due Date</TableCell>
+                            <TableCell align="right" className={tableClassText}>Budget</TableCell>
+                            <TableCell align="right" className={tableClassText}>Points</TableCell>
+                            <TableCell align="right" className={tableClassText}>&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
 
-                    <TableBody sx={{ borderTop: '12px solid white' }}>
+                    <TableBody className={tableGap}>
                         {data?.data?.map((task) => {
                             return (
                                 <TableRow key={task._id} className={style.tableRowBody}>
@@ -119,8 +134,7 @@ export default function TableActive() {
                                             <IconButton
                                                 disableRipple
                                                 sx={{ padding: '1px', color: 'gray' }}
-                                                onClick={(e) => handleClick(e, task._id)}
-                                            >
+                                                onClick={(e) => handleClick(e, task._id)}>
                                                 <MoreVertIcon />
                                             </IconButton>
 
@@ -140,76 +154,76 @@ export default function TableActive() {
                                                     '& .MuiList-root': {
                                                         padding: 0,
                                                         margin: 0,
-                                                        border: '1px solid silver',
-                                                        borderRadius: '0.2rem',
-                                                        backgroundColor: 'white'
+                                                        borderRadius: '0.1rem',
+                                                        border: `1px solid ${mode === 'light' && 'silver'}`,
+                                                        backgroundColor: `${mode === 'light' && theme.palette.background.default}`
                                                     },
                                                     '& .MuiPaper-root': {
                                                         boxShadow: '0'
                                                     },
-                                                }}
-                                                className={style.anchorElParent}>
-                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={() => { handleClose() }}>
-                                                    <MenuItem onClick={handleClose} className={style.anchorMenuItem}>
-                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                            <VisibilityOutlinedIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                }} className={style.anchorElParent}>
+
+                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={handleClose}>
+                                                    <MenuItem onClick={handleClose} className={`${tableClassText} ${style.viewMenuItem}`} sx={{ color: theme.palette.text.primary }}>
+                                                        <ListItemIcon>
+                                                            <VisibilityOutlinedIcon fontSize="small" />
                                                         </ListItemIcon>
                                                         View
                                                     </MenuItem>
                                                 </Link>
 
-                                                {user?.role === 'admin' &&
-                                                    <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                            <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
-                                                        </ListItemIcon>Edit</MenuItem>
-                                                }
+                                                {user?.role === 'admin' && (
+                                                    <MenuItem onClick={handleEditClickOpen} className={`${tableClassText} ${style.editMenuItem}`}>
+                                                        <ListItemIcon>
+                                                            <EditIcon fontSize="small" />
+                                                        </ListItemIcon>
+                                                        Edit
+                                                    </MenuItem>
+                                                )}
 
-                                                {user?.role === 'admin' &&
-                                                    <MenuItem
-                                                        onClick={handleDelete}
-                                                        className={style.anchorMenuItem}
-                                                        sx={{
-                                                            bgcolor: '#E97451',
-                                                            color: 'white !important',
-                                                            '&:hover': {
-                                                                bgcolor: '#EE4B2B !important'
-                                                            }
-                                                        }}
-                                                    >
-                                                        <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                            <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
+                                                {user?.role === 'admin' && (
+                                                    <MenuItem onClick={handleDelete} className={`${tableClassText} ${style.deleteMenuItem}`}>
+                                                        <ListItemIcon>
+                                                            <DeleteOutlineIcon fontSize="small" sx={{ color: 'white' }} />
                                                         </ListItemIcon>
                                                         Delete
                                                     </MenuItem>
-                                                }
+                                                )}
                                             </Menu>
+
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             )
                         })}
-
                     </TableBody>
                 </Table>
-                ) : (
+                )
+                :
+                (
                     <Stack alignItems='center' justifyContent='end' height='50vh' gap={4} variant="div">
-                        <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No active project yet</Typography>
+                        <Typography sx={{ fontWeight: '600', fontSize: '1.3rem' }}>No active project yet</Typography>
 
                         <Stack gap={2} width={350} textAlign='center'>
                             <Typography component='p' className={style.btnText}>You haven&apos;t started any projects. Begin a new project to see it appear in your active list.</Typography>
-
                             <Link onClick={handleClickOpen}>
                                 <Button variant='contained' size='large' startIcon={<AddIcon />}
-                                    className={style.projectBtn} >Add Project</Button>
+                                    className={style.projectBtn} sx={{
+                                        color: theme.palette.text.primary,
+                                        border: `1px solid ${theme.palette.text.primary}`,
+                                        '&:hover': {
+                                            opacity: `0.4 !important`,
+                                        }
+                                    }}>Add Project</Button>
                             </Link>
-
                         </Stack>
+
                         <TextDialog open={dialogOpen} handleClose={handleCloseTab} />
                     </Stack>
-                )}
+                )
+            }
 
             <EditTextDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
-        </TableContainer>
+        </TableContainer >
     );
 }

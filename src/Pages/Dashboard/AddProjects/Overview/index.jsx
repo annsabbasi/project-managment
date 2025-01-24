@@ -39,7 +39,9 @@ import useDebounce from "../../../../hooks/useDebounce";
 
 
 export default function index() {
-    const { user } = useAuth();
+    const { user, theme, mode } = useAuth();
+    const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
+
     const { id } = useParams();
     const { data: taskData } = useQuery({
         queryKey: ['tasks', id],
@@ -100,9 +102,6 @@ export default function index() {
     };
 
 
-
-
-
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const handleEditClickOpen = () => {
         setEditDialogOpen(true);
@@ -126,10 +125,8 @@ export default function index() {
     })
 
 
-
     // Handling the Completed Functionality
     const queryClient = useQueryClient();
-
     const handleCompleteTask = async (taskId) => {
         try {
             const response = await completeSubTask(taskId);
@@ -165,56 +162,58 @@ export default function index() {
 
                 <Box variant="div" className={style.boxMain1}>
                     <Box variant="header" sx={{ marginBlock: '0.4rem', marginBottom: '1rem' }}>
-                        <Typography variant="h6">Project Info</Typography>
+                        <Typography variant="h6" className={tableClassText} sx={{ fontSize: '1.2rem !important', marginBottom: '0.8rem' }}>Project Info</Typography>
                     </Box>
 
                     <Stack sx={{ width: '100%' }} gap={2}>
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Team Head</Typography>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Team Head</Typography>
                                 <Typography className={style.textGreyInfo}>{taskData?.data?.teamLeadName && Array.isArray(taskData?.data?.teamLeadName) && taskData?.data?.teamLeadName.join(', ')}</Typography>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Start Date</Typography>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Start Date</Typography>
                                 <Typography className={style.textGreyInfo}>3/18/2020</Typography>
                             </Stack>
                         </Stack>
 
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Status</Typography>
-                                <Button variant="text" className={style.statusBtn}>{taskData?.data?.projectStatus}</Button>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Status</Typography>
+                                <Button variant="text" className={style.tableBodyBtn}>{taskData?.data?.projectStatus}</Button>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Due Date</Typography>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Due Date</Typography>
                                 <Typography className={style.textGreyInfo} sx={{ color: 'red !important' }}>3/18/2020</Typography>
                             </Stack>
                         </Stack>
 
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Budget</Typography>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Budget</Typography>
                                 <Typography className={style.textGreyInfo}>$-{taskData?.data?.budget}</Typography>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
-                                <Typography className={style.textGrey}>Link:</Typography>
+                                <Typography className={`${tableClassText} ${style.textGroup}`}>Link:</Typography>
                                 <Typography variant="a" className={style.textGreyInfo} sx={{ color: '#87CEEB !important', textDecoration: 'underline', cursor: 'pointer' }}>{taskData?.data?.link}</Typography>
                             </Stack>
                         </Stack>
                     </Stack>
 
+
                     <Box sx={{ marginBlock: '0.8rem' }}>
-                        <Typography variant="h6" className={style.texth6}>Description</Typography>
+                        <Typography variant="h6" className={`${tableClassText} ${style.textGroup}`} sx={{ fontSize: '1.2rem !important', marginTop: '1.8rem' }}>Description</Typography>
                         <Typography variant="p" className={style.textGreyDesc}>{taskData?.data?.description}</Typography>
                     </Box>
 
+
                     <Stack flexDirection="row" alignItems="center" justifyContent="space-between">
                         <Box mb={2}>
-                            <Typography variant="h6" className={style.texth6}>Project Points</Typography>
-                            <Typography variant="p" className={style.textGreyDesc} sx={{ color: 'green !important' }}>{taskData?.data?.points}</Typography>
+                            <Typography variant="h6" className={`${tableClassText} ${style.textGroup}`} sx={{ fontSize: '1.2rem !important', marginTop: '0.4rem' }}>Project Points</Typography>
+                            <Typography variant="p" className={style.textGreyInfo}>{taskData?.data?.points}</Typography>
                         </Box>
-                        <Button color="primary"
-                            className={`${style.dialogBtnSecondary}`}
+                        <Button variant="outlined"
+                            className={`${style.accept}`}
                             disabled={user?.role !== 'admin' || taskData?.data?.status === 'Completed'}
                             onClick={submitPojectMutation}
                             sx={{
@@ -231,16 +230,13 @@ export default function index() {
             </Stack>
 
 
-            <Stack flexDirection="row" justifyContent="space-between">
-                <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography>
-                {/* <Typography variant="h6" sx={{ marginTop: '15px' }}>SubUser Task</Typography> */}
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    sx={{
-                        alignItems: "center",
-                        mb: 2,
-                    }}>
+            <Stack flexDirection="row" justifyContent="space-between" mt={2}>
+                <Typography variant="h6" className={tableClassText} sx={{ fontSize: '1.4rem !important' }}>SubUser Task</Typography>
+                <Stack direction="row" spacing={2} sx={{
+                    alignItems: "center",
+                    mb: 2,
+                }}>
+
                     <TextField
                         label="Search"
                         variant="outlined"
@@ -265,72 +261,69 @@ export default function index() {
                             <MenuItem value="assign">Assign</MenuItem>
                         </Select>
                     </FormControl>
+
                 </Stack>
             </Stack>
 
-            <Stack variant="div" className={style.boxMain2}>
+            <Stack variant="div">
                 <TableContainer>
                     {
                         subTasks?.data.length > 0 ? (
-                            <Table className={style.table}>
-                                <TableHead className={style.tableHead}>
+                            <Table sx={{
+                                backgroundColor: theme.palette.background.paper,
+                                color: theme.palette.text.primary,
+                                overflow: 'visible',
+                                borderRadius: '0.6rem'
+                            }}>
+                                <TableHead>
                                     <TableRow className={style.tableRowHead}>
-                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Title</TableCell>
-                                        <TableCell variant="h6" className={style.tableInfo}>Assign To</TableCell>
-                                        <TableCell variant="h6" className={style.tableInfo}>Checked By</TableCell>
-                                        <TableCell variant="h6" className={style.tableInfo}>Assign By</TableCell>
-                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Start Date</TableCell>
-                                        <TableCell align="left" variant="h6" className={style.tableInfo}>Due Date</TableCell>
-                                        <TableCell align="right" variant="h6" className={style.tableInfo}>Points</TableCell>
-                                        <TableCell align="right" variant="h6" className={style.tableInfo}>TaskList</TableCell>
-                                        {/* <TableCell align="left" variant="h6" className={style.tableInfo}>Description</TableCell> */}
-                                        <TableCell align="right" variant="h6" className={style.tableInfo}>&nbsp;</TableCell>
+                                        <TableCell align="left" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Title</TableCell>
+                                        <TableCell variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Assign To</TableCell>
+                                        <TableCell variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Checked By</TableCell>
+                                        <TableCell variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Assign By</TableCell>
+                                        <TableCell align="left" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Start Date</TableCell>
+                                        <TableCell align="left" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Due Date</TableCell>
+                                        <TableCell align="right" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Points</TableCell>
+                                        <TableCell align="right" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>TaskList</TableCell>
+                                        {/* <TableCell align="left" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>Description</TableCell> */}
+                                        <TableCell align="right" variant="h6" className={`${tableClassText} ${style.tableHeadText}`}>&nbsp;</TableCell>
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody >
-                                    {/* {filteredSubTask?.data?.map((task, index) => { */}
                                     {(filteredSubTask?.data?.length > 0 ? filteredSubTask.data : subTasks?.data || []).map((task, index) => {
                                         return (
                                             <TableRow key={index} className={style.tableRowBody}>
-                                                <TableCell component="th" scope="row" >{task.title}</TableCell>
-                                                <TableCell component="th" scope="row" className={style.textGrey}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
-                                                <TableCell component="th" scope="row" className={style.textGrey}>Qc-Admin</TableCell>
+                                                <TableCell component="th" scope="row" className={tableClassText}>{task.title}</TableCell>
+                                                <TableCell component="th" scope="row" className={tableClassText}>{task.assign && Array.isArray(task.assign) && task.assign.join(', ')}</TableCell>
+                                                <TableCell component="th" scope="row" className={tableClassText}>Qc-Admin</TableCell>
 
                                                 <TableCell align="left">
                                                     <Stack
                                                         flexDirection="row"
-                                                        gap={1}
+                                                        alignItems="center"
+                                                        gap={0.6}
                                                         sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
-                                                        <Avatar sx={{ bgcolor: "silver", width: "1.4rem", height: "1.4rem", fontSize: '14px' }}>
+                                                        <Avatar sx={{ bgcolor: "silver", width: "1.2rem", height: "1.2rem", fontSize: '12px' }}>
                                                             {task.assignedBy?.name?.[0]?.toUpperCase()}
                                                         </Avatar>
                                                         <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
                                                     </Stack>
                                                 </TableCell>
 
-                                                <TableCell align="left" className={style.textGrey} sx={{ color: 'green !important' }}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
+                                                <TableCell align="left" className={style.textGreyInfo}>{new Date(task.startDate).toLocaleDateString()}</TableCell>
                                                 <TableCell align="left" className={style.textGrey} sx={{ color: 'red !important' }}>{new Date(task.dueDate).toLocaleDateString()}</TableCell>
+                                                <TableCell align="right" className={tableClassText}>{task.points}</TableCell>
 
-                                                <TableCell align="right" sx={{ color: 'purple !important' }} className={style.textGrey}>{task.points}</TableCell>
                                                 <TableCell align="right">
-                                                    <Button variant="text" className={style.statusBtn}>{task.taskList}</Button>
+                                                    <Button variant="text" className={style.tableBodyBtn}>{task.taskList}</Button>
                                                 </TableCell>
 
-                                                {/*  <TableCell align="left">
-                                                    <Typography sx={{ fontSize: '0.8rem' }} className={style.textGrey || style.desctext}>{task.description}</Typography>
-                                                </TableCell> */}
-
                                                 <TableCell align="right">
-                                                    {/* <Button color="error" className={`${style.dialogBtnPrimary}`}>
-                                                Delete
-                                            </Button> */}
-                                                    {/* <div> */}
                                                     <IconButton
                                                         disableRipple
                                                         sx={{ padding: '1px', color: 'gray' }}
-                                                        onClick={(e) => handleClick(e, task._id)}
-                                                    >
+                                                        onClick={(e) => handleClick(e, task._id)}>
                                                         <MoreVertIcon />
                                                     </IconButton>
 
@@ -350,9 +343,9 @@ export default function index() {
                                                             '& .MuiList-root': {
                                                                 padding: 0,
                                                                 margin: 0,
-                                                                border: '1px solid silver',
-                                                                borderRadius: '0.2rem',
-                                                                backgroundColor: 'white'
+                                                                borderRadius: '0.1rem',
+                                                                border: `1px solid ${mode === 'light' && 'silver'}`,
+                                                                backgroundColor: `${mode === 'light' && theme.palette.background.default}`
                                                             },
                                                             '& .MuiPaper-root': {
                                                                 boxShadow: '0'
@@ -360,26 +353,16 @@ export default function index() {
                                                         }}
                                                         className={style.anchorElParent}>
 
-                                                        <MenuItem onClick={handleEditClickOpen} className={style.anchorMenuItem}>
-                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                                <EditIcon fontSize="small" sx={{ minWidth: '10px' }} />
+                                                        <MenuItem onClick={handleEditClickOpen} className={`${tableClassText} ${style.editMenuItem}`}>
+                                                            <ListItemIcon >
+                                                                <EditIcon fontSize="small" />
                                                             </ListItemIcon>Edit</MenuItem>
 
-                                                        <MenuItem
-                                                            onClick={handleDelete}
-                                                            className={style.anchorMenuItem}
-                                                            sx={{
-                                                                bgcolor: '#E97451',
-                                                                color: 'white !important',
-                                                                '&:hover': {
-                                                                    bgcolor: '#EE4B2B !important'
-                                                                }
-                                                            }}>
-                                                            <ListItemIcon sx={{ minWidth: '0 !important', marginRight: '8px' }}>
-                                                                <DeleteOutlineIcon fontSize="small" sx={{ minWidth: '10px', color: 'white' }} />
-                                                            </ListItemIcon>
-                                                            Delete
-                                                        </MenuItem>
+                                                        <MenuItem onClick={handleDelete} className={`${tableClassText} ${style.deleteMenuItem}`}>
+                                                            <ListItemIcon >
+                                                                <DeleteOutlineIcon fontSize="small" sx={{ color: 'white' }} />
+                                                            </ListItemIcon>Delete</MenuItem>
+
 
                                                         {task.assign.includes(user?.name) &&
                                                             <MenuItem
@@ -391,22 +374,25 @@ export default function index() {
                                                                 </ListItemIcon>{task.taskList === "completed" ? "Completed" : "Mark Complete"}</MenuItem>
                                                         }
                                                     </Menu>
-                                                    {/* </div> */}
                                                 </TableCell>
                                             </TableRow>
+
                                         )
                                     })}
+
+
                                 </TableBody>
                             </Table>
                         ) : (
+
                             <Stack>
                                 <Typography className={style.noContent}>Assign a task to User to show here</Typography>
                             </Stack>
+                        )}
 
-                        )
-                    }
-                    < EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
+                    <EditPointsDialog open={editDialogOpen} handleClose={handleEditCloseTab} task={selectedTask} />
                 </TableContainer >
+
             </Stack>
         </Stack>
     );

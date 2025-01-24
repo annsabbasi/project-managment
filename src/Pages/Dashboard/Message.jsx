@@ -1,6 +1,10 @@
 import { Container, Typography, Box } from "@mui/material";
+import { useAuth } from "../../context/AuthProvider";
+
 
 const Message = () => {
+    const { mode } = useAuth();
+    const tableClassText = mode === 'light' ? 'lightTableText' : 'darkTableText';
     return (
         <Container sx={{ mt: 4, mb: 4 }}>
             {/* Video Section */}
@@ -32,10 +36,10 @@ const Message = () => {
                 <Typography
                     variant="h4"
                     gutterBottom
-                    sx={{ fontWeight: "bold", mb: 2, mt: 5, textAlign: "left" }}>Video Description</Typography>
+                    sx={{ mb: 2, mt: 5, textAlign: "left" }} className={tableClassText}>Video Description</Typography>
                 <Typography
                     variant="body1"
-                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
                     This is the first paragraph of the video description. It provides an
                     introduction to the content of the video, explaining its purpose and
                     significance. This paragraph is intended to give the reader a clear
@@ -43,7 +47,7 @@ const Message = () => {
                 </Typography>
                 <Typography
                     variant="body1"
-                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
                     In the second paragraph, we delve deeper into the specifics of the
                     video&lsquo;s content. This section highlights the key points, concepts, or
                     topics covered in the video. It is important to keep this part
@@ -51,7 +55,7 @@ const Message = () => {
                 </Typography>
                 <Typography
                     variant="body1"
-                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8 }}>
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
                     Finally, the third paragraph concludes the description by summarizing
                     the value the viewer can gain from watching the video. Whether it&apos;s
                     educational, entertaining, or inspirational, this part emphasizes the

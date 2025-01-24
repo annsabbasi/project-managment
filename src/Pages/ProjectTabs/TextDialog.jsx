@@ -1,4 +1,4 @@
-import styles from './style.module.scss';
+import style from './style.module.scss';
 import PropTypes from 'prop-types';
 
 import { useState } from 'react';
@@ -14,7 +14,12 @@ import {
 
 const TextDialog = ({ open, handleClose }) => {
     const [formData, setFormData] = useState({
-        projectTitle: '', link: '', teamLeadName: '', dueDate: '', budget: '', description: ''
+        projectTitle: '',
+        link: '',
+        teamLeadName: '',
+        dueDate: '',
+        budget: '',
+        description: ''
     });
 
 
@@ -30,9 +35,14 @@ const TextDialog = ({ open, handleClose }) => {
             onChange={handleChange}
             multiline={multiline}
             rows={multiline ? 4 : undefined}
-            InputLabelProps={{ sx: { fontSize: '0.9rem' } }}
-            type={type} />
+            type={type}
+            InputLabelProps={{
+                sx: { display: name === 'dueDate' ? 'none' : 'block', fontSize: '0.9rem' }, // Hide label for "dueDate"
+            }}
+            placeholder={name === 'dueDate' ? 'mm/dd/yyyy' : undefined}
+        />
     );
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -74,10 +84,10 @@ const TextDialog = ({ open, handleClose }) => {
     };
 
     return (
-        <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose} className={styles.sidebar}>
+        <Dialog component="form" onSubmit={handleSubmit} noValidate open={open} onClose={handleClose}>
             <DialogTitle>Add a New Project</DialogTitle>
 
-            <DialogContent className={styles.sidebar}>
+            <DialogContent>
                 {renderTextField("projectTitle", "Project Title")}
                 {renderTextField("teamLeadName", "Assign User")}
                 {renderTextField("link", "Add Link")}
@@ -88,8 +98,10 @@ const TextDialog = ({ open, handleClose }) => {
 
 
             <DialogActions sx={{ paddingBottom: '1rem' }}>
-                <Button onClick={handleClose} color="secondary" className={styles.dialogBtnPrimary}>Cancel</Button>
-                <Button type="submit" onClick={handleClose} color="primary" className={styles.dialogBtnSecondary}>Save</Button>
+                {/* <Button onClick={handleClose} color="secondary" className={styles.dialogBtnPrimary}>Cancel</Button>
+                <Button type="submit" onClick={handleClose} color="primary" className={styles.dialogBtnSecondary}>Save</Button> */}
+                <Button onClick={handleClose} variant="outlined" className={style.decline}>Cancel</Button>
+                <Button type="submit" onClick={handleClose} color="primary" variant="contained" className={style.accept}>Save</Button>
             </DialogActions>
 
         </Dialog>

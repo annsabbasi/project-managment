@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import theme from '../../../../Theme/Theme';
+// import theme from '../../../../Theme/Theme';
 import style from './style.module.scss';
 
 
@@ -13,17 +13,21 @@ import {
 } from '@mui/material';
 import { getCompleteSubTask, subCompleteTaskApproval } from '../../../../api/userSubTask';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../../../context/AuthProvider';
 
 
-export default function Request() {  
+
+export default function Request() {
+    const { theme, mode } = useAuth();
+    const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
+    const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+
     const queryClient = useQueryClient();
-
     const { data: getCompleteTask } = useQuery({
         queryKey: ['getCompleteSubTask'],
         queryFn: getCompleteSubTask,
         staleTime: 200000,
     })
-
 
     // Approve for the Complete Sub Task
     const mutation = useMutation({
@@ -57,29 +61,35 @@ export default function Request() {
         mutation.mutate({ taskID, status: 'approved' })
     }
 
-
     const handleReject = (taskID) => {
         mutation.mutate({ taskID, status: 'progress' })
     }
+
 
     return (
         <TableContainer>
             {getCompleteTask?.data?.length > 0 ? (
 
-                <Table className={style.table}>
+                <Table sx={{
+                    backgroundColor: theme.palette.background.paper,
+                    color: theme.palette.text.primary,
+                    overflow: 'visible',
+                    borderRadius: '0.6rem'
+                }}>
                     <TableHead className={style.tableHead}>
                         <TableRow className={style.tableRowHead}>
-                            <TableCell>Title</TableCell>
-                            <TableCell align="left">Assign Person</TableCell>
-                            <TableCell align="left">Assigned By</TableCell>
-                            <TableCell align="left">Start Date</TableCell>
-                            <TableCell align="left">Due Date</TableCell>
-                            <TableCell align="right">Points</TableCell>
-                            <TableCell align="right">Sended By</TableCell>
-                            <TableCell align="right">&nbsp;</TableCell>
+                            <TableCell className={tableClassText}>Title</TableCell>
+                            <TableCell align="left" className={tableClassText}>Assign Person</TableCell>
+                            <TableCell align="left" className={tableClassText}>Assigned By</TableCell>
+                            <TableCell align="left" className={tableClassText}>Start Date</TableCell>
+                            <TableCell align="left" className={tableClassText}>Due Date</TableCell>
+                            <TableCell align="right" className={tableClassText}>Points</TableCell>
+                            <TableCell align="right" className={tableClassText}>Sended By</TableCell>
+                            <TableCell align="right" className={tableClassText}>&nbsp;</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody sx={{ borderTop: '12px solid white' }}>
+
+                    <TableBody className={tableGap}>
                         {getCompleteTask?.data?.map((task, index) => {
                             return (
                                 <TableRow key={index} className={style.tableRowBody}>
@@ -92,29 +102,20 @@ export default function Request() {
                                     <TableCell align="right">sended By</TableCell>
 
                                     <TableCell align="right" className={style.btnCell}>
-                                        <Button
-                                            variant="outlined"
-                                            className={style.decline}
-                                            onClick={() => handleReject(task._id)} >
-                                            Reject
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            className={style.accept}
-                                            onClick={() => handleApprove(task._id)}>
-                                            Approve
-                                        </Button>
+                                        <Button variant="outlined" className={style.decline} onClick={() => handleReject(task._id)}>Reject</Button>
+                                        <Button variant="contained" className={style.accept} onClick={() => handleApprove(task._id)}>Approve</Button>
                                     </TableCell>
                                 </TableRow>
                             )
+
                         })}
                     </TableBody>
                 </Table>
             ) : (
                 <Stack alignItems='center' justifyContent='end' height='50vh' gap={2} variant="div">
-                    <Typography sx={{ fontWeight: '600', color: theme.palette.grey.darkGrey, fontSize: '1.3rem' }}>No Completed Sub-Task yet!</Typography>
+                    <Typography sx={{ fontWeight: '600', fontSize: '1.3rem' }}>No Completed Sub-Task yet!</Typography>
                     <Stack width={350} textAlign='center'>
-                        <Typography component='p' className={style.btnText}>When any of the User&apos;s Completes their Task then it will be shown up here.</Typography>
+                        <Typography component='p'>When any of the User&apos;s Completes their Task then it will be shown up here.</Typography>
                     </Stack>
                 </Stack>
             )}
