@@ -105,12 +105,11 @@
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  height: 38vh;
   width: 30vw;
   max-width: 22vw;
   display: flex;
   flex-direction: column;
-  padding: 0px 10px;
+  padding: 10px 10px;
   margin-top: 10px;
 }
 
@@ -151,7 +150,6 @@
 }
 
 .screen_popup,
-.camera_popup,
 .microphone_popup {
   position: absolute;
   top: 5%;
@@ -164,7 +162,6 @@
   max-width: 15vw;
 }
 .screen_popup_selection,
-.camera_popup_selection,
 .microphone_popup_selection {
   display: flex;
   justify-content: space-around;
@@ -173,7 +170,6 @@
   gap: 5px;
 }
 .screen_popup_selection_button,
-.camera_popup_selection_button,
 .microphone_popup_selection_button {
   padding: 5px;
   border: none;
@@ -183,17 +179,14 @@
   background-color: #ded0f4;
 }
 .screen_popup_selection_button:hover,
-.camera_popup_selection_button:hover,
 .microphone_popup_selection_button:hover {
   background-color: #a46df0;
-}
-.camera_popup {
-  top: 30%;
 }
 .microphone_popup {
   top: 50%;
 }
-
+.record_mini_popup_container {
+}
 // .record_popup_close {
 //   background-color: #ff5c5c;
 //   color: #fff;

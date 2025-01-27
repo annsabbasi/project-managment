@@ -2,36 +2,25 @@ import React, { useState } from "react";
 import style from "./../styles.module.scss";
 export const RecordPopUp = (prop) => {
   const [screen, setScreen] = useState(false);
-  const [camera, setCamera] = useState(false);
   const [microphone, setMicrophone] = useState(false);
   const [screenSelectedOption, setScreenSelectedOption] = useState("Screen");
-  const [cameraSelectedOption, setCameraSelectedOption] = useState("Camera");
   const [microphoneSelectedOption, setMicrophoneSelectedOption] =
     useState("Microphone");
 
   const handleScreenClick = () => {
     setScreen(!screen);
-    setCamera(false);
     setMicrophone(false);
   };
-  const handleCameraClick = () => {
-    setCamera(!camera);
-    setScreen(false);
-    setMicrophone(false);
-  };
+
   const handleMicrophoneClick = () => {
     setMicrophone(!microphone);
     setScreen(false);
-    setCamera(false);
   };
   const handleScreenOptionClick = (option) => {
     setScreenSelectedOption(option);
     setScreen(false);
   };
-  const handleCameraOptionClick = (option) => {
-    setCameraSelectedOption(option);
-    setCamera(false);
-  };
+
   const handleMicrophoneOptionClick = (option) => {
     setMicrophoneSelectedOption(option);
     setMicrophone(false);
@@ -74,32 +63,7 @@ export const RecordPopUp = (prop) => {
               </div>
             )}
           </div>
-          <div className={style.record_popup_selection}>
-            <button
-              className={style.record_popup_selection_button}
-              onClick={handleCameraClick}
-            >
-              {cameraSelectedOption}
-            </button>
-            {camera && (
-              <div className={style.camera_popup}>
-                <div className={style.camera_popup_selection}>
-                  <button
-                    className={style.camera_popup_selection_button}
-                    onClick={() => handleCameraOptionClick("No Camera")}
-                  >
-                    No Camera
-                  </button>
-                  <button
-                    className={style.camera_popup_selection_button}
-                    onClick={() => handleCameraOptionClick("HD Camera")}
-                  >
-                    HD Camera
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+
           <div className={style.record_popup_selection}>
             <button
               className={style.record_popup_selection_button}
