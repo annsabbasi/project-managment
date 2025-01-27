@@ -5,19 +5,20 @@ import { apiResponse } from "../../utils/apiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 
+// it will be use for upload the browse video and upload the record video
 const uploadVideoController = asyncHandler(async (req, res) => {
     const file = req.file;
-    const { description } = req.body;
+    const { description, type } = req.body;
 
     if (!description) {
-        throw new apiError("Video description not provided")
+        throw new apiError("Video description not provided");
     }
     if (!file) {
-        throw new apiError("No video file uploaded")
+        throw new apiError("No video file uploaded");
     }
 
     if (file.size > 100 * 1024 * 1024) {
-        throw new apiError("Video is size is greater then 100MB")
+        throw new apiError("Video is size is greater then 100MB");
     }
 
     // upload the file on cloudinary
@@ -34,39 +35,59 @@ const uploadVideoController = asyncHandler(async (req, res) => {
     const newVideoSubTask = await uploadSingleVideo.create({
         description,
         video: videoUrl,
+        type, //type added here to store the type of video in the database
     });
     res.status(200).json(
         new apiResponse(200, newVideoSubTask, "Video uploaded successfully")
-    )
-
-})
-
-
+    );
+});
 
 const getAllVideoController = asyncHandler(async (req, res) => {
     const videosData = await uploadSingleVideo.find({});
     if (!videosData) {
-        new apiResponse(201, "upload any data to show up here")
+        new apiResponse(201, "upload any data to show up here");
     }
-    res.status(200).json(new apiResponse(200, videosData, "uploaded data successfully fetched"))
-})
+    res.status(200).json(
+        new apiResponse(200, videosData, "uploaded data successfully fetched")
+    );
+});
 
-
-const getSingleVideoController = asyncHandler(async (req, res) => {
+const getSingleUploadVideoController = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     if (!mongoose.isValidObjectId(videoId)) {
         throw new apiError(400, "Invalid Task ID format");
     }
     const getVideo = await uploadSingleVideo.findById(videoId);
-    if (!getVideo) {
-        throw new apiError("No video Found!")
+    const videoType = getVideo.type;
+
+    if (!getVideo || videoType !== "upload") {
+        throw new apiError("No video Found!");
     }
 
-    res.status(200).json(new apiResponse(200, getVideo, "Video Get Successfully!"))
-})
+    res.status(200).json(
+        new apiResponse(200, getVideo, "Video Get Successfully!")
+    );
+});
 
+const getSingleRecordVideoController = asyncHandler(async (req, res) => {
+    const { videoId } = req.params;
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new apiError(400, "Invalid Task ID format");
+    }
+    const getVideo = await uploadSingleVideo.findById(videoId);
+    const videoType = getVideo.type;
+    if (!getVideo || videoType !== "record") {
+        throw new apiError("No video Found!");
+    }
 
+    res.status(200).json(
+        new apiResponse(200, getVideo, "Video Get Successfully!")
+    );
+});
 
-
-
-export { uploadVideoController, getAllVideoController, getSingleVideoController }
+export {
+    uploadVideoController,
+    getAllVideoController,
+    getSingleUploadVideoController,
+    getSingleRecordVideoController,
+};
