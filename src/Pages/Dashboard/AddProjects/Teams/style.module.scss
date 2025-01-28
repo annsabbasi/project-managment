@@ -1,3 +1,49 @@
+.tableBodyDark {
+    border-top: 10px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableBodyLight {
+    border-top: 10px solid rgb(255, 255, 255);
+}
+
+// For The Table Theme
+.lightTableText {
+    color: #36454F !important;
+}
+
+.darkTableText {
+    color: #ffffff;
+}
+
+
+.tableRowHead {
+    &>* {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        padding: 0.9rem 1.4rem;
+    }
+}
+
+.tableRowBody:last-of-type>* {
+    border-bottom: none !important;
+}
+
+
+
+// .tableBodyBtn {
+//     padding: 0.1rem 0.4rem !important;
+//     text-transform: capitalize !important;
+//     text-wrap: nowrap !important;
+//     font-size: 0.8rem !important;
+
+//     &:hover {
+//         background-color: transparent !important;
+//     }
+// }
+
+
+
+
 .boxDropDown {
     margin-inline: 0.4rem !important;
     margin-block: 0.8rem;
