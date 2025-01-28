@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./../styles.module.scss";
 import { Box, Button, Typography } from "@mui/material";
-import RecordPopUp from "./RecordPopUp";
+// import RecordPopUp from "./RecordPopUp";
 import RecordSmallPopup from "./RecordSmallPopup";
 
 export const Record = () => {
@@ -9,6 +9,9 @@ export const Record = () => {
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+  };
+  const openPopUp = () => {
+    setShowPopup(true);
   };
 
   return (
@@ -18,16 +21,15 @@ export const Record = () => {
           <Button
             variant="contained"
             className={style.recordButton}
-            onClick={togglePopup}
+            onClick={openPopUp}
           >
             Start Recording
           </Button>
         </Box>
-        <Box className={style.record_popup_container}>
-          {showPopup && <RecordPopUp showPopup={showPopup} />}
-        </Box>
         <Box className={style.record_mini_popup_container}>
-          {showPopup && <RecordSmallPopup showPopup={showPopup} />}
+          {showPopup && (
+            <RecordSmallPopup showPopup={showPopup} closePopup={togglePopup} />
+          )}
         </Box>
       </Box>
     </>
