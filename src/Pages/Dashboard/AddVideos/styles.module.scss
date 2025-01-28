@@ -1,14 +1,22 @@
 .mainContainer {
   max-width: 600px;
 }
+
 .previewVideo {
-  margin-top: 10px;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
   text-align: center;
-  background-color: #e3f2fd;
-  padding: 18px;
-  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  position: relative; /* Ensure the close button is positioned relative to this container */
 }
 
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #f44336; /* Red color for the close button */
+}
 .dialogBtnSecondary {
   background-color: transparent;
   color: grey;

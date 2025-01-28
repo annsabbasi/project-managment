@@ -6,15 +6,21 @@ import {
   Snackbar,
   Alert,
   TextField,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import style from "./../styles.module.scss";
-import { useAddVideo } from "./../videoApi/addVideo";
+import { useAddRecordVideo } from "./../videoApi/addVideo";
 
 export const RecordingUpload = (prop) => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState(null);
-  const addVideo = useAddVideo();
+  const [success, setSuccess] = useState(false); // State for success message
+  const { mutate: addRecordVideo } = useAddRecordVideo();
 
+  const handleClose = () => {
+    prop.closePopup();
+  };
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
@@ -24,6 +30,10 @@ export const RecordingUpload = (prop) => {
     const formData = new FormData();
 
     try {
+      if (!prop.videoURL) {
+        setError("Video URL is missing.");
+        return;
+      }
       const response = await fetch(prop.videoURL);
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -32,15 +42,16 @@ export const RecordingUpload = (prop) => {
 
       // Create a File object from the blob
       const file = new File([blob], "recorded-video.mp4", {
-        type: blob.type,
+        type: blob.type || "video/mp4",
       });
 
       formData.append("video", file);
       formData.append("description", description);
       formData.append("type", "Record"); // Type of video upload or record
-      addVideo(formData);
-      console.log("Uploaded Video:", file);
-      console.log("Description:", description);
+      await addRecordVideo(formData);
+      console.log("Video submitted successfully.");
+      setSuccess(true); // Show success message
+      handleClose();
     } catch (error) {
       console.error("Failed to submit:", error);
       setError(error.message);
@@ -56,9 +67,13 @@ export const RecordingUpload = (prop) => {
           noValidate
           className={style.previewVideo}
         >
+          <IconButton className={style.closeButton} onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
           <Typography variant="h6" gutterBottom className={style.videoTitle}>
             Video Preview
           </Typography>
+
           <video
             src={prop.videoURL}
             autoPlay
@@ -87,6 +102,21 @@ export const RecordingUpload = (prop) => {
           </div>
         </Box>
       )}
+      <Snackbar
+        className={style.snackbar}
+        open={success}
+        autoHideDuration={3000}
+        onClose={() => setSuccess(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSuccess(false)}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Video added successfully!
+        </Alert>
+      </Snackbar>
       {error && (
         <Snackbar
           className={style.snackbar}

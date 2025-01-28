@@ -77,6 +77,7 @@ export const RecordSmallPopup = (prop) => {
   return (
     <ReactMediaRecorder
       screen
+      audio
       onStop={handleRecordingComplete}
       render={({
         status,
@@ -160,6 +161,7 @@ export const RecordSmallPopup = (prop) => {
               videoURL={mediaBlobUrl}
               snackbarOpen={snackbarOpen}
               handleCloseSnackbar={handleCloseSnackbar}
+              closePopup={prop.closePopup}
             />
           )}
         </div>
