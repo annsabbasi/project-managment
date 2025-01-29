@@ -48,6 +48,7 @@ import {
     uploadVideoController,
 } from "../controllers/cloudinaryUploads/videoUpload.js";
 
+import { checkIn, checkOut, getDailyTimeDetails, getDailyUserTimeDetails, pauseOrResume } from '../controllers/trackerTime.js';
 import { upload } from "../middleware/multerMiddleware.js";
 import { createSubscriptionCheckout } from "../controllers/userPlanController.js";
 import { validateRegisterFields } from "../controllers/validations/authValidation.js";
@@ -164,6 +165,15 @@ router.get(
     verifyUser(["admin", "user"]),
     getSingleRecordVideoController
 );
+
+
+
+router.post('/checkIn', verifyUser(['admin', 'user', 'QcAdmin']), checkIn)
+router.post('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
+router.post('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
+router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
+router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
+
 
 // Testing Purpose
 router.route("/testing").get(verifyUser(["admin", "user"]), getUserProfile);

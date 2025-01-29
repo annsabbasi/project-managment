@@ -191,11 +191,21 @@ export default function index() {
                         <Stack flexDirection="row" width="100%" justifyContent="space-between">
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={`${tableClassText} ${style.textGroup}`}>Budget</Typography>
-                                <Typography className={style.textGreyInfo}>$-{taskData?.data?.budget}</Typography>
+                                {/* <Typography className={style.textGreyInfo}>$-{taskData?.data?.budget}</Typography> */}
+                                <Typography className={style.textGreyInfo}>${taskData?.data?.budget.toLocaleString()}</Typography>
                             </Stack>
                             <Stack flexDirection="row" gap={2} alignItems="center">
                                 <Typography className={`${tableClassText} ${style.textGroup}`}>Link:</Typography>
-                                <Typography variant="a" className={style.textGreyInfo} sx={{ color: '#87CEEB !important', textDecoration: 'underline', cursor: 'pointer' }}>{taskData?.data?.link}</Typography>
+                                <Typography variant="body1" className={style.textGreyInfo} sx={{
+                                    color: '#87CEEB !important',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                }}>
+                                    <a href={taskData?.data?.link} target="_blank" rel="noopener noreferrer" style={{
+                                        color: 'inherit', // Use the Typography's color
+                                        textDecoration: 'none', // Remove underline from the link
+                                    }}>{taskData?.data?.link}</a>
+                                </Typography>
                             </Stack>
                         </Stack>
                     </Stack>

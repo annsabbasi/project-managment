@@ -9,6 +9,7 @@
     margin-left: -5px;
     margin-top: 2px;
   }
+
   &:hover {
     opacity: 0.6;
   }
@@ -27,4 +28,19 @@
   min-width: auto !important;
   min-height: auto !important;
   text-transform: capitalize !important;
+}
+
+.timeCheckBtn {
+  font-size: 14px !important;
+  border-radius: 0.4rem;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+  // background-color: white;
+
+  // &:hover {
+  background-color: rgba(250, 249, 246, 0.1);
+  // background-color: rgba(52, 52, 52, 0.2);
+  //   border: 1px solid white;
+  //   color: white;
+  // }
 }

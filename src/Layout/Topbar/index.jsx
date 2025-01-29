@@ -8,6 +8,8 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogout } from "../../hooks/useAuth";
+import audioClick from "../../assets/audio/click.mp3"
+
 import {
     AppBar, Avatar,
     IconButton, Menu,
@@ -16,6 +18,7 @@ import {
 } from "@mui/material";
 import { useAuth } from '../../context/AuthProvider';
 // import { useNavigate } from "react-router-dom";
+
 
 export default function TopBar({ title }) {
     const theme = useTheme();
@@ -35,6 +38,15 @@ export default function TopBar({ title }) {
         handleClose();
     }
 
+    const playSound = () => {
+        const audio = new Audio(audioClick); // Adjust path if necessary
+        audio.play();
+    };
+    const handleThemeToggle = () => {
+        playSound();
+        toggleTheme();
+    };
+
     return (
         <AppBar position="static" sx={{
             backgroundColor: theme.palette.background.default,
@@ -51,7 +63,7 @@ export default function TopBar({ title }) {
                         color: theme.palette.text.primary
                     }
                 }}>
-                    <IconButton onClick={toggleTheme} color="inherit">
+                    <IconButton onClick={handleThemeToggle} color="inherit">
                         {mode === 'light' ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
                     </IconButton>
                     <NotificationsNoneIcon aria-label="Notifications" />

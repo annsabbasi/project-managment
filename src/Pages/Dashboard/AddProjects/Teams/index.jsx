@@ -7,7 +7,14 @@ import {
   Box, Stack,
   Typography, Avatar,
   Grid, MenuItem,
-  Menu, IconButton
+  Menu, IconButton,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Button,
+  TableContainer,
+  Table
 } from "@mui/material";
 
 
@@ -24,7 +31,8 @@ import { useAuth } from "../../../../context/AuthProvider";
 
 
 export default function Teams() {
-  const { mode } = useAuth();
+  const { user, theme, mode } = useAuth();
+  const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
   const tableClassText = mode === 'light' ? 'lightTableText' : 'darkTableText';
 
   const { id: projectId } = useParams();
@@ -184,6 +192,44 @@ export default function Teams() {
           </Typography>
         )}
       </Box>
+
+      <TableContainer>
+        <Typography variant="h6" mb={1} className={tableClassText}>
+          Employee&apos;s Time-Track
+        </Typography>
+        <Table
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            overflow: 'visible',
+            borderRadius: '0.6rem'
+          }}>
+
+          <TableHead>
+            <TableRow className={style.tableRowHead}>
+              <TableCell className={tableClassText}>Employee</TableCell>
+              <TableCell align="center" className={tableClassText}>TimeIn</TableCell>
+              <TableCell align="center" className={tableClassText}>TimeOut</TableCell>
+              <TableCell align="center" className={tableClassText}>Tracked Time</TableCell>
+              <TableCell align="center" className={tableClassText}>Date</TableCell>
+              <TableCell align="center" className={tableClassText}>Weekly Time</TableCell>
+              <TableCell align="center" className={tableClassText}>Monthly Time</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody className={tableGap}>
+            <TableRow className={style.tableRowBody}>
+              <TableCell component="th" scope="row">1</TableCell>
+              <TableCell align="center">21:04</TableCell>
+              <TableCell align="center">3</TableCell>
+              <TableCell align="center">4</TableCell>
+              <TableCell align="center">5</TableCell>
+              <TableCell align="center">6</TableCell>
+              <TableCell align="center">$7</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Stack>
   )
 }
