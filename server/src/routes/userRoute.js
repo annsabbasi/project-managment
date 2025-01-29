@@ -37,7 +37,8 @@ import {
 import { upload } from '../middleware/multerMiddleware.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { checkIn, checkOut, getDailyTimeDetails, getDailyUserTimeDetails, pauseOrResume } from '../controllers/trackerTime.js';
+import { checkIn, checkOut, getDailyTimeDetails, getDailyUserTimeDetails, pauseOrResume, getElapsedTime } from '../controllers/trackerTime.js';
+import { Timer } from '../models/test.js';
 
 
 
@@ -109,8 +110,9 @@ router.post(
 
 
 
+router.get('/getElapsedTime', verifyUser(['admin', 'user', 'QcAdmin']), getElapsedTime)
 router.post('/checkIn', verifyUser(['admin', 'user', 'QcAdmin']), checkIn)
-router.post('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
+router.put('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
 router.post('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
 router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
 router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
@@ -119,7 +121,96 @@ router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcA
 
 // Testing Purpose
 router.route('/testing').get(verifyUser(['admin', 'user']), getUserProfile)
+router.get("/timer", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (!timer) {
+            timer = new Timer();
+            await timer.save();
+        }
 
+        // If the timer is running, calculate the elapsed time
+        let elapsedTime = 0;
+        console.log("timer Gpt", timer)
+        if (timer.startTime && timer.isRunning) {
+            elapsedTime = Math.floor((Date.now() - new Date(timer.startTime)) / 1000);
+        }
+
+        res.json({
+            isRunning: timer.isRunning,
+            isCheckedOut: timer.isCheckedOut,
+            elapsedTime,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Start Timer (Check-In)
+router.post("/timer/start", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (!timer) {
+            timer = new Timer();
+        }
+
+        timer.startTime = new Date();
+        timer.isRunning = true;
+        timer.isCheckedOut = false;
+        await timer.save();
+        console.log("checkIn timer", timer)
+        res.json({ message: "Timer started", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Stop Timer (Pause)
+router.put("/timer/pause", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer) {
+            timer.isRunning = false;
+            await timer.save();
+        }
+        console.log("pause timer", timer)
+        res.json({ message: "Timer paused", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Resume Timer
+router.put("/timer/resume", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer && !timer.isCheckedOut) {
+            timer.isRunning = true;
+            await timer.save();
+        }
+        console.log("resume timer", timer)
+        res.json({ message: "Timer resumed", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Checkout (Stop and Reset Timer)
+router.put("/timer/checkout", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer) {
+            timer.startTime = null;
+            timer.isRunning = false;
+            timer.isCheckedOut = true;
+            await timer.save();
+        }
+        console.log("checkOut timer", timer)
+        res.json({ message: "Checked out", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 export default router

@@ -10,54 +10,118 @@ import moment from 'moment'
 const checkIn = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
-
     let timeEntry = await userTracker.findOne({ userId, date: today });
     // Check if user has already checked in today
-    if (timeEntry) {
-        throw new apiError(404, "You already have checkedIn today.")
+    // if (timeEntry) {
+    //     throw new apiError(404, "You already have checkedIn today.")
+    // }
+
+    if (!timeEntry) {
+        timeEntry = new userTracker({
+            userId,
+            date: today,
+            checkIn: new Date(),
+            isRunning: true,
+            isCheckedOut: false
+        });
+    } else {
+        timeEntry.isRunning = true;
+        timeEntry.isCheckedOut = false;
+        timeEntry.checkIn = new Date();
     }
 
-    timeEntry = new userTracker({
-        userId,
-        date: today,
-        checkIn: new Date(),
-    });
-
+    console.log("Check-In Entry:", timeEntry);
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, timeEntry, 'CheckedIn successfully.'));
 })
 
 
+// For The User Continous Time
+const getElapsedTime = asyncHandler(async (req, res) => {
+    let timer = await userTracker.findOne({ userId: req.user.id, date: moment().format('YYYY-MM-DD') });
+
+    if (!timer) {
+        return res.status(404).json(new apiResponse(404, { isRunning: false, elapsedTime: 0 }, "No active timer found"));
+    }
+
+    let elapsedTime = 0;
+    if (timer.checkIn && timer.isRunning) {
+        elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000);
+    }
+
+    res.status(200).json(new apiResponse(200, {
+        isRunning: timer.isRunning,
+        isCheckedOut: timer.isCheckedOut,
+        elapsedTime
+    }, "Elapsed time fetched successfully."));
+});
+
+
+
 // For The User (Pause & Resume) Timer
+// const pauseOrResume = asyncHandler(async (req, res) => {
+//     const userId = req.user.id;
+//     const today = moment().format('YYYY-MM-DD');
+//     let timeEntry = await userTracker.findOne({ userId, date: today });
+
+//     if (!timeEntry) {
+//         throw new apiError(404, `No CheckIn was found for ${today}`)
+//     }
+//     // if (timeEntry.checkOut) {
+//     //     throw new apiError(400, "No have already check Out no further action allowed")
+//     // }
+
+//     if (timeEntry.isRunning) {
+//         timeEntry.isRunning = false
+//         // await timeEntry.save();
+//     } else {
+//         timeEntry.isRunning = true
+//         // await timeEntry.save();
+//     }
+//     console.log("Data of pause or Resume", timeEntry)
+
+//     await timeEntry.save();
+//     res.status(200).json(new apiResponse(200, timeEntry, (timeEntry.isRunning ? "Time Paused successfully." : "Time Resumed successfully.")))
+// })
+
+// Pause or Resume Timer
 const pauseOrResume = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
+
     let timeEntry = await userTracker.findOne({ userId, date: today });
 
     if (!timeEntry) {
-        throw new apiError(404, `No CheckIn was found for ${today}`)
-    }
-    if (timeEntry.checkOut) {
-        throw new apiError(400, "No have already check Out no further action allowed")
+        throw new apiError(404, `No Check-In found for ${today}`);
     }
 
+    if (timeEntry.isCheckedOut) {
+        throw new apiError(400, "Cannot pause or resume after check-out.");
+    }
 
-    if (timeEntry.isPaused) {
-        const pausedDuration = Math.floor((new Date() - timeEntry.lastPaused) / 1000);
-        if (!timeEntry.lastPaused) {
-            throw new apiError(500, "No valid paused time found.");
-        }
-        timeEntry.totalDuration += pausedDuration;
-        timeEntry.isPaused = false;
+    if (timeEntry.isRunning) {
+        // Pause logic
+        timeEntry.isRunning = false;
+        // timeEntry.isPaused = true;
         timeEntry.lastPaused = new Date();
     } else {
-        timeEntry.isPaused = true;
-        timeEntry.lastPaused = new Date();
+        // Resume logic
+        if (!timeEntry.lastPaused) {
+            throw new apiError(400, "Invalid pause state. No last pause recorded.");
+        }
+
+        const pauseDuration = Math.floor((Date.now() - new Date(timeEntry.lastPaused)) / 1000);
+        timeEntry.totalDuration += pauseDuration;
+        timeEntry.isRunning = true;
+        // timeEntry.isPaused = false;
+        timeEntry.lastPaused = null;
     }
 
     await timeEntry.save();
-    res.status(200).json(new apiResponse(200, timeEntry, (timeEntry.isPaused ? "Time Paused successfully." : "Time Resumed successfully.")))
-})
+    console.log("timeEntry saved for the pause and resume", timeEntry)
+    res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? "Resumed successfully." : "Paused successfully."));
+});
+
 
 
 // For The User CheckOut
@@ -110,6 +174,7 @@ const checkOut = asyncHandler(async (req, res) => {
 
 // For Getting The Daily Time Reports
 const getDailyTimeDetails = asyncHandler(async (req, res) => {
+    // const userId = req.user.id;
     const records = await userTracker.find().sort({ date: -1 })
     res.status(200).json(new apiResponse(200, records, "Daily Time Report fetched successfully."))
 })
@@ -130,5 +195,23 @@ export {
     pauseOrResume,
     checkOut,
     getDailyTimeDetails,
-    getDailyUserTimeDetails
+    getDailyUserTimeDetails,
+    getElapsedTime
 }
+
+
+
+// pauseOrResume
+
+// if (timeEntry.isPaused) {
+//     const pausedDuration = Math.floor((new Date() - timeEntry.lastPaused) / 1000);
+//     if (!timeEntry.lastPaused) {
+//         throw new apiError(500, "No valid paused time found.");
+//     }
+//     timeEntry.totalDuration += pausedDuration;
+//     timeEntry.isPaused = false;
+//     timeEntry.lastPaused = new Date();
+// } else {
+//     timeEntry.isPaused = true;
+//     timeEntry.lastPaused = new Date();
+// }

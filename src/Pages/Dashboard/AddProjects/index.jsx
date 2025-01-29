@@ -93,7 +93,7 @@ export default function AddProjects() {
     // Working of The Time Tracker 
     const [isTracking, setIsTracking] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
-    const [time, setTime] = useState(0); // Time in seconds
+    const [time, setTime] = useState(0);
     const [isStopped, setIsStopped] = useState(false);
 
     useEffect(() => {
@@ -247,6 +247,7 @@ export default function AddProjects() {
                     </Tabs>
                 </Box>
 
+
                 <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
                     <Typography>{formatTime(time)}</Typography>
 
@@ -259,6 +260,7 @@ export default function AddProjects() {
                             sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-In</Button>
                     )}
 
+                    {/* Pause/Check-Out Stack */}
                     {isTracking && (
                         <Stack flexDirection="row" gap="8px" alignItems="center">
                             <IconButton

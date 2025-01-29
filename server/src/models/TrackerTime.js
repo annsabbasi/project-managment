@@ -23,9 +23,18 @@ const TimeTrackingSchema = new Schema({
     },
     checkIn: {
         type: Date,
+        default: null
+    },
+    isRunning: {
+        type: Boolean,
+        default: false
     },
     checkOut: {
         type: Date,
+    },
+    isCheckedOut: {
+        type: Boolean,
+        default: false
     },
     totalDuration: {
         type: Number,

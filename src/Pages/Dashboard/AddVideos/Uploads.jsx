@@ -49,9 +49,9 @@ const Uploads = () => {
         formData.append("video", video);
         formData.append("description", description);
         addVideo(formData);
-        console.log("Uploaded Video:", video);
-        console.log("This vifro is brrn uploafrf gtom ghr vloifinatrye  ", video)
-        console.log("Description:", description);
+        // console.log("Uploaded Video:", video);
+        // console.log("This vifro is brrn uploafrf gtom ghr vloifinatrye  ", video)
+        // console.log("Description:", description);
     };
 
     const handleCloseSnackbar = () => {
