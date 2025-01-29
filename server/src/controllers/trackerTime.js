@@ -110,7 +110,6 @@ const checkOut = asyncHandler(async (req, res) => {
 
 // For Getting The Daily Time Reports
 const getDailyTimeDetails = asyncHandler(async (req, res) => {
-    // const userId = req.user.id;
     const records = await userTracker.find().sort({ date: -1 })
     res.status(200).json(new apiResponse(200, records, "Daily Time Report fetched successfully."))
 })
