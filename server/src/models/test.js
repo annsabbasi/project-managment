@@ -11,3 +11,4 @@ const timerSchema = new mongoose.Schema({
 const Timer = mongoose.model("Timer", timerSchema);
 
 export { Timer };
+ 

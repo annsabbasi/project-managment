@@ -113,7 +113,7 @@ router.post(
 router.get('/getElapsedTime', verifyUser(['admin', 'user', 'QcAdmin']), getElapsedTime)
 router.post('/checkIn', verifyUser(['admin', 'user', 'QcAdmin']), checkIn)
 router.put('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
-router.post('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
+router.put('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
 router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
 router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
 

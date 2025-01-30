@@ -11,10 +11,11 @@ const checkIn = asyncHandler(async (req, res) => {
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
     let timeEntry = await userTracker.findOne({ userId, date: today });
-    // Check if user has already checked in today
-    // if (timeEntry) {
-    //     throw new apiError(404, "You already have checkedIn today.")
-    // }
+
+    // Checking if user has already checked in today
+    if (timeEntry) {
+        throw new apiError(404, "You already have checkedIn today.")
+    }
 
     if (!timeEntry) {
         timeEntry = new userTracker({
@@ -22,15 +23,12 @@ const checkIn = asyncHandler(async (req, res) => {
             date: today,
             checkIn: new Date(),
             isRunning: true,
-            isCheckedOut: false
         });
+        console.log("CheckIn for the !timeEntry", timeEntry)
     } else {
         timeEntry.isRunning = true;
-        timeEntry.isCheckedOut = false;
         timeEntry.checkIn = new Date();
     }
-
-    console.log("Check-In Entry:", timeEntry);
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, timeEntry, 'CheckedIn successfully.'));
 })
@@ -39,7 +37,6 @@ const checkIn = asyncHandler(async (req, res) => {
 // For The User Continous Time
 const getElapsedTime = asyncHandler(async (req, res) => {
     let timer = await userTracker.findOne({ userId: req.user.id, date: moment().format('YYYY-MM-DD') });
-
     if (!timer) {
         return res.status(404).json(new apiResponse(404, { isRunning: false, elapsedTime: 0 }, "No active timer found"));
     }
@@ -56,33 +53,6 @@ const getElapsedTime = asyncHandler(async (req, res) => {
     }, "Elapsed time fetched successfully."));
 });
 
-
-
-// For The User (Pause & Resume) Timer
-// const pauseOrResume = asyncHandler(async (req, res) => {
-//     const userId = req.user.id;
-//     const today = moment().format('YYYY-MM-DD');
-//     let timeEntry = await userTracker.findOne({ userId, date: today });
-
-//     if (!timeEntry) {
-//         throw new apiError(404, `No CheckIn was found for ${today}`)
-//     }
-//     // if (timeEntry.checkOut) {
-//     //     throw new apiError(400, "No have already check Out no further action allowed")
-//     // }
-
-//     if (timeEntry.isRunning) {
-//         timeEntry.isRunning = false
-//         // await timeEntry.save();
-//     } else {
-//         timeEntry.isRunning = true
-//         // await timeEntry.save();
-//     }
-//     console.log("Data of pause or Resume", timeEntry)
-
-//     await timeEntry.save();
-//     res.status(200).json(new apiResponse(200, timeEntry, (timeEntry.isRunning ? "Time Paused successfully." : "Time Resumed successfully.")))
-// })
 
 // Pause or Resume Timer
 const pauseOrResume = asyncHandler(async (req, res) => {
@@ -102,7 +72,6 @@ const pauseOrResume = asyncHandler(async (req, res) => {
     if (timeEntry.isRunning) {
         // Pause logic
         timeEntry.isRunning = false;
-        // timeEntry.isPaused = true;
         timeEntry.lastPaused = new Date();
     } else {
         // Resume logic
@@ -110,18 +79,24 @@ const pauseOrResume = asyncHandler(async (req, res) => {
             throw new apiError(400, "Invalid pause state. No last pause recorded.");
         }
 
-        const pauseDuration = Math.floor((Date.now() - new Date(timeEntry.lastPaused)) / 1000);
-        timeEntry.totalDuration += pauseDuration;
+        // const pauseDuration = Math.floor((Date.now() - timeEntry.lastPaused) / 1000);
+        const pauseDuration = Math.floor((new Date() - timeEntry.lastPaused) / 1000);
+        timeEntry.pausedDuration += pauseDuration;
+
+        // Adjust checkIn time to compensate for the paused duration
+        if (timeEntry.checkIn) {
+            timeEntry.checkIn = new Date(timeEntry.checkIn.getTime() + pauseDuration * 1000);
+        }
+
         timeEntry.isRunning = true;
-        // timeEntry.isPaused = false;
         timeEntry.lastPaused = null;
+        // console.log("UNPaused", pauseDuration)
     }
 
     await timeEntry.save();
-    console.log("timeEntry saved for the pause and resume", timeEntry)
+    // console.log("timeEntry saved for the pause and resume", timeEntry)
     res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? "Resumed successfully." : "Paused successfully."));
 });
-
 
 
 // For The User CheckOut
@@ -133,11 +108,11 @@ const checkOut = asyncHandler(async (req, res) => {
     if (!timeEntry) {
         throw new apiError(404, `No CheckIn was found for ${today}`)
     }
-    if (timeEntry.checkOut) {
-        throw new apiError(404, 'You already have checkout for today.')
-    }
-    if (timeEntry.isPaused) {
-        throw new apiError(410, "Timer is paused. Resume it first to check out.")
+    // if (timeEntry.isCheckedOut) {
+    //     throw new apiError(404, 'You already have checkout for today.')
+    // }
+    if (timeEntry.isRunning) {
+        throw new apiError(410, "Timer is Resumed. Pause it first to check out.")
     }
 
     const checkOutTime = new Date();
@@ -147,28 +122,12 @@ const checkOut = asyncHandler(async (req, res) => {
 
     timeEntry.checkOut = checkOutTime;
     timeEntry.totalDuration = sessionDuration;
+    timeEntry.isCheckedOut = true;
+    timeEntry.isRunning = false;
     // timeEntry.totalDuration += sessionDuration;
+    // console.log("CheckOut TotalDuration Check", timeEntry)
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, timeEntry, "CheckOut successfully."))
-
-    // Calculate hours and minutes
-    // const hours = Math.floor(sessionDuration / 3600);
-    // const minutes = Math.floor((sessionDuration % 3600) / 60);
-
-    // // Update the timeEntry
-    // timeEntry.checkOut = checkOutTime;
-    // timeEntry.totalDuration += sessionDuration;  
-
-    // await timeEntry.save();
-
-    // res.status(200).json(new apiResponse(200, {
-    //     ...timeEntry.toObject(),
-    //     sessionDuration: {
-    //         hours,
-    //         minutes,
-    //         seconds: sessionDuration % 60
-    //     }
-    // }, "CheckOut successfully."));
 })
 
 
@@ -198,9 +157,6 @@ export {
     getDailyUserTimeDetails,
     getElapsedTime
 }
-
-
-
 // pauseOrResume
 
 // if (timeEntry.isPaused) {
@@ -215,3 +171,26 @@ export {
 //     timeEntry.isPaused = true;
 //     timeEntry.lastPaused = new Date();
 // }
+
+
+
+// CheckOut
+// Calculate hours and minutes
+// const hours = Math.floor(sessionDuration / 3600);
+// const minutes = Math.floor((sessionDuration % 3600) / 60);
+
+// // Update the timeEntry
+// timeEntry.checkOut = checkOutTime;
+// timeEntry.totalDuration += sessionDuration;
+
+// await timeEntry.save();
+
+// res.status(200).json(new apiResponse(200, {
+//     ...timeEntry.toObject(),
+//     sessionDuration: {
+//         hours,
+//         minutes,
+//         seconds: sessionDuration % 60
+//     }
+// }, "CheckOut successfully."));
+
