@@ -23,24 +23,41 @@ const TimeTrackingSchema = new Schema({
     },
     checkIn: {
         type: Date,
+        default: null
+    },
+    isRunning: {
+        type: Boolean,
+        default: false
     },
     checkOut: {
         type: Date,
+    },
+    isCheckedOut: {
+        type: Boolean,
+        default: false
     },
     totalDuration: {
         type: Number,
         default: 0
     },
-    isPaused: {
-        type: Boolean,
-        default: false
+    pausedDuration:{
+        type: Number,
+        default: 0
     },
+    // isPaused: {
+    //     type: Boolean,
+    //     default: false
+    // },
     lastPaused: {
         type: Date,
     },
     maxTime: {
         type: Number,
         default: 40
+    },
+    weeklyTime: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true })
 
