@@ -11,14 +11,14 @@ export const createSubTask = async (taskData) => {
 
 // Get User Sub Task inside Project
 export const getSubTask = async (projectId) => {
-    const { data } = await axiosInstance.get('/user/get-subtask', { params: { projectId } })
+    const { data } = await axiosInstance.get('/user/get-subtask', { params: { projectId } });
     return data;
 }
 
 
 // Get User Name & Detail Task inside Project
 export const getUserForSubTask = async (projectId) => {
-    const response = await axiosInstance.get(`/user/get-userOfSubTask/${projectId}`)
+    const response = await axiosInstance.get(`/user/get-userOfSubTask/${projectId}`);
     return response.data;
 }
 

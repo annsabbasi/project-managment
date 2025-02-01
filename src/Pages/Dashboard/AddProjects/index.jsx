@@ -17,7 +17,7 @@ import {
     Typography, Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from '../../../context/AuthProvider';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
@@ -25,6 +25,11 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import SouthWestIcon from '@mui/icons-material/SouthWest';
 import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { userCheckIn, userCheckOut, userGetElapsedTime, userPauseOrResume } from '../../../api/userTracker';
+import { toast } from 'react-toastify';
 
 
 
@@ -79,8 +84,8 @@ export default function AddProjects() {
         boxShadow: 0
     } : {
         backgroundColor: "#FAF9F6 !important",
-        border: "#FAF9F6",
         color: "#343434",
+        border: "#FAF9F6",
     }
 
 
@@ -90,43 +95,91 @@ export default function AddProjects() {
     }
 
 
-    // Working of The Time Tracker 
-    const [isTracking, setIsTracking] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const [time, setTime] = useState(0);
-    const [isStopped, setIsStopped] = useState(false);
+    // For the Actuall User CheckIn
+    // const [isTracking, setIsTracking] = useState(false);
+    const [userElapsedTime, setUserElapsedTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [isCheckedOut, setIsCheckedOut] = useState(false)
+    const queryClient = useQueryClient();
+
+    const { id: ProjectId } = useParams();
+
+    // For The User Actual CheckIn
+    const [isCheckedIn, setIsCheckedIn] = useState(false);
+    const { mutate: checkIn } = useMutation({
+        mutationFn: () => userCheckIn(ProjectId),
+        onSuccess: (data) => {
+            setIsCheckedIn(true);
+            toast.success(`${data.message}`);
+            // setIsTracking(true);
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Check-in failed.");
+        },
+    })
+    // console.log("CheckIn data (AddProducts)", checkInData)
+
+    // For The User Actual ElapsedTime
+    const { data: elapsedTime } = useQuery({
+        queryKey: ['elapsedTime', ProjectId],
+        queryFn: userGetElapsedTime,
+        staleTime: 1000 * 60,
+        refetchInterval: 750,
+    })
 
     useEffect(() => {
-        let timer;
-        if (isTracking && !isPaused && !isStopped) {
-            timer = setInterval(() => {
-                setTime((prevTime) => prevTime + 1);
-            }, 1000);
+        if (elapsedTime?.data) {
+            setUserElapsedTime(elapsedTime.data.elapsedTime);
+            setIsCheckedOut(elapsedTime.data.isCheckedOut);
+            setIsRunning(elapsedTime.data.isRunning);
         }
-        return () => clearInterval(timer);
-    }, [isTracking, isPaused, isStopped]);
+    }, [elapsedTime]);
 
-    // Format time as HH:MM:SS
+    // console.log("userElapsedTime", userElapsedTime)
+    // console.log("userElapsedTime", userElapsedTime)
+
+
+    // For The User Pause or Remume Time
+    const toggleResumePause = useMutation({
+        mutationFn: () => userPauseOrResume(ProjectId),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['elapsedTime']);
+            // toast.success("Timer updated successfully!");
+            // console.log("Data onSuccess ResumePause", data)
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Failed to update timer.");
+        }
+    })
+
+
+    // For The User Actual CheckOut
+    const { mutate: checkOut, isLoading: isCheckingOut, data: checkOutData } = useMutation({
+        mutationFn: userCheckOut,
+        onSuccess: () => {
+            // setIsTracking(false);
+            setIsCheckedIn(false);
+            setIsCheckedOut(true);
+            toast.success("Checked out successfully!");
+            queryClient.invalidateQueries(['elapsedTime']);
+            // console.log("CheckOut Frontend", data)
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Check-out failed.");
+        }
+    });
+    const totalCheckOutData = checkOutData?.data?.totalDuration
+    // console.log("(CheckOut Data) AddProjects", totalCheckOutData)
+
+
+    // Format Time Settings
     const formatTime = (seconds) => {
-        const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
-        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-        const secs = String(seconds % 60).padStart(2, "0");
-        return `${hrs}:${mins}:${secs}`;
-    };
+        if (!seconds || isNaN(seconds)) return "00:00:00";
 
-    const handleCheckIn = () => {
-        setIsTracking(true);
-        setIsPaused(false);
-        setIsStopped(false);
-    };
-
-    const handlePauseResume = () => {
-        setIsPaused((prev) => !prev);
-    };
-
-    const handleCheckOut = () => {
-        setIsStopped(true);
-        setIsTracking(false);
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
 
 
@@ -249,31 +302,41 @@ export default function AddProjects() {
 
 
                 <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
-                    <Typography>{formatTime(time)}</Typography>
+                    {/* <Typography>{formatTime(elapsedTime?.elapsedTime)}</Typography> */}
+                    <Typography>
+                        {elapsedTime?.data?.elapsedTime !== undefined ? (totalCheckOutData ? formatTime(totalCheckOutData) : formatTime(elapsedTime?.data?.elapsedTime)) : "00:00:00"}
+                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(elapsedTime?.elapsedTime) : "00:00:00"} */}
+                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(totalCheckOutData) : "00:00:00"} */}
+                    </Typography>
 
-                    {!isTracking && !isStopped && (
+                    {/* <Typography>{formatTime(JSON.stringify(data.data))}</Typography> */}
+
+                    {!isRunning && !isCheckedOut && !isCheckedIn && (
                         <Button
                             variant="contained"
                             size="small"
                             startIcon={<SouthWestIcon sx={{ fontSize: "1rem !important" }} />}
-                            onClick={handleCheckIn}
+                            // onClick={handleCheckIn}
+                            onClick={checkIn}
                             sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-In</Button>
                     )}
 
-                    {/* Pause/Check-Out Stack */}
-                    {isTracking && (
+                    {isCheckedIn && !isCheckedOut && (
                         <Stack flexDirection="row" gap="8px" alignItems="center">
                             <IconButton
-                                aria-label={isPaused ? "resume" : "pause"}
+                                aria-label={isRunning ? "resume" : "pause"}
                                 size="small"
-                                onClick={handlePauseResume}
-                                sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles }} className={style.timeCheckBtn}><PauseIcon /></IconButton>
+                                onClick={() => toggleResumePause.mutate()}
+                                sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles }} className={style.timeCheckBtn}>
+                                {isRunning ? <PauseIcon /> : <PlayArrowRoundedIcon />}
+                            </IconButton>
                             <Button
                                 variant="contained"
                                 size="small"
+                                onClick={checkOut}
+                                disabled={isCheckingOut}
                                 startIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
-                                onClick={handleCheckOut}
-                                sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-Out</Button>
+                                sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>{isCheckingOut ? "Checking Out..." : "Check-Out"}</Button>
                         </Stack>
                     )}
                 </Stack>
@@ -318,18 +381,3 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
 };
-
-
-{/* <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
-                    <Typography>00:00:00</Typography>
-                    <Button variant='contained' size='small' startIcon={<SouthWestIcon sx={{ fontSize: "1rem !important", }} />} sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-In</Button>
-                    <Stack flexDirection="row" gap="8px" alignItems="center">
-                        <IconButton
-                            aria-label="pause"
-                            size="small"
-                            sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles }} className={style.timeCheckBtn}>
-                            <PauseIcon />
-                        </IconButton>
-                        <Button variant='contained' size='small' startIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />} sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-Out</Button>
-                    </Stack>
-                </Stack> */}
