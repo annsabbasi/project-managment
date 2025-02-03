@@ -16,7 +16,7 @@ export default function Timer() {
         console.log("Elapsed Time data Response", response.data.data)
         // const { elapsedTime, isRunning, isCheckedOut } = response.data;
         const { elapsedTime, isRunning, isCheckedOut } = response.data.data;
-        console.log("Response data of fetchTimerState Frontend", response.data.data)
+        // console.log("Response data of fetchTimerState Frontend", response.data.data)
         setElapsedTime(elapsedTime);
         setIsRunning(isRunning);
         setIsCheckedOut(isCheckedOut);
@@ -87,7 +87,7 @@ export default function Timer() {
       </button>
 
       <button onClick={handlePause} disabled={isCheckedOut}>
-      {/* <button onClick={handlePause} > */}
+        {/* <button onClick={handlePause} > */}
         Pause
       </button>
 
@@ -96,7 +96,7 @@ export default function Timer() {
       </button>
 
       <button onClick={handleCheckOut} disabled={isCheckedOut}>
-      {/* <button onClick={handleCheckOut}> */}
+        {/* <button onClick={handleCheckOut}> */}
         Check-Out
       </button>
     </div>
