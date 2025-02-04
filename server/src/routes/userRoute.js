@@ -37,7 +37,7 @@ import {
 import { upload } from '../middleware/multerMiddleware.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
-import { checkIn, checkOut, getDailyTimeDetails, getDailyUserTimeDetails, pauseOrResume, getElapsedTime } from '../controllers/trackerTime.js';
+import { checkIn, checkOut, pauseOrResume, getElapsedTime, getUserTimeProject, getUsersTimeProject } from '../controllers/trackerTime.js';
 import { Timer } from '../models/test.js';
 
 
@@ -114,8 +114,10 @@ router.get('/getElapsedTime', verifyUser(['admin', 'user', 'QcAdmin']), getElaps
 router.post('/checkIn', verifyUser(['admin', 'user', 'QcAdmin']), checkIn)
 router.put('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
 router.put('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
-router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
-router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
+router.get('/getUserTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getUserTimeProject)
+router.get('/getUsersTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getUsersTimeProject)
+// router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
+// router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
 
 
 
