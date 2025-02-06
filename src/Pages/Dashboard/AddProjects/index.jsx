@@ -89,97 +89,80 @@ export default function AddProjects() {
 
 
     const { id: ProjectId } = useParams();
-    const [userElapsedTime, setUserElapsedTime] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-    const [isCheckedOut, setIsCheckedOut] = useState(false)
     const queryClient = useQueryClient();
 
-
-    // For The User Actual CheckIn
+    const [isRunning, setIsRunning] = useState(false);
     const [isCheckedIn, setIsCheckedIn] = useState(false);
-    const { mutate: checkIn } = useMutation({
-        mutationFn: () => userCheckIn(ProjectId),
-        onSuccess: (data) => {
-            setIsCheckedIn(true);
-            toast.success(`${data.message}`);
-            // setIsTracking(true);
-        },
-        onError: (error) => {
-            toast.error(error.response?.data?.message || "Check-in failed.");
-        },
-    })
+    const [isCheckedOut, setIsCheckedOut] = useState(false);
+    const [elapsedTime, setElapsedTime] = useState(0);
 
-
-    // For The User Actual ElapsedTime
-    const { data: elapsedTime } = useQuery({
+    const { data: timeData } = useQuery({
         queryKey: ['elapsedTime', ProjectId],
-        // queryFn: userGetElapsedTime,
         queryFn: () => userGetElapsedTime(ProjectId),
-        staleTime: 1000 * 60,
-        refetchInterval: 750,
+        onSuccess: (data) => {
+            setElapsedTime(data.elapsedTime || 0);
+            setIsRunning(data.isRunning);
+            setIsCheckedIn(data.isCheckedIn);
+            setIsCheckedOut(data.isCheckedOut);
+        }
     })
+    console.log("ElapsedTime timeDate", timeData)
 
     useEffect(() => {
-        if (elapsedTime?.data) {
-            setUserElapsedTime(elapsedTime.data.elapsedTime);
-            setIsCheckedOut(elapsedTime.data.isCheckedOut);
-            setIsRunning(elapsedTime.data.isRunning);
+        let timer;
+        if (isRunning) {
+            timer = setInterval(() => {
+                setElapsedTime((prevTime) => prevTime + 1);
+            }, 1000);
         }
-    }, [elapsedTime]);
+        return () => clearInterval(timer);
+    }, [isRunning]);
 
-    console.log("elapsedTime", elapsedTime)
-
-
-    // For The User Pause or Remume Time
-    const toggleResumePause = useMutation({
-        mutationFn: () => userPauseOrResume(ProjectId),
+    const checkInMutation = useMutation({
+        mutationFn: () => userCheckIn(ProjectId),
         onSuccess: () => {
-            queryClient.invalidateQueries(['elapsedTime']);
-            // toast.success("Timer updated successfully!");
-            // console.log("Data onSuccess ResumePause", data)
+            toast.success("Checked in successfully!");
+            setIsCheckedIn(true);
+            setIsRunning(true);
+            queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
-        onError: (error) => {
-            toast.error(error.response?.data?.message || "Failed to update timer.");
-        }
-    })
-
-
-    // For The User Actual CheckOut
-    const { mutate: checkOut, isLoading: isCheckingOut, data: checkOutData } = useMutation({
-        // mutationFn: userCheckOut,
-        mutationFn: () => userCheckOut(ProjectId),
-        onSuccess: () => {
-            // setIsTracking(false);
-            setIsCheckedIn(false);
-            setIsCheckedOut(true);
-            toast.success("Checked out successfully!");
-            queryClient.invalidateQueries(['elapsedTime']);
-            // console.log("CheckOut Frontend", data)
-        },
-        onError: (error) => {
-            toast.error(error.response?.data?.message || "Check-out failed.");
+        onError: () => {
+            toast.error("Failed to check in.");
         }
     });
-    const totalCheckOutData = checkOutData?.data?.totalDuration
-    console.log("(CheckOut Data) AddProjects", checkOutData?.data)
 
+    const pauseOrResumeMutation = useMutation({
+        mutationFn: () => userPauseOrResume(ProjectId),
+        onSuccess: (data) => {
+            toast.success(data.isRunning ? "Resumed successfully!" : "Paused successfully!");
+            setIsRunning(data.isRunning);
+            console.log("Data of pauseOrResume Mutation,", data)
+        },
+        onError: () => {
+            toast.error("Failed to pause/resume.");
+        }
+    });
 
-    // Format Time Settings
+    const checkOutMutation = useMutation({
+        mutationFn: () => userCheckOut(ProjectId),
+        onSuccess: () => {
+            toast.success("Checked out successfully!");
+            setIsCheckedOut(true);
+            setIsRunning(false);
+            queryClient.invalidateQueries(['elapsedTime', ProjectId]);
+        },
+        onError: () => {
+            toast.error("Failed to check out.");
+        }
+    });
+
     const formatTime = (seconds) => {
-        if (!seconds || isNaN(seconds)) return "00:00:00";
-
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
         return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
 
-
-    // const { data: userData } = useQuery({
-    //     queryKey: ['elapsedTime', ProjectId],
-    //     queryFn: () => userTimeProject(ProjectId)
-    // })
-    // console.log("UserData for the Login Time Track USER!!!", userData)
 
     return (
         <Box>
@@ -300,42 +283,38 @@ export default function AddProjects() {
 
 
                 <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
-                    <Typography>
-                        {elapsedTime?.data?.elapsedTime !== undefined ? (totalCheckOutData ? formatTime(totalCheckOutData) : formatTime(elapsedTime?.data?.elapsedTime)) : "00:00:00"}
-                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(elapsedTime?.elapsedTime) : "00:00:00"} */}
-                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(totalCheckOutData) : "00:00:00"} */}
-                    </Typography>
+                    <Typography>{formatTime(elapsedTime)}</Typography>
 
-                    {/* {!isRunning && !isCheckedOut && !isCheckedIn && ( */}
                     {!isRunning && !isCheckedOut && !isCheckedIn && (
                         <Button
                             variant="contained"
                             size="small"
                             startIcon={<SouthWestIcon sx={{ fontSize: "1rem !important" }} />}
-                            // onClick={handleCheckIn}
-                            onClick={checkIn}
-                            sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-In</Button>
+                            onClick={() => checkInMutation.mutate()}
+                            sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }}
+                            className={style.timeCheckBtn}>
+                            Check-In
+                        </Button>
                     )}
 
-                    {/* {actionsShown && ( */}
                     {isCheckedIn && !isCheckedOut && (
                         <Stack flexDirection="row" gap="8px" alignItems="center">
                             <IconButton
-                                aria-label={isRunning ? "resume" : "pause"}
                                 size="small"
-                                onClick={() => toggleResumePause.mutate()}
-                                disabled={isCheckedOut}
-                                sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles, "&.Mui-disabled": { color: "gray", backgroundColor: "#f0f0f0 !important" } }} className={style.timeCheckBtn}>
+                                onClick={() => pauseOrResumeMutation.mutate()}
+                                sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles }}
+                                className={style.timeCheckBtn}>
                                 {isRunning ? <PauseIcon /> : <PlayArrowRoundedIcon />}
                             </IconButton>
                             <Button
                                 variant="contained"
                                 size="small"
-                                // onClick={checkOut}
-                                onClick={() => checkOut()}
-                                disabled={isCheckedOut}
+                                onClick={() => checkOutMutation.mutate()}
                                 startIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
-                                sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles, "&.Mui-disabled": { color: "gray", backgroundColor: "#f0f0f0 !important" } }} className={style.timeCheckBtn}>{isCheckingOut ? "Checking Out..." : "Check-Out"}</Button>
+                                sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }}
+                                className={style.timeCheckBtn}>
+                                Check-Out
+                            </Button>
                         </Stack>
                     )}
                 </Stack>

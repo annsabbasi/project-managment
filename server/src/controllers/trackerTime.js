@@ -6,49 +6,42 @@ import moment from 'moment'
 import { adminTask } from "../models/adminTask.js";
 
 
+// Check-In Functionality
 const checkIn = asyncHandler(async (req, res) => {
     const { projectId } = req.body;
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
 
-    // Validate if projectId exists in the userTask collection
     const projectExists = await adminTask.findById(projectId);
     if (!projectExists) {
         throw new apiError(404, "Invalid projectId. Project not found.");
     }
 
-    // Check if user has already checked in today for this project
     let timeEntry = await userTracker.findOne({ userId, projectId, date: today });
-
     if (timeEntry) {
         throw new apiError(400, "You have already checked in for this project today.");
     }
 
-    if (!timeEntry) {
-        timeEntry = new userTracker({
-            userId,
-            projectId,
-            date: today,
-            checkIn: new Date(),
-            isRunning: true,
-        });
-    } else {
+    timeEntry = new userTracker({
+        userId,
         projectId,
-            timeEntry.isRunning = true;
-        timeEntry.checkIn = new Date();
-    }
+        date: today,
+        checkIn: new Date(),
+        isRunning: true,
+    });
+
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, timeEntry, 'CheckedIn successfully.'));
-})
+});
 
-
-// For The User Continous Time
+// Get Elapsed Time
 const getElapsedTime = asyncHandler(async (req, res) => {
-    let timer = await userTracker.findOne({
+    const timer = await userTracker.findOne({
         userId: req.user.id,
         projectId: req.query.projectId,
         date: moment().format('YYYY-MM-DD'),
     });
+
     if (!timer) {
         return res.status(404).json(new apiResponse(404, { isRunning: false, elapsedTime: 0 }, "No active timer found"));
     }
@@ -62,92 +55,74 @@ const getElapsedTime = asyncHandler(async (req, res) => {
         isRunning: timer.isRunning,
         isCheckedOut: timer.isCheckedOut,
         elapsedTime,
-        // totalDuration: timer.totalDuration || 0,
-        // checkIn: timer.checkIn
     }, "Elapsed time fetched successfully."));
 });
 
-
 // Pause or Resume Timer
 const pauseOrResume = asyncHandler(async (req, res) => {
+    const { projectId } = req.body;
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
 
-    let timeEntry = await userTracker.findOne({ userId, projectId: req.body.projectId, date: today });
-
+    const timeEntry = await userTracker.findOne({ userId, projectId, date: today });
 
     if (!timeEntry) {
-        throw new apiError(404, `No Check-In found for ${today}`);
+        throw new apiError(404, "No active session found to pause or resume.");
     }
 
     if (timeEntry.isCheckedOut) {
-        throw new apiError(400, "Cannot pause or resume after check-out.");
+        throw new apiError(400, "You have already checked out for this project.");
     }
 
     if (timeEntry.isRunning) {
-        // Pause logic
         timeEntry.isRunning = false;
         timeEntry.lastPaused = new Date();
     } else {
-        // Resume logic
         if (!timeEntry.lastPaused) {
-            throw new apiError(400, "Invalid pause state. No last pause recorded.");
+            throw new apiError(400, "Cannot resume without a paused state.");
         }
 
-        const pauseDuration = Math.floor((new Date() - timeEntry.lastPaused) / 1000);
-        timeEntry.pausedDuration += pauseDuration;
-
-        // Adjisting the Paused Duration to start where it have paused
-        if (timeEntry.checkIn) {
-            timeEntry.isPaused = new Date(timeEntry.checkIn.getTime() + pauseDuration * 1000);
-        }
-        console.log("isPaused, pause or Resume", timeEntry.isPaused)
+        const pausedTime = Math.floor((new Date() - new Date(timeEntry.lastPaused)) / 1000);
+        timeEntry.pausedDuration += pausedTime;
         timeEntry.isRunning = true;
         timeEntry.lastPaused = null;
     }
 
     await timeEntry.save();
-    res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? "Resumed successfully." : "Paused successfully."));
+    res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? 'Resumed successfully.' : 'Paused successfully.'));
 });
 
-
-// For The User CheckOut
+// Check-Out Functionality
 const checkOut = asyncHandler(async (req, res) => {
+    const { projectId } = req.body;
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
 
-    let timeEntry = await userTracker.findOne({ userId, projectId: req.body.projectId, date: today });
+    const timeEntry = await userTracker.findOne({ userId, projectId, date: today });
+
     if (!timeEntry) {
-        throw new apiError(404, `No CheckIn was found for ${today}`);
+        throw new apiError(404, "No active session found to check out.");
     }
     if (timeEntry.isCheckedOut) {
-        throw new apiError(404, 'You already have checked out for today.');
+        throw new apiError(400, "You have already checked out for this project.");
     }
-    if (timeEntry.isRunning) {
-        throw new apiError(410, "Timer is Resumed. Pause it first to check out.");
+    if (timeEntry.isRunning && timeEntry.lastPaused) {
+        throw new apiError(400, "Cannot check out while paused. Resume before checking out.");
     }
 
     const checkOutTime = new Date();
-    let elapsedTime = Math.floor((checkOutTime - timeEntry.checkIn) / 1000);
-    let totalPausedTime = timeEntry.pausedDuration;
-
-    // if (timeEntry.lastPaused) {
-    if (timeEntry.lastPaused && !timeEntry.isRunning) {
-        totalPausedTime += Math.floor((checkOutTime - timeEntry.lastPaused) / 1000);
-    }
-
-    const sessionDuration = elapsedTime - totalPausedTime;
-    // const sessionDuration = elapsedTime - timeEntry.pausedDuration;
-    console.log("sessionDuration", sessionDuration)
+    const totalWorkedTime = Math.floor((checkOutTime - new Date(timeEntry.checkIn)) / 1000);
+    const netDuration = totalWorkedTime - timeEntry.pausedDuration;
 
     timeEntry.checkOut = checkOutTime;
-    timeEntry.totalDuration = sessionDuration;
+    timeEntry.totalDuration = netDuration;
     timeEntry.isCheckedOut = true;
     timeEntry.isRunning = false;
 
     await timeEntry.save();
-    res.status(200).json(new apiResponse(200, timeEntry, "CheckOut successfully."));
+    res.status(200).json(new apiResponse(200, { totalDuration: netDuration }, 'Checked out successfully.'));
 });
+
 
 
 // For Getting The Daily Time Reports
