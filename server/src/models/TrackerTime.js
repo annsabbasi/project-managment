@@ -40,14 +40,14 @@ const TimeTrackingSchema = new Schema({
         type: Number,
         default: 0
     },
-    pausedDuration:{
+    pausedDuration: {
         type: Number,
         default: 0
     },
-    // isPaused: {
-    //     type: Boolean,
-    //     default: false
-    // },
+    isPaused: {
+        type: Date,
+        default: null
+    },
     lastPaused: {
         type: Date,
     },

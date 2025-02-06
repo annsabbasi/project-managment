@@ -90,7 +90,6 @@ export default function AddProjects() {
 
     const { id: ProjectId } = useParams();
     const [userElapsedTime, setUserElapsedTime] = useState(0);
-    const [actionsShown, setActionShown] = useState(false)
     const [isRunning, setIsRunning] = useState(false);
     const [isCheckedOut, setIsCheckedOut] = useState(false)
     const queryClient = useQueryClient();
@@ -102,8 +101,8 @@ export default function AddProjects() {
         mutationFn: () => userCheckIn(ProjectId),
         onSuccess: (data) => {
             setIsCheckedIn(true);
-            setActionShown(true);
             toast.success(`${data.message}`);
+            // setIsTracking(true);
         },
         onError: (error) => {
             toast.error(error.response?.data?.message || "Check-in failed.");
@@ -128,13 +127,16 @@ export default function AddProjects() {
         }
     }, [elapsedTime]);
 
+    console.log("elapsedTime", elapsedTime)
+
 
     // For The User Pause or Remume Time
     const toggleResumePause = useMutation({
         mutationFn: () => userPauseOrResume(ProjectId),
         onSuccess: () => {
             queryClient.invalidateQueries(['elapsedTime']);
-            setActionShown(true)
+            // toast.success("Timer updated successfully!");
+            // console.log("Data onSuccess ResumePause", data)
         },
         onError: (error) => {
             toast.error(error.response?.data?.message || "Failed to update timer.");
@@ -144,20 +146,22 @@ export default function AddProjects() {
 
     // For The User Actual CheckOut
     const { mutate: checkOut, isLoading: isCheckingOut, data: checkOutData } = useMutation({
+        // mutationFn: userCheckOut,
         mutationFn: () => userCheckOut(ProjectId),
         onSuccess: () => {
+            // setIsTracking(false);
             setIsCheckedIn(false);
             setIsCheckedOut(true);
-            setActionShown(true)
             toast.success("Checked out successfully!");
             queryClient.invalidateQueries(['elapsedTime']);
+            // console.log("CheckOut Frontend", data)
         },
         onError: (error) => {
             toast.error(error.response?.data?.message || "Check-out failed.");
         }
     });
     const totalCheckOutData = checkOutData?.data?.totalDuration
-    // console.log("(CheckOut Data) AddProjects", checkOutData?.data)
+    console.log("(CheckOut Data) AddProjects", checkOutData?.data)
 
 
     // Format Time Settings
@@ -296,15 +300,14 @@ export default function AddProjects() {
 
 
                 <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
-                    {!isCheckedOut ?
-                        <Typography>
-                            {elapsedTime?.data?.elapsedTime !== undefined ? (totalCheckOutData ? formatTime(totalCheckOutData) : formatTime(elapsedTime?.data?.elapsedTime)) : "00:00:00"}
-                        </Typography> :
-                        <Typography>{formatTime(elapsedTime?.data?.totalDuration)}</Typography>
-                    }
+                    <Typography>
+                        {elapsedTime?.data?.elapsedTime !== undefined ? (totalCheckOutData ? formatTime(totalCheckOutData) : formatTime(elapsedTime?.data?.elapsedTime)) : "00:00:00"}
+                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(elapsedTime?.elapsedTime) : "00:00:00"} */}
+                        {/* {elapsedTime?.elapsedTime !== undefined ? formatTime(totalCheckOutData) : "00:00:00"} */}
+                    </Typography>
 
                     {/* {!isRunning && !isCheckedOut && !isCheckedIn && ( */}
-                    {!isRunning && !isCheckedOut && !elapsedTime?.data?.checkIn && (
+                    {!isRunning && !isCheckedOut && !isCheckedIn && (
                         <Button
                             variant="contained"
                             size="small"
@@ -315,7 +318,7 @@ export default function AddProjects() {
                     )}
 
                     {/* {actionsShown && ( */}
-                    {elapsedTime?.data?.checkIn && (
+                    {isCheckedIn && !isCheckedOut && (
                         <Stack flexDirection="row" gap="8px" alignItems="center">
                             <IconButton
                                 aria-label={isRunning ? "resume" : "pause"}

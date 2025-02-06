@@ -7,7 +7,7 @@ import { adminTask } from "../models/adminTask.js";
 
 
 const checkIn = asyncHandler(async (req, res) => {
-    const { projectId } = req.body; // Get projectId from request body
+    const { projectId } = req.body;
     const userId = req.user.id;
     const today = moment().format('YYYY-MM-DD');
 
@@ -24,19 +24,22 @@ const checkIn = asyncHandler(async (req, res) => {
         throw new apiError(400, "You have already checked in for this project today.");
     }
 
-    // Create a new check-in entry with projectId
-    timeEntry = new userTracker({
-        userId,
+    if (!timeEntry) {
+        timeEntry = new userTracker({
+            userId,
+            projectId,
+            date: today,
+            checkIn: new Date(),
+            isRunning: true,
+        });
+    } else {
         projectId,
-        date: today,
-        checkIn: new Date(),
-        isRunning: true,
-    });
-
+            timeEntry.isRunning = true;
+        timeEntry.checkIn = new Date();
+    }
     await timeEntry.save();
-    console.log("This is the CheckIn Data", timeEntry);
-    res.status(200).json(new apiResponse(200, timeEntry, 'Checked in successfully.'));
-});
+    res.status(200).json(new apiResponse(200, timeEntry, 'CheckedIn successfully.'));
+})
 
 
 // For The User Continous Time
@@ -59,8 +62,8 @@ const getElapsedTime = asyncHandler(async (req, res) => {
         isRunning: timer.isRunning,
         isCheckedOut: timer.isCheckedOut,
         elapsedTime,
-        totalDuration: timer.totalDuration || 0,
-        checkIn: timer.checkIn
+        // totalDuration: timer.totalDuration || 0,
+        // checkIn: timer.checkIn
     }, "Elapsed time fetched successfully."));
 });
 
@@ -71,6 +74,7 @@ const pauseOrResume = asyncHandler(async (req, res) => {
     const today = moment().format('YYYY-MM-DD');
 
     let timeEntry = await userTracker.findOne({ userId, projectId: req.body.projectId, date: today });
+
 
     if (!timeEntry) {
         throw new apiError(404, `No Check-In found for ${today}`);
@@ -95,9 +99,9 @@ const pauseOrResume = asyncHandler(async (req, res) => {
 
         // Adjisting the Paused Duration to start where it have paused
         if (timeEntry.checkIn) {
-            timeEntry.checkIn = new Date(timeEntry.checkIn.getTime() + pauseDuration * 1000);
+            timeEntry.isPaused = new Date(timeEntry.checkIn.getTime() + pauseDuration * 1000);
         }
-
+        console.log("isPaused, pause or Resume", timeEntry.isPaused)
         timeEntry.isRunning = true;
         timeEntry.lastPaused = null;
     }
@@ -127,11 +131,14 @@ const checkOut = asyncHandler(async (req, res) => {
     let elapsedTime = Math.floor((checkOutTime - timeEntry.checkIn) / 1000);
     let totalPausedTime = timeEntry.pausedDuration;
 
-    if (timeEntry.lastPaused) {
+    // if (timeEntry.lastPaused) {
+    if (timeEntry.lastPaused && !timeEntry.isRunning) {
         totalPausedTime += Math.floor((checkOutTime - timeEntry.lastPaused) / 1000);
     }
 
     const sessionDuration = elapsedTime - totalPausedTime;
+    // const sessionDuration = elapsedTime - timeEntry.pausedDuration;
+    console.log("sessionDuration", sessionDuration)
 
     timeEntry.checkOut = checkOutTime;
     timeEntry.totalDuration = sessionDuration;
