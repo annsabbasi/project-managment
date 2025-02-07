@@ -96,6 +96,7 @@ export default function AddProjects() {
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
 
+    // User ElapsedTime
     const { data: timeData } = useQuery({
         queryKey: ['elapsedTime', ProjectId],
         queryFn: () => userGetElapsedTime(ProjectId),
@@ -106,8 +107,6 @@ export default function AddProjects() {
             setIsCheckedOut(data.isCheckedOut);
         }
     })
-    console.log("ElapsedTime timeDate", timeData)
-
     useEffect(() => {
         let timer;
         if (isRunning) {
@@ -115,9 +114,13 @@ export default function AddProjects() {
                 setElapsedTime((prevTime) => prevTime + 1);
             }, 1000);
         }
+        // I should Have to stop the State instead of the variable State is (elapsedTime) variable (timer)
         return () => clearInterval(timer);
     }, [isRunning]);
+    console.log("ElapsedTime timeDate", timeData?.data?.elapsedTime)
 
+
+    // User CheckIn Time
     const checkInMutation = useMutation({
         mutationFn: () => userCheckIn(ProjectId),
         onSuccess: () => {
@@ -131,18 +134,56 @@ export default function AddProjects() {
         }
     });
 
+
+    // User Pause or Resume Time
+    // const pauseOrResumeMutation = useMutation({
+    //     mutationFn: () => userPauseOrResume(ProjectId),
+    //     onSuccess: (response) => {
+    //         console.log("Full response in onSuccess:", response);
+
+    //         // Extract data properly
+    //         const responseData = response?.data ?? response;
+    //         console.log("Extracted data:", responseData?.data?.elapsedTime);
+
+    //         toast.success(responseData.isRunning ? "Resumed successfully!" : "Paused successfully!");
+    //         setIsRunning(responseData.isRunning);
+
+    //         if (responseData.isRunning) {
+    //             setElapsedTime(responseData?.data?.elapsedTime || 0);
+    //         }
+    //     },
+    //     onError: () => {
+    //         toast.error("Failed to pause/resume.");
+    //     }
+    // });
+    // console.log("ElapsedTime", elapsedTime)
+
+    // annsabbasi code down
     const pauseOrResumeMutation = useMutation({
         mutationFn: () => userPauseOrResume(ProjectId),
-        onSuccess: (data) => {
-            toast.success(data.isRunning ? "Resumed successfully!" : "Paused successfully!");
-            setIsRunning(data.isRunning);
-            console.log("Data of pauseOrResume Mutation,", data)
+        onSuccess: (response) => {
+            console.log("Full response in onSuccess:", response);
+
+            // Extract data properly
+            const responseData = response?.data;  // No need to access `responseData.data`
+            console.log("Extracted data:", responseData.data.elapsedTime);
+
+            toast.success(responseData.data.isRunning ? "Resumed successfully!" : "Paused successfully!");
+            setIsRunning(responseData.isRunning);
+
+            // Always update elapsedTime, whether pausing or resuming
+            setElapsedTime(responseData.data.elapsedTime || 0);
+            console.log("Updated ElapsedTime:", responseData.data.elapsedTime);
         },
         onError: () => {
             toast.error("Failed to pause/resume.");
         }
     });
 
+
+
+
+    // User CheckOut Time
     const checkOutMutation = useMutation({
         mutationFn: () => userCheckOut(ProjectId),
         onSuccess: () => {
@@ -156,13 +197,14 @@ export default function AddProjects() {
         }
     });
 
+
+    // Format Time
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
         return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
-
 
     return (
         <Box>
@@ -341,9 +383,11 @@ export default function AddProjects() {
                 <CustomTabPanel value={activeTab} index={4}>
                     <Assign />
                 </CustomTabPanel>
+
                 <CustomTabPanel value={activeTab} index={5}>
                     <Time />
                 </CustomTabPanel>
+
                 <CustomTabPanel value={activeTab} index={6}>
                     <Controls />
                 </CustomTabPanel>

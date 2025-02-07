@@ -10,13 +10,16 @@ export const userGetElapsedTime = async (projectId) => {
     if (data.data.isCheckedOut) {
         return { elapsedTime: data.data.totalDuration, isCheckedOut: true };
     }
+    // console.log("userTracker Data of userFetElapsedTime", data)
     return data;
 }
 
 export const userPauseOrResume = async (projectId) => {
-    const { data } = await axiosInstance.put('/user/pauseOrResume', { projectId });
-    return data;
-}
+    const response = await axiosInstance.put('/user/pauseOrResume', { projectId });
+    // console.log("API Response:", response);
+    return response; // Ensure full response is returned
+};
+
 
 export const userCheckOut = async (projectId) => {
     const { data } = await axiosInstance.put('/user/checkOut', { projectId });
@@ -29,6 +32,6 @@ export const userTimeProject = async (projectId) => {
 }
 
 export const usersTimeProject = async (projectId) => {
-    const { data } = await axiosInstance.get('/user/getUsersTimeProject', { projectId });
+    const { data } = await axiosInstance.get('/user/getUsersTimeProject', { params: { projectId } });
     return data;
 };

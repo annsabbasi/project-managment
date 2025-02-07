@@ -58,7 +58,12 @@ const TimeTrackingSchema = new Schema({
     weeklyTime: {
         type: Number,
         default: 0
-    }
+    },
+    effectiveElapsedTime: {
+        type: Number,
+        default: 0,
+    },
+
 }, { timestamps: true })
 
 

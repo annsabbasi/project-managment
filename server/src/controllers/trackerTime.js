@@ -34,6 +34,7 @@ const checkIn = asyncHandler(async (req, res) => {
     res.status(200).json(new apiResponse(200, timeEntry, 'CheckedIn successfully.'));
 });
 
+
 // Get Elapsed Time
 const getElapsedTime = asyncHandler(async (req, res) => {
     const timer = await userTracker.findOne({
@@ -46,9 +47,13 @@ const getElapsedTime = asyncHandler(async (req, res) => {
         return res.status(404).json(new apiResponse(404, { isRunning: false, elapsedTime: 0 }, "No active timer found"));
     }
 
-    let elapsedTime = 0;
+    // let elapsedTime = 0;
+    // annsabbasi code down
+    let elapsedTime = timer.effectiveElapsedTime;
     if (timer.checkIn && timer.isRunning) {
-        elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000);
+        // elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000);
+        // annsabbasi code down
+        elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000) - timer.pausedDuration;
     }
 
     res.status(200).json(new apiResponse(200, {
@@ -57,6 +62,7 @@ const getElapsedTime = asyncHandler(async (req, res) => {
         elapsedTime,
     }, "Elapsed time fetched successfully."));
 });
+
 
 // Pause or Resume Timer
 const pauseOrResume = asyncHandler(async (req, res) => {
@@ -84,13 +90,22 @@ const pauseOrResume = asyncHandler(async (req, res) => {
 
         const pausedTime = Math.floor((new Date() - new Date(timeEntry.lastPaused)) / 1000);
         timeEntry.pausedDuration += pausedTime;
+        // annsabbasi code down
+        timeEntry.effectiveElapsedTime = Math.floor((Date.now() - new Date(timeEntry.checkIn)) / 1000) - timeEntry.pausedDuration;
+        // annsabbasi code up
         timeEntry.isRunning = true;
         timeEntry.lastPaused = null;
     }
 
     await timeEntry.save();
-    res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? 'Resumed successfully.' : 'Paused successfully.'));
+    // res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? 'Resumed successfully.' : 'Paused successfully.'));
+    // annsabbasi code down
+    res.status(200).json(new apiResponse(200, {
+        isRunning: timeEntry.isRunning,
+        elapsedTime: timeEntry.effectiveElapsedTime
+    }, timeEntry.isRunning ? 'Resumed successfully.' : 'Paused successfully.'));
 });
+
 
 // Check-Out Functionality
 const checkOut = asyncHandler(async (req, res) => {
@@ -111,18 +126,26 @@ const checkOut = asyncHandler(async (req, res) => {
     }
 
     const checkOutTime = new Date();
-    const totalWorkedTime = Math.floor((checkOutTime - new Date(timeEntry.checkIn)) / 1000);
-    const netDuration = totalWorkedTime - timeEntry.pausedDuration;
+    let totalWorkedTime = Math.floor((checkOutTime - new Date(timeEntry.checkIn)) / 1000);
+    // const netDuration = totalWorkedTime - timeEntry.pausedDuration;
+    // annsabbasi code down
+    let netDuration = timeEntry.pausedDuration;
+    if (timeEntry.lastPaused) {
+        netDuration += Math.floor((checkOutTime - timeEntry.lastPaused) / 1000);
+    }
+    const sessionDuration = totalWorkedTime - netDuration;
+    // annsabbasi code top
 
     timeEntry.checkOut = checkOutTime;
-    timeEntry.totalDuration = netDuration;
+    // timeEntry.totalDuration = netDuration;
+    // annsabbasi code down
+    timeEntry.totalDuration = sessionDuration;
     timeEntry.isCheckedOut = true;
     timeEntry.isRunning = false;
-
+    console.log("checkOut TimerEntry.isRunning", timeEntry)
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, { totalDuration: netDuration }, 'Checked out successfully.'));
 });
-
 
 
 // For Getting The Daily Time Reports
