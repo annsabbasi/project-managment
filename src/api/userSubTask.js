@@ -11,14 +11,14 @@ export const createSubTask = async (taskData) => {
 
 // Get User Sub Task inside Project
 export const getSubTask = async (projectId) => {
-    const { data } = await axiosInstance.get('/user/get-subtask', { params: { projectId } })
+    const { data } = await axiosInstance.get('/user/get-subtask', { params: { projectId } });
     return data;
 }
 
 
 // Get User Name & Detail Task inside Project
 export const getUserForSubTask = async (projectId) => {
-    const response = await axiosInstance.get(`/user/get-userOfSubTask/${projectId}`)
+    const response = await axiosInstance.get(`/user/get-userOfSubTask/${projectId}`);
     return response.data;
 }
 
@@ -36,6 +36,34 @@ export const updateSubTask = async (taskId, updateData) => {
     return response.data;
 }
 
+
+
+// Filtering the SubTask Data
+export const filterSubTask = async (searchText, filterField) => {
+    const response = await axiosInstance.get('/user/search-subTask', { params: { searchText: searchText, filterField: filterField } })
+    return response.data;
+}
+
+
+// Complete the Sub User Task 
+export const completeSubTask = async (taskID, updateData) => {
+    const response = await axiosInstance.patch(`/user/complete-subTask/${taskID}`, updateData);
+    return response.data;
+}
+
+
+// Get Complete the Sub User Task
+export const getCompleteSubTask = async () => {
+    const response = await axiosInstance.get('/user/get-complete-subTask');
+    return response.data;
+}
+
+
+// Get Complete the Sub User Task
+export const subCompleteTaskApproval = async (taskID, updateData) => {
+    const response = await axiosInstance.patch(`/user/approve-subTask/${taskID}`, updateData);
+    return response.data;
+}
 
 
 

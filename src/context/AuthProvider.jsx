@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { axiosInstance } from '../api/axiosInstance';
+import { darkTheme, lightTheme } from '../Theme/Theme';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
 const AuthContext = createContext();
 

@@ -1,25 +1,39 @@
 import PropTypes from 'prop-types';
+import style from "./style.module.scss"
+
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAuth } from '../../../context/AuthProvider';
+
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import SouthWestIcon from '@mui/icons-material/SouthWest';
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+
 import OverView from "./Overview"
 import Teams from "./Teams"
 import Assign from "./Assign"
-import project from "./style.module.scss"
-import theme from "../../../Theme/Theme";
 import Videos from "./Videos"
 import Time from "./Time"
-
-{/* Further Tabs if Needed Imports! */ }
 import Files from "./Files"
-// import Time from "./Time"
-// import Controls from "./Controls"
+import Controls from "./Controls"
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
-    Tab, Tabs,
-    Typography, Box,
+    Button, Tab, Tabs,
     IconButton, Stack,
+    Typography, Box,
 } from "@mui/material";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
+
+import {
+    userCheckIn, userCheckOut,
+    userGetElapsedTime, userPauseOrResume,
+} from '../../../api/userTracker';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+
+
 
 const CustomTabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -35,7 +49,6 @@ const CustomTabPanel = (props) => {
     )
 }
 
-
 const allyProps = (index) => {
     return {
         id: `simpleTab-${index}`,
@@ -45,26 +58,134 @@ const allyProps = (index) => {
 
 
 export default function AddProjects() {
+    const { theme, mode } = useAuth();
+    const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
+
+    const hoverStyles =
+        mode === "light" ? {
+            backgroundColor: "rgba(52, 52, 52, 0.1) !important",
+            color: "#343434",
+            boxShadow: 0
+        } : {
+            backgroundColor: "rgba(250, 249, 246, 0.1) !important",
+            border: "1px solid transparent",
+            color: "#FAF9F6 !important",
+        };
+
+    const trackerBtnsStyles = mode === 'light' ? {
+        backgroundColor: "#343434 !important",
+        color: "#FAF9F6",
+        boxShadow: 0
+    } : {
+        backgroundColor: "#FAF9F6 !important",
+        color: "#343434",
+        border: "#FAF9F6",
+    }
+
     const [activeTab, setActiveTab] = useState(0)
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
     }
 
 
+    const { id: ProjectId } = useParams();
+    const [userElapsedTime, setUserElapsedTime] = useState(0);
+    const [actionsShown, setActionShown] = useState(false)
+    const [isRunning, setIsRunning] = useState(false);
+    const [isCheckedOut, setIsCheckedOut] = useState(false)
+    const queryClient = useQueryClient();
+
+
+    // For The User Actual CheckIn
+    const [isCheckedIn, setIsCheckedIn] = useState(false);
+    const { mutate: checkIn } = useMutation({
+        mutationFn: () => userCheckIn(ProjectId),
+        onSuccess: (data) => {
+            setIsCheckedIn(true);
+            setActionShown(true);
+            toast.success(`${data.message}`);
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Check-in failed.");
+        },
+    })
+
+
+    // For The User Actual ElapsedTime
+    const { data: elapsedTime } = useQuery({
+        queryKey: ['elapsedTime', ProjectId],
+        // queryFn: userGetElapsedTime,
+        queryFn: () => userGetElapsedTime(ProjectId),
+        staleTime: 1000 * 60,
+        refetchInterval: 750,
+    })
+
+    useEffect(() => {
+        if (elapsedTime?.data) {
+            setUserElapsedTime(elapsedTime.data.elapsedTime);
+            setIsCheckedOut(elapsedTime.data.isCheckedOut);
+            setIsRunning(elapsedTime.data.isRunning);
+        }
+    }, [elapsedTime]);
+
+
+    // For The User Pause or Remume Time
+    const toggleResumePause = useMutation({
+        mutationFn: () => userPauseOrResume(ProjectId),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['elapsedTime']);
+            setActionShown(true)
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Failed to update timer.");
+        }
+    })
+
+
+    // For The User Actual CheckOut
+    const { mutate: checkOut, isLoading: isCheckingOut, data: checkOutData } = useMutation({
+        mutationFn: () => userCheckOut(ProjectId),
+        onSuccess: () => {
+            setIsCheckedIn(false);
+            setIsCheckedOut(true);
+            setActionShown(true)
+            toast.success("Checked out successfully!");
+            queryClient.invalidateQueries(['elapsedTime']);
+        },
+        onError: (error) => {
+            toast.error(error.response?.data?.message || "Check-out failed.");
+        }
+    });
+    const totalCheckOutData = checkOutData?.data?.totalDuration
+    // console.log("(CheckOut Data) AddProjects", checkOutData?.data)
+
+
+    // Format Time Settings
+    const formatTime = (seconds) => {
+        if (!seconds || isNaN(seconds)) return "00:00:00";
+
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60);
+        const secs = seconds % 60;
+        return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    };
+
+
+    // const { data: userData } = useQuery({
+    //     queryKey: ['elapsedTime', ProjectId],
+    //     queryFn: () => userTimeProject(ProjectId)
+    // })
+    // console.log("UserData for the Login Time Track USER!!!", userData)
+
     return (
         <Box>
             <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="center">
-                <Link className={project.goBack} to={`/project`}>
-                    <IconButton disableRipple sx={{
-                        '&:hover': {
-                            backgroundColor: 'transparent'
-                        }
-                    }} className={project.goBackIconContent}>
-                        <ArrowBackIosNewIcon sx={{
-                            color: theme.palette.grey[800],
-                        }} className={project.goBackIcon} />
+
+                <Link className={style.goBack} to={`/project`}>
+                    <IconButton disableRipple >
+                        <ArrowBackIosNewIcon sx={{ color: theme.palette.text.primary }} />
                     </IconButton>
-                    <Typography className={project.goBackTitle}>Project Title</Typography>
+                    <Typography className={style.goBackTitle} sx={{ color: theme.palette.text.primary }}>Go Back</Typography>
                 </Link>
 
                 <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
@@ -73,102 +194,149 @@ export default function AddProjects() {
                         aria-label="user details tabs"
                         value={activeTab}
                         TabIndicatorProps={{ sx: { display: 'none' } }}
-                        sx={{ backgroundColor: 'white' }}
-                        className={project.Tabs}>
+                        sx={{ backgroundColor: theme.palette.background.default }}
+                        className={style.Tabs}>
                         <Tab
                             {...allyProps(0)}
                             label="Overview"
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 0 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 0 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 0 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
-                            })} className={project.Tab} />
+                            })}
+                            className={style.Tab} />
                         <Tab
                             label="Docs"
                             {...allyProps(1)}
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 1 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 1 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 1 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
                             })}
-                            className={project.Tab} />
+                            className={style.Tab} />
 
 
                         <Tab
                             label="Videos"
                             {...allyProps(2)}
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 2 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 2 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 2 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
-                            })} className={project.Tab} />
+                            })}
+                            className={style.Tab} />
 
 
                         <Tab
                             label="Team"
                             {...allyProps(3)}
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 3 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 3 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 3 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
-                            })} className={project.Tab} />
+                            })}
+                            className={style.Tab} />
 
 
                         <Tab
                             label="Assign"
                             {...allyProps(4)}
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 4 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 4 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 4 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 4 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 4 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
-                            })} className={project.Tab} />
+                            })}
+                            className={style.Tab} />
 
 
                         <Tab
                             label="Leaderboard"
                             {...allyProps(5)}
                             sx={(theme) => ({
-                                backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
-                                color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
+                                backgroundColor: activeTab === 5 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 5 ? `${themeTab} !important` : 'grey',
                                 fontWeight: activeTab === 5 ? '600' : '500',
                                 '&.Mui-selected': {
                                     color: theme.palette.grey.darkGrey,
                                 },
                             })}
-                            className={project.Tab} />
+                            className={style.Tab} />
 
 
                         {/* Further Tabs if Needed! */}
-                        {/* <Tab
-                        label="Controls"
-                        {...allyProps(5)}
-                        sx={(theme) => ({
-                            backgroundColor: activeTab === 5 ? theme.palette.grey.hoverGrey : 'transparent',
-                            color: activeTab === 5 ? theme.palette.grey.darkGrey : 'grey',
-                            fontWeight: activeTab === 5 ? '600' : '500',
-                            '&.Mui-selected': {
-                                color: theme.palette.grey.darkGrey,
-                            },
-                        })}
-                        className={project.Tab} /> */}
+                        <Tab
+                            label="Statics"
+                            {...allyProps(6)}
+                            sx={(theme) => ({
+                                backgroundColor: activeTab === 6 ? theme.palette.background.paper : 'transparent',
+                                color: activeTab === 6 ? `${themeTab} !important` : 'grey',
+                                fontWeight: activeTab === 6 ? '600' : '500',
+                                '&.Mui-selected': {
+                                    color: theme.palette.grey.darkGrey,
+                                },
+                            })}
+                            className={style.Tab} />
                     </Tabs>
                 </Box>
-            </Stack>
+
+
+                <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
+                    {!isCheckedOut ?
+                        <Typography>
+                            {elapsedTime?.data?.elapsedTime !== undefined ? (totalCheckOutData ? formatTime(totalCheckOutData) : formatTime(elapsedTime?.data?.elapsedTime)) : "00:00:00"}
+                        </Typography> :
+                        <Typography>{formatTime(elapsedTime?.data?.totalDuration)}</Typography>
+                    }
+
+                    {/* {!isRunning && !isCheckedOut && !isCheckedIn && ( */}
+                    {!isRunning && !isCheckedOut && !elapsedTime?.data?.checkIn && (
+                        <Button
+                            variant="contained"
+                            size="small"
+                            startIcon={<SouthWestIcon sx={{ fontSize: "1rem !important" }} />}
+                            // onClick={handleCheckIn}
+                            onClick={checkIn}
+                            sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }} className={style.timeCheckBtn}>Check-In</Button>
+                    )}
+
+                    {/* {actionsShown && ( */}
+                    {elapsedTime?.data?.checkIn && (
+                        <Stack flexDirection="row" gap="8px" alignItems="center">
+                            <IconButton
+                                aria-label={isRunning ? "resume" : "pause"}
+                                size="small"
+                                onClick={() => toggleResumePause.mutate()}
+                                disabled={isCheckedOut}
+                                sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles, "&.Mui-disabled": { color: "gray", backgroundColor: "#f0f0f0 !important" } }} className={style.timeCheckBtn}>
+                                {isRunning ? <PauseIcon /> : <PlayArrowRoundedIcon />}
+                            </IconButton>
+                            <Button
+                                variant="contained"
+                                size="small"
+                                // onClick={checkOut}
+                                onClick={() => checkOut()}
+                                disabled={isCheckedOut}
+                                startIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
+                                sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles, "&.Mui-disabled": { color: "gray", backgroundColor: "#f0f0f0 !important" } }} className={style.timeCheckBtn}>{isCheckingOut ? "Checking Out..." : "Check-Out"}</Button>
+                        </Stack>
+                    )}
+                </Stack>
+            </Stack >
 
 
             <Box>
@@ -193,6 +361,9 @@ export default function AddProjects() {
                 </CustomTabPanel>
                 <CustomTabPanel value={activeTab} index={5}>
                     <Time />
+                </CustomTabPanel>
+                <CustomTabPanel value={activeTab} index={6}>
+                    <Controls />
                 </CustomTabPanel>
             </Box>
         </Box >

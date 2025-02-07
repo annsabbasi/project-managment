@@ -23,6 +23,9 @@ import {
     docsSubTask, fetchDocsSubTasks,
     updateUserSubTask, videosSubTask,
     fetchVideoSubTasks, getUserForSubTask, getUserSubTask,
+    filterSubTask, completeUserSubTask,
+    getCompleteUserSubTask,
+    subTaskApproval,
 } from '../controllers/subUserTask.js';
 
 import {
@@ -34,6 +37,8 @@ import {
 import { upload } from '../middleware/multerMiddleware.js';
 import { createSubscriptionCheckout } from '../controllers/userPlanController.js';
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
+import { checkIn, checkOut, pauseOrResume, getElapsedTime, getUserTimeProject, getUsersTimeProject } from '../controllers/trackerTime.js';
+import { Timer } from '../models/test.js';
 
 
 
@@ -67,9 +72,13 @@ router.route('/project-approval/:taskId').put(verifyUser('admin'), projectApprov
 // UserSub Task
 router.route('/create-subTask').post(verifyUser(['admin', 'user']), createUserTask)
 router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
+router.route('/complete-subTask/:taskID').patch(verifyUser(['admin', 'user']), completeUserSubTask)
+router.route('/get-complete-subTask').get(verifyUser(['admin', 'user', 'QcAdmin']), getCompleteUserSubTask)
+router.route('/approve-subTask/:taskID').patch(verifyUser(['admin', 'QcAdmin']), subTaskApproval)
 router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
 router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
 router.route('/get-userOfSubTask/:projectId').get(verifyUser(['admin', 'user']), getUserForSubTask)
+router.route('/search-subTask').get(verifyUser(['admin', 'user']), filterSubTask)
 
 
 
@@ -100,11 +109,110 @@ router.post(
 )
 
 
+// User Tracker Timer Of The SubTask
+router.get('/getElapsedTime', verifyUser(['admin', 'user', 'QcAdmin']), getElapsedTime)
+router.post('/checkIn', verifyUser(['admin', 'user', 'QcAdmin']), checkIn)
+router.put('/pauseOrResume', verifyUser(['admin', 'user', 'QcAdmin']), pauseOrResume)
+router.put('/checkOut', verifyUser(['admin', 'user', 'QcAdmin']), checkOut)
+router.get('/getUserTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getUserTimeProject)
+router.get('/getUsersTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getUsersTimeProject)
+// router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
+// router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
+
 
 
 // Testing Purpose
 router.route('/testing').get(verifyUser(['admin', 'user']), getUserProfile)
+router.get("/timer", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (!timer) {
+            timer = new Timer();
+            await timer.save();
+        }
 
+        // If the timer is running, calculate the elapsed time
+        let elapsedTime = 0;
+        console.log("timer Gpt", timer)
+        if (timer.startTime && timer.isRunning) {
+            elapsedTime = Math.floor((Date.now() - new Date(timer.startTime)) / 1000);
+        }
+
+        res.json({
+            isRunning: timer.isRunning,
+            isCheckedOut: timer.isCheckedOut,
+            elapsedTime,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Start Timer (Check-In)
+router.post("/timer/start", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (!timer) {
+            timer = new Timer();
+        }
+
+        timer.startTime = new Date();
+        timer.isRunning = true;
+        timer.isCheckedOut = false;
+        await timer.save();
+        console.log("checkIn timer", timer)
+        res.json({ message: "Timer started", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Stop Timer (Pause)
+router.put("/timer/pause", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer) {
+            timer.isRunning = false;
+            await timer.save();
+        }
+        console.log("pause timer", timer)
+        res.json({ message: "Timer paused", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Resume Timer
+router.put("/timer/resume", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer && !timer.isCheckedOut) {
+            timer.isRunning = true;
+            await timer.save();
+        }
+        console.log("resume timer", timer)
+        res.json({ message: "Timer resumed", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Checkout (Stop and Reset Timer)
+router.put("/timer/checkout", async (req, res) => {
+    try {
+        let timer = await Timer.findOne({});
+        if (timer) {
+            timer.startTime = null;
+            timer.isRunning = false;
+            timer.isCheckedOut = true;
+            await timer.save();
+        }
+        console.log("checkOut timer", timer)
+        res.json({ message: "Checked out", timer });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 export default router

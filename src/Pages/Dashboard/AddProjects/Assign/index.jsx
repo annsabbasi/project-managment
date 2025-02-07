@@ -1,4 +1,4 @@
-import styles from './style.module.scss';
+import style from './style.module.scss';
 import { createSubTask } from '../../../../api/userSubTask';
 
 import { toast } from 'react-toastify';
@@ -72,6 +72,7 @@ export default function Index() {
     };
 
 
+
     return (
         <form style={{ marginTop: '20px' }} onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -129,8 +130,8 @@ export default function Index() {
 
                 <Grid item xs={12}>
                     <Box display="flex" gap={2}>
-                        <Button color="primary" className={`${styles.dialogBtnSecondary}`} type="submit">
-                            Save
+                        <Button className={`accept ${style.addBtn}`} size='medium' variant="outlined" type="submit">
+                            Create Assign
                         </Button>
                     </Box>
                 </Grid>

@@ -76,7 +76,8 @@ const Index = () => {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={`${styles.containerMain}`}>
+        // <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={`${styles.containerMain}`}>
+        <Box component="form" onSubmit={handleSubmit} noValidate className={`${styles.containerMain}`}>
             <Container component="main" sx={{ maxWidth: '600px !important' }}>
                 <Box className={`${styles.itemContent}`}>
 

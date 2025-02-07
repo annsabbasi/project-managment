@@ -4,7 +4,7 @@ import Template from "../ProjectTabs/Template";
 import Complete from "../ProjectTabs/Complete";
 import TableActive from "../ProjectTabs/TableActive";
 import Request from "../ProjectTabs/Request";
-import project from "./DashboardScss/project.module.scss"
+import style from "./DashboardScss/project.module.scss"
 import TextDialog from '../ProjectTabs/TextDialog';
 
 
@@ -12,6 +12,7 @@ import { useState } from "react";
 import { RouteNames } from "../../Constants/route";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Box, IconButton, Stack, Tab, Tabs } from "@mui/material";
+import { useAuth } from '../../context/AuthProvider';
 
 
 const CustomTabPanel = (props) => {
@@ -38,10 +39,11 @@ const allyProps = (index) => {
 
 
 export default function Project() {
+    const { theme, mode } = useAuth();
+    const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
     const [activeTab, setActiveTab] = useState(0)
     const location = useLocation('')
     const isAddProjectPage = location.pathname.includes(`${RouteNames.ADDPROJECTS}`)
-
 
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
@@ -72,57 +74,62 @@ export default function Project() {
                                 aria-label="user details tabs"
                                 value={activeTab}
                                 TabIndicatorProps={{ sx: { display: 'none' } }}
-                                sx={{ backgroundColor: 'white' }} className={project.Tabs}>
+                                sx={{ backgroundColor: theme.palette.background.default }}
+                                className={style.Tabs}>
                                 <Tab
                                     {...allyProps(0)}
                                     label="Active"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 0 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 0 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 0 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
                                         },
-                                    })} className={project.Tab} />
+                                    })}
+                                    className={style.Tab} />
 
 
                                 <Tab
-                                    label="Request"
                                     {...allyProps(0)}
+                                    label="Request"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 1 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 1 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 1 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
                                         },
-                                    })} className={project.Tab} />
+                                    })}
+                                    className={style.Tab} />
 
 
                                 <Tab
-                                    label="Complete"
                                     {...allyProps(2)}
+                                    label="Complete"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 2 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 2 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 2 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 2 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 2 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
                                         },
-                                    })} className={project.Tab} />
+                                    })}
+                                    className={style.Tab} />
 
 
                                 <Tab
-                                    label="Template"
                                     {...allyProps(3)}
+                                    label="Template"
                                     sx={(theme) => ({
-                                        backgroundColor: activeTab === 3 ? theme.palette.grey.hoverGrey : 'transparent',
-                                        color: activeTab === 3 ? theme.palette.grey.darkGrey : 'grey',
+                                        backgroundColor: activeTab === 3 ? theme.palette.background.paper : 'transparent',
+                                        color: activeTab === 3 ? `${themeTab} !important` : 'grey',
                                         fontWeight: activeTab === 3 ? '600' : '500',
                                         '&.Mui-selected': {
                                             color: theme.palette.grey.darkGrey,
                                         },
-                                    })} className={project.Tab} />
+                                    })}
+                                    className={style.Tab} />
                             </Tabs>
                         </Box>
                     </Stack>

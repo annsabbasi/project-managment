@@ -66,7 +66,7 @@ export const PublicRoute = [
 
 // ------------ Private Routes which are Protected ------------
 export const PrivateRoute = [
-    { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Dashboard' },
+    { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Departments' },
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
     { path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams' },
     { path: RouteNames.MEETINGS, element: Meetings, layout: true, title: 'Meetings' },

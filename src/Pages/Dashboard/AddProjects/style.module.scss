@@ -1,36 +1,46 @@
 .goBack {
   display: flex;
-  align-items: end;
+  align-items: center;
   text-decoration: none;
+  transition: 0.3s ease all;
+
   .goBackTitle {
     font-size: 1.2rem;
-    color: rgb(61, 61, 61);
+    margin-left: -5px;
+    margin-top: 2px;
   }
-  .goBackIcon {
-    padding: 0;
-    align-self: flex-end;
-  }
-  .goBackIconContent {
-    padding: 3px;
-    margin-right: 2px;
-  }
-  &:hover .goBackTitle,
-  &:hover .goBackIcon {
-    color: rgb(122, 122, 122);
+
+  &:hover {
+    opacity: 0.6;
   }
 }
+
 .Tabs {
-  background-color: white;
-  border-radius: 0.4rem;
-  padding: 0.2rem 0.2rem;
-  border: 1px solid silver;
-  min-height: auto;
+  border-radius: 0.4rem !important;
+  padding: 0.2rem 0.2rem !important;
+  border: 1px solid silver !important;
+  min-height: auto !important;
 }
+
 .Tab {
+  border-radius: 0.4rem !important;
+  padding: 0.6rem 0.6rem !important;
+  min-width: auto !important;
+  min-height: auto !important;
+  text-transform: capitalize !important;
+}
+
+.timeCheckBtn {
+  font-size: 14px !important;
   border-radius: 0.4rem;
-  padding: 0.6rem 0.6rem;
-  min-width: auto;
-  min-height: auto;
   text-transform: capitalize;
-  color: grey;
+  border: 1px solid transparent;
+  // background-color: white;
+
+  // &:hover {
+  background-color: rgba(250, 249, 246, 0.1);
+  // background-color: rgba(52, 52, 52, 0.2);
+  //   border: 1px solid white;
+  //   color: white;
+  // }
 }

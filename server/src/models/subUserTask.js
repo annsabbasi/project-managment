@@ -24,7 +24,7 @@ const subUsertaskSchema = new mongoose.Schema({
     },
     taskList: {
         type: String,
-        enum: ['progress', 'completed'],
+        enum: ['progress', 'completed', 'approved'],
         default: 'progress',
     },
     points: {
