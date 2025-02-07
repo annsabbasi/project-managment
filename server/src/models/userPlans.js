@@ -32,9 +32,12 @@ const planSchema = new Schema({
         type: Number,
         default: 0
     },
-}, { timestamps: true })
-
-
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
+}, { timestamps: true });
 
 const userPlan = mongoose.model('userplan', planSchema);
 

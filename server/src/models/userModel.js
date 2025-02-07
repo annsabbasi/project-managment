@@ -52,8 +52,13 @@ const UserSchema = new Schema({
     },
     refreshToken: {
         type: String
-    }
-}, { timestamps: true })
+    },
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
+}, { timestamps: true });
 
 
 // Hashing Bcrypt Password 

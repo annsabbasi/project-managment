@@ -60,7 +60,7 @@ export const AppRoutes = () => {
             <Route path="/" element={<RedirectRoute />} />
 
             {/* Superadmin routes with AdminLayout */}
-            <Route element={<ProtectedRoute allowedRoles={'superadmin'} layout={AdminLayout} />}>
+            <Route element={<ProtectedRoute allowedRoles={['superadmin']} layout={AdminLayout} />}>
                 {renderRoutes(AdminRoute, AdminLayout)}
             </Route>
 

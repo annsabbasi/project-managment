@@ -34,6 +34,9 @@ import companyRoute from './routes/companyRoute.js';
 
 app.use('/user', userRoute);
 app.use('/company', companyRoute);
+app.get("/", (req,res) => {
+    res.status(200).send("Working successfull!")
+})
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

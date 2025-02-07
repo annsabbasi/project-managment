@@ -14,10 +14,13 @@ const videoSubtaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "userTask",
         required: true
-    }
+    },
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
 }, { timestamps: true });
-
-
 
 const videoSubTask = mongoose.model('video_Subtask', videoSubtaskSchema);
 export { videoSubTask };

@@ -24,60 +24,36 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies?.refreshToken || req.body.refreshToken;
     if (!incomingRefreshToken) {
-        throw new apiError(401, "UnAuthorized Request")
+        throw new apiError(401, "Unauthorized Request");
     }
+
     try {
-        const decodedToken = jwt.verify(
-            incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET
-        )
+        const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
         const company = await Company.findById(decodedToken._id).select("-password");
-        if (!company) {
-            throw new apiError(401, "Invalid Refresh Token")
-        }
-        if (incomingRefreshToken !== company?.refreshToken) {
-            throw new apiError(401, "Invalid or Expires Refresh Token")
+        if (!company || incomingRefreshToken !== company.refreshToken) {
+            throw new apiError(401, "Invalid or Expired Refresh Token");
         }
 
-        // const options = {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: 'Strict',
-        // }
         const options = {
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development',
             sameSite: 'Strict',
-            maxAge: 12 * 24 * 60 * 60 * 1000, // 12 days in milliseconds
+            maxAge: 12 * 24 * 60 * 60 * 1000, // 12 days
         };
-        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(company?._id);
-        console.log("Successfully refreshed The AccessToken", accessToken)
+        const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(company._id);
 
-        return res.status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken", refreshToken, options)
-            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
+        return res
+            .status(200)
+            .cookie("accessTokenC", accessToken, options)
+            .cookie("refreshTokenC", refreshToken, options)
+            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfully"));
     } catch (error) {
-        console.error("Error from refreshAccessToken", error);
-
-        if (error.companyName === "TokenExpiredError") {
-            // Clear refresh token from database and cookies
-            const decodedToken = jwt.decode(incomingRefreshToken);
-            if (decodedToken?._id) {
-                const company = await Company.findById(decodedToken._id);
-                if (company) {
-                    company.refreshToken = null;
-                    await company.save();
-                }
-            }
-            res.clearCookie("accessToken");
-            res.clearCookie("refreshToken");
-        }
-        return res.status(401).json({ message: "Refresh Token Expired" })
-        // throw new apiError(401, error?.message || "Refresh Token Expired or Invalid");
+        console.error("Error refreshing access token:", error);
+        res.clearCookie("accessTokenC");
+        res.clearCookie("refreshTokenC");
+        throw new apiError(401, error.message || "Token Expired or Invalid");
     }
-})
-
-
+});
 
 // To Register a Person
 const registerCompany = asyncHandler(async (req, res) => {
@@ -130,8 +106,8 @@ const loginCompany = asyncHandler(async (req, res) => {
         maxAge: 12 * 24 * 60 * 60 * 1000,
     };
     return res.status(200)
-        .cookie('accessToken', accessToken, options)
-        .cookie('refreshToken', refreshToken, options)
+        .cookie('accessTokenC', accessToken, options)
+        .cookie('refreshTokenC', refreshToken, options)
         .json(
             new apiResponse(200, {
                 company: loggedInCompany,
@@ -149,8 +125,8 @@ const logoutCompany = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true
     }
-    res.clearCookie('accessToken', options)
-    res.clearCookie('refreshToken', options)
+    res.clearCookie('accessTokenC', options)
+    res.clearCookie('refreshTokenC', options)
     return res.status(200).json(
         new apiResponse(200, true, "Company logged out successfully")
     )
@@ -160,6 +136,7 @@ const logoutCompany = asyncHandler(async (req, res) => {
 
 // To get Logged In company Details
 const getCompanyData = asyncHandler(async (req, res) => {
+    console.log(req.company);
     const company = await Company.findById(req.company.id).select("-password");
     res.status(200).json(
         new apiResponse(200, company, "Company data fetched successfully")
@@ -191,7 +168,7 @@ const getCompanyProfile = asyncHandler(async (req, res) => {
         }
         res.status(200).json(new apiResponse(200, findCompany, "Company data fetched successfully!"));
     } catch (error) {
-        console.log("ERROR from (CompanyController.js) getCompanyProfile", error)
+        next(new apiError(500, error.message || "Internal Server Error"));
     }
 })
 
@@ -202,7 +179,7 @@ const promoteUser = asyncHandler(async (req, res) => {
         throw new apiError(400, "User ID is required.");
     }
 
-    if (req.user.role !== ROLES.ADMIN) {
+    if (!hasRole(req.user, ROLES.ADMIN)){
         throw new apiError(403, "You don't have to authority to perform this action");
     }
 

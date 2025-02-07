@@ -16,6 +16,7 @@ export const signUpCompany = async (company) => {
 
 export const loginUser = async (user) => {
     const response = await axiosInstance.post("/user/login", user)
+    console.log("response from (authApi)", response.data)
     return response.data;
 }
 

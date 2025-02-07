@@ -6,26 +6,31 @@ import { axiosInstance } from '../api/axiosInstance';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+    const [accessToken, setAccessToken] = useState(
+        localStorage.getItem('accessToken') || localStorage.getItem('accessTokenC')
+    );
     const [role, setRole] = useState(localStorage.getItem('role')); // 'user' or 'company'
 
-    // Update Axios headers when accessToken changes
+    // Update Axios headers when accessToken or role changes
     useEffect(() => {
-        if (accessToken) {
-            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        const token = role === 'user'
+            ? localStorage.getItem('accessToken')
+            : localStorage.getItem('accessTokenC');
+
+        if (token) {
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            setAccessToken(token);
         } else {
             delete axiosInstance.defaults.headers.common['Authorization'];
         }
-    }, [accessToken]);
+    }, [role]);
 
     // Fetch data based on role
     const { data: authData, isLoading } = useQuery({
-        queryKey: ["authData", role],
+        queryKey: ['authData', role],
         queryFn: async () => {
             if (!accessToken || !role) {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-                localStorage.removeItem('role');
+                clearLocalStorage();
                 return null;
             }
             try {
@@ -35,17 +40,44 @@ export const AuthProvider = ({ children }) => {
                 return response.data.data;
             } catch (error) {
                 console.error('(AuthProvider) Fetch auth data error:', error);
-                setAccessToken(null);
-                setRole(null);
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('role');
+                handleLogout();
                 return null;
             }
         },
     });
 
+    // Clear local storage based on role
+    const clearLocalStorage = () => {
+        if (role === 'user') {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('role');
+        } else if (role === 'admin') {
+            localStorage.removeItem('accessTokenC');
+            localStorage.removeItem('refreshTokenC');
+            localStorage.removeItem('role');
+        }
+    };
+
+    // Handle logout for both roles
+    const handleLogout = () => {
+        clearLocalStorage();
+        setAccessToken(null);
+        setRole(null);
+    };
+
     return (
-        <AuthContext.Provider value={{ authData, role, accessToken, setAccessToken, setRole, isLoading }}>
+        <AuthContext.Provider
+            value={{
+                authData,
+                role,
+                accessToken,
+                setAccessToken,
+                setRole,
+                isLoading,
+                handleLogout,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

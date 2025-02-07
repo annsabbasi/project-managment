@@ -52,7 +52,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         return res.status(200)
             .cookie("accessToken", accessToken, options)
             .cookie("refreshToken", refreshToken, options)
-            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfukky"))
+            .json(new apiResponse(200, { accessToken, refreshToken }, "Access Token Refreshed Successfully"))
     } catch (error) {
 
         if (error.name === "TokenExpiredError") {

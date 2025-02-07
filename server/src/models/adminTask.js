@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const taskSchema = new mongoose.Schema({
     projectTitle: {
         type: String,
-        // required: [true, "The project title is required"],
         maxlength: [40, "The title should be no longer than 40 characters"]
     },
     teamLeadName: {
@@ -54,7 +53,12 @@ const taskSchema = new mongoose.Schema({
     },
     link: {
         type: String,
-    }
+    },
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
 }, { timestamps: true });
 
 const adminTask = mongoose.model('userTask', taskSchema);

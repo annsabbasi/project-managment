@@ -63,6 +63,7 @@ const LoginPage = () => {
             login(formData, {
                 onSuccess: () => {
                     const userRole = localStorage.getItem("role");
+                    console.log('1111111', localStorage);
                     if (userRole === 'superadmin') {
                         navigate(`/${RouteNames.ADMINPAGE1}`);
                     } else if (userRole === 'admin') {

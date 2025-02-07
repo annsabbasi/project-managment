@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { RouteNames } from "../Constants/route";
-import PropTypes from 'prop-types';
-
+import PropTypes from "prop-types";
 
 export default function ProtectedRoute({ allowedRoles }) {
     const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken");
-        const role = localStorage.getItem("role")
+        const userToken = localStorage.getItem("accessToken");
+        const companyToken = localStorage.getItem("accessTokenC");
+        const role = localStorage.getItem("role");
 
-        if (accessToken && allowedRoles.includes(role)) {
+        const hasValidAccess =
+            (role === "user" && allowedRoles.includes(role) && userToken) ||
+            (role === "admin" && allowedRoles.includes(role) && companyToken);
+
+        if (hasValidAccess) {
             setIsAuthenticated(true);
         } else {
             navigate(`/${RouteNames.LOGIN}`);
@@ -22,10 +26,6 @@ export default function ProtectedRoute({ allowedRoles }) {
     return isAuthenticated ? <Outlet /> : null;
 }
 
-
 ProtectedRoute.propTypes = {
-    allowedRoles: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]).isRequired,
+    allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

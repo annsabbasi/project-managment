@@ -45,9 +45,12 @@ const subUsertaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserInfo",
     }],
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
 }, { timestamps: true });
 
-
- 
 const subUserTask = mongoose.model('subUserTask', subUsertaskSchema);
 export { subUserTask };

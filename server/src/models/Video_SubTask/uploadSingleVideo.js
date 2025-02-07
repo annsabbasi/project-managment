@@ -12,10 +12,13 @@ const uploadVideo = new mongoose.Schema({
     projectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "userTask",
-    }
+    },
+    companyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
 }, { timestamps: true });
-
-
 
 const uploadSingleVideo = mongoose.model('uploadVideo', uploadVideo);
 export { uploadSingleVideo };

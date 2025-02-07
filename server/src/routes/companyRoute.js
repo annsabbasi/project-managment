@@ -1,6 +1,6 @@
 const router = Router();
 import { Router } from 'express'
-import { verifyUser } from "../middleware/authMiddleware.js";
+import { verifyCompany } from "../middleware/authMiddleware.js";
 
 import {
     refreshAccessToken,
@@ -39,10 +39,10 @@ import { validateRegisterFieldsCompany } from '../controllers/validations/authVa
 // Authentication
 router.route('/signup').post(validateRegisterFieldsCompany(['companyName', 'email', 'password', 'confirmPassword']), registerCompany);
 router.route('/login').post(loginCompany);
-router.route('/logout').post(verifyUser(), logoutCompany)
-router.route('/get-company-data').get(verifyUser(), getCompanyData)
+router.route('/logout').post(verifyCompany(), logoutCompany)
+router.route('/get-company-data').get(verifyCompany(), getCompanyData)
 // Promote User Role
-router.route('/promote-user').post(verifyUser('admin'), promoteUser)
+router.route('/promote-user').post(verifyCompany('admin'), promoteUser)
 
 
 
@@ -53,47 +53,47 @@ router.route('/get-data').get(getAllData);
 
 
 // Create Task for Admin
-router.route('/create-task').post(verifyUser(['superadmin', 'admin']), createTask)
-router.route('/get-create-task').get(verifyUser(['admin', 'user']), getCreateTask)
-router.route('/get-delete-task/:taskId').delete(verifyUser('admin'), DeleteTask)
-router.route('/get-update-task/:taskId').put(verifyUser('admin'), UpdateTask)
-router.route('/get-create-task/:id').get(verifyUser(['admin', 'user']), getCreateTaskById)
-router.route('/submit-task/:taskId').put(verifyUser('admin'), submitTask)
-router.route('/project-approval/:taskId').put(verifyUser('admin'), projectApproval)
+router.route('/create-task').post(verifyCompany(['superadmin', 'admin']), createTask)
+router.route('/get-create-task').get(verifyCompany(['admin', 'user']), getCreateTask)
+router.route('/get-delete-task/:taskId').delete(verifyCompany('admin'), DeleteTask)
+router.route('/get-update-task/:taskId').put(verifyCompany('admin'), UpdateTask)
+router.route('/get-create-task/:id').get(verifyCompany(['admin', 'user']), getCreateTaskById)
+router.route('/submit-task/:taskId').put(verifyCompany('admin'), submitTask)
+router.route('/project-approval/:taskId').put(verifyCompany('admin'), projectApproval)
 
 
 
 // UserSub Task
-router.route('/create-subTask').post(verifyUser(['admin', 'user']), createUserTask)
-router.route('/get-subTask').get(verifyUser(['admin', 'user']), getUserSubTask)
-router.route('/delete-subTask/:taskId').delete(verifyUser(['admin', 'user']), deleteUserSubTask)
-router.route('/update-subTask/:taskId').put(verifyUser(['admin', 'user']), updateUserSubTask)
-router.route('/get-userOfSubTask/:projectId').get(verifyUser(['admin', 'user']), getUserForSubTask)
+router.route('/create-subTask').post(verifyCompany(['admin', 'user']), createUserTask)
+router.route('/get-subTask').get(verifyCompany(['admin', 'user']), getUserSubTask)
+router.route('/delete-subTask/:taskId').delete(verifyCompany(['admin', 'user']), deleteUserSubTask)
+router.route('/update-subTask/:taskId').put(verifyCompany(['admin', 'user']), updateUserSubTask)
+router.route('/get-userOfSubTask/:projectId').get(verifyCompany(['admin', 'user']), getUserForSubTask)
 
 
 
 // For The Stripe Session Checkout
-router.route('/create-checkout-session').post(verifyUser(['admin', 'user']), createSubscriptionCheckout)
+router.route('/create-checkout-session').post(verifyCompany(['admin', 'user']), createSubscriptionCheckout)
 
 
 
 // Create Docs Link In User SubTask Routes
-router.route('/create-docslink').post(verifyUser(['admin', 'user']), docsSubTask)
-router.route('/fetch-docslink').get(verifyUser(['admin', 'user']), fetchDocsSubTasks)
-router.route('/delete-docslink/:id').delete(verifyUser(['admin', 'user']), deleteDocsSubTask)
+router.route('/create-docslink').post(verifyCompany(['admin', 'user']), docsSubTask)
+router.route('/fetch-docslink').get(verifyCompany(['admin', 'user']), fetchDocsSubTasks)
+router.route('/delete-docslink/:id').delete(verifyCompany(['admin', 'user']), deleteDocsSubTask)
 // Create Video Link In User SubTask Routes
-router.route('/create-videolink').post(verifyUser(['admin', 'user']), videosSubTask)
-router.route('/fetch-videolink').get(verifyUser(['admin', 'user']), fetchVideoSubTasks)
-router.route('/delete-videolink/:id').delete(verifyUser(['admin', 'user']), deleteVideoSubTask)
+router.route('/create-videolink').post(verifyCompany(['admin', 'user']), videosSubTask)
+router.route('/fetch-videolink').get(verifyCompany(['admin', 'user']), fetchVideoSubTasks)
+router.route('/delete-videolink/:id').delete(verifyCompany(['admin', 'user']), deleteVideoSubTask)
 
 
 
 // Cloudinary Single Video Upload
-router.get('/get-video-upload', verifyUser(['admin']), getAllVideoController)
-router.get('/get-single-video-upload/:videoId', verifyUser(['admin', 'user']), getSingleVideoController)
+router.get('/get-video-upload', verifyCompany(['admin']), getAllVideoController)
+router.get('/get-single-video-upload/:videoId', verifyCompany(['admin', 'user']), getSingleVideoController)
 router.post(
     '/video-upload',
-    verifyUser(['admin']),
+    verifyCompany(['admin']),
     upload.single('video'),
     uploadVideoController
 )
@@ -102,7 +102,7 @@ router.post(
 
 
 // Testing Purpose
-router.route('/testing').get(verifyUser(['admin', 'user']), getCompanyProfile)
+router.route('/testing').get(verifyCompany(['admin', 'user']), getCompanyProfile)
 
 
 
