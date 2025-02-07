@@ -158,13 +158,13 @@ const getUserTimeProject = asyncHandler(async (req, res) => {
     }
 
     // Find all time entries for the current user in the specified project
-    const timeEntries = await userTracker.find({ userId, projectId });
+    const timeEntries = await userTracker.find({ userId, projectId })
 
     if (timeEntries.length === 0) {
         return res.status(404).json(new apiResponse(404, { totalTime: 0 }, "No time data found for this project."));
     }
 
-    const getUserTime = await userTracker.find({ userId }).select("projectId userId totalDuration pausedDuration lastPause maxTime")
+    const getUserTime = await userTracker.find({ userId, projectId }).select("userId projectId checkIn isCheckedOut totalDuration maxTime effectiveElapsedTime").populate("userId", "name role");
     res.status(200).json(new apiResponse(200, { projectId, getUserTime }, "User total time fetched successfully."));
 });
 

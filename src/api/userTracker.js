@@ -32,6 +32,10 @@ export const userTimeProject = async (projectId) => {
 }
 
 export const usersTimeProject = async (projectId) => {
-    const { data } = await axiosInstance.get('/user/getUsersTimeProject', { params: { projectId } });
+    const { data } = await axiosInstance.get(`/user/getUsersTimeProject?projectId=${projectId}`);
     return data;
 };
+// export const usersTimeProject = async (projectId) => {
+//     const { data } = await axiosInstance.get('/user/getUsersTimeProject', { params: { projectId } });
+//     return data;
+// };

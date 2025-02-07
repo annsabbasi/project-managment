@@ -29,6 +29,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import {
     userCheckIn, userCheckOut,
     userGetElapsedTime, userPauseOrResume,
+    userTimeProject,
 } from '../../../api/userTracker';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
@@ -142,43 +143,60 @@ export default function AddProjects() {
     //         console.log("Full response in onSuccess:", response);
 
     //         // Extract data properly
-    //         const responseData = response?.data ?? response;
-    //         console.log("Extracted data:", responseData?.data?.elapsedTime);
+    //         const responseData = response?.data;  // No need to access `responseData.data`
+    //         console.log("Extracted data:", responseData.data.elapsedTime);
 
-    //         toast.success(responseData.isRunning ? "Resumed successfully!" : "Paused successfully!");
+    //         toast.success(responseData.data.isRunning ? "Resumed successfully!" : "Paused successfully!");
     //         setIsRunning(responseData.isRunning);
 
-    //         if (responseData.isRunning) {
-    //             setElapsedTime(responseData?.data?.elapsedTime || 0);
-    //         }
+    //         // Always update elapsedTime, whether pausing or resuming
+    //         setElapsedTime(responseData.data.elapsedTime || 0);
+    //         console.log("Updated ElapsedTime:", responseData.data.elapsedTime);
     //     },
     //     onError: () => {
     //         toast.error("Failed to pause/resume.");
     //     }
     // });
-    // console.log("ElapsedTime", elapsedTime)
-
-    // annsabbasi code down
     const pauseOrResumeMutation = useMutation({
         mutationFn: () => userPauseOrResume(ProjectId),
+        onMutate: async () => {
+            // Cancel ongoing queries for elapsed time
+            await queryClient.cancelQueries(['elapsedTime', ProjectId]);
+
+            // Get the previous state before mutation
+            const previousTimeData = queryClient.getQueryData(['elapsedTime', ProjectId]);
+
+            // Optimistically update the UI
+            queryClient.setQueryData(['elapsedTime', ProjectId], (old) => ({
+                ...old,
+                elapsedTime: old.elapsedTime,  // Keep the current time as is
+                isRunning: !old.isRunning      // Toggle running state optimistically
+            }));
+
+            return { previousTimeData };
+        },
         onSuccess: (response) => {
             console.log("Full response in onSuccess:", response);
-
-            // Extract data properly
-            const responseData = response?.data;  // No need to access `responseData.data`
-            console.log("Extracted data:", responseData.data.elapsedTime);
-
+            const responseData = response?.data;
             toast.success(responseData.data.isRunning ? "Resumed successfully!" : "Paused successfully!");
-            setIsRunning(responseData.isRunning);
 
-            // Always update elapsedTime, whether pausing or resuming
-            setElapsedTime(responseData.data.elapsedTime || 0);
-            console.log("Updated ElapsedTime:", responseData.data.elapsedTime);
+            setIsRunning(responseData.data.isRunning);
+            // setElapsedTime(responseData.data.elapsedTime || 0);
+            // annsabbasi change code
+            setElapsedTime((prev) => prev);
+
+            // Ensure TanStack Query refetches the correct data
+            queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
-        onError: () => {
+        onError: (error, variables, context) => {
             toast.error("Failed to pause/resume.");
+            // Rollback to previous state if mutation fails
+            if (context?.previousTimeData) {
+                queryClient.setQueryData(['elapsedTime', ProjectId], context.previousTimeData);
+            }
         }
     });
+
 
 
 
@@ -205,6 +223,18 @@ export default function AddProjects() {
         const secs = seconds % 60;
         return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
     };
+
+
+    const { data: userInfo } = useQuery({
+        queryKey: ['userInfo', ProjectId],
+        queryFn: () => userTimeProject(ProjectId),
+        enabled: !!ProjectId,
+    })
+    console.log("Single User Data", userInfo?.data.getUserTime.map((e) => e.checkIn ? true : false))
+    // const getUserTimeDetail = userInfo?.data?.getUserTime?.map((e) => e.e)
+    const getUserTimeDetails = (key) => userInfo?.data?.getUserTime?.map((e) => e[key])
+    const value = getUserTimeDetails("checkIn")
+    console.log("This is value", value)
 
     return (
         <Box>
@@ -325,6 +355,7 @@ export default function AddProjects() {
 
 
                 <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
+                    
                     <Typography>{formatTime(elapsedTime)}</Typography>
 
                     {!isRunning && !isCheckedOut && !isCheckedIn && (
