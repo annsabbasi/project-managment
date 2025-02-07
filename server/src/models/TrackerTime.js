@@ -40,14 +40,14 @@ const TimeTrackingSchema = new Schema({
         type: Number,
         default: 0
     },
-    pausedDuration:{
+    pausedDuration: {
         type: Number,
         default: 0
     },
-    // isPaused: {
-    //     type: Boolean,
-    //     default: false
-    // },
+    isPaused: {
+        type: Date,
+        default: null
+    },
     lastPaused: {
         type: Date,
     },
@@ -58,7 +58,12 @@ const TimeTrackingSchema = new Schema({
     weeklyTime: {
         type: Number,
         default: 0
-    }
+    },
+    effectiveElapsedTime: {
+        type: Number,
+        default: 0,
+    },
+
 }, { timestamps: true })
 
 
