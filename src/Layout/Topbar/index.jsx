@@ -8,7 +8,8 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogout } from "../../hooks/useAuth";
-import audioClick from "../../assets/audio/click.mp3"
+// import audioClick from "../../assets/audio/click.mp3"
+import audioClick from "../../assets/audio/click2.wav"
 
 import {
     AppBar, Avatar,
