@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import { getUserForSubTask } from "../../../../api/userSubTask";
 import { usePromoteUser } from "../../../../hooks/useAuth";
 import { useAuth } from "../../../../context/AuthProvider";
+import { usersTimeProject } from "../../../../api/userTracker";
 
 
 
@@ -64,6 +65,15 @@ export default function Teams() {
   };
 
 
+  const { id: ProjectId } = useParams();
+
+  const { data: usersData } = useQuery({
+    queryKey: ['elapsedTime', ProjectId],
+    queryFn: () => usersTimeProject(ProjectId),
+    enabled: !!ProjectId,
+  })
+
+  console.log("usersData Data fetching Time", usersData)
 
   return (
     <Stack variant="div" gap={8} my={4}>
