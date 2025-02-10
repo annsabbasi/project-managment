@@ -10,14 +10,12 @@ export const userGetElapsedTime = async (projectId) => {
     if (data.data.isCheckedOut) {
         return { elapsedTime: data.data.totalDuration, isCheckedOut: true };
     }
-    // console.log("userTracker Data of userFetElapsedTime", data)
     return data;
 }
 
 export const userPauseOrResume = async (projectId) => {
     const response = await axiosInstance.put('/user/pauseOrResume', { projectId });
-    // console.log("API Response:", response);
-    return response; // Ensure full response is returned
+    return response;
 };
 
 

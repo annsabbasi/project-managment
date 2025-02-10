@@ -1,0 +1,106 @@
+.goBack {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: 0.3s ease all;
+    margin-left: -15px;
+    width: fit-content;
+
+    .goBackTitle {
+        font-size: 1.2rem;
+        margin-left: -5px;
+        margin-top: 2px;
+    }
+
+    &:hover {
+        opacity: 0.6;
+    }
+}
+
+.tableBodyDark {
+    border-top: 10px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableBodyLight {
+    border-top: 10px solid rgb(255, 255, 255);
+}
+
+// For The Table Theme
+.lightTableText {
+    color: #36454F !important;
+}
+
+.darkTableText {
+    color: #ffffff;
+}
+
+.tableRowHead {
+    &>* {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        padding: 0.9rem 1.4rem;
+    }
+}
+
+.tableRowBody:last-of-type>* {
+    border-bottom: none !important;
+}
+
+.boxDropDown {
+    margin-inline: 0.4rem !important;
+    margin-block: 0.8rem;
+    position: relative;
+    margin-top: 25px;
+}
+
+.noTaskAssignText {
+    color: silver;
+    font-size: 0.8rem;
+}
+
+.QC {
+    font-size: 0.7rem;
+    color: rgb(172, 172, 172);
+    position: absolute;
+    top: 0.2rem;
+    left: 0.4rem;
+}
+
+.gridBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.iconButton {
+    position: absolute;
+    top: 0;
+    right: -0.2rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 0.2rem;
+}
+
+.boxMenuItem {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+}
+
+.snapShotImg {
+    border-radius: 0.5rem;
+    transition: 0.2s ease all;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+}
+
+.galleryDate {
+    text-decoration: underline;
+    font-size: 0.9rem !important;
+    text-align: center;
+    margin-bottom: 0.4rem !important;
+}

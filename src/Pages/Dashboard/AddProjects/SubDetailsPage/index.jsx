@@ -1,13 +1,23 @@
-import { Container, Typography, Box, Stack, TableBody, TableRow, TableCell, TableHead, Table, TableContainer, Grid, Dialog } from "@mui/material";
-import style from "./DashboardScss/project.module.scss"
-import { useAuth } from "../../context/AuthProvider";
-import Image2 from "../../assets/demoImage/2.jpg"
-import Image3 from "../../assets/demoImage/3.jpg"
-import Image4 from "../../assets/demoImage/4.jpg"
+import style from "./style.module.scss"
+import Image2 from "../../../../assets/demoImage/2.jpg"
+import Image3 from "../../../../assets/demoImage/3.jpg"
+import Image4 from "../../../../assets/demoImage/4.jpg"
 import { useState } from "react";
+import { useAuth } from "../../../../context/AuthProvider";
+import {
+    Container, Typography,
+    Box, Stack,
+    TableBody, TableRow,
+    TableCell, TableHead,
+    Table, TableContainer,
+    Grid, Dialog,
+    IconButton
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 
-const Message = () => {
+const Index = () => {
 
     const { theme, mode } = useAuth();
     const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
@@ -25,9 +35,19 @@ const Message = () => {
         setOpen(false);
         setSelectedImage(null);
     };
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1);
+    }
 
     return (
-        <Container sx={{ mt: 4, mb: 4 }}>
+        <Container >
+            <Link className={style.goBack} onClick={goBack}>
+                <IconButton disableRipple >
+                    <ArrowBackIosNewIcon sx={{ color: theme.palette.text.primary }} />
+                </IconButton>
+                <Typography className={style.goBackTitle} sx={{ color: theme.palette.text.primary }}>Return</Typography>
+            </Link>
             <Stack variant="div" gap={8} my={4}>
                 <Box>
                     <Typography variant="h6" mb={1} className={tableClassText}>
@@ -37,8 +57,8 @@ const Message = () => {
                         12-January-2020
                     </Typography>
 
-                    <Grid container spacing={3} ml="1px">
-                        <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
+                    <Grid container spacing={3} ml="1px" >
+                        <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }} >
 
                             <Grid item className={style.gridBox}>
                                 {[Image2, Image3, Image4, Image2, Image3, Image4, Image2, Image3, Image4,].map((image, index) => (
@@ -109,4 +129,4 @@ const Message = () => {
     );
 };
 
-export default Message;
+export default Index;
