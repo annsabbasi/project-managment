@@ -21,6 +21,7 @@ const Contracts = lazy(() => import('../Pages/Dashboard/Contracts'));
 const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'));
 const SingleVideo = lazy(() => import('../Pages/Dashboard/AddVideos/SingleVideo'));
+const SubDetailsPage = lazy(() => import('../Pages/Dashboard/AddProjects/SubDetailsPage'));
 // import SingleVideo from "../Pages/Dashboard/AddVideos/SingleVideo";
 
 // Super Admin Route Part
@@ -92,9 +93,25 @@ export const PrivateRoute = [
         layout: true,
         title: 'Project',
         children: [
-            { path: `${RouteNames.ADDPRODUCTS}/:id`, element: AddProjects, layout: true, title: 'AddProjects' }
+            {
+                path: `${RouteNames.ADDPRODUCTS}/:id`,
+                element: AddProjects,
+                layout: true,
+                title: 'AddProjects',
+                children: [
+                    {
+                        path: `${RouteNames.SUBDETAILSPAGE}/:id`,
+                        // path: RouteNames.SUBDETAILSPAGE,
+                        element: SubDetailsPage,
+                        layout: true,
+                        title: 'SubDetailsPage',
+                    }
+                ]
+            }
         ]
     },
+    { path: RouteNames.SUBDETAILSPAGE, element: SubDetailsPage, layout: true, title: 'SubDetailsPage' },
+
     {
         path: RouteNames.REFERRALS,
         element: Referrals,

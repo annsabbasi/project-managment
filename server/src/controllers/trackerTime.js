@@ -47,12 +47,9 @@ const getElapsedTime = asyncHandler(async (req, res) => {
         return res.status(404).json(new apiResponse(404, { isRunning: false, elapsedTime: 0 }, "No active timer found"));
     }
 
-    // let elapsedTime = 0;
     // annsabbasi code down
     let elapsedTime = timer.effectiveElapsedTime;
     if (timer.checkIn && timer.isRunning) {
-        // elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000);
-        // annsabbasi code down
         elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000) - timer.pausedDuration;
     }
 
@@ -98,7 +95,6 @@ const pauseOrResume = asyncHandler(async (req, res) => {
     }
 
     await timeEntry.save();
-    // res.status(200).json(new apiResponse(200, timeEntry, timeEntry.isRunning ? 'Resumed successfully.' : 'Paused successfully.'));
     // annsabbasi code down
     res.status(200).json(new apiResponse(200, {
         isRunning: timeEntry.isRunning,

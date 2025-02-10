@@ -20,6 +20,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditPointsDialog from "./EditPointsDialog";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
@@ -31,9 +32,10 @@ import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useDebounce from "../../../../hooks/useDebounce";
+import { RouteNames } from "../../../../Constants/route";
 
 
 
@@ -367,6 +369,15 @@ export default function index() {
                                                             <ListItemIcon >
                                                                 <EditIcon fontSize="small" />
                                                             </ListItemIcon>Edit</MenuItem>
+
+                                                        <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>
+                                                            <MenuItem className={`${tableClassText} ${style.editMenuItem}`}>
+                                                                <ListItemIcon>
+                                                                    <VisibilityOutlinedIcon fontSize="small" />
+                                                                </ListItemIcon>
+                                                                View
+                                                            </MenuItem>
+                                                        </Link>
 
                                                         <MenuItem onClick={handleDelete} className={`${tableClassText} ${style.deleteMenuItem}`}>
                                                             <ListItemIcon >
