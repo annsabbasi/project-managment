@@ -12,6 +12,7 @@ cloudinary.config({
 });
 
 
+
 const uploadOnCloudinary = async (localFilePath) => {
     let response = null;
     try {
