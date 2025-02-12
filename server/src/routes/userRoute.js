@@ -39,6 +39,7 @@ import { createSubscriptionCheckout } from '../controllers/userPlanController.js
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
 import { checkIn, checkOut, pauseOrResume, getElapsedTime, getUserTimeProject, getUsersTimeProject } from '../controllers/trackerTime.js';
 import { Timer } from '../models/test.js';
+import { getAllScreenshotsController, uploadScreenshotController } from '../controllers/snapShot.js';
 
 
 
@@ -118,6 +119,24 @@ router.get('/getUserTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getU
 router.get('/getUsersTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), getUsersTimeProject)
 // router.get('/getDailyTimeDetails', verifyUser(['admin', 'user', 'QcAdmin']), getDailyTimeDetails)
 // router.get('/getDailyUserTimeDetails/:userId', verifyUser(['admin', 'user', 'QcAdmin']), getDailyUserTimeDetails)
+
+
+
+// Testing PURPOSE FOR THE SNAPSHOTS
+// Cloudinary Screenshot Upload
+router.post(
+    '/upload-screenshot',
+    // verifyUser(['admin']),
+    upload.single('image'),  // Using your Multer setup
+    uploadScreenshotController
+);
+
+router.get(
+    '/get-screenshots',
+    verifyUser(['admin', 'user']),
+    getAllScreenshotsController
+);
+
 
 
 

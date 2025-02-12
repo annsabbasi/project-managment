@@ -30,6 +30,7 @@ const uploadVideoController = asyncHandler(async (req, res) => {
     }
 
     const videoUrl = uploadResult.url;
+    console.log("videoUrl of the videoUpload Controller.js", videoUrl)
 
     const newVideoSubTask = await uploadSingleVideo.create({
         description,
