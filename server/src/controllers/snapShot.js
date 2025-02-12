@@ -21,6 +21,7 @@ const uploadScreenshotController = asyncHandler(async (req, res) => {
         throw new apiError("Failed to upload image to Cloudinary");
     }
 
+    console.log("uploadResult snapShot Controller", uploadResult)
     const imageUrl = uploadResult.secure_url;
 
     const newScreenshot = await SnapShot.create({

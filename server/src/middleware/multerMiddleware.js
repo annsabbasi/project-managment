@@ -27,7 +27,8 @@ export const upload = multer({ storage });
 
 
 
-
+// fs.mkdirSync() is for making directories.
+// fs.writeFileSync() is for writing data (like your screenshots) to files.
 
 
 // import multer from 'multer';
