@@ -17,7 +17,7 @@ const TimeTrackingSchema = new Schema({
         // default: null
         // required: true
     },
-    date: {
+    date: { 
         type: String,
         required: true
     },
@@ -48,7 +48,7 @@ const TimeTrackingSchema = new Schema({
         type: Date,
         default: null
     },
-    lastPaused: {
+    lastPaused: { 
         type: Date,
     },
     maxTime: {

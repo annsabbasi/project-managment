@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { axiosInstance } from '../api/axiosInstance';
 import { darkTheme, lightTheme } from '../Theme/Theme';
@@ -11,6 +11,8 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+    // let ws = null;
+    const wsRef = useRef(null);
     // Theme Setup
     // const [mode, setMode] = useState('light')
     const [mode, setMode] = useState(() => {
@@ -24,6 +26,60 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('Theme', mode)
         document.body.setAttribute('data-theme', mode);
     }, [mode])
+
+    // Trying to Implement Electron-App
+    const getToken = localStorage.getItem('accessToken')
+    // console.log("GetToken Access", getToken)
+    useEffect(() => {
+        if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
+            wsRef.current = new WebSocket("ws://localhost:3001");
+
+            wsRef.current.onopen = () => {
+                console.log("Connected to Electron WebSocket");
+                wsRef.current.send(getToken);
+            };
+
+            wsRef.current.onerror = (error) => {
+                console.error("WebSocket Error:", error);
+            };
+
+            wsRef.current.onclose = () => {
+                console.log("Electron WebSocket closed.");
+            };
+        } else {
+            wsRef.current.send(getToken);
+        }
+
+        // Cleanup function to close WebSocket when component unmounts
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+            }
+        };
+    });
+
+
+    // useEffect(() => {
+
+    //     if (!ws || ws.readyState === WebSocket.CLOSED) {
+    //         ws = new WebSocket("ws://localhost:3001");
+
+    //         ws.onopen = () => {
+    //             console.log("Connected to Electron WebSocket");
+    //             ws.send(getToken);
+    //         };
+
+    //         ws.onerror = (error) => {
+    //             console.error("WebSocket Error:", error);
+    //         };
+
+    //         ws.onclose = () => {
+    //             console.log("Electron WebSocket closed.");
+    //         };
+    //     } else { ws.send(getToken); }
+    // }, [])
+
+    // Trying to Implement Electron-App
 
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],

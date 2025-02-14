@@ -7,7 +7,7 @@ const server = async () => {
     try {
         await connectDB(process.env.MONGO_URI)
         app.listen(port, () => {
-            console.log(`connection running successfully on port ${port}`)
+            console.log(`server port http://localhost:${port}/user/`)
         })
     } catch (error) {
         console.log("Connection failed at Index.js", error)

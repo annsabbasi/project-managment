@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "electron": "^34.1.1",
     "node-cron": "^3.0.3",
-    "screenshot-desktop": "^1.15.1"
+    "screenshot-desktop": "^1.15.1",
+    "ws": "^8.18.0"
   }
 }

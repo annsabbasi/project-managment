@@ -10,13 +10,19 @@ import cron from 'node-cron';
 import FormData from 'form-data';
 import screenshot from 'screenshot-desktop';
 import { fileURLToPath } from 'url';
-import { app, BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+
+import WebSocket, { WebSocketServer } from 'ws';
 
 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 let mainWindow;
+let wss;
+let receivedToken;
+
+
 
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
@@ -24,10 +30,29 @@ app.whenReady().then(() => {
         height: 600,
         show: false,
         webPreferences: {
-            nodeIntegration: true
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            enableRemoteModule: false,
+            nodeIntegration: false,
         }
     });
+
     console.log("Electron App Running in Background");
+    mainWindow.loadURL('http://localhost:5173/home');
+
+    // ✅ Create a WebSocket server
+    wss = new WebSocketServer({ port: 3001 }); // WebSocket server on port 3001
+    console.log("WebSocket Server Started on ws://localhost:3001");
+
+    wss.on('connection', (ws) => {
+        console.log("React App Connected to Electron via WebSocket");
+
+        ws.on('message', (message) => {
+            receivedToken = message.toString();
+            console.log('Received token from React:', message.toString());
+        });
+    });
+
 
 
     // For The User Choice To Access The SnapShot
@@ -65,7 +90,7 @@ app.whenReady().then(() => {
     requestPermission().then((granted) => {
         if (granted) {
             console.log("Permission granted! Screenshots will be taken.");
-            cron.schedule('*/15 * * * *', () => {
+            cron.schedule('*/2 * * * *', () => {
                 takeScreenshot();
             });
         } else {
@@ -75,24 +100,27 @@ app.whenReady().then(() => {
 });
 
 
-
-
 async function uploadToBackend(filePath) {
     try {
         const formData = new FormData();
         formData.append('image', fs.createReadStream(filePath));
 
-        const token = process.env.AUTH_TOKEN; // Not Yet Set In .env
+        // const token = process.env.AUTH_TOKEN; // Not Yet Set In .env
         const response = await axios.post(`${process.env.BACKEND_URL}/user/upload-screenshot`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${receivedToken}`
             }
         });
-        fs.unlinkSync(filePath);
         console.log("Uploaded to backend:", response.data);
     } catch (err) {
         console.error("Backend upload failed:", err.response ? err.response.data : err);
+    } finally {
+        if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+        } else {
+            console.log(`File ${filePath} not found, nothing to remove.`);
+        }
     }
 }
 
