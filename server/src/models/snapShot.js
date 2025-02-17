@@ -2,8 +2,22 @@ import mongoose from "mongoose";
 
 const ScreenshotSchema = new mongoose.Schema({
     imageUrl: String,
-    timestamp: { type: Date, default: Date.now }
-});
+    // trackerId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "TimeTracking",
+    //     required: true
+    // },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserInfo", 
+        required: true
+    },
+    projectId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userTask",
+        required: true
+    },
+}, { timestamps: true });
 
 const SnapShot = mongoose.model("SnapShot", ScreenshotSchema);
 

@@ -42,7 +42,7 @@ const taskSchema = new mongoose.Schema({
     points: {
         type: String,
         default: 100
-    },
+    }, 
     profileImage: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserInfo",

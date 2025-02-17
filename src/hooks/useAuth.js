@@ -17,18 +17,58 @@ export const useSignup = () => {
 };
 
 
-
+// let ws = null;
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: loginUser,
-
     onSuccess: (data) => {
+      // const token = data?.data?.accessToken;
+
+      // ✅ Store token in localStorage
       localStorage.setItem("accessToken", data?.data?.accessToken);
       localStorage.setItem("refreshToken", data?.data?.refreshToken);
       localStorage.setItem("role", data?.data?.user?.role);
       queryClient.setQueryData(["user"], data?.data?.user);
+
+      // console.log("This is token from useLogin hook", token);
+
+      // ✅ Send token to Electron via WebSocket
+      // const ws = new WebSocket("ws://localhost:3001"); // Connect to Electron's WebSocket
+
+    //   if (!ws || ws.readyState === WebSocket.CLOSED) { // ✅ Ensure connection is maintained
+    //     ws = new WebSocket("ws://localhost:3001");
+
+    //     ws.onopen = () => {
+    //       console.log("Connected to Electron WebSocket");
+    //       ws.send(token); // ✅ Send token once WebSocket is open
+    //     };
+
+    //     ws.onerror = (error) => {
+    //       console.error("WebSocket Error:", error);
+    //     };
+
+    //     ws.onclose = () => {
+    //       console.log("Electron WebSocket closed.");
+    //     };
+    //   } else {
+    //     ws.send(token); // ✅ Send token if WebSocket is already open
+    //   }
+
     },
+    // onSuccess: (data) => {
+    //   localStorage.setItem("accessToken", data?.data?.accessToken);
+    //   localStorage.setItem("refreshToken", data?.data?.refreshToken);
+    //   localStorage.setItem("role", data?.data?.user?.role);
+    //   queryClient.setQueryData(["user"], data?.data?.user);
+    //   const token = localStorage.getItem("accessToken")
+    //   console.log("This is token from useLogin hook", token)
+    //   if (window.electronAPI) {
+    //     window.electronAPI.launchApp(token);
+    //   } else {
+    //     console.warn("Electron API is not available");
+    //   }
+    // },
 
     onError: (error) => {
       console.error("(useAuth) Login failed:", error.response?.data || error.message);
@@ -36,7 +76,7 @@ export const useLogin = () => {
   })
 }
 
-
+ 
 
 export const useLogout = () => {
   const queryClient = useQueryClient();

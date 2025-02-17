@@ -126,7 +126,7 @@ router.get('/getUsersTimeProject', verifyUser(['admin', 'user', 'QcAdmin']), get
 // Cloudinary Screenshot Upload
 router.post(
     '/upload-screenshot',
-    // verifyUser(['admin']),
+    verifyUser(['admin', 'user', 'QcAdmin']),
     upload.single('image'),  // Using your Multer setup
     uploadScreenshotController
 );
