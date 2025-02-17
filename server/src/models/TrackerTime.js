@@ -16,7 +16,7 @@ const TimeTrackingSchema = new Schema({
         ref: "UserInfo",
         // default: null
         // required: true
-    },
+    }, 
     date: { 
         type: String,
         required: true

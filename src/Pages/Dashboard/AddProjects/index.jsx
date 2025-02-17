@@ -96,8 +96,7 @@ export default function AddProjects() {
     const subDetailsPageVar = location.pathname.includes(`${RouteNames.SUBDETAILSPAGE}`)
 
     const [isRunning, setIsRunning] = useState(false);
-    const [isCheckedIn, setIsCheckedIn] = useState(false);
-    const [isCheckedOut, setIsCheckedOut] = useState(false);
+    const [isCheckedIn, setIsCheckedIn] = useState(true);
     const [elapsedTime, setElapsedTime] = useState(0);
 
     // User ElapsedTime
@@ -105,23 +104,33 @@ export default function AddProjects() {
         queryKey: ['elapsedTime', ProjectId],
         queryFn: () => userGetElapsedTime(ProjectId),
         onSuccess: (data) => {
-            setElapsedTime(data.elapsedTime || 0);
+            console.log("onSuccess Triggered", data);
             setIsRunning(data.isRunning);
-            setIsCheckedIn(data.isCheckedIn);
-            setIsCheckedOut(data.isCheckedOut);
-        }
+            // setElapsedTime(data.elapsedTime);
+        },
+        onError: (error) => {
+            console.error("Query Failed:", error);
+        },
+        // Anns abbasi 2/17/2025
+        staleTime: 1000 * 60,
+        refetchInterval: 1000,
     })
     useEffect(() => {
-        let timer;
-        if (isRunning) {
-            timer = setInterval(() => {
-                setElapsedTime((prevTime) => prevTime + 1);
-            }, 1000);
+        if (timeData) {
+            setIsRunning(timeData?.data?.isRunning);
+            setElapsedTime(timeData?.data?.elapsedTime);
         }
-        return () => clearInterval(timer);
-    }, [isRunning]);
-    console.log("ElapsedTime timeDate", timeData?.data?.elapsedTime)
-    console.log("ElapsedTime timeDate", elapsedTime)
+    }, [timeData]);
+
+    // useEffect(() => {
+    //     if (!isRunning) return;
+
+    //     const timer = setInterval(() => {
+    //         setElapsedTime(prevTime => prevTime + 1);
+    //     }, 1000);
+
+    //     return () => clearInterval(timer);
+    // }, [isRunning]);
 
 
     // User CheckIn Time
@@ -129,7 +138,7 @@ export default function AddProjects() {
         mutationFn: () => userCheckIn(ProjectId),
         onSuccess: () => {
             toast.success("Checked in successfully!");
-            setIsCheckedIn(true);
+            setIsCheckedIn(false);
             setIsRunning(true);
             queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
@@ -137,7 +146,6 @@ export default function AddProjects() {
             toast.error("Failed to check in.");
         }
     });
-
 
     // User Pause or Resume Time
     const pauseOrResumeMutation = useMutation({
@@ -157,12 +165,12 @@ export default function AddProjects() {
         },
         onSuccess: (response) => {
             const responseData = response?.data;
-            toast.success(responseData.data.isRunning ? "Resumed successfully!" : "Paused successfully!");
-
             setIsRunning(responseData.data.isRunning);
-            // annsabbasi change code
-            setElapsedTime((prev) => prev);
-
+            // setIsRunning(true);
+            setIsCheckedIn(false)
+            // setElapsedTime(responseData.data.elapsedTime);
+            // setElapsedTime(prev => prev);
+            // console.log("responseData.data.elapsedTime", responseData.data)
             queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
         onError: (error, variables, context) => {
@@ -173,22 +181,22 @@ export default function AddProjects() {
             }
         }
     });
-
+    // console.log("elapsedTime", elapsedTime)
+    console.log("timeData", timeData?.data?.elapsedTime)
 
     // User CheckOut Time
     const checkOutMutation = useMutation({
         mutationFn: () => userCheckOut(ProjectId),
         onSuccess: () => {
             toast.success("Checked out successfully!");
-            setIsCheckedOut(true);
             setIsRunning(false);
+            setIsCheckedIn(false)
             queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
         onError: () => {
             toast.error("Failed to check out.");
         }
     });
-
 
     // Format Time
     const formatTime = (seconds) => {
@@ -205,12 +213,16 @@ export default function AddProjects() {
         queryFn: () => userTimeProject(ProjectId),
         enabled: !!ProjectId,
     })
-    // console.log("Single User Data", userInfo?.data.getUserTime.map((e) => e))
     const getUserTimeDetails = (key) => {
         const values = userInfo?.data?.getUserTime?.map((e) => e[key])
         return values?.[0] ?? false;
     }
-
+    // console.log("getUserTimeDetails(isRunning)", getUserTimeDetails("isRunning"))
+    // console.log("State ElapsedTime", elapsedTime)
+    // console.log("userGetElapsedTime", timeData?.data?.elapsedTime)
+    // console.log("timeData", timeData?.data)
+    const elapsedRuntimeValidation = timeData?.data?.isRunning
+    // console.log("setIsRunning", isRunning)
 
     return (
         <Box>
@@ -339,7 +351,7 @@ export default function AddProjects() {
                                 (<Typography>{formatTime(elapsedTime)}</Typography>
                                 )}
 
-                            {!isRunning && !isCheckedOut && !isCheckedIn && !getUserTimeDetails("isCheckedOut") && (
+                            {isCheckedIn && !getUserTimeDetails("isCheckedOut") && !elapsedRuntimeValidation && !getUserTimeDetails("checkIn") && (
                                 <Button
                                     variant="contained"
                                     size="small"
@@ -351,7 +363,8 @@ export default function AddProjects() {
                                 </Button>
                             )}
 
-                            {isCheckedIn && !isCheckedOut && (
+                            {/* {!getUserTimeDetails("isCheckedOut") && isRunning && ( */}
+                            {getUserTimeDetails("checkIn") && !getUserTimeDetails("isCheckedOut") && (
                                 <Stack flexDirection="row" gap="8px" alignItems="center">
                                     <IconButton
                                         size="small"
@@ -419,3 +432,23 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
 };
+
+
+// Pause Or Resume
+// setElapsedTime((prev) => prev);
+// annsabbasi code 1/17/2025
+// console.log("Values", responseData.data)
+// setElapsedTime(responseData.data.elapsedTime);
+// if (responseData.data.elapsedTime !== elapsedTime) {
+//     setElapsedTime(responseData.data.elapsedTime || 0);
+// }
+
+// useEffect(() => {
+//     let timer;
+//     if (isRunning) {
+//         timer = setInterval(() => {
+//             setElapsedTime((prevTime) => prevTime + 1);
+//         }, 1000);
+//     }
+//     return () => clearInterval(timer);
+// }, [isRunning, elapsedTime]);

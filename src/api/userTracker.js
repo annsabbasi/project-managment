@@ -6,11 +6,16 @@ export const userCheckIn = async (projectId) => {
 }
 
 export const userGetElapsedTime = async (projectId) => {
-    const { data } = await axiosInstance.get(`/user/getElapsedTime?projectId=${projectId}`);
-    if (data.data.isCheckedOut) {
-        return { elapsedTime: data.data.totalDuration, isCheckedOut: true };
+    try {
+        const { data } = await axiosInstance.get(`/user/getElapsedTime?projectId=${projectId}`);
+        if (data.data.isCheckedOut) {
+            return { elapsedTime: data.data.totalDuration, isCheckedOut: true };
+        }
+        return data;
+    } catch (error) {
+        console.error("Error fetching elapsed time:", error);
+        return { elapsedTime: 0, isCheckedOut: false };
     }
-    return data;
 }
 
 export const userPauseOrResume = async (projectId) => {

@@ -52,7 +52,6 @@ const getElapsedTime = asyncHandler(async (req, res) => {
     if (timer.checkIn && timer.isRunning) {
         elapsedTime = Math.floor((Date.now() - new Date(timer.checkIn)) / 1000) - timer.pausedDuration;
     }
-
     res.status(200).json(new apiResponse(200, {
         isRunning: timer.isRunning,
         isCheckedOut: timer.isCheckedOut,
@@ -80,6 +79,8 @@ const pauseOrResume = asyncHandler(async (req, res) => {
     if (timeEntry.isRunning) {
         timeEntry.isRunning = false;
         timeEntry.lastPaused = new Date();
+        // 2/17/2025 @annsabbasi
+        timeEntry.effectiveElapsedTime = Math.floor((Date.now() - new Date(timeEntry.checkIn)) / 1000) - timeEntry.pausedDuration;
     } else {
         if (!timeEntry.lastPaused) {
             throw new apiError(400, "Cannot resume without a paused state.");
@@ -93,6 +94,7 @@ const pauseOrResume = asyncHandler(async (req, res) => {
         timeEntry.isRunning = true;
         timeEntry.lastPaused = null;
     }
+    console.log("timeEntry.effectiveElapsedTime", timeEntry.effectiveElapsedTime)
 
     await timeEntry.save();
     // annsabbasi code down
@@ -138,7 +140,7 @@ const checkOut = asyncHandler(async (req, res) => {
     timeEntry.totalDuration = sessionDuration;
     timeEntry.isCheckedOut = true;
     timeEntry.isRunning = false;
-    console.log("checkOut TimerEntry.isRunning", timeEntry)
+    // console.log("checkOut TimerEntry.isRunning", timeEntry)
     await timeEntry.save();
     res.status(200).json(new apiResponse(200, { totalDuration: netDuration }, 'Checked out successfully.'));
 });
@@ -160,7 +162,7 @@ const getUserTimeProject = asyncHandler(async (req, res) => {
         return res.status(404).json(new apiResponse(404, { totalTime: 0 }, "No time data found for this project."));
     }
 
-    const getUserTime = await userTracker.find({ userId, projectId }).select("userId projectId checkIn isCheckedOut totalDuration maxTime effectiveElapsedTime").populate("userId", "name role");
+    const getUserTime = await userTracker.find({ userId, projectId }).select("userId projectId checkIn isRunning isCheckedOut totalDuration maxTime effectiveElapsedTime").populate("userId", "name role");
     res.status(200).json(new apiResponse(200, { projectId, getUserTime }, "User total time fetched successfully."));
 });
 
