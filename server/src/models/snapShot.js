@@ -9,7 +9,7 @@ const ScreenshotSchema = new mongoose.Schema({
     // },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "UserInfo", 
+        ref: "UserInfo",
         required: true
     },
     projectId: {
@@ -17,6 +17,11 @@ const ScreenshotSchema = new mongoose.Schema({
         ref: "userTask",
         required: true
     },
+    userInfo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserInfo",
+        required: true
+    }
 }, { timestamps: true });
 
 const SnapShot = mongoose.model("SnapShot", ScreenshotSchema);

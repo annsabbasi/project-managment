@@ -100,7 +100,7 @@ export const PrivateRoute = [
                 title: 'AddProjects',
                 children: [
                     {
-                        path: `${RouteNames.SUBDETAILSPAGE}/:id`,
+                        path: `${RouteNames.SUBDETAILSPAGE}/:subTaskId`,
                         // path: RouteNames.SUBDETAILSPAGE,
                         element: SubDetailsPage,
                         layout: true,

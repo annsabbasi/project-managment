@@ -39,7 +39,7 @@ import { createSubscriptionCheckout } from '../controllers/userPlanController.js
 import { validateRegisterFields } from '../controllers/validations/authValidation.js';
 import { checkIn, checkOut, pauseOrResume, getElapsedTime, getUserTimeProject, getUsersTimeProject } from '../controllers/trackerTime.js';
 import { Timer } from '../models/test.js';
-import { getAllScreenshotsController, uploadScreenshotController } from '../controllers/snapShot.js';
+import { getAllScreenshotsController, getUserScreenShot, getUserTrackerStatus, uploadScreenshotController } from '../controllers/snapShot.js';
 
 
 
@@ -130,12 +130,9 @@ router.post(
     upload.single('image'),  // Using your Multer setup
     uploadScreenshotController
 );
-
-router.get(
-    '/get-screenshots',
-    verifyUser(['admin', 'user']),
-    getAllScreenshotsController
-);
+router.get('/get-user-screenshots', verifyUser(['admin', 'user']), getUserScreenShot);
+router.get('/get-all-screenshots', verifyUser(['admin', 'user']), getAllScreenshotsController);
+router.get('/check-status', verifyUser(['user', 'admin']), getUserTrackerStatus);
 
 
 

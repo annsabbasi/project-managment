@@ -13,8 +13,10 @@ import {
     Grid, Dialog,
     IconButton
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useQuery } from "@tanstack/react-query";
+import { getAllUserScreenShot, getScreenshots } from "../../../../api/subDetailSnapShot";
 
 
 const Index = () => {
@@ -40,6 +42,24 @@ const Index = () => {
         navigate(-1);
     }
 
+    const { id: ProjectId } = useParams();
+    console.log("This is the projectId", ProjectId)
+    const { data: screenshots } = useQuery({
+        queryKey: ['screenshots', ProjectId],
+        queryFn: () => getScreenshots(ProjectId),
+        enabled: !!ProjectId, // Only fetch when projectId is provided
+    });
+    console.log("screenshots", screenshots)
+
+    // Fetch User Tracker Status
+    const { data: trackerStatus } = useQuery({
+        queryKey: ['userTrackerStatus', ProjectId],
+        queryFn: () => getAllUserScreenShot(ProjectId),
+        enabled: !!ProjectId,
+    });
+
+    console.log("trackerStatus", trackerStatus)
+
     return (
         <Container >
             <Link className={style.goBack} onClick={goBack}>
@@ -50,32 +70,50 @@ const Index = () => {
             </Link>
             <Stack variant="div" gap={8} my={4}>
                 <Box>
-                    <Typography variant="h6" mb={1} className={tableClassText}>
-                        Task Name: (Person Name)
-                    </Typography>
-                    <Typography variant="body1" className={`${style.galleryDate} ${tableClassText}`}>
-                        12-January-2020
-                    </Typography>
+                    {trackerStatus?.map((e, index) => {
+                        console.log("e.imageUrl", e.userId.name)
+                        return (
+                            <Stack key={index}>
+                                <Typography variant="h6" mb={1} className={tableClassText}>
+                                    Task Name: ({e.userId.name})
+                                </Typography>
+                                <Typography variant="body1" className={`${style.galleryDate} ${tableClassText}`}>
+                                    12-January-2020
+                                </Typography>
 
-                    <Grid container spacing={3} ml="1px" >
-                        <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }} >
+                                <Grid container spacing={3} ml="1px" >
+                                    <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
 
-                            <Grid item className={style.gridBox}>
-                                {[Image2, Image3, Image4, Image2, Image3, Image4, Image2, Image3, Image4,].map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image}
-                                        alt="Snap Shots"
-                                        width="200"
-                                        className={style.snapShotImg}
-                                        onClick={() => handleOpen(image)}
-                                    />
-                                ))}
-                            </Grid>
+                                        {/* <Grid item className={style.gridBox}>
+                                            {[Image2, Image3, Image4, Image2, Image3, Image4, Image2, Image3, Image4,].map((image, index) => (
+                                                <img
+                                                    key={index}
+                                                    src={image}
+                                                    alt="Snap Shots"
+                                                    width="200"
+                                                    className={style.snapShotImg}
+                                                    onClick={() => handleOpen(image)}
+                                                />
+                                            ))}
+                                        </Grid> */}
+                                        <Grid item className={style.gridBox}>
+                                            <img
+                                                key={e._id}
+                                                src={e.imageUrl}
+                                                alt="Snap Shots"
+                                                width="200"
+                                                className={style.snapShotImg}
+                                                onClick={() => handleOpen(e.imageUrl)}
+                                            />
+                                        </Grid>
 
-                        </Stack>
+                                    </Stack>
 
-                    </Grid>
+                                </Grid>
+                            </Stack>
+
+                        )
+                    })}
                     <Typography variant="p" mb={3} className={style.noTaskAssignText}>
                         No Current Snap-Shots
                     </Typography>
