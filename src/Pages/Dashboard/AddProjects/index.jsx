@@ -106,7 +106,6 @@ export default function AddProjects() {
         onSuccess: (data) => {
             console.log("onSuccess Triggered", data);
             setIsRunning(data.isRunning);
-            // setElapsedTime(data.elapsedTime);
         },
         onError: (error) => {
             console.error("Query Failed:", error);
@@ -121,17 +120,6 @@ export default function AddProjects() {
             setElapsedTime(timeData?.data?.elapsedTime);
         }
     }, [timeData]);
-
-    // useEffect(() => {
-    //     if (!isRunning) return;
-
-    //     const timer = setInterval(() => {
-    //         setElapsedTime(prevTime => prevTime + 1);
-    //     }, 1000);
-
-    //     return () => clearInterval(timer);
-    // }, [isRunning]);
-
 
     // User CheckIn Time
     const checkInMutation = useMutation({
@@ -166,16 +154,11 @@ export default function AddProjects() {
         onSuccess: (response) => {
             const responseData = response?.data;
             setIsRunning(responseData.data.isRunning);
-            // setIsRunning(true);
             setIsCheckedIn(false)
-            // setElapsedTime(responseData.data.elapsedTime);
-            // setElapsedTime(prev => prev);
-            // console.log("responseData.data.elapsedTime", responseData.data)
             queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
         onError: (error, variables, context) => {
             toast.error("Failed to pause/resume.");
-            // Rollback to previous state if mutation fails
             if (context?.previousTimeData) {
                 queryClient.setQueryData(['elapsedTime', ProjectId], context.previousTimeData);
             }
@@ -190,7 +173,7 @@ export default function AddProjects() {
         onSuccess: () => {
             toast.success("Checked out successfully!");
             setIsRunning(false);
-            setIsCheckedIn(false)
+            setIsCheckedIn(false);
             queryClient.invalidateQueries(['elapsedTime', ProjectId]);
         },
         onError: () => {
@@ -217,12 +200,7 @@ export default function AddProjects() {
         const values = userInfo?.data?.getUserTime?.map((e) => e[key])
         return values?.[0] ?? false;
     }
-    // console.log("getUserTimeDetails(isRunning)", getUserTimeDetails("isRunning"))
-    // console.log("State ElapsedTime", elapsedTime)
-    // console.log("userGetElapsedTime", timeData?.data?.elapsedTime)
-    // console.log("timeData", timeData?.data)
     const elapsedRuntimeValidation = timeData?.data?.isRunning
-    // console.log("setIsRunning", isRunning)
 
     return (
         <Box>
@@ -432,23 +410,3 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
 };
-
-
-// Pause Or Resume
-// setElapsedTime((prev) => prev);
-// annsabbasi code 1/17/2025
-// console.log("Values", responseData.data)
-// setElapsedTime(responseData.data.elapsedTime);
-// if (responseData.data.elapsedTime !== elapsedTime) {
-//     setElapsedTime(responseData.data.elapsedTime || 0);
-// }
-
-// useEffect(() => {
-//     let timer;
-//     if (isRunning) {
-//         timer = setInterval(() => {
-//             setElapsedTime((prevTime) => prevTime + 1);
-//         }, 1000);
-//     }
-//     return () => clearInterval(timer);
-// }, [isRunning, elapsedTime]);

@@ -9,15 +9,12 @@ const TimeTrackingSchema = new Schema({
     projectId: {
         type: mongoose.default.Types.ObjectId,
         ref: "userTask",
-        // required: true
     },
     employee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserInfo",
-        // default: null
-        // required: true
-    }, 
-    date: { 
+    },
+    date: {
         type: String,
         required: true
     },
@@ -48,7 +45,7 @@ const TimeTrackingSchema = new Schema({
         type: Date,
         default: null
     },
-    lastPaused: { 
+    lastPaused: {
         type: Date,
     },
     maxTime: {

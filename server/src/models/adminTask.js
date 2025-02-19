@@ -59,8 +59,3 @@ const taskSchema = new mongoose.Schema({
 
 const adminTask = mongoose.model('userTask', taskSchema);
 export { adminTask };
-// Validator to enforce members count
-// function arrayLimit(val) {
-//     return val.length >= 5 && val.length <= 100;
-// }
-
