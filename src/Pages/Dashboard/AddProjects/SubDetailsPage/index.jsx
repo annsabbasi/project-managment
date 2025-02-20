@@ -1,7 +1,4 @@
 import style from "./style.module.scss"
-import Image2 from "../../../../assets/demoImage/2.jpg"
-import Image3 from "../../../../assets/demoImage/3.jpg"
-import Image4 from "../../../../assets/demoImage/4.jpg"
 import { useState } from "react";
 import { useAuth } from "../../../../context/AuthProvider";
 import {
@@ -20,7 +17,6 @@ import { getAllUserScreenShot, getScreenshots } from "../../../../api/subDetailS
 
 
 const Index = () => {
-
     const { theme, mode } = useAuth();
     const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
     const tableClassText = mode === 'light' ? 'lightTableText' : 'darkTableText';
@@ -43,13 +39,12 @@ const Index = () => {
     }
 
     const { id: ProjectId } = useParams();
-    console.log("This is the projectId", ProjectId)
     const { data: screenshots } = useQuery({
         queryKey: ['screenshots', ProjectId],
         queryFn: () => getScreenshots(ProjectId),
-        enabled: !!ProjectId, // Only fetch when projectId is provided
+        enabled: !!ProjectId,
     });
-    console.log("screenshots", screenshots)
+    console.log("screenshots of createdAt", screenshots)
 
     // Fetch User Tracker Status
     const { data: trackerStatus } = useQuery({
@@ -58,7 +53,56 @@ const Index = () => {
         enabled: !!ProjectId,
     });
 
-    console.log("trackerStatus", trackerStatus)
+    console.log("trackerStatus createdAt", trackerStatus)
+
+    const { user } = useAuth();
+    const currentUserId = user?._id;
+
+
+    // Filter Current User Snapshots
+    const currentUserScreenshots = trackerStatus?.filter(
+        (item) => item.userId._id === currentUserId
+    );
+
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-GB'); // Example: "20/10/2020"
+    };
+    // All Users Snapshots (Optional: Could exclude current user if desired)
+    // const allUsersScreenshots = trackerStatus;
+
+    const getUserTimeDetails = (key) => {
+        const values = screenshots?.map((e) => e[key])
+        return values?.[0] ?? false;
+    }
+
+    const getAllUsersTimeDetails = (key) => {
+        const values = trackerStatus?.map((e) => e[key])
+        return values?.[0] ?? false;
+    }
+    const formatCreatedAtTime = (createdAt) => {
+        const date = new Date(createdAt);
+        const hrs = String(date.getHours()).padStart(2, '0');
+        const mins = String(date.getMinutes()).padStart(2, '0');
+        const secs = String(date.getSeconds()).padStart(2, '0');
+        return `${hrs}:${mins}:${secs}`;
+    };
+    console.log("Home screenshots", formatCreatedAtTime(getAllUsersTimeDetails("createdAt")))
+
+
+    // TESTING
+    const groupByDate = (screenshots) => {
+        return screenshots?.reduce((acc, snap) => {
+            const dateKey = formatDate(snap.createdAt); // Example: "20/10/2020"
+            if (!acc[dateKey]) {
+                acc[dateKey] = [];
+            }
+            acc[dateKey].push(snap);
+            return acc;
+        }, {});
+    };
+    const groupedUserScreenshots = groupByDate(currentUserScreenshots);
 
     return (
         <Container >
@@ -68,61 +112,89 @@ const Index = () => {
                 </IconButton>
                 <Typography className={style.goBackTitle} sx={{ color: theme.palette.text.primary }}>Return</Typography>
             </Link>
-            <Stack variant="div" gap={8} my={4}>
-                <Box>
-                    {trackerStatus?.map((e, index) => {
-                        console.log("e.imageUrl", e.userId.name)
-                        return (
-                            <Stack key={index}>
-                                <Typography variant="h6" mb={1} className={tableClassText}>
-                                    Task Name: ({e.userId.name})
-                                </Typography>
-                                <Typography variant="body1" className={`${style.galleryDate} ${tableClassText}`}>
-                                    12-January-2020
-                                </Typography>
+            <Stack variant="div" gap={3} my={4}>
+                <Box mb={4}>
+                    <Typography variant="h5">Your Snapshots</Typography>
+                    <Stack >
 
-                                <Grid container spacing={3} ml="1px" >
-                                    <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
-
-                                        {/* <Grid item className={style.gridBox}>
-                                            {[Image2, Image3, Image4, Image2, Image3, Image4, Image2, Image3, Image4,].map((image, index) => (
-                                                <img
-                                                    key={index}
-                                                    src={image}
-                                                    alt="Snap Shots"
-                                                    width="200"
-                                                    className={style.snapShotImg}
-                                                    onClick={() => handleOpen(image)}
-                                                />
+                        <Stack>
+                            {groupedUserScreenshots && Object.entries(groupedUserScreenshots).length > 0 ? (
+                                Object.entries(groupedUserScreenshots).map(([date, snaps]) => (
+                                    <Stack key={date} mb={3}>
+                                        <Typography alignSelf="center">{date}</Typography>
+                                        <Stack flexDirection="row" flexWrap="wrap">
+                                            {snaps.map((e) => (
+                                                <Stack key={e._id} sx={{ margin: "10px" }}>
+                                                    <img
+                                                        src={e.imageUrl}
+                                                        alt="Your Snapshot"
+                                                        width={200}
+                                                        onClick={() => handleOpen(e.imageUrl)}
+                                                        className={style.snapShotImg}
+                                                    />
+                                                    <Typography sx={{ fontSize: "12px", textAlign: "center" }}>{formatCreatedAtTime(e.createdAt)}</Typography>
+                                                </Stack>
                                             ))}
-                                        </Grid> */}
-                                        <Grid item className={style.gridBox}>
-                                            <img
-                                                key={e._id}
-                                                src={e.imageUrl}
-                                                alt="Snap Shots"
-                                                width="200"
-                                                className={style.snapShotImg}
-                                                onClick={() => handleOpen(e.imageUrl)}
-                                            />
-                                        </Grid>
-
+                                        </Stack>
                                     </Stack>
-
-                                </Grid>
-                            </Stack>
-
-                        )
-                    })}
-                    <Typography variant="p" mb={3} className={style.noTaskAssignText}>
-                        No Current Snap-Shots
-                    </Typography>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg">
-                        {selectedImage && (
-                            <img src={selectedImage} alt="Enlarged View" style={{ width: "100%", height: "auto" }} />
-                        )}
-                    </Dialog>
+                                ))
+                            ) : (
+                                <Typography>No Snapshots Available for You</Typography>
+                            )}
+                        </Stack>
+                    </Stack>
                 </Box>
+
+                {/* All Users Snapshots */}
+                {user?.role === 'admin' && trackerStatus &&
+                    Object.entries(
+                        trackerStatus.reduce((acc, curr) => {
+                            const userName = curr.userId.name;
+                            if (!acc[userName]) acc[userName] = [];
+                            acc[userName].push(curr);
+                            return acc;
+                        }, {})
+                    ).map(([userName, snapshots]) => {
+                        const groupedSnapshots = groupByDate(snapshots);
+
+                        return (
+                            <Box key={userName} mb={3}>
+                                <Typography variant="h5">{userName}&lsquo;s Snapshots</Typography>
+                                {Object.entries(groupedSnapshots).map(([date, snaps]) => (
+                                    <Box key={date} mb={2}>
+                                        <Typography alignSelf="center" mb={1}>{date}</Typography>
+                                        <Stack flexDirection="row" flexWrap="wrap">
+                                            {snaps.map((snap) => (
+                                                <Stack key={snap._id} sx={{ margin: "10px" }}>
+                                                    <img
+                                                        src={snap.imageUrl}
+                                                        alt="User Snapshot"
+                                                        width={200}
+                                                        onClick={() => handleOpen(snap.imageUrl)}
+                                                        className={style.snapShotImg}
+                                                    />
+                                                    <Typography sx={{ fontSize: "12px", textAlign: "center" }}>{formatCreatedAtTime(snap.createdAt)}</Typography>
+                                                </Stack>
+                                            ))}
+                                        </Stack>
+                                    </Box>
+                                ))}
+                            </Box>
+                        );
+                    })
+                }
+
+
+
+                <Dialog open={open} onClose={handleClose} maxWidth="lg">
+                    {selectedImage && (
+                        <img
+                            src={selectedImage}
+                            alt="Enlarged View"
+                            style={{ width: "100%", height: "auto" }}
+                        />
+                    )}
+                </Dialog>
 
 
                 <TableContainer>
@@ -163,7 +235,7 @@ const Index = () => {
                     </Table>
                 </TableContainer>
             </Stack>
-        </Container>
+        </Container >
     );
 };
 

@@ -10,14 +10,14 @@ const uploadVideoController = asyncHandler(async (req, res) => {
     const { description } = req.body;
 
     if (!description) {
-        throw new apiError("Video description not provided")
+        throw new apiError("Video description not provided");
     }
     if (!file) {
-        throw new apiError("No video file uploaded")
+        throw new apiError("No video file uploaded");
     }
 
     if (file.size > 100 * 1024 * 1024) {
-        throw new apiError("Video is size is greater then 100MB")
+        throw new apiError("Video is size is greater then 100MB");
     }
 
     // upload the file on cloudinary
@@ -29,7 +29,7 @@ const uploadVideoController = asyncHandler(async (req, res) => {
         throw new apiError("Failed to upload video to Cloudinary");
     }
 
-    console.log("videoUrl of the videoUpload Controller.js", uploadResult)
+    console.log("videoUrl of the videoUpload Controller.js", uploadResult);
     const videoUrl = uploadResult.url;
 
     const newVideoSubTask = await uploadSingleVideo.create({
@@ -38,20 +38,18 @@ const uploadVideoController = asyncHandler(async (req, res) => {
     });
     res.status(200).json(
         new apiResponse(200, newVideoSubTask, "Video uploaded successfully")
-    )
-
-})
-
-
+    );
+});
 
 const getAllVideoController = asyncHandler(async (req, res) => {
     const videosData = await uploadSingleVideo.find({});
     if (!videosData) {
-        new apiResponse(201, "upload any data to show up here")
+        new apiResponse(201, "upload any data to show up here");
     }
-    res.status(200).json(new apiResponse(200, videosData, "uploaded data successfully fetched"))
-})
-
+    res.status(200).json(
+        new apiResponse(200, videosData, "uploaded data successfully fetched")
+    );
+});
 
 const getSingleVideoController = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
@@ -60,14 +58,16 @@ const getSingleVideoController = asyncHandler(async (req, res) => {
     }
     const getVideo = await uploadSingleVideo.findById(videoId);
     if (!getVideo) {
-        throw new apiError("No video Found!")
+        throw new apiError("No video Found!");
     }
 
-    res.status(200).json(new apiResponse(200, getVideo, "Video Get Successfully!"))
-})
+    res.status(200).json(
+        new apiResponse(200, getVideo, "Video Get Successfully!")
+    );
+});
 
-
-
-
-
-export { uploadVideoController, getAllVideoController, getSingleVideoController }
+export {
+    uploadVideoController,
+    getAllVideoController,
+    getSingleVideoController,
+};
