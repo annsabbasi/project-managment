@@ -11,6 +11,7 @@ import {
     getUserData,
     getUserProfile,
     promoteUser,
+    updateUser,
 } from "../controllers/userController.js";
 
 import {
@@ -81,6 +82,14 @@ router
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyUser(), logoutUser);
 router.route("/get-user-data").get(verifyUser(), getUserData);
+router.put("/update-user", verifyUser(["admin", "user", "QcAdmin"]), upload.single("profilePicture"), updateUser);
+
+// router.post(
+//     "/upload-screenshot",
+//     verifyUser(["admin", "user", "QcAdmin"]),
+//     upload.single("image"), // Using your Multer setup
+//     uploadScreenshotController
+// );
 // Promote User Role
 router.route("/promote-user").post(verifyUser("admin"), promoteUser);
 

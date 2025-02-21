@@ -1,7 +1,4 @@
 import axios from 'axios';
-// import { RouteNames } from '../Constants/route';
-// import { useNavigate } from 'react-router-dom';
-// import { RouteNames } from '../Constants/route';
 
 
 export const axiosInstance = axios.create({
