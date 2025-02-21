@@ -410,3 +410,76 @@ CustomTabPanel.propTypes = {
     value: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
 };
+
+
+
+// const isToday = (date) => {
+//     if (!date) return false;
+//     const givenDate = new Date(date);
+//     const today = new Date();
+
+//     return (
+//         givenDate.getDate() === today.getDate() &&
+//         givenDate.getMonth() === today.getMonth() &&
+//         givenDate.getFullYear() === today.getFullYear()
+//     );
+// };
+
+// const getTimeDetailsForToday = (key) => {
+//     const checkInDate = getUserTimeDetails("checkIn");
+//     const checkOutDate = getUserTimeDetails("isCheckedOut")
+
+//     if (isToday(checkInDate) && isToday(checkOutDate)) {
+//         // If checkIn is from today, return the actual value
+//         return getUserTimeDetails(key);
+//     } else {
+//         // If checkIn is not from today, "reset" behavior (e.g., return null, 0, etc.)
+//         if (key === "totalDuration" || key === "elapsedTime") return 0;
+//         return null;
+//     }
+// };
+// console.log("getTimeDetailsForToday(totalDuration)", getTimeDetailsForToday("totalDuration"))
+
+
+{/* <Stack flexDirection="row" gap="8px" alignItems="center" mr={3}>
+{getTimeDetailsForToday("isCheckedOut") ?
+    (<Typography>{formatTime(getUserTimeDetails("totalDuration"))}</Typography>) :
+    (<Typography>{formatTime(elapsedTime)}</Typography>
+    )}
+
+{isCheckedIn && !getTimeDetailsForToday("isCheckedOut") && (!getTimeDetailsForToday("checkIn") && !getUserTimeDetails("checkIn")) && !elapsedRuntimeValidation && (
+    <Button
+        variant="contained"
+        size="small"
+        startIcon={<SouthWestIcon sx={{ fontSize: "1rem !important" }} />}
+        onClick={() => checkInMutation.mutate()}
+        sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }}
+        className={style.timeCheckBtn}>
+        Check-In
+    </Button>
+)}
+
+{/* {!getUserTimeDetails("isCheckedOut") && isRunning && ( */}
+// {
+//     getUserTimeDetails("checkIn") && (!getTimeDetailsForToday("isCheckedOut") && !getUserTimeDetails("isCheckedOut")) && (
+//         <Stack flexDirection="row" gap="8px" alignItems="center">
+//             <IconButton
+//                 size="small"
+//                 onClick={() => pauseOrResumeMutation.mutate()}
+//                 sx={{ "&:hover": hoverStyles, borderRadius: "100% !important", ...trackerBtnsStyles }}
+//                 className={style.timeCheckBtn}>
+//                 {isRunning ? <PauseIcon /> : <PlayArrowRoundedIcon />}
+//             </IconButton>
+//             <Button
+//                 variant="contained"
+//                 size="small"
+//                 onClick={() => checkOutMutation.mutate()}
+//                 startIcon={<ArrowOutwardIcon sx={{ fontSize: "1rem !important" }} />}
+//                 sx={{ "&:hover": hoverStyles, ...trackerBtnsStyles }}
+//                 className={style.timeCheckBtn}>
+//                 Check-Out
+//             </Button>
+//         </Stack>
+//     )
+// }
+// </Stack > */}
