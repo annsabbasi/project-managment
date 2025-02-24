@@ -50,7 +50,7 @@ const Videos = () => {
                                             controls={false}
                                             style={{ objectFit: 'cover' }} />
                                     </CardActionArea>
-                                    <CardContent sx={{ paddingBlock: '0.2rem', paddingInline: '0.2rem' }}>
+                                    <CardContent sx={{ paddingBlock: '0.2rem', paddingInline: '0.4rem' }}>
                                         <Typography variant="body2" color="text.secondary" className={style.textClamp}>
                                             {video.description}
                                         </Typography>

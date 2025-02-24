@@ -12,7 +12,7 @@ import {
 
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 import { useDeleteTask, useGetCreateTask } from '../../hooks/useTask';
 import { toast } from 'react-toastify';
@@ -87,6 +87,11 @@ export default function TableActive() {
         })
     }
 
+    const navigate = useNavigate();
+    const handleNavigate = (taskId) => {
+        handleClose();
+        navigate(`${RouteNames.ADDPRODUCTS}/${taskId}`)
+    }
 
     return (
         <TableContainer>
@@ -163,14 +168,14 @@ export default function TableActive() {
                                                     },
                                                 }} className={style.anchorElParent}>
 
-                                                <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={handleClose}>
-                                                    <MenuItem onClick={handleClose} className={`${tableClassText} ${style.viewMenuItem}`} sx={{ color: theme.palette.text.primary }}>
-                                                        <ListItemIcon>
-                                                            <VisibilityOutlinedIcon fontSize="small" />
-                                                        </ListItemIcon>
-                                                        View
-                                                    </MenuItem>
-                                                </Link>
+                                                {/* <Link to={`${RouteNames.ADDPRODUCTS}/${task._id}`} style={{ textDecoration: 'none' }} onClick={handleClose}> */}
+                                                <MenuItem onClick={() => handleNavigate(task._id)} className={`${tableClassText} ${style.viewMenuItem}`} sx={{ color: theme.palette.text.primary }}>
+                                                    <ListItemIcon>
+                                                        <VisibilityOutlinedIcon fontSize="small" />
+                                                    </ListItemIcon>
+                                                    View
+                                                </MenuItem>
+                                                {/* </Link> */}
 
                                                 {user?.role === 'admin' && (
                                                     <MenuItem onClick={handleEditClickOpen} className={`${tableClassText} ${style.editMenuItem}`}>

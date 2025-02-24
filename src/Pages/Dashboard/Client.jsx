@@ -1,7 +1,6 @@
-// import { Link } from "react-router-dom";
 import { useState } from "react";
 
-import project from "./DashboardScss/project.module.scss"
+import style from "./DashboardScss/project.module.scss"
 import PropTypes from 'prop-types';
 import Videos from "./AddVideos/Videos";
 import Uploads from "./AddVideos/Uploads";
@@ -13,6 +12,8 @@ import {
 } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
 import { RouteNames } from "../../Constants/route";
+import { useAuth } from "../../context/AuthProvider";
+import Pdf from "./AddVideos/Pdf";
 
 
 const CustomTabPanel = (props) => {
@@ -39,6 +40,8 @@ const allyProps = (index) => {
 
 
 export default function Client() {
+    const { theme, mode } = useAuth();
+    const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
     const [activeTab, setActiveTab] = useState(0)
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)
@@ -49,44 +52,58 @@ export default function Client() {
 
     return (
         <Box>
-            {/* {!isClientPage && ( */}
             {!isClientPage && (
                 <>
                     <Stack flexDirection="row" width="100%" alignItems="center" justifyContent="center">
 
                         <Tabs
                             onChange={handleChangeTab}
-                            value={activeTab}
                             aria-label="user details tabs"
+                            value={activeTab}
                             TabIndicatorProps={{ sx: { display: 'none' } }}
-                            sx={{ backgroundColor: 'white' }} className={project.Tabs}>
+                            sx={{ backgroundColor: theme.palette.background.default }}
+                            className={style.Tabs}>
 
                             <Tab
                                 {...allyProps(0)}
                                 label="Videos"
-                                // sx={(theme) => ({
-                                //     backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                                //     color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                                //     fontWeight: activeTab === 0 ? '600' : '500',
-                                //     '&.Mui-selected': {
-                                //         color: theme.palette.grey.darkGrey,
-                                //     },
-                                // })} 
-                                className={project.Tab} />
+                                sx={(theme) => ({
+                                    backgroundColor: activeTab === 0 ? theme.palette.background.paper : 'transparent',
+                                    color: activeTab === 0 ? `${themeTab} !important` : 'grey',
+                                    fontWeight: activeTab === 0 ? '600' : '500',
+                                    '&.Mui-selected': {
+                                        color: theme.palette.grey.darkGrey,
+                                    },
+                                })}
+                                className={style.Tab} />
 
 
                             <Tab
                                 label="Upload"
-                                {...allyProps(0)}
-                                // sx={(theme) => ({
-                                //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                                //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                                //     fontWeight: activeTab === 1 ? '600' : '500',
-                                //     '&.Mui-selected': {
-                                //         color: theme.palette.grey.darkGrey,
-                                //     },
-                                // })} 
-                                className={project.Tab} />
+                                {...allyProps(1)}
+                                sx={(theme) => ({
+                                    backgroundColor: activeTab === 1 ? theme.palette.background.paper : 'transparent',
+                                    color: activeTab === 1 ? `${themeTab} !important` : 'grey',
+                                    fontWeight: activeTab === 1 ? '600' : '500',
+                                    '&.Mui-selected': {
+                                        color: theme.palette.grey.darkGrey,
+                                    },
+                                })}
+                                className={style.Tab} />
+
+
+                            <Tab
+                                label="Pdf"
+                                {...allyProps(2)}
+                                sx={(theme) => ({
+                                    backgroundColor: activeTab === 2 ? theme.palette.background.paper : 'transparent',
+                                    color: activeTab === 2 ? `${themeTab} !important` : 'grey',
+                                    fontWeight: activeTab === 2 ? '600' : '500',
+                                    '&.Mui-selected': {
+                                        color: theme.palette.grey.darkGrey,
+                                    },
+                                })}
+                                className={style.Tab} />
 
 
                         </Tabs>
@@ -100,6 +117,10 @@ export default function Client() {
 
                         <CustomTabPanel value={activeTab} index={1}>
                             <Uploads />
+                        </CustomTabPanel>
+
+                        <CustomTabPanel value={activeTab} index={2}>
+                            <Pdf />
                         </CustomTabPanel>
                     </Box>
                 </>
