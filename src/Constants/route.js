@@ -30,5 +30,6 @@ export const RouteNames = {
     REQUEST: 'request',
     PLANREQUEST: 'planRequest',
 
-    CHECKOUT: 'checkout'
+    CHECKOUT: 'checkout',
+    ADMINPROFILEPAGE: 'profilePage'
 };

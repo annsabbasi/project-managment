@@ -5,7 +5,6 @@ import { userTracker } from "../models/TrackerTime.js";
 import moment from "moment";
 import { adminTask } from "../models/adminTask.js";
 
-
 // Check-In Functionality
 const checkIn = asyncHandler(async (req, res) => {
     const { projectId } = req.body;
@@ -41,7 +40,6 @@ const checkIn = asyncHandler(async (req, res) => {
         new apiResponse(200, timeEntry, "CheckedIn successfully.")
     );
 });
-
 
 // Get Elapsed Time
 const getElapsedTime = asyncHandler(async (req, res) => {
@@ -83,7 +81,6 @@ const getElapsedTime = asyncHandler(async (req, res) => {
     );
 });
 
-
 // Pause or Resume Timer
 const pauseOrResume = asyncHandler(async (req, res) => {
     const { projectId } = req.body;
@@ -123,7 +120,9 @@ const pauseOrResume = asyncHandler(async (req, res) => {
             (new Date() - new Date(timeEntry.lastPaused)) / 1000
         );
         timeEntry.pausedDuration += pausedTime;
-        timeEntry.effectiveElapsedTime = Math.floor((Date.now() - new Date(timeEntry.checkIn)) / 1000) - timeEntry.pausedDuration;
+        timeEntry.effectiveElapsedTime =
+            Math.floor((Date.now() - new Date(timeEntry.checkIn)) / 1000) -
+            timeEntry.pausedDuration;
         // annsabbasi code up
         timeEntry.isRunning = true;
         timeEntry.lastPaused = null;
@@ -148,7 +147,6 @@ const pauseOrResume = asyncHandler(async (req, res) => {
         )
     );
 });
-
 
 // Check-Out Functionality
 const checkOut = asyncHandler(async (req, res) => {
@@ -202,7 +200,6 @@ const checkOut = asyncHandler(async (req, res) => {
     );
 });
 
-
 // For Getting The Daily Time Reports
 const getUserTimeProject = asyncHandler(async (req, res) => {
     const userId = req.user.id;
@@ -247,7 +244,6 @@ const getUserTimeProject = asyncHandler(async (req, res) => {
         )
     );
 });
-
 
 const getUsersTimeProject = asyncHandler(async (req, res) => {
     const { projectId } = req.query;

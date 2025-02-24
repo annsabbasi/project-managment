@@ -34,7 +34,7 @@ const renderRoutes = (routes) => {
                                     </AdminLayout>
                                 ) :
                                     (
-                                        <>
+                                        <> 
                                             <Header />
                                             <Element />
                                         </>

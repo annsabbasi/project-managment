@@ -7,8 +7,7 @@ import {
     TableBody, TableRow,
     TableCell, TableHead,
     Table, TableContainer,
-    Grid, Dialog,
-    IconButton
+    Dialog, IconButton
 } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -72,10 +71,10 @@ const Index = () => {
     // All Users Snapshots (Optional: Could exclude current user if desired)
     // const allUsersScreenshots = trackerStatus;
 
-    const getUserTimeDetails = (key) => {
-        const values = screenshots?.map((e) => e[key])
-        return values?.[0] ?? false;
-    }
+    // const getUserTimeDetails = (key) => {
+    //     const values = screenshots?.map((e) => e[key])
+    //     return values?.[0] ?? false;
+    // }
 
     const getAllUsersTimeDetails = (key) => {
         const values = trackerStatus?.map((e) => e[key])
@@ -161,7 +160,7 @@ const Index = () => {
                             <Box key={userName} mb={3}>
                                 <Typography variant="h5">{userName}&lsquo;s Snapshots</Typography>
                                 {Object.entries(groupedSnapshots).map(([date, snaps]) => (
-                                    <Box key={date} mb={2}>
+                                    <Stack key={date} mb={2}>
                                         <Typography alignSelf="center" mb={1}>{date}</Typography>
                                         <Stack flexDirection="row" flexWrap="wrap">
                                             {snaps.map((snap) => (
@@ -177,7 +176,7 @@ const Index = () => {
                                                 </Stack>
                                             ))}
                                         </Stack>
-                                    </Box>
+                                    </Stack>
                                 ))}
                             </Box>
                         );

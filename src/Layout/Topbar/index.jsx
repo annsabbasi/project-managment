@@ -18,6 +18,8 @@ import {
     Toolbar, Typography
 } from "@mui/material";
 import { useAuth } from '../../context/AuthProvider';
+import { RouteNames } from '../../Constants/route';
+import { Link } from 'react-router-dom';
 // import { useNavigate } from "react-router-dom";
 
 
@@ -78,7 +80,9 @@ export default function TopBar({ title }) {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <Link to={`/${RouteNames.ADMINPROFILEPAGE}`}>
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    </Link>
                     <MenuItem onClick={handleClose}>My Account</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>

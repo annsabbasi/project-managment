@@ -6,6 +6,8 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ROLES } from "../config/roles.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+
 
 // Generate Access & Refresh Token of User
 const generateAccessTokenAndRefreshToken = async (tokenId) => {
@@ -19,6 +21,7 @@ const generateAccessTokenAndRefreshToken = async (tokenId) => {
     await user.save({ validateBeforeSave: false });
     return { accessToken, refreshToken };
 };
+
 
 // To Refresh user Login Access Token
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -78,6 +81,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
 });
 
+
 // To Register a Person
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -101,6 +105,7 @@ const registerUser = asyncHandler(async (req, res) => {
         user: createdUser,
     });
 });
+
 
 // To Login a Person
 const loginUser = asyncHandler(async (req, res) => {
@@ -144,6 +149,7 @@ const loginUser = asyncHandler(async (req, res) => {
         );
 });
 
+
 // To Logout a Person
 const logoutUser = asyncHandler(async (req, res) => {
     const options = {
@@ -157,6 +163,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         .json(new apiResponse(200, true, "User logged out successfully"));
 });
 
+
 // To get Logged In user Details
 const getUserData = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
@@ -164,6 +171,7 @@ const getUserData = asyncHandler(async (req, res) => {
         new apiResponse(200, user, "User data fetched successfully")
     );
 });
+
 
 // Get Data of Logged In User
 const getAllData = asyncHandler(async (req, res) => {
@@ -175,6 +183,7 @@ const getAllData = asyncHandler(async (req, res) => {
         .status(200)
         .json(new apiResponse(200, data, "Data Fetched Successfully"));
 });
+
 
 // For The Testing Purpose To Get the User Data
 const getUserProfile = asyncHandler(async (req, res) => {
@@ -190,6 +199,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
         new apiResponse(200, findUser, "User data fetched successfully!")
     );
 });
+
 
 // Promoting a User To QC-Admin
 const promoteUser = asyncHandler(async (req, res) => {
@@ -229,6 +239,56 @@ const promoteUser = asyncHandler(async (req, res) => {
         );
 });
 
+
+// Update Username email and Profile Picture
+const updateUser = asyncHandler(async (req, res) => {
+    const { name, email, description, slackId, upworkId, linkedinId, facebookId, gender, hourlyRate } = req.body;
+    const userId = req.user._id;
+
+    let user = await User.findById(userId);
+    if (!user) {
+        return res.status(404).json({ error: "User not found" });
+    }
+
+    const existingUser = await User.findOne({
+        $or: [{ email }, { name }],
+        _id: { $ne: userId },
+    });
+
+    if (existingUser) {
+        return res.status(400).json({ error: "Email or Name already taken" });
+    }
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (description) user.description = description;
+    if (slackId) user.slackId = slackId;
+    if (upworkId) user.upworkId = upworkId;
+    if (linkedinId) user.linkedinId = linkedinId;
+    if (facebookId) user.facebookId = facebookId;
+    if (gender) user.gender = gender;
+    if (hourlyRate) user.hourlyRate = hourlyRate;
+
+    if (req.file) {
+        const uploadResponse = await uploadOnCloudinary(req.file.path);
+        if (!uploadResponse) {
+            return res.status(500).json({ error: "Failed to upload image" });
+        }
+        user.avatar = uploadResponse.secure_url;
+    }
+
+    await user.save();
+    const updatedUser = await User.findById(userId).select("-password -refreshToken");
+
+    return res.status(200).json({
+        message: "User updated successfully",
+        user: updatedUser,
+    });
+});
+
+
+
+
 export {
     registerUser,
     loginUser,
@@ -238,4 +298,5 @@ export {
     getUserData,
     getUserProfile,
     promoteUser,
+    updateUser
 };

@@ -55,6 +55,14 @@ const UserSchema = new Schema(
         refreshToken: {
             type: String,
         },
+
+        hourlyRate: { type: Number, default: "00" },
+        description: { type: String, default: "" },
+        slackId: { type: String, default: "" },
+        upworkId: { type: String, default: "" },
+        linkedinId: { type: String, default: "" },
+        facebookId: { type: String, default: "" },
+        gender: { type: String, enum: ["Male", "Female"], default: "Male" },
     },
     { timestamps: true }
 );

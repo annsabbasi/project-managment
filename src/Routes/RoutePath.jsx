@@ -22,6 +22,7 @@ const Checkout = lazy(() => import('../Pages/Dashboard/CheckoutPage'));
 const AddProjects = lazy(() => import('../Pages/Dashboard/AddProjects'));
 const SingleVideo = lazy(() => import('../Pages/Dashboard/AddVideos/SingleVideo'));
 const SubDetailsPage = lazy(() => import('../Pages/Dashboard/AddProjects/SubDetailsPage'));
+const AdminProfile = lazy(() => import("../Pages/AdminProfilePage/AdminProfile"))
 // import SingleVideo from "../Pages/Dashboard/AddVideos/SingleVideo";
 
 // Super Admin Route Part
@@ -76,6 +77,7 @@ export const PrivateRoute = [
     { path: RouteNames.INVOICES, element: Invoices, layout: true, title: 'Invoices' },
     { path: RouteNames.FORMS, element: Forms, layout: true, title: 'Forms' },
     { path: RouteNames.FINANCES, element: Finances, layout: true, title: 'Finances' },
+    { path: RouteNames.ADMINPROFILEPAGE, element: AdminProfile, title: 'Profile' },
     // { path: RouteNames.SINGLEVIDEO, element: SingleVideo, layout: true, title: 'SingleVideo' },
     // The AddProjects is the children and present inside this Route
     {
