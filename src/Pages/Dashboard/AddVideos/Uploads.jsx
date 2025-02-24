@@ -102,10 +102,9 @@ const Uploads = () => {
                     onChange={handleDescriptionChange}
                     fullWidth />
                 <Button
-                    variant="contained"
                     size="md"
-                    // onClick={handleSubmit}
-                    className={style.linkBtn}
+                    variant="outlined"
+                    // className={style.linkBtn}
                     type="submit"
                 >Submit</Button>
             </Stack>

@@ -23,10 +23,9 @@ const uploadOnCloudinary = async (localFilePath) => {
         // Upload the file on cloudinary
         response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
+            type: 'upload',
+            access_mode: 'public',
         });
-
-        // console.log("File is uploaded on cloudinary:", response.url);
-
         return response;
     } catch (error) {
         console.log("Cloudinary utils error", error);
@@ -38,6 +37,17 @@ const uploadOnCloudinary = async (localFilePath) => {
         } else {
             console.log(`File ${localFilePath} not found, nothing to remove.`);
         }
+    }
+};
+
+
+export const deleteFromCloudinary = async (publicId) => {
+    try {
+        const response = await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
+        return response;
+    } catch (error) {
+        console.error("Error deleting from Cloudinary:", error);
+        return null;
     }
 };
 
