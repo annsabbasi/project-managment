@@ -30,8 +30,6 @@ const handleDownload = async (pdfUrl) => {
 };
 
 
-
-
 const Pdf = () => {
     const [pdf, setPdf] = useState(null);
     const [pdfURL, setPdfURL] = useState("");
@@ -183,16 +181,3 @@ const Pdf = () => {
 };
 
 export default Pdf;
-
-
-
-// const handleDownload = (fileUrl) => {
-//     if (!fileUrl) return;
-
-//     const link = document.createElement("a");
-//     link.href = fileUrl;
-//     link.setAttribute("download", fileUrl.split('/').pop());
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-// };
