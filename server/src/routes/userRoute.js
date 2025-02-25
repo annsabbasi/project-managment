@@ -62,6 +62,7 @@ router.route("/signup").post(validateRegisterFields([
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyUser(), logoutUser);
 router.route("/get-user-data").get(verifyUser(), getUserData);
+router.route("/get-profile-data").get(verifyUser(["admin", "user", "QcAdmin"]), getUserProfile)
 router.put("/update-user", verifyUser(["admin", "user", "QcAdmin"]), upload.single("profilePicture"), updateUser);
 // Promote User Role
 router.route("/promote-user").post(verifyUser("admin"), promoteUser);

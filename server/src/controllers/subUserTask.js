@@ -64,8 +64,8 @@ const getUserSubTask = asyncHandler(async (req, res) => {
 
     const tasks = await subUserTask
         .find({ projectId })
-        .populate("assignedBy", "name avatar");
-
+        .populate("assignedBy", "name avatar")
+        .exec();
     if (!tasks || tasks.length === 0) {
         return res.status(200).json(new apiResponse(200, [], "No tasks found"));
     }
@@ -325,14 +325,20 @@ const subTaskApproval = asyncHandler(async (req, res) => {
 
 // Filtering the SubTask Data
 const filterSubTask = asyncHandler(async (req, res) => {
-    const { searchText, filterField } = req.query;
-    const query = {};
+    const { searchText, filterField, projectId } = req.query;
 
-    // if (searchText) {
+    if (!projectId || !mongoose.isValidObjectId(projectId)) {
+        throw new apiError(400, "Invalid or missing projectId");
+    }
+
+    const query = { projectId };
+
     if (filterField && searchText) {
         query[filterField] = { $regex: searchText, $options: "i" };
     }
-    const result = await subUserTask.find(query);
+    const result = await subUserTask.find(query)
+        .populate("assignedBy", "name avatar")
+        .exec();
     res.status(200).json(
         new apiResponse(200, result, "Data fetching successfully.")
     );
@@ -435,6 +441,9 @@ const deleteVideoSubTask = asyncHandler(async (req, res) => {
             new apiResponse(200, deleteDocs, "Video Link Deleted Successfully!")
         );
 });
+
+
+
 
 export {
     createUserTask,

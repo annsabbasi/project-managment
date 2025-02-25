@@ -1,5 +1,5 @@
 import { axiosInstance } from "./axiosInstance"
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 
 export const updateUserProfile = async (userData) => {
@@ -21,3 +21,17 @@ export const useUpdateProfile = () => {
         },
     });
 };
+
+
+
+export const getUserProfileData = async () => {
+    const response = await axiosInstance.get('/user/get-profile-data');
+    return response.data;
+}
+
+export const useGetUserProfileData = () => {
+    return useQuery({
+        queryKey: ["userProfile"],
+        queryFn: getUserProfileData,
+    })
+}

@@ -194,7 +194,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     );
     if (!findUser) {
         throw new apiError(404, "User Not Found!");
-    }
+    } 
     res.status(200).json(
         new apiResponse(200, findUser, "User data fetched successfully!")
     );
