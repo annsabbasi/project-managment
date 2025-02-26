@@ -30,8 +30,8 @@ export default function TopBar({ title }) {
     // const navigate = useNavigate();
 
     // Theme Setup
-    const { mode, toggleTheme } = useAuth();
-
+    const { mode, toggleTheme, user } = useAuth();
+    // console.log("User data", user)
 
     const handleClick = (event) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
@@ -42,7 +42,7 @@ export default function TopBar({ title }) {
     }
 
     const playSound = () => {
-        const audio = new Audio(audioClick); // Adjust path if necessary
+        const audio = new Audio(audioClick);
         audio.play();
     };
     const handleThemeToggle = () => {
@@ -71,7 +71,9 @@ export default function TopBar({ title }) {
                     </IconButton>
                     <NotificationsNoneIcon aria-label="Notifications" />
                     <IconButton onClick={handleClick}>
-                        <Avatar alt="User Avatar" />
+                        <Avatar
+                            src={user?.avatar || ""}
+                            alt="User Avatar" />
                     </IconButton>
                 </Stack>
 

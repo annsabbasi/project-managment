@@ -49,7 +49,6 @@ export default function index() {
         queryKey: ['tasks', id],
         queryFn: () => fetchTaskById(id),
         enabled: !!id,
-        staleTime: 50000
     }
     )
 
@@ -66,7 +65,6 @@ export default function index() {
         queryKey: ['userSubtask', id],
         queryFn: () => getSubTask(id),
         enabled: !!id,
-        staleTime: 300000,
     });
 
 
@@ -121,11 +119,10 @@ export default function index() {
     const debounceSearchTerm = useDebounce(searchTerm, 500)
 
     const { data: filteredSubTask } = useQuery({
-        queryKey: ['filteredSubTask', debounceSearchTerm, filterField],
-        queryFn: () => filterSubTask(debounceSearchTerm, filterField),
-        enabled: !!debounceSearchTerm || !!filterField
+        queryKey: ['filteredSubTask', debounceSearchTerm, filterField, id],
+        queryFn: () => filterSubTask(debounceSearchTerm, filterField, id),
+        enabled: !!debounceSearchTerm || !!filterField || !!id
     })
-
 
     // Handling the Completed Functionality
     const queryClient = useQueryClient();
@@ -156,7 +153,6 @@ export default function index() {
             handleClose();
         }
     }
-
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -316,9 +312,12 @@ export default function index() {
                                                         alignItems="center"
                                                         gap={0.6}
                                                         sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
-                                                        <Avatar sx={{ bgcolor: "silver", width: "1.2rem", height: "1.2rem", fontSize: '12px' }}>
-                                                            {task.assignedBy?.name?.[0]?.toUpperCase()}
-                                                        </Avatar>
+                                                        <Avatar
+                                                            src={task.assignedBy?.avatar || ""}
+                                                            // alt="Profile Picture"
+                                                            sx={{ width: "1.2rem", height: "1.2rem" }}
+                                                        />
+
                                                         <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
                                                     </Stack>
                                                 </TableCell>

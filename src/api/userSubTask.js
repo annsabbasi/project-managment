@@ -39,8 +39,8 @@ export const updateSubTask = async (taskId, updateData) => {
 
 
 // Filtering the SubTask Data
-export const filterSubTask = async (searchText, filterField) => {
-    const response = await axiosInstance.get('/user/search-subTask', { params: { searchText: searchText, filterField: filterField } })
+export const filterSubTask = async (searchText, filterField, projectId) => {
+    const response = await axiosInstance.get('/user/search-subTask', { params: { searchText, filterField, projectId } })
     return response.data;
 }
 

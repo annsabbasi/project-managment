@@ -114,7 +114,7 @@ app.whenReady().then(() => {
 
             function scheduleRandomScreenshots() {
                 const intervals = [];
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 12; i++) {
                     const delayMinutes = Math.floor(Math.random() * 60);
                     intervals.push(delayMinutes);
                 }
