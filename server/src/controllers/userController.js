@@ -194,7 +194,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     );
     if (!findUser) {
         throw new apiError(404, "User Not Found!");
-    } 
+    }
     res.status(200).json(
         new apiResponse(200, findUser, "User data fetched successfully!")
     );
@@ -286,7 +286,14 @@ const updateUser = asyncHandler(async (req, res) => {
     });
 });
 
-
+const getTeamUserProfile = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const findUser = await User.findById(id).select("-password -refreshToken");
+    if (!findUser) {
+        throw new apiError(404, "User Not Found!");
+    }
+    res.status(200).json(new apiResponse(200, findUser, "User data fetched successfully!"));
+});
 
 
 export {
@@ -298,5 +305,6 @@ export {
     getUserData,
     getUserProfile,
     promoteUser,
-    updateUser
+    updateUser,
+    getTeamUserProfile
 };
