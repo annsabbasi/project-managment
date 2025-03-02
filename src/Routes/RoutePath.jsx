@@ -3,6 +3,8 @@ import { lazy } from "react";
 import { RouteNames } from "../Constants/route";
 
 import Dashboard from '../Pages/Dashboard/Dashboard'
+import GetUserPage from "../Pages/Dashboard/AddProjects/Teams/GetUserPage";
+import TeamPage from "../Pages/Dashboard/AddProjects/Teams/index";
 const Layout = lazy(() => import('../Layout'));
 const Home = lazy(() => import('../Pages/Home'));
 const LoginPage = lazy(() => import('../Pages/Login'));
@@ -70,7 +72,23 @@ export const PublicRoute = [
 export const PrivateRoute = [
     { path: RouteNames.DASHBOARD, element: Dashboard, layout: true, title: 'Departments' },
     { path: RouteNames.MESSAGE, element: Message, layout: true, title: 'Message' },
-    { path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams' },
+    {
+        path: RouteNames.TEAMS, element: Teams, layout: true, title: 'Teams'
+    },
+    {
+        path: RouteNames.TEAMPAGE,
+        element: TeamPage,
+        layout: true,
+        title: 'TeamPage',
+        children: [
+            {
+                path: `${RouteNames.GETUSERPAGE}/:id`,
+                element: GetUserPage,
+                layout: true,
+                title: 'GetUserPage',
+            }
+        ]
+    },
     { path: RouteNames.MEETINGS, element: Meetings, layout: true, title: 'Meetings' },
     { path: RouteNames.SERVICES, element: Services, layout: true, title: 'Services' },
     { path: RouteNames.CONTRACTS, element: Contracts, layout: true, title: 'Contracts' },

@@ -35,3 +35,19 @@ export const useGetUserProfileData = () => {
         queryFn: getUserProfileData,
     })
 }
+
+
+
+export const getTeamProfileData = async (id) => {
+    const response = await axiosInstance.get(`/user/get-user-data/${id}`);
+    console.log("Response from getTeamProfileData", response)
+    return response.data;
+};
+
+export const useGetTeamProfileData = (id) => {
+    return useQuery({
+        queryKey: ["userProfile", id],
+        queryFn: () => getTeamProfileData(id),
+        enabled: !!id,
+    });
+};

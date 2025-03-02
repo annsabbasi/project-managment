@@ -20,7 +20,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditPointsDialog from "./EditPointsDialog";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { Visibility } from "@mui/icons-material";
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
@@ -270,6 +270,17 @@ export default function index() {
                         </Select>
                     </FormControl>
 
+                    {/* <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>Snap Shots</Link> */}
+                    <Button
+                        variant="outlined"
+                        startIcon={<Visibility />}
+                        sx={{ whiteSpace: "nowrap", textTransform: "capitalize", paddingInline: "30px" }}
+                        component={Link}
+                        to={`${RouteNames.SUBDETAILSPAGE}/174c10nt29f5-524fe`}
+                    >
+                        Peek
+                    </Button>
+
                 </Stack>
             </Stack>
 
@@ -369,14 +380,14 @@ export default function index() {
                                                                 <EditIcon fontSize="small" />
                                                             </ListItemIcon>Edit</MenuItem>
 
-                                                        <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>
+                                                        {/* <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>
                                                             <MenuItem className={`${tableClassText} ${style.editMenuItem}`}>
                                                                 <ListItemIcon>
                                                                     <VisibilityOutlinedIcon fontSize="small" />
                                                                 </ListItemIcon>
                                                                 View
                                                             </MenuItem>
-                                                        </Link>
+                                                        </Link> */}
 
                                                         <MenuItem onClick={handleDelete} className={`${tableClassText} ${style.deleteMenuItem}`}>
                                                             <ListItemIcon >

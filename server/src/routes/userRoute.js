@@ -7,6 +7,7 @@ import {
     logoutUser, registerUser,
     loginUser, getUserData,
     getUserProfile, promoteUser, updateUser,
+    getTeamUserProfile,
 } from "../controllers/userController.js";
 
 
@@ -63,6 +64,7 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyUser(), logoutUser);
 router.route("/get-user-data").get(verifyUser(), getUserData);
 router.route("/get-profile-data").get(verifyUser(["admin", "user", "QcAdmin"]), getUserProfile)
+router.route("/get-user-data/:id").get(verifyUser(["admin", "user", "QcAdmin"]), getTeamUserProfile);
 router.put("/update-user", verifyUser(["admin", "user", "QcAdmin"]), upload.single("profilePicture"), updateUser);
 // Promote User Role
 router.route("/promote-user").post(verifyUser("admin"), promoteUser);
