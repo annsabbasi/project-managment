@@ -96,9 +96,3 @@ export const usegetSingleRecordVideo = (videoId) => {
     enabled: !!videoId, // Ensures query only runs if videoId exists
   });
 };
-
-// export const useFetchVideos = () => {
-//     return useQuery(['videos'], fetchVideos, {
-//         staleTime: 1000 * 60 * 5, // Cache videos for 5 minutes
-//     });
-// };

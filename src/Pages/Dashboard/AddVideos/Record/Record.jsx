@@ -1,30 +1,24 @@
-import { useState } from "react";
 import style from "./../styles.module.scss";
-import { Box, Button } from "@mui/material";
-// import RecordPopUp from "./RecordPopUp";
+import { Box, IconButton } from "@mui/material";
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import RecordSmallPopup from "./RecordSmallPopup";
+import PropTypes from "prop-types";
 
-export const Record = () => {
-  const [showPopup, setShowPopup] = useState(false);
-
+export const Record = ({ openPopUp, showPopup, setShowPopup }) => {
   const togglePopup = () => {
     setShowPopup(!showPopup);
-  };
-  const openPopUp = () => {
-    setShowPopup(true);
   };
 
   return (
     <>
       <Box className={style.recordContainer}>
         <Box className={style.recordButtonInner}>
-          <Button
-            variant="contained"
-            className={style.recordButton}
+          <IconButton
             onClick={openPopUp}
+            className={style.recordButton}
           >
-            Start Recording
-          </Button>
+            <FiberManualRecordIcon className={style.recordIcon} />
+          </IconButton>
         </Box>
         <Box className={style.record_mini_popup_container}>
           {showPopup && (
@@ -37,3 +31,20 @@ export const Record = () => {
 };
 
 export default Record;
+
+Record.propTypes = {
+  openPopUp: PropTypes.func.isRequired,
+  showPopup: PropTypes.bool.isRequired,
+  setShowPopup: PropTypes.func.isRequired,
+};
+
+
+
+
+// {
+//   "success": false,
+//   "statusCode": 500,
+//   "message": "Invalid status code: Invalid video type",
+//   "errors": [],
+//   "stack": null
+// }

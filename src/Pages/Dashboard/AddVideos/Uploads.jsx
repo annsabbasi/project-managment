@@ -23,7 +23,7 @@ const Uploads = () => {
   const [description, setDescription] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { mutate: addVideo } = useAddVideo();
-  let type = "Upload";
+  let type = "upload";
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];

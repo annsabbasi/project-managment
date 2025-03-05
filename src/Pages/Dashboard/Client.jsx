@@ -40,68 +40,85 @@ export default function Client() {
   };
   const location = useLocation();
   const isClientPage = location.pathname.includes(`${RouteNames.SINGLEVIDEO}`);
+  const [showPopup, setShowPopup] = useState(false);
+  const openPopUp = () => {
+    setShowPopup(true);
+  };
 
   return (
     <Box>
       {/* {!isClientPage && ( */}
       {!isClientPage && (
         <>
-          <Stack
-            flexDirection="row"
+          <Stack flexDirection="row"
             width="100%"
             alignItems="center"
-            justifyContent="center"
+            justifyContent="space-between"
           >
-            <Tabs
-              onChange={handleChangeTab}
-              value={activeTab}
-              aria-label="user details tabs"
-              TabIndicatorProps={{ sx: { display: "none" } }}
-              sx={{ backgroundColor: "white" }}
-              className={project.Tabs}
+            {/* Empty Box to push Tabs to center */}
+            <Box />
+            <Stack
+              flexDirection="row"
+              // width="100%"
+              alignItems="center"
+            // justifyContent="center"
             >
-              <Tab
-                {...allyProps(0)}
-                label="Videos"
-                // sx={(theme) => ({
-                //     backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
-                //     color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
-                //     fontWeight: activeTab === 0 ? '600' : '500',
-                //     '&.Mui-selected': {
-                //         color: theme.palette.grey.darkGrey,
-                //     },
-                // })}
-                className={project.Tab}
-              />
+              <Tabs
+                onChange={handleChangeTab}
+                value={activeTab}
+                aria-label="user details tabs"
+                TabIndicatorProps={{ sx: { display: "none" } }}
+                sx={{ backgroundColor: "white" }}
+                className={project.Tabs}
+              >
+                <Tab
+                  {...allyProps(0)}
+                  label="Videos"
+                  // sx={(theme) => ({
+                  //     backgroundColor: activeTab === 0 ? theme.palette.grey.hoverGrey : 'transparent',
+                  //     color: activeTab === 0 ? theme.palette.grey.darkGrey : 'grey',
+                  //     fontWeight: activeTab === 0 ? '600' : '500',
+                  //     '&.Mui-selected': {
+                  //         color: theme.palette.grey.darkGrey,
+                  //     },
+                  // })}
+                  className={project.Tab}
+                />
 
-              <Tab
-                label="Upload"
-                {...allyProps(0)}
-                // sx={(theme) => ({
-                //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                //     fontWeight: activeTab === 1 ? '600' : '500',
-                //     '&.Mui-selected': {
-                //         color: theme.palette.grey.darkGrey,
-                //     },
-                // })}
-                className={project.Tab}
-              />
+                <Tab
+                  label="Upload"
+                  {...allyProps(0)}
+                  // sx={(theme) => ({
+                  //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                  //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                  //     fontWeight: activeTab === 1 ? '600' : '500',
+                  //     '&.Mui-selected': {
+                  //         color: theme.palette.grey.darkGrey,
+                  //     },
+                  // })}
+                  className={project.Tab}
+                />
 
-              <Tab
-                label="Record"
-                {...allyProps(0)}
-                // sx={(theme) => ({
-                //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
-                //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
-                //     fontWeight: activeTab === 1 ? '600' : '500',
-                //     '&.Mui-selected': {
-                //         color: theme.palette.grey.darkGrey,
-                //     },
-                // })}
-                className={project.Tab}
-              />
-            </Tabs>
+                {/* <Tab
+                  label="Record"
+                  {...allyProps(0)}
+                  // sx={(theme) => ({
+                  //     backgroundColor: activeTab === 1 ? theme.palette.grey.hoverGrey : 'transparent',
+                  //     color: activeTab === 1 ? theme.palette.grey.darkGrey : 'grey',
+                  //     fontWeight: activeTab === 1 ? '600' : '500',
+                  //     '&.Mui-selected': {
+                  //         color: theme.palette.grey.darkGrey,
+                  //     },
+                  // })}
+                  className={project.Tab}
+                /> */}
+              </Tabs>
+
+            </Stack>
+
+            <Stack>
+              <Record openPopUp={openPopUp} showPopup={showPopup} setShowPopup={setShowPopup} />
+            </Stack>
           </Stack>
 
           <Box>
@@ -113,10 +130,11 @@ export default function Client() {
               <Uploads />
             </CustomTabPanel>
 
-            <CustomTabPanel value={activeTab} index={2}>
+            {/* <CustomTabPanel value={activeTab} index={2}>
               <Record />
-            </CustomTabPanel>
+            </CustomTabPanel> */}
           </Box>
+
         </>
       )}
 

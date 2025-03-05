@@ -41,17 +41,18 @@ import {
     subTaskApproval,
 } from "../controllers/subUserTask.js";
 
-import {
-    getAllVideoController,
-    getSingleUploadVideoController,
-    getSingleRecordVideoController,
-    uploadVideoController,
-} from "../controllers/cloudinaryUploads/videoUpload.js";
+// import {
+//     getAllVideoController,
+//     getSingleUploadVideoController,
+//     getSingleRecordVideoController,
+//     uploadVideoController,
+// } from "../controllers/cloudinaryUploads/videoUpload.js";
 
 import { checkIn, checkOut, getDailyTimeDetails, getDailyUserTimeDetails, pauseOrResume } from '../controllers/trackerTime.js';
 import { upload } from "../middleware/multerMiddleware.js";
 import { createSubscriptionCheckout } from "../controllers/userPlanController.js";
 import { validateRegisterFields } from "../controllers/validations/authValidation.js";
+import { getAllVideoController, getSingleRecordVideoController, getSingleUploadVideoController, uploadVideoController } from "../controllers/cloudinaryUploads/videoUpload.js";
 
 // Authentication
 router
@@ -136,6 +137,8 @@ router
 router
     .route("/delete-docslink/:id")
     .delete(verifyUser(["admin", "user"]), deleteDocsSubTask);
+
+
 // Create Video Link In User SubTask Routes
 router
     .route("/create-videolink")
@@ -148,23 +151,10 @@ router
     .delete(verifyUser(["admin", "user"]), deleteVideoSubTask);
 
 // Cloudinary Single Video Upload
-router.get("/get-video-upload", verifyUser(["admin"]), getAllVideoController);
-router.get(
-    "/get-single-video-upload/:videoId",
-    verifyUser(["admin", "user"]),
-    getSingleUploadVideoController
-);
-router.post(
-    "/video-upload",
-    verifyUser(["admin"]),
-    upload.single("video"),
-    uploadVideoController
-);
-router.get(
-    "/get-single-video-record/:videoId",
-    verifyUser(["admin", "user"]),
-    getSingleRecordVideoController
-);
+router.get("/get-video-upload", verifyUser(["admin", "user"]), getAllVideoController);
+router.get("/get-single-video-upload/:videoId", verifyUser(["admin", "user"]), getSingleUploadVideoController);
+router.post("/video-upload", verifyUser(["admin"]), upload.single("video"), uploadVideoController);
+router.get("/get-single-video-record/:videoId", verifyUser(["admin", "user"]), getSingleRecordVideoController);
 
 
 

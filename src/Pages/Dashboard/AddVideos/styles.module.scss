@@ -8,15 +8,18 @@
   margin-top: 1rem;
   text-align: center;
   border: 1px solid #e0e0e0;
-  position: relative; /* Ensure the close button is positioned relative to this container */
+  position: relative;
+  /* Ensure the close button is positioned relative to this container */
 }
 
 .closeButton {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #f44336; /* Red color for the close button */
+  color: #f44336;
+  /* Red color for the close button */
 }
+
 .dialogBtnSecondary {
   background-color: transparent;
   color: grey;
@@ -25,6 +28,7 @@
   box-shadow: none;
   width: fit-content;
   padding: 0.4rem 1.4rem;
+
   &:hover {
     background-color: white;
     color: #424242;
@@ -39,6 +43,7 @@
   width: fit-content;
   align-self: center;
   width: 100%;
+
   &:hover {
     background-color: white;
     box-shadow: none !important;
@@ -54,16 +59,13 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .videoTitle {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.6rem;
 }
-.videoTitleBody {
-  font-size: 0.8rem;
-  margin-top: 1rem;
-  color: #676666;
-}
+
 .link {
   text-decoration: none;
 }
@@ -79,21 +81,25 @@
 }
 
 .recordButton {
-  background-color: #a46df0;
-  color: #fff;
-  border: none;
-  padding: 40px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 1.5rem;
-  display: inline;
-  text-align: center;
-  text-decoration: none;
-  margin-top: 15px;
+  background-color: #ff4d4d; // Light red background
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; // Makes it circular
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(255, 77, 77, 0.3); // Soft glow effect
+
+  &:hover {
+    background-color: #ff6666; // Slightly lighter red on hover
+    transform: scale(1.1); // Slight zoom-in effect
+    box-shadow: 0px 6px 12px rgba(255, 77, 77, 0.5); // Stronger glow
+  }
 }
-.recordButton:hover {
-  background-color: #8f48f2;
+
+.recordIcon {
+  font-size: 28px;
 }
+
 
 .record_mini_popup_container {
   position: relative;
@@ -102,7 +108,8 @@
 
 .record_mini_popup_inner {
   position: fixed;
-  height: auto; /* Adjust the height as needed */
+  height: auto;
+  /* Adjust the height as needed */
   display: flex;
   justify-content: end;
   align-items: center;
@@ -113,10 +120,12 @@
   border-radius: 20px;
   background: #fff;
   opacity: 0.7;
+
   &:hover {
     opacity: 1;
   }
 }
+
 .record_mini_popup_selection {
   display: flex;
   justify-content: space-around;
@@ -125,6 +134,7 @@
   background-color: rgb(66, 63, 63);
   border-radius: 20px;
 }
+
 .record_mini_popup_selection_button,
 .record_mini_popup_selection_gap,
 .record_mini_popup_selection_cross_button {
@@ -137,14 +147,17 @@
   text-align: center;
   opacity: 0.7;
 }
+
 .record_mini_popup_selection_button:hover,
 .record_mini_popup_selection_cross_button:hover {
   opacity: 1;
   scale: 1.1;
 }
+
 .record_mini_popup_selection_gap {
   opacity: 0.3;
 }
+
 .record_mini_popup_selection_cross_button {
   color: rgb(250, 45, 45);
 }
@@ -154,12 +167,14 @@
   border-radius: 8px;
   margin-top: 20px;
 }
+
 .uploadButtonContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
+
 .linkBtn {
   background: #000;
   color: white;
@@ -168,6 +183,7 @@
   width: fit-content;
   align-self: center;
   text-decoration: none;
+
   &:hover {
     background-color: white;
     box-shadow: none !important;
@@ -178,10 +194,12 @@
 
 .snackbar {
   & .MuiSnackbarContent-root {
-    background-color: #f44336; /* Red background for error */
+    background-color: #f44336;
+    /* Red background for error */
     color: white;
   }
 }
+
 // .dialogBtnSecondary {
 //   background-color: black;
 //   color: white;

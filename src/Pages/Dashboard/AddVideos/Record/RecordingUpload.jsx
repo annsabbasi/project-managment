@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import style from "./../styles.module.scss";
-import { useAddRecordVideo } from "../videoApi/addVideo";
+import { useAddRecordVideo } from "./../videoApi/addVideo";
 
 export const RecordingUpload = (prop) => {
   const [description, setDescription] = useState("");
@@ -30,11 +30,11 @@ export const RecordingUpload = (prop) => {
     const formData = new FormData();
 
     try {
-      if (!prop.video) {
+      if (!prop.videoURL) {
         setError("Video URL is missing.");
         return;
       }
-      const response = await fetch(prop.video);
+      const response = await fetch(prop.videoURL);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -47,7 +47,7 @@ export const RecordingUpload = (prop) => {
 
       formData.append("video", file);
       formData.append("description", description);
-      formData.append("type", "Record"); // Type of video upload or record
+      formData.append("type", "record"); // Type of video upload or record
       await addRecordVideo(formData);
       console.log("Video submitted successfully.");
       setSuccess(true); // Show success message
