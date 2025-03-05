@@ -71,7 +71,7 @@
 }
 
 .QC {
-    font-size: 0.7rem !important;
+    font-size: 0.7rem;
     color: rgb(172, 172, 172);
     position: absolute;
     top: 0.2rem;
@@ -79,18 +79,19 @@
 }
 
 .gridBox {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-direction: column !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .iconButton {
-    position: absolute !important;
-    top: 0 !important;
-    right: -0.2rem !important;
-    transition: opacity 0.3s ease !important;
-    padding: 0.2rem !important;
+    position: absolute;
+    top: 0;
+    right: -0.2rem;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 0.2rem;
 }
 
 .boxMenuItem {

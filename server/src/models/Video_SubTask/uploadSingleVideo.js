@@ -10,13 +10,21 @@ const uploadVideo = new mongoose.Schema(
             type: String,
             required: [true, "Video Link is required"],
         },
+        type: {
+            type: String,
+            enum: ["Record", "Upload"],
+            required: [true, "Video type is required"],
+        },
         projectId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "userTask",
         },
-    },
-    { timestamps: true }
-);
+        companyId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Company",
+            required: true,
+        },
+    }, { timestamps: true });
 
 const uploadSingleVideo = mongoose.model("uploadVideo", uploadVideo);
 export { uploadSingleVideo };

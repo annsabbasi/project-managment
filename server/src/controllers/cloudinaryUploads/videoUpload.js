@@ -5,9 +5,10 @@ import { apiResponse } from "../../utils/apiResponse.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../../utils/cloudinary.js";
 
+// it will be use for upload the browse video and upload the record video
 const uploadVideoController = asyncHandler(async (req, res) => {
     const file = req.file;
-    const { description } = req.body;
+    const { description, type } = req.body;
 
     if (!description) {
         throw new apiError("Video description not provided");
@@ -24,18 +25,17 @@ const uploadVideoController = asyncHandler(async (req, res) => {
     const localFilePath = file.path;
     const uploadResult = await uploadOnCloudinary(localFilePath);
 
+    // Handle upload failure
     if (!uploadResult) {
         throw new apiError("Failed to upload video to Cloudinary");
     }
 
-    console.log("videoUrl of the videoUpload Controller.js", uploadResult);
     const videoUrl = uploadResult.url;
-    console.log("PDF URL:", videoUrl);
-
 
     const newVideoSubTask = await uploadSingleVideo.create({
         description,
         video: videoUrl,
+        type,
     });
     res.status(200).json(
         new apiResponse(200, newVideoSubTask, "Video uploaded successfully")
@@ -52,13 +52,15 @@ const getAllVideoController = asyncHandler(async (req, res) => {
     );
 });
 
-const getSingleVideoController = asyncHandler(async (req, res) => {
+const getSingleUploadVideoController = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     if (!mongoose.isValidObjectId(videoId)) {
         throw new apiError(400, "Invalid Task ID format");
     }
     const getVideo = await uploadSingleVideo.findById(videoId);
-    if (!getVideo) {
+    const videoType = getVideo.type;
+
+    if (!getVideo || videoType !== "upload") {
         throw new apiError("No video Found!");
     }
 
@@ -67,10 +69,25 @@ const getSingleVideoController = asyncHandler(async (req, res) => {
     );
 });
 
+const getSingleRecordVideoController = asyncHandler(async (req, res) => {
+    const { videoId } = req.params;
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new apiError(400, "Invalid Task ID format");
+    }
+    const getVideo = await uploadSingleVideo.findById(videoId);
+    const videoType = getVideo.type;
+    if (!getVideo || videoType !== "record") {
+        throw new apiError("No video Found!");
+    }
 
+    res.status(200).json(
+        new apiResponse(200, getVideo, "Video Get Successfully!")
+    );
+});
 
 export {
     uploadVideoController,
     getAllVideoController,
-    getSingleVideoController,
+    getSingleUploadVideoController,
+    getSingleRecordVideoController,
 };

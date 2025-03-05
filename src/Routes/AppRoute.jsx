@@ -34,7 +34,7 @@ const renderRoutes = (routes) => {
                                     </AdminLayout>
                                 ) :
                                     (
-                                        <> 
+                                        <>
                                             <Header />
                                             <Element />
                                         </>
@@ -42,16 +42,8 @@ const renderRoutes = (routes) => {
                         </Suspense>
                     }>
 
-                    {/* {children && children.map(({ path: childPath, element: ChildElement }) => (
+                    {children && children.map(({ path: childPath, element: ChildElement }) => (
                         <Route key={childPath} path={childPath} element={<ChildElement />} />
-                    ))} */}
-
-                    {children && children.map(({ path: childPath, element: ChildElement, children: grandChildren }) => (
-                        <Route key={childPath} path={childPath} element={<ChildElement />}>
-                            {grandChildren && grandChildren.map(({ path: grandChildPath, element: GrandChildElement }) => (
-                                <Route key={grandChildPath} path={grandChildPath} element={<GrandChildElement />} />
-                            ))}
-                        </Route>
                     ))}
 
                 </Route>
@@ -68,7 +60,7 @@ export const AppRoutes = () => {
             <Route path="/" element={<RedirectRoute />} />
 
             {/* Superadmin routes with AdminLayout */}
-            <Route element={<ProtectedRoute allowedRoles={'superadmin'} layout={AdminLayout} />}>
+            <Route element={<ProtectedRoute allowedRoles={['superadmin']} layout={AdminLayout} />}>
                 {renderRoutes(AdminRoute, AdminLayout)}
             </Route>
 

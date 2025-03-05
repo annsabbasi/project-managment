@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import fs from 'fs';
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,22 +11,24 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const uploadOnCloudinary = async (localFilePath) => {
     let response = null;
     try {
         if (!localFilePath) return null;
 
-        // Ensure if the file exists
+        // Ensure if the file exists 
         if (!fs.existsSync(localFilePath)) {
             throw new Error(`File not found ${localFilePath}`);
         }
 
         // Upload the file on cloudinary
         response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "auto",
-            type: 'upload',
-            access_mode: 'public',
-        });
+            resource_type: "auto"
+        })
+
+        // console.log("File is uploaded on cloudinary:", response.url);
+
         return response;
     } catch (error) {
         console.log("Cloudinary utils error", error);
@@ -40,15 +43,4 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 };
 
-
-export const deleteFromCloudinary = async (publicId) => {
-    try {
-        const response = await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
-        return response;
-    } catch (error) {
-        console.error("Error deleting from Cloudinary:", error);
-        return null;
-    }
-};
-
-export { uploadOnCloudinary };
+export { uploadOnCloudinary }

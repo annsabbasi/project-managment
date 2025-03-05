@@ -43,7 +43,7 @@ export default function Project() {
     const themeTab = mode === 'light' ? '#36454F' : theme.palette.text.primary;
     const [activeTab, setActiveTab] = useState(0)
     const location = useLocation('')
-    const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPRODUCTS}`)
+    const isAddProductPage = location.pathname.includes(`${RouteNames.ADDPROJECTS}`)
 
     const handleChangeTab = (event, newValue) => {
         setActiveTab(newValue)

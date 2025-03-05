@@ -1,160 +1,109 @@
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-
+import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { axiosInstance } from '../api/axiosInstance';
 import { darkTheme, lightTheme } from '../Theme/Theme';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-    // let ws = null;
-    const wsRef = useRef(null);
-    // Theme Setup
-    // const [mode, setMode] = useState('light')
-    const [mode, setMode] = useState(() => {
-        return localStorage.getItem("Theme") || 'light'
-    })
-    const theme = useMemo(() => (mode === 'light' ? lightTheme : darkTheme), [mode]);
-    const toggleTheme = () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-    };
-    useEffect(() => {
-        localStorage.setItem('Theme', mode)
-        document.body.setAttribute('data-theme', mode);
-    }, [mode])
-
-    // Trying to Implement Electron-App
-    const getToken = localStorage.getItem('accessToken')
-    useEffect(() => {
-        if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
-            wsRef.current = new WebSocket("ws://localhost:3001");
-
-            wsRef.current.onopen = () => {
-                console.log("Connected to Electron WebSocket");
-                wsRef.current.send(getToken);
-            };
-
-            wsRef.current.onerror = (error) => {
-                console.error("WebSocket Error:", error);
-            };
-
-            wsRef.current.onclose = () => {
-                console.log("Electron WebSocket closed.");
-            };
-        } else {
-            wsRef.current.send(getToken);
-        }
-
-        // Cleanup function to close WebSocket when component unmounts
-        return () => {
-            if (wsRef.current) {
-                wsRef.current.close();
-            }
-        };
+    const [role, setRole] = useState(localStorage.getItem('role')); // 'user' or 'company'
+    const [accessToken, setAccessToken] = useState(() => {
+        return role === 'user'
+            ? localStorage.getItem('accessToken')
+            : localStorage.getItem('accessTokenC');
     });
+    console.log('test role', role);
+    // Theme Setup
+    const [mode, setMode] = useState(() => localStorage.getItem("Theme") || 'light');
+    const theme = useMemo(() => (mode === 'light' ? lightTheme : darkTheme), [mode]);
 
-    // console.log("GetToken Access", getToken)
-    // useEffect(() => {
-    //     // const connectWebSocket = () => {
+    const toggleTheme = useCallback(() => {
+        setMode((prevMode) => {
+            const newMode = prevMode === 'light' ? 'dark' : 'light';
+            localStorage.setItem('Theme', newMode);
+            document.body.setAttribute('data-theme', newMode);
+            return newMode;
+        });
+    }, []);
 
-    //         if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
-    //             wsRef.current = new WebSocket("ws://localhost:3001");
+    useEffect(() => {
+        document.body.setAttribute('data-theme', mode);
+    }, [mode]);
 
-    //             wsRef.current.onopen = () => {
-    //                 console.log("Connected to Electron WebSocket");
-    //                 wsRef.current.send(getToken);
-    //             };
+    // Update Axios headers when accessToken or role changes
+    useEffect(() => {
+        if (accessToken) {
+            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+        } else {
+            delete axiosInstance.defaults.headers.common['Authorization'];
+        }
+    }, [accessToken, role]);
 
-    //             wsRef.current.onerror = (error) => {
-    //                 console.error("WebSocket Error:", error);
-    //             };
+    // Clear local storage based on role
+    const clearLocalStorage = useCallback(() => {
+        if (role === 'user') {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('role');
+        } else if (role === 'company') {
+            localStorage.removeItem('accessTokenC');
+            localStorage.removeItem('refreshTokenC');
+            localStorage.removeItem('role');
+        }
+    }, [role]);
 
-    //             wsRef.current.onclose = () => {
-    //                 console.log("Electron WebSocket closed.");
-    //             };
-    //         } else {
-    //             wsRef.current.send(getToken);
-    //         }
-    //     // }
-    //     // connectWebSocket();
+    // Handle logout for both roles
+    const handleLogout = useCallback(() => {
+        clearLocalStorage();
+        setAccessToken(null);
+        setRole(null);
+    }, [clearLocalStorage]);
 
-    //     const intervalId = setInterval(() => {
-    //         console.log("Checking web-socket connection")
-    //         // connectWebSocket();
-    //     }, 60000)
-
-    //     // Cleanup function to close WebSocket when component unmounts
-    //     return () => {
-    //         clearInterval(intervalId);
-    //         if (wsRef.current) {
-    //             wsRef.current.close();
-    //         }
-    //     };
-    // }, [getToken]);
-
-
-    // useEffect(() => {
-
-    //     if (!ws || ws.readyState === WebSocket.CLOSED) {
-    //         ws = new WebSocket("ws://localhost:3001");
-
-    //         ws.onopen = () => {
-    //             console.log("Connected to Electron WebSocket");
-    //             ws.send(getToken);
-    //         };
-
-    //         ws.onerror = (error) => {
-    //             console.error("WebSocket Error:", error);
-    //         };
-
-    //         ws.onclose = () => {
-    //             console.log("Electron WebSocket closed.");
-    //         };
-    //     } else { ws.send(getToken); }
-    // }, [])
-
-    // Trying to Implement Electron-App
-
-    const { data: user, isLoading } = useQuery({
-        queryKey: ["user"],
+    // Fetch user data based on role
+    const { data: authData, isLoading } = useQuery({
+        queryKey: ['authData', role],
         queryFn: async () => {
-            if (!accessToken) {
-                localStorage.removeItem('refreshToken');
+            if (!accessToken || !role) {
+                clearLocalStorage();
                 return null;
             }
             try {
-                const response = await axiosInstance.get('/user/get-user-data', {
-                    headers: { Authorization: `Bearer ${accessToken}` }
-                });
+                const endpoint = role === 'user' ? '/user/get-user-data' : '/company/get-company-data';
+                const response = await axiosInstance.get(endpoint);
                 return response.data.data;
             } catch (error) {
-                console.log('(AuthProvider) data Error', error);
-                setAccessToken(null);
-                localStorage.removeItem('accessToken');
+                console.error('(AuthProvider) Fetch auth data error:', error);
+                handleLogout();
                 return null;
             }
-        }
+        },
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     });
 
     return (
-        <AuthContext.Provider value={{ user, accessToken, isLoading, mode, toggleTheme, theme }}>
-            {/* {children} */}
+        <AuthContext.Provider
+            value={{
+                authData,
+                role,
+                accessToken,
+                setAccessToken,
+                setRole,
+                isLoading,
+                handleLogout,
+                mode,
+                toggleTheme,
+                theme,
+            }}
+        >
             <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
         </AuthContext.Provider>
     );
 };
 
-
-
-
 AuthProvider.propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
 };
 
-
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

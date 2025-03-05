@@ -1,110 +1,68 @@
-import { Container, Typography, Box, Stack, TableBody, TableRow, TableCell, TableHead, Table, TableContainer, Grid, Dialog } from "@mui/material";
-import style from "./DashboardScss/project.module.scss"
+import { Container, Typography, Box } from "@mui/material";
 import { useAuth } from "../../context/AuthProvider";
-import Image2 from "../../assets/demoImage/2.jpg"
-import Image3 from "../../assets/demoImage/3.jpg"
-import Image4 from "../../assets/demoImage/4.jpg"
-import { useState } from "react";
 
 
 const Message = () => {
-
-    const { theme, mode } = useAuth();
-    const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+    const { mode } = useAuth();
     const tableClassText = mode === 'light' ? 'lightTableText' : 'darkTableText';
-
-    const [open, setOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-
-    const handleOpen = (imageSrc) => {
-        setSelectedImage(imageSrc);
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-        setSelectedImage(null);
-    };
-
     return (
         <Container sx={{ mt: 4, mb: 4 }}>
-            <Stack variant="div" gap={8} my={4}>
-                <Box>
-                    <Typography variant="h6" mb={1} className={tableClassText}>
-                        Task Name: (Person Name)
-                    </Typography>
-                    <Typography variant="body1" className={`${style.galleryDate} ${tableClassText}`}>
-                        12-January-2020
-                    </Typography>
+            {/* Video Section */}
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    mb: 4,
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    boxShadow: 3,
+                }}>
+                <video
+                    controls
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "8px",
+                    }}>
+                    <source
+                        src="https://www.w3schools.com/html/mov_bbb.mp4"
+                        type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </Box>
 
-                    <Grid container spacing={3} ml="1px">
-                        <Stack className={`${style.boxDropDown}`} sx={{ alignItems: 'center' }}>
-
-                            <Grid item className={style.gridBox}>
-                                {[Image2, Image3, Image4, Image2, Image3, Image4, Image2, Image3, Image4,].map((image, index) => (
-                                    <img
-                                        key={index}
-                                        src={image}
-                                        alt="Snap Shots"
-                                        width="200"
-                                        className={style.snapShotImg}
-                                        onClick={() => handleOpen(image)}
-                                    />
-                                ))}
-                            </Grid>
-
-                        </Stack>
-
-                    </Grid>
-                    <Typography variant="p" mb={3} className={style.noTaskAssignText}>
-                        No Current Snap-Shots
-                    </Typography>
-                    <Dialog open={open} onClose={handleClose} maxWidth="lg">
-                        {selectedImage && (
-                            <img src={selectedImage} alt="Enlarged View" style={{ width: "100%", height: "auto" }} />
-                        )}
-                    </Dialog>
-                </Box>
-
-
-                <TableContainer>
-                    <Typography variant="h6" mb={1} className={tableClassText}>
-                        Employee&apos;s Time-Track
-                    </Typography>
-                    <Table
-                        sx={{
-                            backgroundColor: theme.palette.background.paper,
-                            color: theme.palette.text.primary,
-                            overflow: 'visible',
-                            borderRadius: '0.6rem'
-                        }}>
-
-                        <TableHead>
-                            <TableRow className={style.tableRowHead}>
-                                <TableCell className={tableClassText}>Employee</TableCell>
-                                <TableCell align="center" className={tableClassText}>TimeIn</TableCell>
-                                <TableCell align="center" className={tableClassText}>TimeOut</TableCell>
-                                <TableCell align="center" className={tableClassText}>Tracked Time</TableCell>
-                                <TableCell align="center" className={tableClassText}>Date</TableCell>
-                                <TableCell align="center" className={tableClassText}>Weekly Time</TableCell>
-                                <TableCell align="center" className={tableClassText}>Monthly Time</TableCell>
-                            </TableRow>
-                        </TableHead>
-
-                        <TableBody className={tableGap}>
-                            <TableRow className={style.tableRowBody}>
-                                <TableCell component="th" scope="row">1</TableCell>
-                                <TableCell align="center">21:04</TableCell>
-                                <TableCell align="center">3</TableCell>
-                                <TableCell align="center">4</TableCell>
-                                <TableCell align="center">5</TableCell>
-                                <TableCell align="center">6</TableCell>
-                                <TableCell align="center">$7</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Stack>
+            {/* Description Section */}
+            <Box>
+                <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{ mb: 2, mt: 5, textAlign: "left" }} className={tableClassText}>Video Description</Typography>
+                <Typography
+                    variant="body1"
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
+                    This is the first paragraph of the video description. It provides an
+                    introduction to the content of the video, explaining its purpose and
+                    significance. This paragraph is intended to give the reader a clear
+                    understanding of what they can expect from the video.
+                </Typography>
+                <Typography
+                    variant="body1"
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
+                    In the second paragraph, we delve deeper into the specifics of the
+                    video&lsquo;s content. This section highlights the key points, concepts, or
+                    topics covered in the video. It is important to keep this part
+                    informative yet concise to maintain the reader&#39;s interest.
+                </Typography>
+                <Typography
+                    variant="body1"
+                    sx={{ textAlign: "justify", mb: 2, lineHeight: 1.8, fontSize: '0.9rem' }}>
+                    Finally, the third paragraph concludes the description by summarizing
+                    the value the viewer can gain from watching the video. Whether it&apos;s
+                    educational, entertaining, or inspirational, this part emphasizes the
+                    unique qualities of the video and encourages the reader to explore it
+                    further.
+                </Typography>
+            </Box>
         </Container>
     );
 };

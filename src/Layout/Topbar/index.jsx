@@ -8,8 +8,7 @@ import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useLogout } from "../../hooks/useAuth";
-// import audioClick from "../../assets/audio/click.mp3"
-import audioClick from "../../assets/audio/click2.wav"
+import audioClick from "../../assets/audio/click.mp3"
 
 import {
     AppBar, Avatar,
@@ -18,8 +17,6 @@ import {
     Toolbar, Typography
 } from "@mui/material";
 import { useAuth } from '../../context/AuthProvider';
-import { RouteNames } from '../../Constants/route';
-import { Link } from 'react-router-dom';
 // import { useNavigate } from "react-router-dom";
 
 
@@ -30,8 +27,8 @@ export default function TopBar({ title }) {
     // const navigate = useNavigate();
 
     // Theme Setup
-    const { mode, toggleTheme, user } = useAuth();
-    // console.log("User data", user)
+    const { mode, toggleTheme } = useAuth();
+
 
     const handleClick = (event) => setAnchorEl(event.currentTarget)
     const handleClose = () => setAnchorEl(null)
@@ -42,7 +39,7 @@ export default function TopBar({ title }) {
     }
 
     const playSound = () => {
-        const audio = new Audio(audioClick);
+        const audio = new Audio(audioClick); // Adjust path if necessary
         audio.play();
     };
     const handleThemeToggle = () => {
@@ -71,9 +68,7 @@ export default function TopBar({ title }) {
                     </IconButton>
                     <NotificationsNoneIcon aria-label="Notifications" />
                     <IconButton onClick={handleClick}>
-                        <Avatar
-                            src={user?.avatar || ""}
-                            alt="User Avatar" />
+                        <Avatar alt="User Avatar" />
                     </IconButton>
                 </Stack>
 
@@ -82,9 +77,7 @@ export default function TopBar({ title }) {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
-                    <Link to={`/${RouteNames.ADMINPROFILEPAGE}`}>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    </Link>
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My Account</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>

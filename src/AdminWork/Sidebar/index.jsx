@@ -1,76 +1,140 @@
-import React from 'react';
-import styles from './page.module.scss';
-import logoimage from '../../assets/Hide-sidebar.svg';
-import { RouteNames } from '../../Constants/route';
-import { drawerWidth } from '../../Constants/app';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import React from "react";
+import styles from "./page.module.scss";
+import logoimage from "../../assets/Hide-sidebar.svg";
+import { RouteNames } from "../../Constants/route";
+import { drawerWidth } from "../../Constants/app";
+import { useNavigate, useLocation } from "react-router-dom";
+import {
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
-import DashboardIcon from '../../assets/dashboard.svg';
-import ProjectsIcon from '../../assets/Project.svg';
-import MessagesIcon from '../../assets/Message.png';
-
-import DashboardIconWhite from '../../assets/Dashboard active.svg';
-import ProjectsIconWhite from '../../assets/Project active.svg';
-import MessagesIconWhite from '../../assets/Message active.svg';
+// Importing Material UI icons
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import SettingsIcon from "@mui/icons-material/Settings";
+import PersonIcon from "@mui/icons-material/Person";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+// import PaymentIcon from "@mui/icons-material/Payment";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 const Sidebar = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const currentPath = location.pathname;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
-    const pages = [
-        { name: 'Overview', path: `/${RouteNames.ADMINPAGE1}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
-        { name: 'Plan Request', path: `/${RouteNames.PLANREQUEST}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
-        { name: 'AdminPage3', path: `/${RouteNames.ADMINPAGE3}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
-    ];
+  const pages = [
+    {
+      name: "Dashboard",
+      path: `/${RouteNames.SUPERDASHBOARD}`,
+      Icon: DashboardIcon,
+      ActiveIcon: DashboardIcon,
+    },
+    {
+      name: "Companies",
+      path: `/${RouteNames.USERS}`,
+      Icon: PersonIcon,
+      ActiveIcon: PersonIcon,
+    },
 
-    const handleClick = (path) => {
-        navigate(path);
-    };
-    return (
-        <Drawer
-            variant="permanent"
-            open
-            sx={{
-                width: drawerWidth,
-                display: { xs: 'none', sm: 'block' },
-                '& .MuiDrawer-paper': {
-                    width: drawerWidth,
-                    alignItems: 'center',
-                    overflow: 'hidden',
-                },
-            }}
-        >
-            <Box className={styles.sidebar}>
-                <Box className={styles.upperRow}>
-                    <Box className={styles.logo}>
-                        <img className={styles.image} src={logoimage} alt="image" />
-                    </Box>
+    // {
+    //   name: "Payments",
+    //   path: `/${RouteNames.PAYMENT}`,
+    //   Icon: PaymentIcon,
+    //   ActiveIcon: PaymentIcon,
+    // },
+    {
+      name: "Subscriptions",
+      path: `/${RouteNames.SUBSCRIPTION}`,
+      Icon: LocalOfferIcon,
+      ActiveIcon: LocalOfferIcon,
+    },
 
-                    <List className={styles.list}>
-                        {pages.map(({ name, Icon, ActiveIcon, path }) => (
-                            <React.Fragment key={name}>
-                                <ListItem disablePadding className={`${styles.listItem} ${(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? styles.activeItem : ''}`}>
+    {
+      name: "Plans",
+      path: `/${RouteNames.PLANS}`,
+      Icon: AssignmentIcon,
+      ActiveIcon: AssignmentIcon,
+    },
+    {
+      name: "Notifications",
+      path: `/${RouteNames.NOTIFICATIONS}`,
+      Icon: NotificationsIcon,
+      ActiveIcon: NotificationsIcon,
+    },
+    {
+      name: "Settings",
+      path: `/${RouteNames.SETTINGS}`,
+      Icon: SettingsIcon,
+      ActiveIcon: SettingsIcon,
+    },
+  ];
 
-                                    <ListItemButton onClick={() => handleClick(path)} className={styles.listItemBtn}>
-                                        <ListItemIcon className={styles.listItemIcon}>
-                                            <img
-                                                src={(name === 'AdminPage1' && currentPath.includes(RouteNames.ADDPRODUCTS)) || currentPath === path ? ActiveIcon : Icon}
-                                                alt={name}
-                                                className={`${styles.icon} ${currentPath === path ? styles.activeIcon : ''}`} />
-                                        </ListItemIcon>
-                                        <ListItemText primary={name} className={styles.listItemText} />
-                                    </ListItemButton>
+  const handleClick = (path) => {
+    navigate(path);
+  };
 
-                                </ListItem>
-                            </React.Fragment>
-                        ))}
-                    </List>
-                </Box>
-            </Box>
-        </Drawer>
-    );
+  return (
+    <Drawer
+      variant="permanent"
+      open
+      sx={{
+        width: drawerWidth,
+        display: { xs: "none", sm: "block" },
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          alignItems: "center",
+          overflow: "hidden",
+        },
+      }}
+    >
+      <Box className={styles.sidebar}>
+        <Box className={styles.upperRow}>
+          <Box className={styles.logo}>
+            <img className={styles.image} src={logoimage} alt="logo" />
+          </Box>
+
+          <List className={styles.list}>
+            {pages.map(({ name, Icon, ActiveIcon, path }) => (
+              <React.Fragment key={name}>
+                <ListItem
+                  disablePadding
+                  className={`${styles.listItem} ${
+                    currentPath === path ? styles.activeItem : ""
+                  }`}
+                >
+                  <ListItemButton
+                    onClick={() => handleClick(path)}
+                    className={styles.listItemBtn}
+                  >
+                    <ListItemIcon className={styles.listItemIcon}>
+                      <Icon
+                        sx={{
+                          color: currentPath === path ? "white" : "gray",
+                        }}
+                        className={`${styles.icon} ${
+                          currentPath === path ? styles.activeIcon : ""
+                        }`}
+                      />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={name}
+                      className={styles.listItemText}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </React.Fragment>
+            ))}
+          </List>
+        </Box>
+      </Box>
+    </Drawer>
+  );
 };
 
 export default Sidebar;

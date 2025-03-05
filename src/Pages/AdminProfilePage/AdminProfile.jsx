@@ -6,7 +6,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthProvider";
 import style from "./style.module.scss"
-import { useGetUserProfileData, useUpdateProfile } from "../../api/userProfile";
+import { useUpdateProfile } from "../../api/userProfile";
 import { toast } from "react-toastify";
 
 const AdminProfile = () => {
@@ -45,7 +45,7 @@ const AdminProfile = () => {
         });
     };
 
-    const { data: getProfileData } = useGetUserProfileData();
+
     return (
         <Box sx={{ display: "flex", justifyContent: "center", }}>
             <Stack elevation={3} sx={{ width: "90%", p: 4, borderRadius: 3 }}>
@@ -60,14 +60,14 @@ const AdminProfile = () => {
                     {/* Profile Avatar & Info */}
                     <Grid item xs={12} sm={4} sx={{ textAlign: "center" }}>
                         <Avatar
-                            src={getProfileData?.data?.avatar}
+                            src="https://via.placeholder.com/150"
                             sx={{ width: 80, height: 80, margin: "auto" }}
                         />
                         <Typography variant="h6" fontWeight={600} mt={2}>
-                            {getProfileData?.data?.name}
+                            Alexa Rawles
                         </Typography>
-                        <Typography color="gray">{getProfileData?.data?.email}</Typography>
-                        <Typography color="gray" sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}><Typography sx={{ fontWeight: "600", color: "#D3D3D3" }}>Hourly Rate: </Typography> &nbsp; {getProfileData?.data?.hourlyRate}$</Typography>
+                        <Typography color="gray">alexarawles@gmail.com</Typography>
+                        <Typography color="gray">Hourly Rate: 45$</Typography>
                     </Grid>
                     <Grid item xs={12} sm={8} sx={{ textAlign: "right" }}>
                         <Button variant="contained" startIcon={<EditIcon />} onClick={() => setOpenModal(true)}>
@@ -79,10 +79,10 @@ const AdminProfile = () => {
                 {/* Form Section */}
                 <Grid container spacing={3} mt={3}>
                     {[
-                        { name: "upworkId", label: "Upwork", link: `${getProfileData?.data?.upworkId}` },
-                        { name: "linkedinId", label: "Linkedin", link: `${getProfileData?.data?.linkedinId}` },
-                        { name: "slackId", label: "Slack", link: `${getProfileData?.data?.slackId}` },
-                        { name: "facebookId", label: "Facebook", link: `${getProfileData?.data?.facebookId}` },
+                        { name: "upworkId", label: "Upwork", link: "https://Upwork.com" },
+                        { name: "linkedinId", label: "Linkedin", link: "https://Upwork.com" },
+                        { name: "slackId", label: "Slack", link: "https://Upwork.com" },
+                        { name: "facebookId", label: "Facebook", link: "https://Upwork.com" },
                         { name: "gender", label: "Gender", select: true, options: ["Male", "Female"] },
                     ].map((field, index) => (
                         <Grid item xs={12} sm={6} key={index}>
@@ -106,7 +106,7 @@ const AdminProfile = () => {
                                 </Stack>
                             ) : (
                                 <Stack>
-                                    <Typography mb={1} sx={{ cursor: "pointer" }}>{field.link ? field.link : "Not Added"}</Typography>
+                                    <Typography mb={1} sx={{ cursor: "pointer" }}>( {field.link} )</Typography>
                                     <TextField
                                         fullWidth
                                         name={field.name}
@@ -126,7 +126,9 @@ const AdminProfile = () => {
                     <Typography variant="h6" fontWeight={600}>
                         My Details
                     </Typography>
-                    <Typography sx={{ fontSize: "13px", letterSpacing: "1px", lineHeight: "22px", paddingTop: "5px" }}>{getProfileData?.data?.description}</Typography>
+                    <Typography sx={{ fontSize: "13px", letterSpacing: "1px", lineHeight: "22px", paddingTop: "5px" }}>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit ab atque eius suscipit quis distinctio tenetur, commodi deserunt perferendis vero officia quas error placeat incidunt eos dolorem harum iure consectetur illum quod velit laudantium minus nobis! Ullam cum libero in.
+                    </Typography>
                     <TextField
                         fullWidth
                         multiline

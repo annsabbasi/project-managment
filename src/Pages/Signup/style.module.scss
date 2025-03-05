@@ -43,6 +43,14 @@
     font-size: "14px";
   }
 }
+.textSelectInput {
+  background-color: #eeebef;
+  flex-grow: 1;
+  color: #000000;
+  .muiinputbase-input {
+    font-size: "14px";
+  }
+}
 .textInputPassword {
   background-color: #ffffff;
   .muiinputbase-input {
@@ -68,4 +76,7 @@
 .textLogin {
   color: #1877f2;
   text-decoration: none;
+}
+.MuiSelect {
+  background-color: #2d2d2d;
 }

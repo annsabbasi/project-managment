@@ -4,70 +4,71 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ROLES } from "../config/roles.js";
 
-const UserSchema = new Schema(
-    {
-        name: {
-            type: String,
-            required: [true, "name field is required"],
-            unique: true,
-            trim: true,
-        },
-        email: {
-            type: String,
-            required: [true, "email field is required"],
-            unique: true,
-            trim: true,
-            lowercase: true,
-            match: [/\S+@\S+\.\S+/, "please provide a valid email address"],
-        },
-        password: {
-            type: String,
-            required: [true, "password field is required"],
-        },
-        confirmPassword: {
-            type: String,
-            select: false,
-        },
-        avatar: {
-            type: String,
-            default:
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&s",
-        },
-        JoinedOn: {
-            type: Date,
-            default: Date.now,
-        },
-        role: {
-            type: String,
-            enum: Object.values(ROLES),
-            default: ROLES.USER,
-        },
-        plan: {
-            type: String,
-            enum: ["basic", "standard", "premium", "null"],
-            default: "null",
-            required: true,
-        },
-        requestedAt: {
-            type: Date,
-            default: Date.now,
-        },
-        refreshToken: {
-            type: String,
-        },
-
-        hourlyRate: { type: Number, default: "00" },
-        description: { type: String, default: "" },
-        slackId: { type: String, default: "" },
-        upworkId: { type: String, default: "" },
-        linkedinId: { type: String, default: "" },
-        facebookId: { type: String, default: "" },
-        gender: { type: String, enum: ["Male", "Female"], default: "Male" },
+const UserSchema = new Schema({
+    name: {
+        type: String,
+        required: [true, "name field is required"],
+        unique: true,
+        trim: true,
     },
-    { timestamps: true }
-);
+    email: {
+        type: String,
+        required: [true, "email field is required"],
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: [/\S+@\S+\.\S+/, "please provide a valid email address"],
+    },
+    password: {
+        type: String,
+        required: [true, "password field is required"],
+    },
+    confirmPassword: {
+        type: String,
+        select: false,
+    },
+    avatar: {
+        type: String,
+        default:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQNvWDvQb_rCtRL-p_w329CtzHmfzfWP0FIw&s",
+    },
+    JoinedOn: {
+        type: Date,
+        default: Date.now,
+    },
+    role: {
+        type: String,
+        enum: Object.values(ROLES),
+        default: ROLES.USER,
+    },
+    plan: {
+        type: String,
+        default: "null",
+        required: true,
+    },
+    isActive: {
+        type: Boolean,
+        default: false,
+    },
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "department",
+    },
+    requestedAt: {
+        type: Date,
+        default: Date.now
+    },
+    refreshToken: {
+        type: String
+    },
+    companyId: { // Added companyId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+    },
+}, { timestamps: true });
 
-// Hashing Bcrypt Password
+
+// Hashing Bcrypt Password 
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 10);
@@ -76,6 +77,7 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
+
 
 // Confirmation Password
 UserSchema.pre("validate", function () {

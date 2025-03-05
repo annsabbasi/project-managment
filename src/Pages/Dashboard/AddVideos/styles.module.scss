@@ -3,13 +3,20 @@
 }
 
 .previewVideo {
-  margin-top: 10px;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
   text-align: center;
-  background-color: #e3f2fd;
-  padding: 18px;
-  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  position: relative; /* Ensure the close button is positioned relative to this container */
 }
 
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #f44336; /* Red color for the close button */
+}
 .dialogBtnSecondary {
   background-color: transparent;
   color: grey;
@@ -18,7 +25,6 @@
   box-shadow: none;
   width: fit-content;
   padding: 0.4rem 1.4rem;
-
   &:hover {
     background-color: white;
     color: #424242;
@@ -33,7 +39,6 @@
   width: fit-content;
   align-self: center;
   width: 100%;
-
   &:hover {
     background-color: white;
     box-shadow: none !important;
@@ -48,34 +53,147 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 0.8rem;
 }
-
+.videoTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.videoTitleBody {
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  color: #676666;
+}
 .link {
   text-decoration: none;
 }
 
-.linkDelete {
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  color: silver;
-  transition: 0.3s ease opacity;
+// ----------------------Record video page scss----------------------
 
-  &:hover {
-    background-color: rgba(250, 128, 114, 0.1) !important;
-    color: #ff3131;
-  }
+.recordContainer,
+.dialogBtnSecondary {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
 }
-.linkContainer {
-  position: relative;
-  z-index: 1;
-  height: fit-content;
 
-  &:hover .linkDelete {
-    background-color: transparent;
+.recordButton {
+  background-color: #a46df0;
+  color: #fff;
+  border: none;
+  padding: 40px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: inline;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 15px;
+}
+.recordButton:hover {
+  background-color: #8f48f2;
+}
+
+.record_mini_popup_container {
+  position: relative;
+  background-color: (0, 0, 0, 0.5);
+}
+
+.record_mini_popup_inner {
+  position: fixed;
+  height: auto; /* Adjust the height as needed */
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  z-index: 1000;
+  top: 40%;
+  right: 0;
+  padding: 2px;
+  border-radius: 20px;
+  background: #fff;
+  opacity: 0.7;
+  &:hover {
     opacity: 1;
   }
 }
+.record_mini_popup_selection {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  padding: 10px;
+  background-color: rgb(66, 63, 63);
+  border-radius: 20px;
+}
+.record_mini_popup_selection_button,
+.record_mini_popup_selection_gap,
+.record_mini_popup_selection_cross_button {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 2.2rem;
+  display: inline-block;
+  text-align: center;
+  opacity: 0.7;
+}
+.record_mini_popup_selection_button:hover,
+.record_mini_popup_selection_cross_button:hover {
+  opacity: 1;
+  scale: 1.1;
+}
+.record_mini_popup_selection_gap {
+  opacity: 0.3;
+}
+.record_mini_popup_selection_cross_button {
+  color: rgb(250, 45, 45);
+}
+
+.record_mini_popup_video {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+.uploadButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.linkBtn {
+  background: #000;
+  color: white;
+  border: 1px solid transparent;
+  height: max-content;
+  width: fit-content;
+  align-self: center;
+  text-decoration: none;
+  &:hover {
+    background-color: white;
+    box-shadow: none !important;
+    color: #424242;
+    border: 1px solid silver;
+  }
+}
+
+.snackbar {
+  & .MuiSnackbarContent-root {
+    background-color: #f44336; /* Red background for error */
+    color: white;
+  }
+}
+// .dialogBtnSecondary {
+//   background-color: black;
+//   color: white;
+//   font-weight: 600;
+//   border: 1px solid grey;
+//   box-shadow: none;
+//   border-radius: 2rem;
+//   width: fit-content;
+//   padding: 0.4rem 1.4rem;
+//   &:hover {
+//     background-color: white;
+//     color: #424242;
+//     box-shadow: none;
+//   }
+// }

@@ -20,7 +20,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditPointsDialog from "./EditPointsDialog";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import { Visibility } from "@mui/icons-material";
 
 
 import { fetchTaskById } from "../../../../api/taskApi";
@@ -32,10 +31,9 @@ import { useDeleteSubTask } from "../../../../hooks/useSubTask";
 
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import useDebounce from "../../../../hooks/useDebounce";
-import { RouteNames } from "../../../../Constants/route";
 
 
 
@@ -49,6 +47,7 @@ export default function index() {
         queryKey: ['tasks', id],
         queryFn: () => fetchTaskById(id),
         enabled: !!id,
+        staleTime: 50000
     }
     )
 
@@ -65,6 +64,7 @@ export default function index() {
         queryKey: ['userSubtask', id],
         queryFn: () => getSubTask(id),
         enabled: !!id,
+        staleTime: 300000,
     });
 
 
@@ -119,10 +119,11 @@ export default function index() {
     const debounceSearchTerm = useDebounce(searchTerm, 500)
 
     const { data: filteredSubTask } = useQuery({
-        queryKey: ['filteredSubTask', debounceSearchTerm, filterField, id],
-        queryFn: () => filterSubTask(debounceSearchTerm, filterField, id),
-        enabled: !!debounceSearchTerm || !!filterField || !!id
+        queryKey: ['filteredSubTask', debounceSearchTerm, filterField],
+        queryFn: () => filterSubTask(debounceSearchTerm, filterField),
+        enabled: !!debounceSearchTerm || !!filterField
     })
+
 
     // Handling the Completed Functionality
     const queryClient = useQueryClient();
@@ -153,6 +154,7 @@ export default function index() {
             handleClose();
         }
     }
+
 
     return (
         <Stack variant="main" flexDirection="column" gap={2}>
@@ -270,17 +272,6 @@ export default function index() {
                         </Select>
                     </FormControl>
 
-                    {/* <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>Snap Shots</Link> */}
-                    <Button
-                        variant="outlined"
-                        startIcon={<Visibility />}
-                        sx={{ whiteSpace: "nowrap", textTransform: "capitalize", paddingInline: "30px" }}
-                        component={Link}
-                        to={`${RouteNames.SUBDETAILSPAGE}/174c10nt29f5-524fe`}
-                    >
-                        Peek
-                    </Button>
-
                 </Stack>
             </Stack>
 
@@ -323,12 +314,9 @@ export default function index() {
                                                         alignItems="center"
                                                         gap={0.6}
                                                         sx={{ cursor: "pointer", maxWidth: "6rem", minWidth: "6rem" }}>
-                                                        <Avatar
-                                                            src={task.assignedBy?.avatar || ""}
-                                                            // alt="Profile Picture"
-                                                            sx={{ width: "1.2rem", height: "1.2rem" }}
-                                                        />
-
+                                                        <Avatar sx={{ bgcolor: "silver", width: "1.2rem", height: "1.2rem", fontSize: '12px' }}>
+                                                            {task.assignedBy?.name?.[0]?.toUpperCase()}
+                                                        </Avatar>
                                                         <Typography className={style.textGrey}>{task.assignedBy?.name}</Typography>
                                                     </Stack>
                                                 </TableCell>
@@ -379,15 +367,6 @@ export default function index() {
                                                             <ListItemIcon >
                                                                 <EditIcon fontSize="small" />
                                                             </ListItemIcon>Edit</MenuItem>
-
-                                                        {/* <Link to={`${RouteNames.SUBDETAILSPAGE}/09`} style={{ textDecoration: "none" }}>
-                                                            <MenuItem className={`${tableClassText} ${style.editMenuItem}`}>
-                                                                <ListItemIcon>
-                                                                    <VisibilityOutlinedIcon fontSize="small" />
-                                                                </ListItemIcon>
-                                                                View
-                                                            </MenuItem>
-                                                        </Link> */}
 
                                                         <MenuItem onClick={handleDelete} className={`${tableClassText} ${style.deleteMenuItem}`}>
                                                             <ListItemIcon >
