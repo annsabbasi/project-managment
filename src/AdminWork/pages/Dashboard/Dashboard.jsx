@@ -1,4 +1,3 @@
-import React from "react";
 import { useDashboardApi } from "../AdminApis/DashboardApi";
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import {
@@ -23,7 +22,7 @@ const COLORS = ["#0088FE", "#FF8042"];
 import { useFetchUsers } from "../AdminApis/UsersApi";
 
 export const Dashboard = () => {
-  const { data: usersResponse, isError } = useFetchUsers();
+  const { data: usersResponse } = useFetchUsers();
   const users = usersResponse?.data || [];
   // Filter users based on search text
   const UsersNumbersCount = users.filter(

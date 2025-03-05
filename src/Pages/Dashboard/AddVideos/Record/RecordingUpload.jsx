@@ -30,11 +30,11 @@ export const RecordingUpload = (prop) => {
     const formData = new FormData();
 
     try {
-      if (!prop.videoURL) {
+      if (!prop.video) {
         setError("Video URL is missing.");
         return;
       }
-      const response = await fetch(prop.videoURL);
+      const response = await fetch(prop.video);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
