@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -15,7 +15,7 @@ import { useAddRecordVideo } from "../videoApi/addVideo";
 export const RecordingUpload = (prop) => {
   const [description, setDescription] = useState("");
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false); // State for success message
+  const [success, setSuccess] = useState(false);
   const { mutate: addRecordVideo } = useAddRecordVideo();
 
   const handleClose = () => {

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "./../styles.module.scss";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 // import RecordPopUp from "./RecordPopUp";
 import RecordSmallPopup from "./RecordSmallPopup";
 
