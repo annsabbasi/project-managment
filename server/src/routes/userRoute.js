@@ -114,7 +114,7 @@ router.route("/delete-videolink/:id").delete(verifyUser(["admin", "user"]), dele
 
 
 // Cloudinary Single Video Upload
-router.get("/get-video-upload", verifyUser(["admin"]), getAllVideoController);
+router.get("/get-video-upload", verifyUser(["admin", "user", "QcAdmin"]), getAllVideoController);
 router.get("/get-single-video-upload/:videoId", verifyUser(["admin", "user"]), getSingleVideoController);
 router.post("/video-upload", verifyUser(["admin"]), upload.single("video"), uploadVideoController);
 // For The PDF Upload

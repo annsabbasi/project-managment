@@ -28,9 +28,7 @@ const uploadVideoController = asyncHandler(async (req, res) => {
         throw new apiError("Failed to upload video to Cloudinary");
     }
 
-    console.log("videoUrl of the videoUpload Controller.js", uploadResult);
     const videoUrl = uploadResult.url;
-    console.log("PDF URL:", videoUrl);
 
 
     const newVideoSubTask = await uploadSingleVideo.create({

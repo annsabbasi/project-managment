@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import styles from './page.module.scss'
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+// import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 
@@ -69,7 +69,7 @@ export default function TopBar({ title }) {
                     <IconButton onClick={handleThemeToggle} color="inherit">
                         {mode === 'light' ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
                     </IconButton>
-                    <NotificationsNoneIcon aria-label="Notifications" />
+                    {/* <NotificationsNoneIcon aria-label="Notifications" /> */}
                     <IconButton onClick={handleClick}>
                         <Avatar
                             src={user?.avatar || ""}
@@ -82,10 +82,9 @@ export default function TopBar({ title }) {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
-                    <Link to={`/${RouteNames.ADMINPROFILEPAGE}`}>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <Link to={`/${RouteNames.ADMINPROFILEPAGE}`} style={{ textDecoration: "none" }}>
+                        <MenuItem onClick={handleClose} sx={{ color: mode === 'light' ? "text.primary" : "text.primary" }}>Profile</MenuItem>
                     </Link>
-                    <MenuItem onClick={handleClose}>My Account</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
 

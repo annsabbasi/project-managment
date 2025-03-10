@@ -28,7 +28,6 @@ const uploadPdfController = asyncHandler(async (req, res) => {
     }
 
     const pdfUrl = uploadResult.secure_url;
-    console.log("PDF URL from uploadPdfController:", pdfUrl); // Debugging
 
     const newPdfSubTask = await uploadSinglePdf.create({
         description,

@@ -8,29 +8,29 @@ import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText
 
 import DashboardIcon from '../../assets/dashboard.svg';
 import ProjectsIcon from '../../assets/Project.svg';
-import MessagesIcon from '../../assets/Message.png';
 import ClientsIcon from '../../assets/Client.svg';
-import TeamsIcon from '../../assets/Team.svg';
-import MeetingsIcon from '../../assets/Meetings.svg';
-import ReferralsIcon from '../../assets/Referrals.svg';
-import ServicesIcon from '../../assets/Services.svg';
-import ContractsIcon from '../../assets/Contracts.svg';
-import InvoicesIcon from '../../assets/Invoices.svg';
-import FormsIcon from '../../assets/Forms.svg';
-import FinancesIcon from '../../assets/finances.svg';
+// import MessagesIcon from '../../assets/Message.png';
+// import TeamsIcon from '../../assets/Team.svg';
+// import MeetingsIcon from '../../assets/Meetings.svg';
+// import ReferralsIcon from '../../assets/Referrals.svg';
+// import ServicesIcon from '../../assets/Services.svg';
+// import ContractsIcon from '../../assets/Contracts.svg';
+// import InvoicesIcon from '../../assets/Invoices.svg';
+// import FormsIcon from '../../assets/Forms.svg';
+// import FinancesIcon from '../../assets/finances.svg';
 
 import DashboardIconWhite from '../../assets/Dashboard active.svg';
 import ProjectsIconWhite from '../../assets/Project active.svg';
-import MessagesIconWhite from '../../assets/Message active.svg';
 import ClientsIconWhite from '../../assets/Client active.svg';
-import TeamsIconWhite from '../../assets/Team active.svg';
-import MeetingsIconWhite from '../../assets/Meetings active.svg';
-import ReferralsIconWhite from '../../assets/Referrals active.svg';
-import ServicesIconWhite from '../../assets/Services active.svg';
-import ContractsIconWhite from '../../assets/Contracts active.svg';
-import InvoicesIconWhite from '../../assets/Invoices acitve.svg';
-import FormsIconWhite from '../../assets/Forms active.svg';
-import FinancesIconWhite from '../../assets/Finances active.svg';
+// import MessagesIconWhite from '../../assets/Message active.svg';
+// import TeamsIconWhite from '../../assets/Team active.svg';
+// import MeetingsIconWhite from '../../assets/Meetings active.svg';
+// import ReferralsIconWhite from '../../assets/Referrals active.svg';
+// import ServicesIconWhite from '../../assets/Services active.svg';
+// import ContractsIconWhite from '../../assets/Contracts active.svg';
+// import InvoicesIconWhite from '../../assets/Invoices acitve.svg';
+// import FormsIconWhite from '../../assets/Forms active.svg';
+// import FinancesIconWhite from '../../assets/Finances active.svg';
 import { useAuth } from '../../context/AuthProvider';
 // import SettingsIconWhite from '../../assets/Settings active.svg';
 
@@ -44,15 +44,15 @@ const Sidebar = () => {
         { name: 'Department', path: `/${RouteNames.DASHBOARD}`, Icon: DashboardIcon, ActiveIcon: DashboardIconWhite },
         { name: 'Projects', path: `/${RouteNames.PROJECT}`, Icon: ProjectsIcon, ActiveIcon: ProjectsIconWhite },
         { name: 'SOP\'s', path: `/${RouteNames.CLIENT}`, Icon: ClientsIcon, ActiveIcon: ClientsIconWhite },
-        { name: 'Messages', path: `/${RouteNames.MESSAGE}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
-        { name: 'Teams', path: `/${RouteNames.TEAMS}`, Icon: TeamsIcon, ActiveIcon: TeamsIconWhite },
-        { name: 'Meetings', path: `/${RouteNames.MEETINGS}`, Icon: MeetingsIcon, ActiveIcon: MeetingsIconWhite },
-        { name: 'Referrals', path: `/${RouteNames.REFERRALS}`, Icon: ReferralsIcon, ActiveIcon: ReferralsIconWhite },
-        { name: 'Services', path: `/${RouteNames.SERVICES}`, Icon: ServicesIcon, ActiveIcon: ServicesIconWhite },
-        { name: 'Contracts', path: `/${RouteNames.CONTRACTS}`, Icon: ContractsIcon, ActiveIcon: ContractsIconWhite },
-        { name: 'Invoices', path: `/${RouteNames.INVOICES}`, Icon: InvoicesIcon, ActiveIcon: InvoicesIconWhite },
-        { name: 'Forms', path: `/${RouteNames.FORMS}`, Icon: FormsIcon, ActiveIcon: FormsIconWhite },
-        { name: 'Finances', path: `/${RouteNames.FINANCES}`, Icon: FinancesIcon, ActiveIcon: FinancesIconWhite },
+        // { name: 'Messages', path: `/${RouteNames.MESSAGE}`, Icon: MessagesIcon, ActiveIcon: MessagesIconWhite },
+        // { name: 'Teams', path: `/${RouteNames.TEAMS}`, Icon: TeamsIcon, ActiveIcon: TeamsIconWhite },
+        // { name: 'Meetings', path: `/${RouteNames.MEETINGS}`, Icon: MeetingsIcon, ActiveIcon: MeetingsIconWhite },
+        // { name: 'Referrals', path: `/${RouteNames.REFERRALS}`, Icon: ReferralsIcon, ActiveIcon: ReferralsIconWhite },
+        // { name: 'Services', path: `/${RouteNames.SERVICES}`, Icon: ServicesIcon, ActiveIcon: ServicesIconWhite },
+        // { name: 'Contracts', path: `/${RouteNames.CONTRACTS}`, Icon: ContractsIcon, ActiveIcon: ContractsIconWhite },
+        // { name: 'Invoices', path: `/${RouteNames.INVOICES}`, Icon: InvoicesIcon, ActiveIcon: InvoicesIconWhite },
+        // { name: 'Forms', path: `/${RouteNames.FORMS}`, Icon: FormsIcon, ActiveIcon: FormsIconWhite },
+        // { name: 'Finances', path: `/${RouteNames.FINANCES}`, Icon: FinancesIcon, ActiveIcon: FinancesIconWhite },
     ];
 
     const handleClick = (path) => {

@@ -6,24 +6,27 @@ import {
     Snackbar,
     Alert,
 } from "@mui/material";
-
 import { styled } from "@mui/system";
-import style from './styles.module.scss'
+import style from './styles.module.scss';
 import { useAddVideo } from "./videoApi/addVideo";
-
 
 const StyledInput = styled("input")({
     display: "none",
 });
-
 
 const Uploads = () => {
     const [video, setVideo] = useState(null);
     const [videoURL, setVideoURL] = useState("");
     const [description, setDescription] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const { mutate: addVideo } = useAddVideo();
 
+    const { mutate: addVideo, isPending, isSuccess } = useAddVideo({
+        onSuccess: () => {
+            setVideo(null);
+            setVideoURL("");
+            setDescription("");
+        }
+    });
 
     const handleVideoChange = (e) => {
         const file = e.target.files[0];
@@ -37,11 +40,9 @@ const Uploads = () => {
         }
     };
 
-
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -49,15 +50,7 @@ const Uploads = () => {
         formData.append("video", video);
         formData.append("description", description);
         addVideo(formData);
-        // console.log("Uploaded Video:", video);
-        // console.log("This vifro is brrn uploafrf gtom ghr vloifinatrye  ", video)
-        // console.log("Description:", description);
     };
-
-    const handleCloseSnackbar = () => {
-        setSnackbarOpen(false);
-    };
-
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate className={style.mainContainer}>
@@ -70,7 +63,8 @@ const Uploads = () => {
                         accept="video/*"
                         id="video-upload"
                         type="file"
-                        onChange={handleVideoChange} />
+                        onChange={handleVideoChange}
+                    />
                     <Button
                         variant="contained"
                         component="span"
@@ -80,9 +74,9 @@ const Uploads = () => {
                         {video ? video.name : "Choose Video"}
                     </Button>
                 </label>
+
                 {videoURL && (
-                    <Box
-                        className={style.previewVideo}>
+                    <Box className={style.previewVideo}>
                         <Typography variant="h6" gutterBottom>
                             Video Preview
                         </Typography>
@@ -93,6 +87,7 @@ const Uploads = () => {
                         />
                     </Box>
                 )}
+
                 <TextField
                     label="Video Description"
                     multiline
@@ -100,27 +95,40 @@ const Uploads = () => {
                     variant="outlined"
                     value={description}
                     onChange={handleDescriptionChange}
-                    fullWidth />
+                    fullWidth
+                />
+
                 <Button
                     size="md"
                     variant="outlined"
-                    // className={style.linkBtn}
                     type="submit"
-                >Submit</Button>
+                    disabled={isPending}
+                >
+                    {isPending ? "Uploading..." : "Submit"}
+                </Button>
             </Stack>
-            {/* Snackbar for showing file size error */}
+
+            {/* Snackbar for File Size Error */}
             <Snackbar
                 open={snackbarOpen}
-                autoHideDuration={3000}
-                onClose={handleCloseSnackbar}
+                autoHideDuration={2000}
+                onClose={() => setSnackbarOpen(false)}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity="error"
-                    sx={{ width: '100%' }}
-                >
+                <Alert severity="error" sx={{ width: '100%' }}>
                     File size exceeds 100MB!
+                </Alert>
+            </Snackbar>
+
+            {/* Snackbar for Success Message */}
+            <Snackbar
+                open={isSuccess}
+                autoHideDuration={2000}
+                onClose={() => { }}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    Video uploaded successfully!
                 </Alert>
             </Snackbar>
         </Box>

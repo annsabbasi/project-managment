@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
-    Stack, Box, Button, TextField, Typography, Snackbar, Alert, Grid, Card, CardContent
+    Stack, Box, Button, TextField, Typography, Snackbar, Alert, Grid, Card, CardContent,
+    Skeleton
 } from "@mui/material";
 import { styled } from "@mui/system";
 import style from './styles.module.scss';
@@ -91,7 +92,8 @@ const Pdf = () => {
     const handleDelete = (id) => {
         deletePdf(id);
     };
-    console.log("pdfs?.data?.map((pdf)", pdfs?.data?.map((pdf) => pdf))
+
+
     return (
         <Stack>
             <Box component="form" onSubmit={handleSubmit} noValidate className={style.mainContainer}>
@@ -145,7 +147,12 @@ const Pdf = () => {
 
             <Box sx={{ flexGrow: 1, }} mt={4}>
                 <Typography variant="h5" mb={3}>Uploaded PDFs</Typography>
-                {pdfLoading ? <Typography>Loading PDFs...</Typography> : (
+                {pdfLoading ? <>
+                    <Skeleton variant="text" width="90%" height={90} />
+                    <Skeleton variant="text" width="90%" />
+                    <Skeleton variant="text" width="85%" />
+                    <Skeleton variant="text" width="80%" />
+                </> : (
                     <Grid container spacing={3}>
                         {pdfs?.data?.map((pdf) => (
                             <Grid
