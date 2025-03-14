@@ -1,9 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-
-import { loginUser, logoutUser, promoteUser, signUpUser } from '../api/authApi';
-
-
+import {
+  loginUser,
+  logoutUser,
+  promoteUser,
+  signUpUser,
+  signUpCompany,
+  loginCompany
+} from '../api/authApi';
+import { useAuth } from '../context/AuthProvider';
 
 export const useSignup = () => {
   const queryClient = useQueryClient();
@@ -11,93 +16,126 @@ export const useSignup = () => {
     mutationFn: signUpUser,
     onSuccess: (data) => {
       queryClient.setQueryData(['accessToken'], data.user);
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('accessToken', data.token);
+      localStorage.removeItem('accessTokenC');
+      localStorage.removeItem('refreshTokenC');
+    },
+    onError: (error) => {
+      console.error('(useSignup) Signup failed:', error.response?.data || error.message);
     },
   });
 };
 
+export const useSignupCompany = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: signUpCompany,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['accessTokenC'], data.user);
+      localStorage.setItem('accessTokenC', data.token);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    },
+    onError: (error) => {
+      console.error('Signup failed:', error.response?.data || error.message);
+    },
+  });
+};
 
-// let ws = null;
 export const useLogin = () => {
   const queryClient = useQueryClient();
+  const { setAccessToken, setRole } = useAuth();
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      // const token = data?.data?.accessToken;
+      try {
+        const token = data?.data?.accessToken;
+        const refreshToken = data?.data?.refreshToken;
+        const role = data?.data?.user?.role || 'user';
 
-      // ✅ Store token in localStorage
-      localStorage.setItem("accessToken", data?.data?.accessToken);
-      localStorage.setItem("refreshToken", data?.data?.refreshToken);
-      localStorage.setItem("role", data?.data?.user?.role);
-      queryClient.setQueryData(["user"], data?.data?.user);
+        if (token && refreshToken) {
+          localStorage.setItem('accessToken', token);
+          localStorage.setItem('refreshToken', refreshToken);
+          localStorage.setItem('role', role);
 
-      // console.log("This is token from useLogin hook", token);
+          setAccessToken(token);
+          setRole(role);
+          queryClient.invalidateQueries(['authData', role]);
 
-      // ✅ Send token to Electron via WebSocket
-      // const ws = new WebSocket("ws://localhost:3001"); // Connect to Electron's WebSocket
-
-    //   if (!ws || ws.readyState === WebSocket.CLOSED) { // ✅ Ensure connection is maintained
-    //     ws = new WebSocket("ws://localhost:3001");
-
-    //     ws.onopen = () => {
-    //       console.log("Connected to Electron WebSocket");
-    //       ws.send(token); // ✅ Send token once WebSocket is open
-    //     };
-
-    //     ws.onerror = (error) => {
-    //       console.error("WebSocket Error:", error);
-    //     };
-
-    //     ws.onclose = () => {
-    //       console.log("Electron WebSocket closed.");
-    //     };
-    //   } else {
-    //     ws.send(token); // ✅ Send token if WebSocket is already open
-    //   }
-
+          navigate('/dashboard');
+        } else {
+          console.error('Missing token or refreshToken in response');
+        }
+      } catch (error) {
+        console.error('Error in onSuccess:', error);
+      }
     },
-    // onSuccess: (data) => {
-    //   localStorage.setItem("accessToken", data?.data?.accessToken);
-    //   localStorage.setItem("refreshToken", data?.data?.refreshToken);
-    //   localStorage.setItem("role", data?.data?.user?.role);
-    //   queryClient.setQueryData(["user"], data?.data?.user);
-    //   const token = localStorage.getItem("accessToken")
-    //   console.log("This is token from useLogin hook", token)
-    //   if (window.electronAPI) {
-    //     window.electronAPI.launchApp(token);
-    //   } else {
-    //     console.warn("Electron API is not available");
-    //   }
-    // },
-
     onError: (error) => {
-      console.error("(useAuth) Login failed:", error.response?.data || error.message);
-    }
-  })
-}
+      console.error('(useLogin) Login failed:', error.response?.data || error.message);
+    },
+  });
+};
 
- 
+export const useLoginCompany = () => {
+  const queryClient = useQueryClient();
+  const { setAccessToken, setRole } = useAuth();
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: loginCompany,
+    onSuccess: (data) => {
+      const token = data?.data?.accessToken;
+      const refreshToken = data?.data?.refreshToken;
+      const role = 'admin'; // Default role for company
+
+      if (token && refreshToken) {
+        localStorage.setItem('accessTokenC', token);
+        localStorage.setItem('refreshTokenC', refreshToken);
+        localStorage.setItem('role', role);
+
+        setAccessToken(token);
+        setRole(role);
+        queryClient.invalidateQueries(['authData', role]);
+
+        navigate('/company-dashboard');
+      } else {
+        console.error('Missing token or refreshToken in response');
+      }
+    },
+    onError: (error) => {
+      console.error('(useLoginCompany) Login failed:', error.response?.data || error.message);
+    },
+  });
+};
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { setAccessToken, setRole } = useAuth();
+
   return useMutation({
     mutationFn: logoutUser,
-
     onSuccess: () => {
       queryClient.clear();
-      localStorage.removeItem("accessToken");
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('accessTokenC');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('refreshTokenC');
+      localStorage.removeItem('role');
+
+      setAccessToken(null);
+      setRole(null);
+
       navigate('/login');
     },
-
     onError: (error) => {
-      console.error("(useAuth) Logout failed:", error.message || error);
-    }
-  })
-}
-
-
-// Promote user Hook
+      console.error('(useLogout) Logout failed:', error.message || error);
+    },
+  });
+};
 
 export const usePromoteUser = () => {
   const queryClient = useQueryClient();
@@ -106,5 +144,8 @@ export const usePromoteUser = () => {
     onSuccess: (data) => {
       queryClient.setQueryData(['userPromotion'], data.user);
     },
-  })
-}
+    onError: (error) => {
+      console.error('(usePromoteUser) Promotion failed:', error.response?.data || error.message);
+    },
+  });
+};

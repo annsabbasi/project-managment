@@ -7,10 +7,20 @@ export const signUpUser = async (user) => {
     return response.data;
 }
 
-
+export const signUpCompany = async (company) => {
+    const response = await axiosInstance.post("/company/signup", company)
+    return response.data;
+}
 
 export const loginUser = async (user) => {
     const response = await axiosInstance.post("/user/login", user)
+    console.log("response from (authApi)", response.data)
+    return response.data;
+}
+
+export const loginCompany = async (company) => {
+    const response = await axiosInstance.post("/company/login", company)
+    console.log("response from (authApii)", response.data)
     return response.data;
 }
 
