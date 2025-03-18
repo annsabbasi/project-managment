@@ -3,11 +3,6 @@ import mongoose from "mongoose";
 const ScreenshotSchema = new mongoose.Schema(
     {
         imageUrl: String,
-        // trackerId: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: "TimeTracking",
-        //     required: true
-        // },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "UserInfo",

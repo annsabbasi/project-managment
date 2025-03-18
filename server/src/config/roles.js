@@ -2,7 +2,7 @@ const ROLES = {
     SUPERADMIN: "superadmin",
     ADMIN: "admin",
     USER: "user",
-    QCADMIN: "QcAdmin",
+    QCADMIN: "QcAdmin"
 };
 
 export { ROLES };

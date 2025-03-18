@@ -64,7 +64,7 @@ export const useLogin = () => {
           setRole(role);
           queryClient.invalidateQueries(['authData', role]);
 
-          navigate('/dashboard');
+          role === 'admin' ? navigate('/dashboard') : navigate('/project');
         } else {
           console.error('Missing token or refreshToken in response');
         }
@@ -113,29 +113,23 @@ export const useLoginCompany = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { setAccessToken, setRole } = useAuth();
-
   return useMutation({
     mutationFn: logoutUser,
+
     onSuccess: () => {
       queryClient.clear();
-
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('accessTokenC');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('refreshTokenC');
-      localStorage.removeItem('role');
-
-      setAccessToken(null);
-      setRole(null);
-
+      localStorage.removeItem("accessToken");
       navigate('/login');
     },
+
     onError: (error) => {
-      console.error('(useLogout) Logout failed:', error.message || error);
-    },
-  });
-};
+      console.error("(useAuth) Logout failed:", error.message || error);
+    }
+  })
+}
+
+
+// Promote user Hook
 
 export const usePromoteUser = () => {
   const queryClient = useQueryClient();
@@ -144,8 +138,5 @@ export const usePromoteUser = () => {
     onSuccess: (data) => {
       queryClient.setQueryData(['userPromotion'], data.user);
     },
-    onError: (error) => {
-      console.error('(usePromoteUser) Promotion failed:', error.response?.data || error.message);
-    },
-  });
-};
+  })
+}

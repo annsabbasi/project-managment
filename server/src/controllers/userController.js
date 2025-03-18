@@ -45,9 +45,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
         const options = {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "Strict",
-            maxAge: 12 * 24 * 60 * 60 * 1000, // 12 days in milliseconds
+            secure: "true",
+            sameSite: "None",
+            maxAge: 12 * 24 * 60 * 60 * 1000,
         };
         const { accessToken, refreshToken } =
             await generateAccessTokenAndRefreshToken(user?._id);
@@ -128,8 +128,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "Strict",
+        secure: "true",
+        sameSite: "None",
         maxAge: 12 * 24 * 60 * 60 * 1000,
     };
     return res

@@ -104,7 +104,6 @@ export default function AddProjects() {
         queryKey: ['elapsedTime', ProjectId],
         queryFn: () => userGetElapsedTime(ProjectId),
         onSuccess: (data) => {
-            console.log("onSuccess Triggered", data);
             setIsRunning(data.isRunning);
         },
         onError: (error) => {
@@ -164,8 +163,6 @@ export default function AddProjects() {
             }
         }
     });
-    // console.log("elapsedTime", elapsedTime)
-    console.log("timeData", timeData?.data?.elapsedTime)
 
     // User CheckOut Time
     const checkOutMutation = useMutation({
