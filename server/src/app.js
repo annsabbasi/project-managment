@@ -30,10 +30,8 @@ app.use((req, res, next) => {
 
 // Routing of the App Starts Here...
 import userRoute from './routes/userRoute.js';
-import companyRoute from './routes/companyRoute.js';
 
 app.use('/user', userRoute);
-app.use('/company', companyRoute);
 app.get("/", (req,res) => {
     res.status(200).send("Working successfull!")
 })
