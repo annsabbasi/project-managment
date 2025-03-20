@@ -1,4 +1,3 @@
-// import theme from '../../Theme/Theme';
 import styles from './style.module.scss'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
@@ -12,19 +11,21 @@ import {
     TextField, Typography,
     Container, CssBaseline,
     Avatar, Stack,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from '@mui/material';
 
 
 const LoginPage = () => {
     const { mutate } = useLogin();
-    const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+    const [formData, setFormData] = useState({ email: '', password: '', role: 'user' });
     const [error, setError] = useState("")
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -61,7 +62,6 @@ const LoginPage = () => {
     }
 
     return (
-        // <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={styles.container}>
         <Box component="form" onSubmit={handleSubmit} noValidate className={styles.container}>
             <Container component="main" maxWidth="xs">
 
@@ -70,7 +70,22 @@ const LoginPage = () => {
                     <Avatar sx={{ m: 1, bgcolor: 'black' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h6" className={styles.loginText}>Login</Typography>
+                    <Typography component="h1" variant="h6" className={styles.loginText}>
+                        Login as
+                    </Typography>
+
+                    {/* Role Selection */}
+                    <RadioGroup
+                        aria-label="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        row
+                        className={styles.radioGroup}
+                    >
+                        <FormControlLabel value="user" control={<Radio />} label="User" />
+                        <FormControlLabel value="admin" control={<Radio />} label="Company" />
+                    </RadioGroup>
 
 
                     <Box sx={{ mt: 1, width: '100%' }} >

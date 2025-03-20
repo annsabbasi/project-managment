@@ -1,25 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
-const planSchema = new Schema(
+const departmentSchema = new Schema(
     {
-        name: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserInfo",
-            required: true,
-        },
         title: {
             type: String,
-            enum: ["accept", "decline", "pending"],
-            default: "pending",
+            required: true,
         },
-        designation: {
-            type: Number,
+        description: {
+            type: String,
             required: true,
         },
     },
     { timestamps: true }
 );
 
-const userPlan = mongoose.model("userplan", planSchema);
+const Department = mongoose.model("department", departmentSchema);
 
-export { userPlan };
+export { Department };

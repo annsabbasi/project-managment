@@ -1,0 +1,7 @@
+.department_table_cell {
+  font: 400 1.1rem "Open Sans", sans-serif;
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -57,68 +57,6 @@ export const AuthProvider = ({ children }) => {
         };
     });
 
-    // console.log("GetToken Access", getToken)
-    // useEffect(() => {
-    //     // const connectWebSocket = () => {
-
-    //         if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
-    //             wsRef.current = new WebSocket("ws://localhost:3001");
-
-    //             wsRef.current.onopen = () => {
-    //                 console.log("Connected to Electron WebSocket");
-    //                 wsRef.current.send(getToken);
-    //             };
-
-    //             wsRef.current.onerror = (error) => {
-    //                 console.error("WebSocket Error:", error);
-    //             };
-
-    //             wsRef.current.onclose = () => {
-    //                 console.log("Electron WebSocket closed.");
-    //             };
-    //         } else {
-    //             wsRef.current.send(getToken);
-    //         }
-    //     // }
-    //     // connectWebSocket();
-
-    //     const intervalId = setInterval(() => {
-    //         console.log("Checking web-socket connection")
-    //         // connectWebSocket();
-    //     }, 60000)
-
-    //     // Cleanup function to close WebSocket when component unmounts
-    //     return () => {
-    //         clearInterval(intervalId);
-    //         if (wsRef.current) {
-    //             wsRef.current.close();
-    //         }
-    //     };
-    // }, [getToken]);
-
-
-    // useEffect(() => {
-
-    //     if (!ws || ws.readyState === WebSocket.CLOSED) {
-    //         ws = new WebSocket("ws://localhost:3001");
-
-    //         ws.onopen = () => {
-    //             console.log("Connected to Electron WebSocket");
-    //             ws.send(getToken);
-    //         };
-
-    //         ws.onerror = (error) => {
-    //             console.error("WebSocket Error:", error);
-    //         };
-
-    //         ws.onclose = () => {
-    //             console.log("Electron WebSocket closed.");
-    //         };
-    //     } else { ws.send(getToken); }
-    // }, [])
-
-    // Trying to Implement Electron-App
-
     const { data: user, isLoading } = useQuery({
         queryKey: ["user"],
         queryFn: async () => {

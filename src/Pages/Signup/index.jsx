@@ -1,5 +1,4 @@
 import styles from './style.module.scss'
-// import theme from '../../Theme/Theme';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import { useState } from 'react';
@@ -8,11 +7,16 @@ import { useSignup } from '../../hooks/useAuth';
 import { Link, Navigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
 
-import { 
+import {
     Box, Button,
     Grid, Stack,
     Container, Avatar,
     TextField, Typography,
+    FormControl,
+    FormLabel,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from '@mui/material';
 
 
@@ -20,7 +24,13 @@ const Index = () => {
     const { mutate: signup } = useSignup();
     const [error, setError] = useState("")
     const [redirect, setRedirect] = useState(false);
-    const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        role: 'user'
+    });
 
 
     const handleData = (value) => {
@@ -29,7 +39,6 @@ const Index = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         signup(formData, {
-
             onSuccess: () => {
                 setRedirect(true);
                 toast.success("User Registered Successfully.")
@@ -51,7 +60,6 @@ const Index = () => {
 
 
     return (
-        // <Box component="form" onSubmit={handleSubmit} noValidate sx={{ backgroundColor: theme.palette.grey[50] }} className={`${styles.containerMain}`}>
         <Box component="form" onSubmit={handleSubmit} noValidate className={`${styles.containerMain}`}>
             <Container component="main" sx={{ maxWidth: '600px !important' }}>
                 <Box className={`${styles.itemContent}`} >
@@ -63,6 +71,18 @@ const Index = () => {
 
                     <Box className={`${styles.contentMain}`}>
                         <Box className={`${styles.contentMainChild}`}>
+                            <FormControl component="fieldset" className={`${styles.roleSelection}`}>
+                                <FormLabel component="legend">Register as</FormLabel>
+                                <RadioGroup
+                                    row
+                                    name="role"
+                                    value={formData.role}
+                                    onChange={handleData}
+                                >
+                                    <FormControlLabel value="user" control={<Radio />} label="User" />
+                                    <FormControlLabel value="admin" control={<Radio />} label="Company" />
+                                </RadioGroup>
+                            </FormControl>
 
                             <Stack flexWrap="wrap" gap="1rem" flexDirection="row" flex={1} className={`${styles.contentMainStack}`}>
                                 <TextField
