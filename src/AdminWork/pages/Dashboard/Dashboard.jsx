@@ -58,20 +58,25 @@ export const Dashboard = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" color="primary">
+          Dashboard
+        </Typography>
+      </Box>
       <Grid container spacing={4}>
         {/* Revenue Summary */}
         {[
-          { icon: <AttachMoney />, title: "Total Revenue", value: `$${totalRevenue}` },
-          { icon: <TrendingUp />, title: "This Month Revenue", value: `$${currentMonthRevenue}` },
-          { icon: <Business />, title: "Total Companies", value: UsersNumbersCount },
-          { icon: <People />, title: "Total Users", value: totalUsers },
+          { icon: <AttachMoney />, title: "Total Revenue", value: `$${totalRevenue}`, boxcolor: '#4F98C3' },
+          { icon: <TrendingUp />, title: "This Month Revenue", value: `$${currentMonthRevenue}`, boxcolor: '#228b22' },
+          { icon: <Business />, title: "Total Companies", value: UsersNumbersCount, boxcolor: '#b8860b' },
+          { icon: <People />, title: "Total Users", value: totalUsers, boxcolor: '#708090' },
         ].map((item, index) => (
           <Grid item xs={12} sm={6} lg={3} key={index}>
-            <Paper sx={{ p: 2, display: "flex", alignItems: "center", boxShadow: 3 }}>
-              <Box sx={{ mr: 2, color: "primary.main" }}>{item.icon}</Box>
+            <Paper sx={{ p: 2, display: "flex", alignItems: "center", boxShadow: 3,  backgroundColor: item.boxcolor }}>
+              <Box sx={{ mr: 2, color: "#00000026" }}>{item.icon}</Box>
               <Box>
-                <Typography variant="subtitle1">{item.title}</Typography>
-                <Typography variant="h5" color="primary">
+                <Typography variant="subtitle1" color="white">{item.title}</Typography>
+                <Typography variant="h5" color="white">
                   {item.value}
                 </Typography>
               </Box>

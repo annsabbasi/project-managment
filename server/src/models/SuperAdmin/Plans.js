@@ -16,8 +16,7 @@ const PlanSchema = new Schema(
         },
         paymentGatewayPlanId: {
             type: String,
-            required: [true, "stripe Plan_Id field is required"],
-            unique: true,
+            required: [false, "stripe Plan_Id field is required"],
             trim: true,
         },
         interval: {
