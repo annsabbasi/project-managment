@@ -1,6 +1,6 @@
-import React from "react";
 import { useDashboardApi } from "../AdminApis/DashboardApi";
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography, Box } from "@mui/material";
+import { AttachMoney, People, Business, TrendingUp } from "@mui/icons-material";
 import {
   LineChart,
   Line,
@@ -23,12 +23,9 @@ const COLORS = ["#0088FE", "#FF8042"];
 import { useFetchUsers } from "../AdminApis/UsersApi";
 
 export const Dashboard = () => {
-  const { data: usersResponse, isError } = useFetchUsers();
+  const { data: usersResponse } = useFetchUsers();
   const users = usersResponse?.data || [];
-  // Filter users based on search text
-  const UsersNumbersCount = users.filter(
-    (user) => user.role === "admin"
-  ).length;
+  const UsersNumbersCount = users.filter((user) => user.role === "admin").length;
   const { data, isLoading, error } = useDashboardApi();
 
   if (isLoading) {
@@ -38,6 +35,7 @@ export const Dashboard = () => {
       </Container>
     );
   }
+
   if (error) {
     return (
       <Container sx={{ mt: 4, textAlign: "center" }}>
@@ -60,102 +58,58 @@ export const Dashboard = () => {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
-      <Grid container spacing={3}>
-        {/* Total Revenue Box */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>
-              Total Revenue
-            </Typography>
-            <Typography variant="h4" color="primary">
-              ${totalRevenue}
-            </Typography>
-          </Paper>
-        </Grid>
-        {/* Current Month revenu Box */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>
-              This Month Revenue
-            </Typography>
-            <Typography variant="h4" color="primary">
-              ${currentMonthRevenue}
-            </Typography>
-          </Paper>
-        </Grid>
-        {/* Total Companies Box */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>
-              Total Companies
-            </Typography>
-            <Typography variant="h4" color="primary">
-              {UsersNumbersCount}
-            </Typography>
-          </Paper>
-        </Grid>
-        {/* Total Users Box */}
-        <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="h6" gutterBottom>
-              Total Users
-            </Typography>
-            <Typography variant="h4" color="primary">
-              {totalUsers}
-            </Typography>
-          </Paper>
-        </Grid>
+      <Grid container spacing={4}>
+        {/* Revenue Summary */}
+        {[
+          { icon: <AttachMoney />, title: "Total Revenue", value: `$${totalRevenue}` },
+          { icon: <TrendingUp />, title: "This Month Revenue", value: `$${currentMonthRevenue}` },
+          { icon: <Business />, title: "Total Companies", value: UsersNumbersCount },
+          { icon: <People />, title: "Total Users", value: totalUsers },
+        ].map((item, index) => (
+          <Grid item xs={12} sm={6} lg={3} key={index}>
+            <Paper sx={{ p: 2, display: "flex", alignItems: "center", boxShadow: 3 }}>
+              <Box sx={{ mr: 2, color: "primary.main" }}>{item.icon}</Box>
+              <Box>
+                <Typography variant="subtitle1">{item.title}</Typography>
+                <Typography variant="h5" color="primary">
+                  {item.value}
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        ))}
 
-        {/* Line Chart for Monthly Subscriptions & User Growth */}
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 2 }}>
+        {/* Line Chart */}
+        <Grid item xs={12} lg={8}>
+          <Paper sx={{ p: 2, boxShadow: 3 }}>
             <Typography variant="h6" gutterBottom>
               Monthly Subscriptions & Company Growth
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart
-                data={line}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <LineChart data={line}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="subscriptions"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-
+                <Line type="monotone" dataKey="subscriptions" stroke="#8884d8" />
                 <Line type="monotone" dataKey="companies" stroke="#82ca9d" />
               </LineChart>
             </ResponsiveContainer>
           </Paper>
         </Grid>
-        {/* Pie Chart for User Activity */}
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2 }}>
+
+        {/* Pie Chart */}
+        <Grid item xs={12} lg={4}>
+          <Paper sx={{ p: 2, boxShadow: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Activity
+              User Activity
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie
-                  data={pie}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
+                <Pie data={pie} dataKey="value" nameKey="name" outerRadius={80} label>
                   {pie.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -164,17 +118,15 @@ export const Dashboard = () => {
             </ResponsiveContainer>
           </Paper>
         </Grid>
-        {/* Bar Chart for Revenue by Plans */}
+
+        {/* Bar Chart */}
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: 2, boxShadow: 3 }}>
             <Typography variant="h6" gutterBottom>
               Revenue by Plans
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={bar}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <BarChart data={bar}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -185,27 +137,20 @@ export const Dashboard = () => {
             </ResponsiveContainer>
           </Paper>
         </Grid>
-        {/* Area Chart for Monthly Sales Trends */}
+
+        {/* Area Chart */}
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2 }}>
+          <Paper sx={{ p: 2, boxShadow: 3 }}>
             <Typography variant="h6" gutterBottom>
               Monthly Sales Trends
             </Typography>
             <ResponsiveContainer width="100%" height={300}>
-              <AreaChart
-                data={important}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
+              <AreaChart data={important}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                />
+                <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
           </Paper>

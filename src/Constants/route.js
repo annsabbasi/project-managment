@@ -22,6 +22,8 @@ export const RouteNames = {
 
     // SUPER ADMIN CONSTANTS
     ADMINLAYOUT: 'adminlayout',
+    ADMINDASHBOARD: 'admindashboard',
+    ADMINPLANS: 'adminplans',
     ADMINPAGE1: 'adminpage1',
     ADMINPAGE2: 'adminpage2',
     ADMINPAGE3: 'adminpage3',
