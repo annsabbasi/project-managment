@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { ROLES } from "../config/roles.js";
 
 const CompanySchema = new Schema({
-    companyName: {
+    name: {
         type: String,
         required: [true, 'Company name field is required'],
         unique: true,

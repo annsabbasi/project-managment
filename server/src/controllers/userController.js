@@ -7,6 +7,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ROLES } from "../config/roles.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Company } from "../models/companyModel.js";
 
 
 // Generate Access & Refresh Token of User
@@ -84,23 +85,33 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 // To Register a Person
 const registerUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
-    const existedUser = await User.findOne({ $or: [{ email }, { name }] });
-    if (existedUser) {
-        return res
-            .status(400)
-            .json({ error: "User with given credentials already exists" });
+    // Validate required fields
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({ error: "All fields are required" });
     }
-    const registerUser = await User.create({ name, email, password });
-    const createdUser = await User.findById(registerUser._id).select(
-        "-password -refreshToken"
-    );
+
+    const userModel = role === ROLES.ADMIN ? Company : User;
+
+    const existingUser = await userModel.findOne({ $or: [{ email }, { name }] });
+    if (existingUser) {
+        return res.status(400).json({ error: "User with given credentials already exists" });
+    }
+    const registeredUser = await userModel.create({
+        name,
+        email,
+        password,
+        role
+    });
+
+    const createdUser = await userModel.findById(registeredUser._id).select("-password -refreshToken");
 
     if (!createdUser) {
-        throw new Error("Something went wrong while registering the user");
+        return res.status(500).json({ error: "Something went wrong while registering the user" });
     }
-    return res.status(200).json({
+
+    return res.status(201).json({
         message: "User registered successfully",
         user: createdUser,
     });
