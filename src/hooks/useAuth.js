@@ -64,13 +64,18 @@ export const useLogin = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { role, user } = useAuth();
   return useMutation({
     mutationFn: logoutUser,
 
     onSuccess: () => {
       queryClient.clear();
       localStorage.removeItem("accessToken");
-      navigate('/login');
+      {
+        role !== "user" || user ?
+          navigate('/superadminlogin') :
+          navigate('/login');
+      }
     },
 
     onError: (error) => {

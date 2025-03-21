@@ -39,6 +39,7 @@ const Basic = lazy(() => import('../AdminWork/pages/planRequest/basic'));
 const Request = lazy(() => import('../AdminWork/pages/planRequest/request'));
 const Premium = lazy(() => import('../AdminWork/pages/planRequest/premium'));
 const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
+const SuperAdminLogin = lazy(() => import('../AdminWork/login/SuperAdminLogin'));
 
 
 
@@ -67,6 +68,7 @@ export const PublicRoute = [
     { path: RouteNames.LAYOUT, element: Layout },
     { path: RouteNames.LOGIN, element: LoginPage },
     { path: RouteNames.SIGNUP, element: SignUpPage },
+    { path: RouteNames.SUPERADMINLOGIN, element: SuperAdminLogin },
     // { path: '*', element: NotFound }
 ]
 

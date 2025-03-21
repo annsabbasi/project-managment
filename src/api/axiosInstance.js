@@ -34,7 +34,8 @@ axiosInstance.interceptors.response.use(
                 if (!refreshToken) throw new Error("No refresh token available");
 
                 // Request a new access token
-                const { data } = await axiosInstance.post("https://project-managment-sage.vercel.app",
+                const { data } = await axiosInstance.post(
+                    "https://project-managment-sage.vercel.app",
                     // "/user/refreshToken",
 
                     { refreshToken },
