@@ -1,4 +1,4 @@
-import Header from "../Components/Header"
+// import Header from "../Components/Header"
 import Spinner from "../Components/Spinner"
 
 import ProtectedRoute from "./ProtectedRoute"
@@ -8,9 +8,10 @@ import Layout from "../Layout"
 import AdminLayout from "../AdminWork"
 import { AdminRoute, PrivateRoute, PublicRoute } from "./RoutePath"
 
-import { Suspense } from "react"
-import { Route, Routes } from "react-router-dom"
-
+import { Suspense, useEffect } from "react"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthProvider"
+import { RouteNames } from "../Constants/route"
 
 
 const renderRoutes = (routes) => {
@@ -34,8 +35,8 @@ const renderRoutes = (routes) => {
                                     </AdminLayout>
                                 ) :
                                     (
-                                        <> 
-                                            <Header />
+                                        <>
+                                            {/* <Header /> */}
                                             <Element />
                                         </>
                                     )}
@@ -61,8 +62,22 @@ const renderRoutes = (routes) => {
 }
 
 
-
 export const AppRoutes = () => {
+    const navigate = useNavigate();
+    const { user, accessToken } = useAuth();
+
+    useEffect(() => {
+        const currentPath = window.location.pathname;
+        if ((user && accessToken) && (currentPath === `/${RouteNames.LOGIN}` || currentPath === `/${RouteNames.SUPERADMINLOGIN}`)) {
+            {
+                user.role === 'superadmin' ?
+                    navigate(`/${RouteNames.ADMINDASHBOARD}`)
+                    :
+                    navigate(`/${RouteNames.DASHBOARD}`);
+            }
+        }
+    }, [user, accessToken, navigate]);
+
     return (
         <Routes>
             <Route path="/" element={<RedirectRoute />} />
@@ -72,12 +87,10 @@ export const AppRoutes = () => {
                 {renderRoutes(AdminRoute, AdminLayout)}
             </Route>
 
-
             {/* Admin and user routes with Layout */}
             <Route element={<ProtectedRoute allowedRoles={['admin', 'user']} layout={Layout} />}>
                 {renderRoutes(PrivateRoute, Layout)}
             </Route>
-
 
             {/* Public routes */}
             {renderRoutes(PublicRoute)}

@@ -31,6 +31,7 @@ export const RouteNames = {
     BASIC: 'basic',
     PREMIUM: 'premium',
     STANDARD: 'standard',
+    SUPERADMINLOGIN: 'superadminlogin',
     REQUEST: 'request',
     PLANREQUEST: 'planRequest',
 

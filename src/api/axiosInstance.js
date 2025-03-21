@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    // baseURL: "https://project-managment-sage.vercel.app",
-    baseURL: "http://localhost:6007",
+    baseURL: "https://project-managment-sage.vercel.app",
+    // baseURL: "http://localhost:6007",
     withCredentials: true,
 });
 
@@ -35,8 +35,8 @@ axiosInstance.interceptors.response.use(
 
                 // Request a new access token
                 const { data } = await axiosInstance.post(
-                    // "https://project-managment-sage.vercel.app",
-                    "/user/refreshToken",
+                    "https://project-managment-sage.vercel.app",
+                    // "/user/refreshToken",
 
                     { refreshToken },
                     { withCredentials: true }

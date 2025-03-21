@@ -9,18 +9,20 @@ export default function ProtectedRoute({ allowedRoles }) {
 
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");  // Normal users
-        const accessTokenC = localStorage.getItem("accessTokenC"); // Admin users
+        // const accessTokenC = localStorage.getItem("accessTokenC"); // Admin users
         const userRole = localStorage.getItem("role");
 
         // Ensure allowedRoles is always an array
         const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
         // Determine which token to validate (admin gets priority)
-        const validToken = accessTokenC || accessToken;
+        // const validToken = accessTokenC || accessToken;
+        const validToken = accessToken;
 
         if (validToken && userRole && rolesArray.includes(userRole)) {
             setIsAuthenticated(true);
-        } else {
+        }
+        else {
             setIsAuthenticated(false);
             navigate(`/${RouteNames.LOGIN}`, { replace: true });
         }
