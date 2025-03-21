@@ -11,7 +11,7 @@ import errorHandler from './middleware/errorHandler.js';
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CORS_ORIGIN.split(","),
     credentials: true,
 }));
 app.use(express.json());
@@ -30,11 +30,9 @@ app.use((req, res, next) => {
 
 // Routing of the App Starts Here...
 import userRoute from './routes/userRoute.js';
-import companyRoute from './routes/companyRoute.js';
 import superAdminRoute from './routes/superAdminRoutes.js';
 
 app.use('/user', userRoute);
-app.use('/company', companyRoute);
 app.use('/admin', superAdminRoute);
 app.get("/", (req,res) => {
     res.status(200).send("Working successfull!")

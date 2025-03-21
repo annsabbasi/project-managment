@@ -5,8 +5,6 @@ import {
   logoutUser,
   promoteUser,
   signUpUser,
-  signUpCompany,
-  loginCompany
 } from '../api/authApi';
 import { useAuth } from '../context/AuthProvider';
 
@@ -22,22 +20,6 @@ export const useSignup = () => {
     },
     onError: (error) => {
       console.error('(useSignup) Signup failed:', error.response?.data || error.message);
-    },
-  });
-};
-
-export const useSignupCompany = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: signUpCompany,
-    onSuccess: (data) => {
-      queryClient.setQueryData(['accessTokenC'], data.user);
-      localStorage.setItem('accessTokenC', data.token);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-    },
-    onError: (error) => {
-      console.error('Signup failed:', error.response?.data || error.message);
     },
   });
 };
@@ -78,37 +60,6 @@ export const useLogin = () => {
   });
 };
 
-export const useLoginCompany = () => {
-  const queryClient = useQueryClient();
-  const { setAccessToken, setRole } = useAuth();
-  const navigate = useNavigate();
-
-  return useMutation({
-    mutationFn: loginCompany,
-    onSuccess: (data) => {
-      const token = data?.data?.accessToken;
-      const refreshToken = data?.data?.refreshToken;
-      const role = 'admin'; // Default role for company
-
-      if (token && refreshToken) {
-        localStorage.setItem('accessTokenC', token);
-        localStorage.setItem('refreshTokenC', refreshToken);
-        localStorage.setItem('role', role);
-
-        setAccessToken(token);
-        setRole(role);
-        queryClient.invalidateQueries(['authData', role]);
-
-        navigate('/company-dashboard');
-      } else {
-        console.error('Missing token or refreshToken in response');
-      }
-    },
-    onError: (error) => {
-      console.error('(useLoginCompany) Login failed:', error.response?.data || error.message);
-    },
-  });
-};
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
