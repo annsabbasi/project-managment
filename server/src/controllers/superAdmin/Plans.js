@@ -19,11 +19,11 @@ const createPlan = asyncHandler(async (req, res) => {
         !title ||
         !description ||
         !price ||
-        !paymentGatewayPlanId ||
+        // !paymentGatewayPlanId ||
         !interval ||
         !maxUsers
     ) {
-        throw new apiError(400, "All fields are required.");
+        throw new apiError(400, "All fields are requiredd.");
     }
 
     const plan = await Plan.create({
