@@ -30,9 +30,11 @@ app.use((req, res, next) => {
 
 // Routing of the App Starts Here...
 import userRoute from './routes/userRoute.js';
+import superAdminRoute from './routes/superAdminRoutes.js';
 
 app.use('/user', userRoute);
-app.get("/", (req, res) => {
+app.use('/admin', superAdminRoute);
+app.get("/", (req,res) => {
     res.status(200).send("Working successfull!")
 })
 

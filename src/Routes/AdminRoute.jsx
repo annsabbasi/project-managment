@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 const AdminRoute = ({ children }) => {
     const userRole = localStorage.getItem("role");
 
-    //   if (userRole === 'admin' || userRole === 'superadmin') {
-    if (userRole === 'superadmin') {
+    if (userRole === 'admin' || userRole === 'superadmin') {
         return children;
     }
 

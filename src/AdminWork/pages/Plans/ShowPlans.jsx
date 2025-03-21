@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Container,
   Box,
@@ -18,10 +18,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
 } from "@mui/material";
+import {
+  Add,
+  Edit,
+  Payment,
+  AccessTime,
+  People,
+} from "@mui/icons-material";
 import { useFetchPlans, useAddPlan, useUpdatePlan } from "../AdminApis/PlanApi";
 
 export const ShowPlans = () => {
@@ -34,7 +38,6 @@ export const ShowPlans = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentPlan, setCurrentPlan] = useState({
-    id: "",
     title: "",
     description: "",
     price: "",
@@ -97,20 +100,15 @@ export const ShowPlans = () => {
   };
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{ mt: 4, borderRadius: 1, border: 1, borderColor: "divider", p: 2 }}
-    >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-      >
-        <Typography variant="h5"></Typography>
+    <Container maxWidth="xl" sx={{ mt: 4 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h4" color="primary">
+          Plans Management
+        </Typography>
         <Button
           variant="contained"
           color="primary"
+          startIcon={<Add />}
           onClick={handleAddPlanClick}
         >
           Add Plan
@@ -118,21 +116,23 @@ export const ShowPlans = () => {
       </Box>
 
       {isLoading ? (
-        <Typography>Loading plans...</Typography>
+        <Typography textAlign="center">Loading plans...</Typography>
       ) : isError ? (
-        <Typography color="error">Failed to load plans.</Typography>
+        <Typography textAlign="center" color="error">
+          Failed to load plans.
+        </Typography>
       ) : (
         <>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Interval</TableCell>
-                  <TableCell>Max Users</TableCell>
-                  <TableCell>Popular</TableCell>
-                  <TableCell>Actions</TableCell> {/* Added Actions column */}
+                <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+                  <TableCell><b>Title</b></TableCell>
+                  <TableCell><b>Price</b></TableCell>
+                  <TableCell><b>Interval</b></TableCell>
+                  <TableCell><b>Max Users</b></TableCell>
+                  <TableCell><b>Popular</b></TableCell>
+                  <TableCell><b>Actions</b></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -140,17 +140,35 @@ export const ShowPlans = () => {
                   plans
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((plan) => (
-                      <TableRow key={plan.id}>
-                        <TableCell>{plan.title}</TableCell>
+                      <TableRow key={plan.id} hover>
+                        <TableCell>
+                          <Box display="flex" alignItems="center">
+                            <Payment sx={{ color: "primary.main", mr: 1 }} />
+                            {plan.title}
+                          </Box>
+                        </TableCell>
                         <TableCell>${plan.price}</TableCell>
-                        <TableCell>{plan.interval}</TableCell>
-                        <TableCell>{plan.maxUsers}</TableCell>
-                        <TableCell>{plan.mostPopular ? "Yes" : "No"}</TableCell>
+                        <TableCell>
+                          <Box display="flex" alignItems="center">
+                            <AccessTime sx={{ color: "primary.main", mr: 1 }} />
+                            {plan.interval}
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box display="flex" alignItems="center">
+                            <People sx={{ color: "primary.main", mr: 1 }} />
+                            {plan.maxUsers}
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          {plan.mostPopular ? "Yes" : "No"}
+                        </TableCell>
                         <TableCell>
                           <Button
                             variant="outlined"
                             color="primary"
-                            onClick={() => handleEditPlanClick(plan)} // Edit button
+                            startIcon={<Edit />}
+                            onClick={() => handleEditPlanClick(plan)}
                           >
                             Edit
                           </Button>
@@ -162,7 +180,7 @@ export const ShowPlans = () => {
           </TableContainer>
 
           <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100]}
+            rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={Array.isArray(plans) ? plans.length : 0}
             rowsPerPage={rowsPerPage}
@@ -173,7 +191,6 @@ export const ShowPlans = () => {
         </>
       )}
 
-      {/* Add/Edit Plan Modal */}
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -189,20 +206,15 @@ export const ShowPlans = () => {
           }}
         >
           <Typography variant="h6" mb={2}>
-            {editMode ? "Edit Plan" : "Add Plan"}{" "}
-            {/* Title changes based on editMode */}
+            {editMode ? "Edit Plan" : "Add Plan"}
           </Typography>
-
           <TextField
             fullWidth
             label="Title"
             margin="dense"
             value={currentPlan.title}
-            onChange={(e) =>
-              setCurrentPlan({ ...currentPlan, title: e.target.value })
-            }
+            onChange={(e) => setCurrentPlan({ ...currentPlan, title: e.target.value })}
           />
-
           <TextField
             fullWidth
             label="Description"
@@ -210,10 +222,7 @@ export const ShowPlans = () => {
             value={currentPlan.description}
             multiline
             minRows={3}
-            maxRows={10}
-            onChange={(e) =>
-              setCurrentPlan({ ...currentPlan, description: e.target.value })
-            }
+            onChange={(e) => setCurrentPlan({ ...currentPlan, description: e.target.value })}
           />
           <TextField
             fullWidth
@@ -221,83 +230,38 @@ export const ShowPlans = () => {
             type="number"
             margin="dense"
             value={currentPlan.price}
-            onChange={(e) =>
-              setCurrentPlan({ ...currentPlan, price: e.target.value })
-            }
+            onChange={(e) => setCurrentPlan({ ...currentPlan, price: e.target.value })}
           />
-
           <FormControl fullWidth margin="dense">
             <InputLabel>Interval</InputLabel>
             <Select
               value={currentPlan.interval}
-              onChange={(e) =>
-                setCurrentPlan({ ...currentPlan, interval: e.target.value })
-              }
+              onChange={(e) => setCurrentPlan({ ...currentPlan, interval: e.target.value })}
             >
               <MenuItem value="month">Monthly</MenuItem>
               <MenuItem value="year">Yearly</MenuItem>
             </Select>
           </FormControl>
-
           <TextField
             fullWidth
-            label="Max Companies"
+            label="Max Users"
             type="number"
             margin="dense"
             value={currentPlan.maxUsers}
-            onChange={(e) =>
-              setCurrentPlan({ ...currentPlan, maxUsers: e.target.value })
-            }
+            onChange={(e) => setCurrentPlan({ ...currentPlan, maxUsers: e.target.value })}
           />
-          <TextField
-            fullWidth
-            label="Payment Gateway Plan ID"
-            margin="dense"
-            value={currentPlan.paymentGatewayPlanId}
-            onChange={(e) =>
-              setCurrentPlan({
-                ...currentPlan,
-                paymentGatewayPlanId: e.target.value,
-              })
-            }
-          />
-
-          <FormControl component="fieldset" sx={{ mt: 2 }}>
-            <Typography>Most Popular</Typography>
-            <RadioGroup
-              row
-              name="mostPopular"
-              value={currentPlan.mostPopular.toString()}
-              onChange={(e) =>
-                setCurrentPlan({
-                  ...currentPlan,
-                  mostPopular: e.target.value === "true",
-                })
-              }
-            >
-              <FormControlLabel value="true" control={<Radio />} label="Yes" />
-              <FormControlLabel value="false" control={<Radio />} label="No" />
-            </RadioGroup>
-          </FormControl>
-
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+          <Box display="flex" justifyContent="space-between" mt={3}>
             <Button
               variant="contained"
               color="primary"
               onClick={handleSavePlan}
-              disabled={
-                addPlanMutation.isLoading || updatePlanMutation.isLoading
-              }
+              disabled={addPlanMutation.isLoading || updatePlanMutation.isLoading}
             >
               {addPlanMutation.isLoading || updatePlanMutation.isLoading
                 ? "Saving..."
                 : "Save"}
             </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleCloseModal}
-            >
+            <Button variant="outlined" color="secondary" onClick={handleCloseModal}>
               Cancel
             </Button>
           </Box>

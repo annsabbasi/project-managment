@@ -29,6 +29,8 @@ const AdminProfile = lazy(() => import("../Pages/AdminProfilePage/AdminProfile")
 
 // Super Admin Route Part
 const AdminLayout = lazy(() => import('../AdminWork'));
+const AdminDashboard = lazy(() => import('../AdminWork/pages/Dashboard/Dashboard'));
+const AdminPlans = lazy(() => import('../AdminWork/pages/Plans/ShowPlans'))
 const AdminPage1 = lazy(() => import('../AdminWork/pages/Page1'));
 const AdminPage2 = lazy(() => import('../AdminWork/pages/Page2'));
 const AdminPage3 = lazy(() => import('../AdminWork/pages/Page3'));
@@ -43,6 +45,8 @@ const Standard = lazy(() => import('../AdminWork/pages/planRequest/standard'));
 // ------------ Admin Routes which are Protected ------------
 export const AdminRoute = [
     { path: RouteNames.ADMINLAYOUT, element: AdminLayout, adminLayout: true, title: 'Admin Layout' },
+    { path: RouteNames.ADMINDASHBOARD, element: AdminDashboard, adminLayout: true, title: 'Dashboard' },
+    { path: RouteNames.ADMINPLANS, element: AdminPlans, adminLayout: true, title: 'Plans' },
     { path: RouteNames.ADMINPAGE1, element: AdminPage1, adminLayout: true, title: 'AdminPage1' },
     { path: RouteNames.ADMINPAGE2, element: AdminPage2, adminLayout: true, title: 'AdminPage2' },
     { path: RouteNames.ADMINPAGE3, element: AdminPage3, adminLayout: true, title: 'AdminPage3' },
