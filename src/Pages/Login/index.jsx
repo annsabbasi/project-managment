@@ -22,7 +22,7 @@ const LoginPage = () => {
     const [formData, setFormData] = useState({ email: '', password: '', role: 'user' });
     const [error, setError] = useState("")
     const navigate = useNavigate();
-
+    console.log("This is the formData of the login", formData)
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }

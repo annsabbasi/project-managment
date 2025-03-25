@@ -120,29 +120,44 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // To Login a Person
 const loginUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
-    if ((!name || !email) && !password) {
-        throw new apiError(404, "All fields are required");
+    const { name, email, password, role } = req.body;
+
+    // Validate required fields
+    if ((!name && !email) || !password || !role) {
+        throw new apiError(400, "All fields are required");
     }
-    const user = await User.findOne({ $or: [{ name }, { email }] });
+
+    // Select the correct model based on the role
+    const userModel = role === ROLES.ADMIN ? Company : User;
+
+    // Find user by either name or email, ensuring role-based model selection
+    const user = await userModel.findOne({ $or: [{ name }, { email }] });
+
     if (!user) {
         throw new apiError(404, "User not found");
     }
+
+    // Check if the password is correct
     const isPasswordCorrect = await user.isPasswordCorrect(password);
     if (!isPasswordCorrect) {
-        throw new apiError("Password is incorrect");
+        throw new apiError(401, "Password is incorrect");
     }
 
-    const { accessToken, refreshToken } =
-        await generateAccessTokenAndRefreshToken(user._id);
-    const loggedInUser = await User.findById(user._id).select("-password");
+    // Generate access and refresh tokens
+    const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
 
+    // Get the user details without password and refreshToken
+    const loggedInUser = await userModel.findById(user._id).select("-password -refreshToken");
+
+    // Cookie options
     const options = {
         httpOnly: true,
-        secure: "true",
+        secure: true,
         sameSite: "None",
         maxAge: 12 * 24 * 60 * 60 * 1000,
     };
+
+    // Send response with cookies
     return res
         .status(200)
         .cookie("accessToken", accessToken, options)
@@ -159,6 +174,7 @@ const loginUser = asyncHandler(async (req, res) => {
             )
         );
 });
+
 
 
 // To Logout a Person
