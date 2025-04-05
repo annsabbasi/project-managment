@@ -88,9 +88,9 @@ const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, role } = req.body;
 
     // Validate required fields
-    if (!name || !email || !password || !role) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
+    // if (!name || !email || !password || !role) {
+    //     return res.status(400).json({ error: "All fields are required" });
+    // }
 
     const userModel = role === ROLES.ADMIN ? Company : User;
 

@@ -1,3 +1,4 @@
+import style from './style.module.scss';
 import { useState } from "react";
 import {
   Container,
@@ -19,16 +20,15 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import {
-  Add,
-  Edit,
-  Payment,
-  AccessTime,
-  People,
-} from "@mui/icons-material";
+import { Add, Edit } from "@mui/icons-material";
 import { useFetchPlans, useAddPlan, useUpdatePlan } from "../AdminApis/PlanApi";
+import { useAuth } from '../../../context/AuthProvider';
 
 export const ShowPlans = () => {
+  const { theme, mode } = useAuth();
+  const tableClassText = mode === 'light' ? style.lightTableText : style.darkTableText;
+  const tableGap = mode === 'light' ? style.tableBodyLight : style.tableBodyDark;
+
   const { data: plans = [], isLoading, isError } = useFetchPlans();
   const addPlanMutation = useAddPlan();
   const updatePlanMutation = useUpdatePlan();
@@ -88,9 +88,9 @@ export const ShowPlans = () => {
   const handleSavePlan = async () => {
     try {
       if (editMode) {
-        await updatePlanMutation.mutateAsync(currentPlan); // Update the plan
+        await updatePlanMutation.mutateAsync(currentPlan);
       } else {
-        await addPlanMutation.mutateAsync(currentPlan); // Add a new plan
+        await addPlanMutation.mutateAsync(currentPlan);
       }
       handleCloseModal();
     } catch (error) {
@@ -105,7 +105,7 @@ export const ShowPlans = () => {
           Plans Management
         </Typography>
         <Button
-          variant="contained"
+          variant="outlined"
           color="primary"
           startIcon={<Add />}
           onClick={handleAddPlanClick}
@@ -122,20 +122,30 @@ export const ShowPlans = () => {
         </Typography>
       ) : (
         <>
-          <TableContainer component={Paper} sx={{ boxShadow: 4, borderRadius: 3, overflow: "hidden" }}>
-          <Table sx={{ "& tbody tr:nth-of-type(odd)": { backgroundColor: "#f9f9f9" }, "& tbody tr:hover": { backgroundColor: "#e0e0e0" } }}>
+          <TableContainer component={Paper} sx={{
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: '0.6rem',
+            overflow: "hidden",
+            boxShadow: 4
+          }}>
+            <Table
+              sx={{
+                color: theme.palette.text.primary,
+                backgroundColor: theme.palette.background.paper
+              }}
+            >
               <TableHead>
-                <TableRow sx={{ backgroundColor: "#1976d2" }}>
+                <TableRow className={style.tableRowHead}>
                   {["Title", "Price", "Interval", "Max Users", "Popular", "Actions"].map((head) => (
-                    <TableCell key={head} sx={{ color: "white", fontWeight: "bold" }}>
+                    <TableCell key={head} className={tableClassText}>
                       {head}
                     </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody className={tableGap}>
                 {plans.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((plan) => (
-                  <TableRow key={plan.id} hover sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
+                  <TableRow key={plan.id} className={style.tableRowBody}>
                     <TableCell>{plan.title}</TableCell>
                     <TableCell>${plan.price}</TableCell>
                     <TableCell>{plan.interval}</TableCell>
@@ -157,7 +167,6 @@ export const ShowPlans = () => {
             </Table>
           </TableContainer>
 
-
           <TablePagination
             rowsPerPageOptions={[10, 25, 50]}
             component="div"
@@ -178,7 +187,8 @@ export const ShowPlans = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: 500,
-            bgcolor: "background.paper",
+            bgcolor: theme.palette.background.paper,
+            color: theme.palette.text.primary,
             boxShadow: 24,
             p: 4,
             borderRadius: 3,
@@ -234,12 +244,7 @@ export const ShowPlans = () => {
             />
           </Box>
           <Box display="flex" justifyContent="space-between" mt={3}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSavePlan}
-              sx={{ px: 3 }}
-            >
+            <Button variant="contained" color="primary" onClick={handleSavePlan} sx={{ px: 3 }}>
               {editMode ? "Update" : "Save"}
             </Button>
             <Button variant="outlined" color="secondary" onClick={handleCloseModal}>
@@ -248,7 +253,6 @@ export const ShowPlans = () => {
           </Box>
         </Box>
       </Modal>
-
     </Container>
   );
 };
