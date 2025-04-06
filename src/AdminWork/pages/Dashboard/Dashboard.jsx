@@ -19,14 +19,19 @@ import {
   Area,
 } from "recharts";
 
-const COLORS = ["#0088FE", "#FF8042"];
 import { useFetchUsers } from "../AdminApis/UsersApi";
+import { useAuth } from "../../../context/AuthProvider";
+// import { useAuth } from "../../context/AuthProvider"; // 👈 Theme hook added
+
+const COLORS = ["#0088FE", "#FF8042"];
 
 export const Dashboard = () => {
   const { data: usersResponse } = useFetchUsers();
+  const { data, isLoading, error } = useDashboardApi();
+  const { theme, mode } = useAuth(); // 👈 Get theme/mode
+
   const users = usersResponse?.data || [];
   const UsersNumbersCount = users.filter((user) => user.role === "admin").length;
-  const { data, isLoading, error } = useDashboardApi();
 
   if (isLoading) {
     return (
@@ -56,27 +61,90 @@ export const Dashboard = () => {
     currentMonthRevenue,
   } = data;
 
+  const paperBaseStyle = {
+    p: 2,
+    boxShadow: 3,
+    backgroundColor: mode === "light" ? theme.palette.background.paper : theme.palette.background.default,
+    color: mode === "light" ? theme.palette.text.primary : theme.palette.text.primary,
+  };
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4" color="primary">
+        <Typography variant="h4" color="primary" style={{
+          color:
+            mode === "light"
+              ? theme.palette.primary.main
+              : theme.palette.secondary.main,
+        }}>
           Dashboard
         </Typography>
       </Box>
       <Grid container spacing={4}>
-        {/* Revenue Summary */}
         {[
-          { icon: <AttachMoney />, title: "Total Revenue", value: `$${totalRevenue}`, boxcolor: '#4F98C3' },
-          { icon: <TrendingUp />, title: "This Month Revenue", value: `$${currentMonthRevenue}`, boxcolor: '#228b22' },
-          { icon: <Business />, title: "Total Companies", value: UsersNumbersCount, boxcolor: '#b8860b' },
-          { icon: <People />, title: "Total Users", value: totalUsers, boxcolor: '#708090' },
+          { icon: <AttachMoney />, title: "Total Revenue", value: `$${totalRevenue}` },
+          { icon: <TrendingUp />, title: "Monthly Revenue", value: `$${currentMonthRevenue}` },
+          { icon: <Business />, title: "Total Companies", value: UsersNumbersCount },
+          { icon: <People />, title: "Total Users", value: totalUsers },
         ].map((item, index) => (
           <Grid item xs={12} sm={6} lg={3} key={index}>
-            <Paper sx={{ p: 2, display: "flex", alignItems: "center", boxShadow: 3,  backgroundColor: item.boxcolor }}>
-              <Box sx={{ mr: 2, color: "#00000026" }}>{item.icon}</Box>
+            <Paper
+              sx={{
+                p: 3,
+                display: "flex",
+                alignItems: "center",
+                borderRadius: 3,
+                backgroundColor:
+                  mode === "light"
+                    ? "rgba(255, 255, 255, 0.7)"
+                    : "rgba(255, 255, 255, 0.05)",
+                border: `1px solid ${mode === "light" ? "#e0e0e0" : "rgba(255,255,255,0.1)"
+                  }`,
+                boxShadow:
+                  mode === "light"
+                    ? "0 4px 20px rgba(0,0,0,0.05)"
+                    : "0 4px 20px rgba(255,255,255,0.06)",
+                backdropFilter: "blur(6px)",
+              }}
+            >
+              <Box
+                sx={{
+                  mr: 2,
+                  fontSize: 32,
+                  color:
+                    mode === "light"
+                      ? theme.palette.primary.main
+                      : theme.palette.secondary.main,
+                }}
+              >
+                {item.icon}
+              </Box>
               <Box>
-                <Typography variant="subtitle1" color="white">{item.title}</Typography>
-                <Typography variant="h5" color="white">
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontWeight: 500,
+                    color:
+                      mode === "light"
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.secondary,
+                    textTransform: "uppercase",
+                    fontSize: "0.85rem",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  {item.title}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: 600,
+                    color:
+                      mode === "light"
+                        ? theme.palette.text.primary
+                        : theme.palette.text.primary,
+                  }}
+                >
                   {item.value}
                 </Typography>
               </Box>
@@ -84,9 +152,11 @@ export const Dashboard = () => {
           </Grid>
         ))}
 
+
+
         {/* Line Chart */}
         <Grid item xs={12} lg={8}>
-          <Paper sx={{ p: 2, boxShadow: 3 }}>
+          <Paper sx={paperBaseStyle}>
             <Typography variant="h6" gutterBottom>
               Monthly Subscriptions & Company Growth
             </Typography>
@@ -106,7 +176,7 @@ export const Dashboard = () => {
 
         {/* Pie Chart */}
         <Grid item xs={12} lg={4}>
-          <Paper sx={{ p: 2, boxShadow: 3 }}>
+          <Paper sx={paperBaseStyle}>
             <Typography variant="h6" gutterBottom>
               User Activity
             </Typography>
@@ -126,7 +196,7 @@ export const Dashboard = () => {
 
         {/* Bar Chart */}
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, boxShadow: 3 }}>
+          <Paper sx={paperBaseStyle}>
             <Typography variant="h6" gutterBottom>
               Revenue by Plans
             </Typography>
@@ -145,7 +215,7 @@ export const Dashboard = () => {
 
         {/* Area Chart */}
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, boxShadow: 3 }}>
+          <Paper sx={paperBaseStyle}>
             <Typography variant="h6" gutterBottom>
               Monthly Sales Trends
             </Typography>
@@ -161,7 +231,7 @@ export const Dashboard = () => {
           </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </Container >
   );
 };
 

@@ -72,7 +72,7 @@ export const useLogout = () => {
       queryClient.clear();
       localStorage.removeItem("accessToken");
       {
-        role !== "user" || user ?
+        role !== "user" && user ?
           navigate('/superadminlogin') :
           navigate('/login');
       }

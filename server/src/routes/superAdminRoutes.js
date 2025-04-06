@@ -26,7 +26,7 @@ import {
 } from "../controllers/superAdmin/Settings.js";
 
 import { getDashboardData } from "../controllers/superAdmin/Dashboard.js";
-import { updateUser } from "../controllers/superAdmin/Users.js";
+import { updateUser } from "../controllers/superAdmin/Auth.js";
 import { verifyUser } from "../middleware/authMiddleware.js";
 import { getAllData } from "../controllers/userController.js";
 
