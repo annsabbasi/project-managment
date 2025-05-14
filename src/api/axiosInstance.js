@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    // baseURL: "https://project-managment-sage.vercel.app",
-    baseURL: "http://localhost:6007",
+    baseURL: "https://project-managment-sage.vercel.app",
+    // baseURL: "http://localhost:6007",
     withCredentials: true,
 });
 
