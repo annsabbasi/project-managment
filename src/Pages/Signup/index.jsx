@@ -1,28 +1,26 @@
-import styles from './style.module.scss'
+import styles from './style.module.scss';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import { useSignup } from '../../hooks/useAuth';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../Constants/route';
-
+import { toast } from 'react-toastify';
 import {
     Box, Button,
-    Grid, Stack,
-    Container, Avatar,
     TextField, Typography,
-    FormControl,
-    FormLabel,
+    Container, CssBaseline,
+    Avatar, Stack,
     RadioGroup,
     FormControlLabel,
     Radio,
+    Fade,
+    Paper
 } from '@mui/material';
 
-
-const Index = () => {
+const SignUpPage = () => {
     const { mutate: signup } = useSignup();
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -32,125 +30,176 @@ const Index = () => {
         role: 'user'
     });
 
-
-    const handleData = (value) => {
-        setFormData({ ...formData, [value.target.name]: value.target.value });
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     }
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
         signup(formData, {
             onSuccess: () => {
+                setIsSubmitting(false);
                 setRedirect(true);
-                toast.success("User Registered Successfully.")
+                toast.success("Registration successful!", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: false,
+                    theme: "dark",
+                });
             },
-
-            onError: (err) => {
-                setError(err.response?.data?.error || err.response?.data?.errors)
+            onError: (error) => {
+                setIsSubmitting(false);
+                setError(error?.response?.data?.message || error.response?.data?.errors);
                 setTimeout(() => {
                     setError("");
-                }, 3000);
+                }, 5000);
             }
-
         });
     }
 
     if (redirect) {
-        return <Navigate to={'/login'} />
+        return <Navigate to={`/${RouteNames.LOGIN}`} />;
     }
 
-
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate className={`${styles.containerMain}`}>
-            <Container component="main" sx={{ maxWidth: '600px !important' }}>
-                <Box className={`${styles.itemContent}`} >
+        <Box className={styles.container}>
+            <Container component="main" maxWidth="sm">
+                <CssBaseline />
+                <Fade in={true} timeout={800}>
+                    <Paper elevation={10} className={styles.paper}>
+                        <Box className={styles.boxItem}>
+                            <Avatar className={styles.avatar}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                            <Typography variant="h5" className={styles.title}>
+                                Create an Account
+                            </Typography>
+                            <Typography variant="body2" className={styles.subtitle}>
+                                Please fill in your details
+                            </Typography>
 
-                    <Avatar className={`${styles.avatar}`}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h6" className={`${styles.signupText}`}>SignUp</Typography>
+                            <RadioGroup
+                                aria-label="role"
+                                name="role"
+                                value={formData.role}
+                                onChange={handleChange}
+                                row
+                                className={styles.radioGroup}
+                            >
+                                <FormControlLabel
+                                    value="user"
+                                    control={<Radio color="primary" />}
+                                    label="User"
+                                    className={styles.radioLabel}
+                                />
+                                <FormControlLabel
+                                    value="admin"
+                                    control={<Radio color="primary" />}
+                                    label="Company"
+                                    className={styles.radioLabel}
+                                />
+                            </RadioGroup>
 
-                    <Box className={`${styles.contentMain}`}>
-                        <Box className={`${styles.contentMainChild}`}>
-                            <FormControl component="fieldset" className={`${styles.roleSelection}`}>
-                                <FormLabel component="legend">Register as</FormLabel>
-                                <RadioGroup
-                                    row
-                                    name="role"
-                                    value={formData.role}
-                                    onChange={handleData}
-                                >
-                                    <FormControlLabel value="user" control={<Radio />} label="User" />
-                                    <FormControlLabel value="admin" control={<Radio />} label="Company" />
-                                </RadioGroup>
-                            </FormControl>
-
-                            <Stack flexWrap="wrap" gap="1rem" flexDirection="row" flex={1} className={`${styles.contentMainStack}`}>
+                            <Box component="form" onSubmit={handleSubmit} className={styles.form}>
                                 <TextField
                                     margin="normal"
-                                    size="small"
-                                    label="example name"
+                                    size="medium"
+                                    label="Full Name"
                                     name="name"
-                                    value={formData.name}
                                     autoFocus
-                                    variant="standard"
-                                    onChange={handleData} className={`${styles.textInput}`} />
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={formData.name}
+                                    className={styles.textField}
+                                    InputLabelProps={{
+                                        className: styles.inputLabel
+                                    }}
+                                />
 
                                 <TextField
                                     margin="normal"
-                                    size="small"
-                                    label="example@gmail.com"
+                                    size="medium"
+                                    label="Email Address"
                                     name="email"
-                                    variant="standard"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    fullWidth
                                     value={formData.email}
-                                    onChange={handleData}
-                                    className={`${styles.textInput}`} />
-                            </Stack>
+                                    className={styles.textField}
+                                    InputLabelProps={{
+                                        className: styles.inputLabel
+                                    }}
+                                />
 
+                                <TextField
+                                    margin="normal"
+                                    size="medium"
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={formData.password}
+                                    className={styles.textField}
+                                    InputLabelProps={{
+                                        className: styles.inputLabel
+                                    }}
+                                />
 
-                            <TextField
-                                margin="dense"
-                                size="small"
-                                label="Password"
-                                name="password"
-                                variant="standard"
-                                fullWidth
-                                type="password"
-                                value={formData.password}
-                                onChange={handleData}
-                                className={`${styles.textInputPassword}`} />
+                                <TextField
+                                    margin="normal"
+                                    size="medium"
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    type="password"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    fullWidth
+                                    value={formData.confirmPassword}
+                                    className={styles.textField}
+                                    InputLabelProps={{
+                                        className: styles.inputLabel
+                                    }}
+                                />
 
-                            <TextField
-                                margin="dense"
-                                size="small"
-                                label="confirm password"
-                                name="confirmPassword"
-                                variant="standard"
-                                fullWidth
-                                type="password"
-                                value={formData.confirmPassword}
-                                onChange={handleData}
-                                className={`${styles.textInputPassword}`} />
+                                {error && (
+                                    <Typography className={styles.errMessageTxt}>
+                                        {error}
+                                    </Typography>
+                                )}
+
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    className={styles.loginBtn}
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Registering...' : 'Sign Up'}
+                                </Button>
+
+                                <Stack justifyContent="space-between" gap={0.5} className={styles.footer}>
+                                    <Typography variant="body2" className={styles.linkText}>
+                                        {"Already have an account?"}&nbsp;
+                                        <Link to={`/${RouteNames.LOGIN}`} className={styles.link}>
+                                            Login here
+                                        </Link>
+                                    </Typography>
+                                </Stack>
+                            </Box>
                         </Box>
-
-
-                        <Typography className={`${styles.errMessageTxt}`}>{error} &nbsp;</Typography>
-                        <Button type="submit" fullWidth variant="contained" className={`${styles.btnSignup}`}>Sign Up</Button>
-
-                        <Stack justifyContent="space-between" gap={0.5}>
-                            <Grid item>
-                                <Typography variant="text" size="small" className={`${styles.textFooter}`}>
-                                    {"Already have an account?"}&nbsp;
-                                    <Link to={`/${RouteNames.LOGIN}`} className={`${styles.textLogin}`}>&nbsp;Login</Link>
-                                </Typography>
-                            </Grid>
-                        </Stack>
-
-                    </Box>
-                </Box>
-
+                    </Paper>
+                </Fade>
             </Container>
         </Box>
     );
 };
 
-export default Index;
+export default SignUpPage;

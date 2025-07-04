@@ -34,7 +34,7 @@ import superAdminRoute from './routes/superAdminRoutes.js';
 
 app.use('/user', userRoute);
 app.use('/admin', superAdminRoute);
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
     res.status(200).send("Working successfull!")
 })
 

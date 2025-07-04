@@ -1,0 +1,17 @@
+# CORS_ORIGIN = *
+CORS_ORIGIN = http://localhost:5173
+MONGO_URI = mongodb+srv://test1234:test1234@cluster0.usfha.mongodb.net/TestWork?retryWrites=true&w=majority&appName=Cluster0
+
+JWT_SECRET = asdsfdxdxrsddsdsdzxzsdadsxcxfdfd
+ACCESS_TOKEN_JWT_EXPIRY = 50m
+
+REFRESH_TOKEN_SECRET = sdacxdtdcxdsrsrcxrsdcxsrsx
+REFRESH_TOKEN_EXPIRY = 15d
+ 
+STRIPE_SECRET_KEY = Put Stripe key Here!
+
+CLOUDINARY_CLOUD_NAME=dbzbetuin
+CLOUDINARY_API_KEY=538927219531349
+CLOUDINARY_API_SECRET=aGB8iUEwksDv7gIKCtw7NoEv56Y
+
+REACT_APP_BACKEND_SERVER_PATH = http://localhost:6007
