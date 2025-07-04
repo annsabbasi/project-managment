@@ -11,7 +11,8 @@ import errorHandler from './middleware/errorHandler.js';
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN.split(","),
+    // origin: process.env.CORS_ORIGIN.split(","),
+    origin: ['http://localhost:5173', 'https://hrmanagment.netlify.app'],
     credentials: true,
 }));
 app.use(express.json());
